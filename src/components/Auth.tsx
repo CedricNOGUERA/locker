@@ -51,28 +51,26 @@ const Auth = () => {
   return (
     <Container className="col-11 col-lg-4 mt-5">
         {isLogged && (
-            <Navigate to="/" />
+            <Navigate to="/in-progress" />
         )}
       {isLoading ? (
        <Loading variant="info" />
       ) : (
         <Card className="">
           <Card.Body>
-            <div className="text-center">
-              <img
-                alt="avatar"
-                src="https://img.icons8.com/stickers/64/school-locker.png"
-              />
+            <div className="text-center animate__animated animate__fadeIn">
+            
+              <img alt="Kangaroo icon" src="https://img.icons8.com/external-others-inmotus-design/64/external-Kangaroo-animal-faces-others-inmotus-design-2.png"/>
             </div>
             <div className="text-center">
               <h4>Lockery</h4>
             </div>
             <Form onSubmit={handleSubmit(signUp)}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Username</Form.Label>
+                <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Entrer votre nom"
+                  placeholder="Entrer votre email"
                   {...register("userName", { required: true })}
                 />
                 {errors.userName && (

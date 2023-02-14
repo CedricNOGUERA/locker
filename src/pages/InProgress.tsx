@@ -1,20 +1,21 @@
 import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
 import Loading from "../components/ui/Loading";
 import { commandes } from "../data/commandes";
 import userDataStore from "../store/userDataStore";
 import Orderslist from "../components/ui/Orderslist";
+import QrCode from "../components/QrCode";
 import "../App.css";
 import "animate.css";
-import QrCode from "../components/QrCode";
 
-const ToRetrieve = () => {
+const InProgress = () => {
+
   const isLogged = userDataStore((state: any) => state.isLogged);
+
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [orderData, setOrderData] = React.useState<any>([]);
   const [selectedOrder, setSelectedOrder] = React.useState<any>("");
-
 
   React.useEffect(() => {
     if (commandes) {
@@ -32,28 +33,30 @@ const ToRetrieve = () => {
       ) : (
         <>
           {!selectedOrder ? (
-            <Container className="bg-info animate__animated animate__backInLeft  ">
-              <Row className="list-cde ps-3 pb-4">
+            <Container className=" animate__animated animate__backInLeft  ">
+              <Row className="list-cde ps-3 pb-3">
                 {orderData &&
                   orderData?.map((cde: any) => (
-                    <Orderslist key={cde?.id} cde={cde} 
-                    setSelectedOrder={setSelectedOrder}
+                    <Orderslist
+                      key={Math.random()}
+                      cde={cde}
+                      setSelectedOrder={setSelectedOrder}
                     />
-                ))}
-            </Row>
-          </Container>
+                  ))}
+              </Row>
+            </Container>
           ) : (
             <>
               <Container className="my-2">
                 <i
-                  className="ri-arrow-left-line text-light fs-4 bg-secondary rounded"
+                  className="ri-arrow-left-line text-light fs-4 bg-secondary rounded-pill"
                   onClick={() => setSelectedOrder("")}
                 ></i>
               </Container>
 
               <Container className="">
                 {/* Pour cette commande il y a: */}
-                <div className="bg-secondary text-center text-light rounded-pill shadow-lg py-1">
+                <div className="bg-secondary text-center text-light rounded shadow-lg py-1">
                   <i className="ri-temp-cold-line fs-4 align-middle"></i> : <small className="align-middle">frais & ambiant</small>
                   <br />
                   <i className="ri-shopping-basket-2-line fs-4 align-middle"></i> : <small className="align-middle"> 1 frais et 1
@@ -70,7 +73,7 @@ const ToRetrieve = () => {
                   <i className="ri-arrow-up-fill "></i>
                 </div>
               </Container>
-              <Container className="bg-light p-2 w-75 mt-2  animate__animated animate__fadeInDown">
+              <Container className="bg-light p-2 w-75   animate__animated animate__fadeInDown">
                 <QrCode orderNum={selectedOrder} />
               </Container>
               <Container className="text-center text-danger">
@@ -90,4 +93,4 @@ const ToRetrieve = () => {
   );
 };
 
-export default ToRetrieve;
+export default InProgress;

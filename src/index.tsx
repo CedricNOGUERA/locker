@@ -9,8 +9,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./components/Auth";
 import 'animate.css';
 import OrdersDelivered from "./pages/OrdersDelivered";
-import BottomNavBar from "./components/BottomNavBar";
 import ToRetrieve from "./pages/ToRetrieve";
+import InProgress from "./pages/InProgress";
+import Header from "./components/layout/Header";
 
 
 
@@ -18,19 +19,44 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    children: [
+      {
+        path: "in-progress",
+        // element: <InProgress />,
+        element: (
+              <React.Fragment>
+                <Header title="Commandes en cours" />
+                <InProgress />
+              </React.Fragment>
+            )
+      },
+      {
+        path: "orders-delivered",
+        element: 
+        (
+          <React.Fragment>
+            <Header title="Commandes déposées" />
+            <OrdersDelivered />
+          </React.Fragment>
+        ),
+      },
+      {
+        path: "orders-to-retrieve",
+       
+        element: (
+          <React.Fragment>
+            <Header title="Commandes à récupérer" />
+            <ToRetrieve />,
+          </React.Fragment>
+        )
+      }
+    ],
   },
   {
     path: "/connexion",
     element: <Auth />,
   },
-  {
-    path: "/orders-delivered",
-    element: <OrdersDelivered />,
-  },
-  {
-    path: "/orders-to-retrieve",
-    element: <ToRetrieve />,
-  }
+  
 ]);
 
 const root = ReactDOM.createRoot(
@@ -38,8 +64,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-        <RouterProvider router={router} />
-  <BottomNavBar />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 serviceWorkerRegistration.register();

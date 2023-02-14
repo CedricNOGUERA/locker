@@ -1,11 +1,22 @@
+.top-menu{
+  
+ z-index: 5000;
+}
+
 .cde{
   position: relative;
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
+  background-color: #fff;
 }
-
+@media (max-width: 768px){
+    .list-cde{
+      width: 109%;
+      overflow-y: auto;
+    }
+  }
+  
 .bottom-navbar{
-
   position: fixed;
   bottom: 0;
   font-size: 0.7rem
@@ -13,4 +24,14 @@
 
 .nav-item{
   width: 30%;
+}
+
+.title-header{
+  font-family: 'Agency FB';
+}
+
+.bounced-arrow{
+  animation: bounce; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 2s; /* don't forget to set a duration! */
+  animation-delay: 0.4s;
 }
