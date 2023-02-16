@@ -1,6 +1,10 @@
 .top-menu{
-  
- z-index: 5000;
+/*   
+ z-index: 5000; */
+height: auto;
+}
+.top-nav{
+  height: 70px;
 }
 
 .cde{
@@ -26,8 +30,18 @@
   width: 30%;
 }
 
-.title-header{
-  font-family: 'Agency FB';
+.ff-agency{
+  /* font-family: 'Bowlby One SC'; */
+  /* font-family: 'Josefin sans', sans-serif; */
+  /* font-family: 'Anton', sans-serif; */
+  font-family: 'Lobster', sans-serif;
+  /* font-family: 'Agency FB'; */
+
+  /* font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif */
+}
+
+.user-name{
+  font-family: Changa
 }
 
 .bounced-arrow{
@@ -35,3 +49,15 @@
   animation-duration: 2s; /* don't forget to set a duration! */
   animation-delay: 0.4s;
 }
+
+
+.img-blur{
+  filter: blur(1px);
+}
+
+
+.bg-content{
+  background-image: url('styles/no-order.png');
+  background-size: cover;
+}
+

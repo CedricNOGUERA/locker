@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
 import Loading from "../components/ui/Loading";
 import { commandes } from "../data/commandes";
@@ -8,13 +8,13 @@ import Orderslist from "../components/ui/Orderslist";
 import "../App.css";
 import "animate.css";
 import QrCode from "../components/QrCode";
+import images from "../styles/no-order.png";
 
-const ToRetrieve = () => {
+const ToRetrieve: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [orderData, setOrderData] = React.useState<any>([]);
   const [selectedOrder, setSelectedOrder] = React.useState<any>("");
-
 
   React.useEffect(() => {
     if (commandes) {
@@ -23,6 +23,9 @@ const ToRetrieve = () => {
     }
   }, []);
 
+  const orderTab = orderData.filter(
+    (order: any) => order.status === "toRetrieve"
+  );
 
   return (
     <div className="cde App">
@@ -32,16 +35,33 @@ const ToRetrieve = () => {
       ) : (
         <>
           {!selectedOrder ? (
-            <Container className="bg-info animate__animated animate__backInLeft  ">
+            <Container className=" animate__animated animate__backInLeft  ">
               <Row className="list-cde ps-3 pb-4">
-                {orderData &&
-                  orderData?.map((cde: any) => (
-                    <Orderslist key={cde?.id} cde={cde} 
-                    setSelectedOrder={setSelectedOrder}
+                {orderTab.length > 0 ? (
+                  orderData?.map((cde: any) =>
+                    cde?.status === "toRetrieve" ? (
+                      <Orderslist
+                        key={cde?.id}
+                        cde={cde}
+                        setSelectedOrder={setSelectedOrder}
+                      />
+                    ) : null
+                  )
+                ) : (
+                  <div className=" text-center mt-5 pt-5">
+                    <img
+                      className=""
+                      alt="Galleryicon"
+                      src={images}
+                      style={{ height: "256px" }}
                     />
-                ))}
-            </Row>
-          </Container>
+                    <div className="user-name fs-3 fw-bold text-secondary">
+                      Aucune commande
+                    </div>
+                  </div>
+                )}
+              </Row>
+            </Container>
           ) : (
             <>
               <Container className="my-2">
@@ -54,10 +74,12 @@ const ToRetrieve = () => {
               <Container className="">
                 {/* Pour cette commande il y a: */}
                 <div className="bg-secondary text-center text-light rounded-pill shadow-lg py-1">
-                  <i className="ri-temp-cold-line fs-4 align-middle"></i> : <small className="align-middle">frais & ambiant</small>
+                  <i className="ri-temp-cold-line fs-4 align-middle"></i> :{" "}
+                  <small className="align-middle">frais & ambiant</small>
                   <br />
-                  <i className="ri-shopping-basket-2-line fs-4 align-middle"></i> : <small className="align-middle"> 1 frais et 1
-                  ambiant</small>
+                  <i className="ri-shopping-basket-2-line fs-4 align-middle"></i>{" "}
+                  :{" "}
+                  <small className="align-middle"> 1 frais et 1 ambiant</small>
                 </div>
                 <div className="bg-light text-center"></div>
               </Container>

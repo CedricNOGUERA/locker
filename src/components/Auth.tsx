@@ -101,8 +101,7 @@ const Auth = () => {
                   </small>
                 </Form.Text>
               )}
-
-              <Button variant="primary" type="submit" className="w-100 mt-4">
+              <Button variant="info" type="submit" className="w-100 mt-4 text-light">
                 Valider
               </Button>
             </Form>
