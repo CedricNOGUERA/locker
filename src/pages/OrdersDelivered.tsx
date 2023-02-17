@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import Loading from "../components/ui/Loading";
 import { commandes } from "../data/commandes2";
 import userDataStore from "../store/userDataStore";
-import Orderslist from "../components/ui/Orderslist";
+import ItemList from "../components/ui/ItemList";
 import "../App.css";
 import "animate.css";
 import  images from "../styles/no-order.png";
@@ -38,7 +38,7 @@ const OrdersDelivered = () => {
               {orderTab.length > 0 ? (
                 orderData?.map((cde: any) =>
                   cde?.status === "delivered" ? (
-                    <Orderslist key={cde?.id} cde={cde} />
+                    <ItemList key={cde?.id} cde={cde} />
                   ) : null
                 )
               ) : (

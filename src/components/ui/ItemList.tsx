@@ -1,6 +1,6 @@
 import { Button, Col, Row } from "react-bootstrap";
 
-const Orderslist = ({ cde, setSelectedOrder, setSearchOrder }: any) => {
+const ItemList = ({ cde, setSelectedOrder, setSearchOrder }: any) => {
   return (
     <div
       className="my-3 px-3 py-0 bg-white rounded-pill shadow"
@@ -9,17 +9,15 @@ const Orderslist = ({ cde, setSelectedOrder, setSearchOrder }: any) => {
       <Row className="py-1">
         <Col xs={4} className="m-auto">
           {cde?.temp?.map((temps: any) => (
-            <>
-            <img
-            alt="Refroidissement icon"
-            src={`https://img.icons8.com/officel/512/${temps?.icon}.png`}
-            // src={`https://img.icons8.com/ultraviolet/512/${temps?.icon}.png`}
-          
-            style={{ width: "24px" }}
-            /> {' '}
-            </>
+            <span key={Math.random()}>
+              <img
+                alt="Refroidissement icon"
+                src={`https://img.icons8.com/officel/512/${temps?.icon}.png`}
+                // src={`http0://img.icons8.com/ultraviolet/512/${temps?.icon}.png`}
+                style={{ width: "20px" }}
+              />{" "}
+            </span>
           ))}
-       
         </Col>
         <Col className="text-secondary align-middle m-auto">
           {cde?.orderNum}
@@ -41,4 +39,4 @@ const Orderslist = ({ cde, setSelectedOrder, setSearchOrder }: any) => {
   );
 };
 
-export default Orderslist;
+export default ItemList;

@@ -7,9 +7,9 @@ overflow: hidden;
 
 .cde{
   position: relative;
-  /* height: 100vh; */
   overflow: auto;
   background-color: #fff;
+  padding-bottom: 80px;
 }
 @media (max-height: 374px){
   .cde{
@@ -19,7 +19,6 @@ overflow: hidden;
   }
 @media (max-width: 768px){
     .list-cde{
-      /* width: 109%; */
       overflow-y: auto;
     }
   }
@@ -37,11 +36,7 @@ overflow: hidden;
 .ff-agency{
   /* font-family: 'Bowlby One SC'; */
   /* font-family: 'Josefin sans', sans-serif; */
-  /* font-family: 'Anton', sans-serif; */
   font-family: 'Lobster', sans-serif;
-  /* font-family: 'Agency FB'; */
-
-  /* font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif */
 }
 
 .user-name{

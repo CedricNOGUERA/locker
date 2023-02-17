@@ -3,13 +3,14 @@ import { Col, Container, Dropdown, Row } from "react-bootstrap";
 import { Navigate, useOutletContext } from "react-router-dom";
 import Loading from "../components/ui/Loading";
 import userDataStore from "../store/userDataStore";
-import Orderslist from "../components/ui/Orderslist";
+import ItemList from "../components/ui/ItemList";
 import { message } from "antd";
 import "../App.css";
 import "animate.css";
 import QrCode from "../components/QrCode";
 import images from "../styles/no-order.png";
 import { _notif } from "../utils/functions";
+import SearchBar from "../components/ui/SearchBar";
 
 const ToRetrieve: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged);
@@ -71,7 +72,7 @@ const ToRetrieve: React.FC = () => {
         <>
           {!selectedOrder ? (
             <>
-            <Container className="mt-2 text-center ">
+            {/* <Container className="mt-2 text-center ">
                 <Container className=" text-info px-3 py-0 bg-secondary rounded-pill shadow my-auto ">
                   <Dropdown>
                     <Container className="">
@@ -124,15 +125,19 @@ const ToRetrieve: React.FC = () => {
                     </Dropdown.Menu>
                   </Dropdown>
                 </Container>
-              </Container>
+              </Container> */}
+                            <SearchBar searchOrder={searchOrder} setSearchOrder={setSearchOrder} selectedStore={selectedStore} setSelectedStore={setSelectedStore} />
+
             <Container className=" animate__animated animate__backInLeft  ">
                 {orderTab.length > 0 ? (
                   orderTab?.map((cde: any) =>
                     cde?.status === "toRetrieve" ? (
-                      <Orderslist
+                      <ItemList
                         key={Math.random()}
                         cde={cde}
                         setSelectedOrder={setSelectedOrder}
+                        setSearchOrder={setSearchOrder}
+
                       />
                     ) : null
                   )
@@ -169,7 +174,7 @@ const ToRetrieve: React.FC = () => {
                 </Container>
               </Container>
 
-              <Container className="">
+              {/* <Container className="">
                 <div className="bg-secondary text-center text-light rounded shadow-lg py-1">
                  <Row>
                   <Col>
@@ -189,7 +194,7 @@ const ToRetrieve: React.FC = () => {
                       </Col>
                       </Row>
                 </div>
-              </Container>
+              </Container> */}
 
               <Container className="text-center py-0 ">
                 <small className="text-danger">haut du qrcode</small>{" "}

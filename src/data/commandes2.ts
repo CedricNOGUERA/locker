@@ -310,8 +310,21 @@ export const commandes = [
         "location": "Punaauia",
     "orderNum": "222-xgd-828 ",
         "temp" : [{"icon": "organic-food",
-            "name": "frais"}, {"icon": "dry",
-            "name": "sec"}],
+            "name": "frais"}],
+        "numbContainer" : 3,
+        "firstNameCustom": "Jordan",
+        "LastNameCustom": "Mickael",
+        "detailOrder": [{
+        }],
+    "status": "inProgress",
+    }
+    ,
+    {
+        "id": "211-pom-165",
+        "location": "Punaauia",
+    "orderNum": "222-xgd-848 ",
+        "temp" : [{"icon": "winter",
+            "name": "surgelé"}],
         "numbContainer" : 3,
         "firstNameCustom": "Jordan",
         "LastNameCustom": "Mickael",
