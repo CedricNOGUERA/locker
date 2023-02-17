@@ -8,13 +8,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./components/Auth";
 import "animate.css";
-import OrdersDelivered from "./pages/OrdersDelivered";
 import ToRetrieve from "./pages/ToRetrieve";
 import InProgress from "./pages/InProgress";
 import Header from "./components/layout/Header";
-
-
-
+import Delivered from "./pages/Delivered";
+import ScrollToTop from "./components/ui/ScrollToTop";
 
 const router = createBrowserRouter([
   {
@@ -23,27 +21,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: "in-progress",
-        // element: <InProgress />,
         element: (
           <React.Fragment>
             <Header title="Commandes en cours" />
             <InProgress />
           </React.Fragment>
         ),
-      }
-      ,
+      },
       {
         path: "orders-delivered",
         element: (
           <React.Fragment>
             <Header title="Commandes déposées" />
-            <OrdersDelivered />
+            <Delivered />
           </React.Fragment>
         ),
       },
       {
         path: "orders-to-retrieve",
-
         element: (
           <React.Fragment>
             <Header title="Commandes à récupérer" />
@@ -65,6 +60,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
+    <ScrollToTop />
+
   </React.StrictMode>
 );
 serviceWorkerRegistration.register();

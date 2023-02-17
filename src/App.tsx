@@ -4,22 +4,22 @@ import "./App.css";
 import userDataStore from "./store/userDataStore";
 import "animate.css";
 import BottomNavBar from "./components/layout/BottomNavBar";
-import { commandes } from "./data/commandes";
+import { commandes } from "./data/commandes2";
 
 function App() {
   const isLogged = userDataStore((state: any) => state.isLogged);
-  const [selectedStore, setSelectedStore] = React.useState<any>("Arue");
-
-
-  let cdes: any = commandes;
+  const [selectedStore, setSelectedStore] = React.useState<any>("Punaauia");
+  const [orderData, setOrderData] = React.useState<any>(commandes);
 
   return (
-    <div className="cde App">
+    <div className="">
       {!isLogged && <Navigate to="/connexion" />}
 
-      <Outlet context={[selectedStore, setSelectedStore]} />
+      <Outlet
+        context={[selectedStore, setSelectedStore, orderData, setOrderData]}
+      />
 
-      <BottomNavBar commandes={cdes} selectedStore={selectedStore} />
+      <BottomNavBar commandes={orderData} selectedStore={selectedStore} />
     </div>
   );
 }

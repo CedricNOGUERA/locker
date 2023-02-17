@@ -1,7 +1,7 @@
 
 
 import {create} from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 const useDataStore = create(
   persist(
@@ -38,7 +38,7 @@ const useDataStore = create(
     }),
     {
       name: "userLog", // unique name
-      getStorage: () => sessionStorage, // (optional) by default, 'localStorage sessionStorage' is used
+      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage sessionStorage' is used
     }
   )
 );

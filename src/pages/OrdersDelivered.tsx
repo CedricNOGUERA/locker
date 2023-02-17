@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
 import Loading from "../components/ui/Loading";
-import { commandes } from "../data/commandes";
+import { commandes } from "../data/commandes2";
 import userDataStore from "../store/userDataStore";
 import Orderslist from "../components/ui/Orderslist";
 import "../App.css";

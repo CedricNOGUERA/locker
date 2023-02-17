@@ -30,7 +30,6 @@ const BottomNavBar = ({commandes, selectedStore}: any) => {
             className="text-info py-1 text-decoration-none">
             <i className="ri-file-list-line fs-4 "></i>
             {progress.length > 0 && (
-
               <span className="badge rounded-pill bg-danger">{progress?.length}</span>
             )}
 

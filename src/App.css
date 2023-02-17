@@ -1,7 +1,5 @@
-.top-menu{
-/*   
- z-index: 5000; */
-height: auto;
+.main{
+overflow: hidden;
 }
 .top-nav{
   height: 70px;
@@ -9,13 +7,19 @@ height: auto;
 
 .cde{
   position: relative;
-  height: 100vh;
+  /* height: 100vh; */
   overflow: auto;
   background-color: #fff;
 }
+@media (max-height: 374px){
+  .cde{
+    height: 150vh;
+    overflow-y: auto;
+  }
+  }
 @media (max-width: 768px){
     .list-cde{
-      width: 109%;
+      /* width: 109%; */
       overflow-y: auto;
     }
   }
@@ -43,6 +47,9 @@ height: auto;
 .user-name{
   font-family: Changa
 }
+.user-name > b {
+  font-size: 0.8rem;
+}
 
 .bounced-arrow{
   animation: bounce; /* referring directly to the animation's @keyframe declaration */
@@ -61,3 +68,20 @@ height: auto;
   background-size: cover;
 }
 
+/*-------------------------
+    Back To Top  
+--------------------------*/
+.back-to-top {
+  position: fixed;
+  bottom: 65px;
+  right: 10px;
+  z-index: 9;
+  transition: all 0.3s;
+}
+
+
+ /* .search-icon{
+  position: absolute;
+  left: 20px;
+  top: 1px;
+ } */
