@@ -1,43 +1,52 @@
-import React from 'react'
 import { Container } from 'react-bootstrap'
 import ItemList from './ItemList'
+import images from "../../styles/no-order.png";
 
-const OrderList = ({orderTab, filteredOrder, setSelectedOrder, searchOrder, setSearchOrder, images}:  any) => {
-  return (
+
+const OrderList = ({orderListProps, deliveries}:  any) => {
+  const {orderData, filteredOrder, setSelectedOrder, searchOrder, setSearchOrder, allSlot} = orderListProps
+
+
+return (
     <Container className="animate__animated animate__backInLeft  ">
-    {orderTab.length > 0 ? (
-      filteredOrder.length > 0 ? (
-        filteredOrder?.map((cde: any) => (
+    {orderData?.["hydra:member"]?.length > 0 ? (
+      // filteredOrder.length > 0 ? (
+      //   filteredOrder?.map((cde: any, indx: any) => (
+      //     <ItemList
+      //       key={Math.random()}
+      //       cde={cde}
+      //       indx={indx}
+      //       setSelectedOrder={setSelectedOrder}
+      //       setSearchOrder={setSearchOrder}
+      //       myData={deliveries}
+      //     />
+      //   ))
+      // ) : filteredOrder.length === 0 && searchOrder.length > 2 ? (
+      //   <div className=" text-center mt-5 pt-5">
+      //     <div className="user-name fs-3 fw-bold text-secondary">
+      //       Aucune commande trouvée 🔍
+      //     </div>
+      //     <img
+      //       className=""
+      //       alt="icon"
+      //       src={images}
+      //       style={{ height: "256px" }}
+      //     />
+      //   </div>
+      // ) : (
+        orderData?.["hydra:member"]?.map((cde: any, indx: any) => (
           <ItemList
             key={Math.random()}
             cde={cde}
+            indx={indx}
             setSelectedOrder={setSelectedOrder}
             setSearchOrder={setSearchOrder}
+            myData={deliveries}
+            allSlot={allSlot}
           />
         ))
-      ) : filteredOrder.length === 0 && searchOrder.length > 2 ? (
-        <div className=" text-center mt-5 pt-5">
-          <div className="user-name fs-3 fw-bold text-secondary">
-            Aucune commande trouvée 🔍
-          </div>
-          <img
-            className=""
-            alt="Galleryicon"
-            src={images}
-            style={{ height: "256px" }}
-          />
-        </div>
       ) : (
-        orderTab?.map((cde: any) => (
-          <ItemList
-            key={Math.random()}
-            cde={cde}
-            setSelectedOrder={setSelectedOrder}
-            setSearchOrder={setSearchOrder}
-          />
-        ))
-      )
-    ) : (
+    // ) : (
       <div className=" text-center mt-5 pt-5">
         <img
           className=""

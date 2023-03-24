@@ -7,6 +7,8 @@ import userDataStore from "../store/userDataStore";
 import { useEffect, useState } from "react";
 import Loading from "./ui/Loading";
 import "../App.css";
+import AuthService from "../service/Auth/AuthService";
+import UserService from "../service/UserService";
 
 type Inputs = {
     userName: string,
@@ -23,35 +25,59 @@ const Auth = () => {
     
     const authLogin = userDataStore((state: any) => state.authLogin)
     const isLogged = userDataStore((state: any) => state.isLogged)
+    const dataStore = userDataStore((state: any) => state)
     
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isError, setIsError] = useState<boolean>(false)
+    const [token, setToken] = useState<any>([])
+    const [formData, setFormData] = useState<any>([])
+    // const [isLogged, setIsLogged] = useState<boolean>(false)
+  const [myData, setMyData] = useState<any>([]);
+
+
+  
 
 
     useEffect(() => {
-        if(users){
-            setIsLoading(false)
-        }
-    }, [])
-    
-    
-    const signUp: SubmitHandler<Inputs> = (data: any, e: any) => {
-        e.preventDefault()
-        const authUser = users?.filter((user: any) => user.username === data.userName && user.password === data.pass)
-
-        if(authUser && authUser.length > 0){
-            authLogin(true, authUser[0]?.id, authUser[0]?.username, authUser[0].company_id)           
-        }
-        else{
-            setIsError(true)
-        }
-    };
+      getMyData(token)
  
+    }, [token])
 
+
+    useEffect(() => {
+    
+         if (token && token.length > 0) {
+           authLogin(true, myData.id, myData.firstName, myData?.memberOf ? myData?.memberOf[0]?.id : null, myData?.memberOf ? myData?.memberOf[0]?.name : null, token)
+         }
+
+    }, [myData])
+
+    
+
+    const signUp: SubmitHandler<Inputs> = (dataz: any, e: any) => {
+      e.preventDefault()
+
+      AuthService.login(dataz.userName, dataz.pass, setToken)
+        setIsLoading(false)
+        setFormData(dataz)
+        
+      }
+      
+      
+      const getMyData = (token: any) => {
+        UserService.me(token)
+        .then((response: any) => {
+          setMyData(response.data)
+        })
+      }
+
+
+ console.log(myData.firstName)
   return (
     <Container className="col-11 col-lg-4 mt-5">
         {isLogged && (
             <Navigate to="/in-progress" />
+            // <p>Welcome</p>
         )}
       {isLoading ? (
        <Loading variant="info" />
@@ -67,15 +93,15 @@ const Auth = () => {
             </div>
             <Form onSubmit={handleSubmit(signUp)}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>Username</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Entrer votre email"
+                  placeholder="Entrer votre username"
                   {...register("userName", { required: true })}
                 />
                 {errors.userName && (
-                  <Alert variant="warning" className="mt-2 py-1">
-                    This field is required
+                 <Alert variant="danger" className="mt-2 py-0 w-75">
+                    Ce champ est obligatoire
                   </Alert>
                 )}
               </Form.Group>
@@ -88,8 +114,8 @@ const Auth = () => {
                   {...register("pass", { required: true })}
                 />
                 {errors.pass && (
-                  <Alert variant="warning" className="mt-2 py-1">
-                    This field is required
+                  <Alert variant="danger" className="mt-2 py-0 w-75">
+                 <small> Ce champ est obligatoire </small>
                   </Alert>
                 )}
               </Form.Group>

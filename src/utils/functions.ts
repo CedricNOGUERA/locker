@@ -1,4 +1,4 @@
-export const _notif = (id: any, messageApi: any, setSelectedOrder: any) => {
+export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) => {
     messageApi.open({
       type: 'success',
       content: `Commande # ${id} déposée`,
@@ -6,10 +6,18 @@ export const _notif = (id: any, messageApi: any, setSelectedOrder: any) => {
     });
     setSelectedOrder("")
   };
+  
+  export const _errorNotif = (id: any, messageApi: any, setSelectedOrder: any) => {
+      messageApi.open({
+        type: 'error',
+        content: `Une erreur s'est produite`,
+        duration: 2.2,
+      });
+      setSelectedOrder("")
+    };
 
 
-
-  export const searchWithRegex = (searchOrder: any, orderTab: any, setOrderFilter: any ) => {
+  export const _searchWithRegex = (searchOrder: any, orderTab: any, setOrderFilter: any ) => {
     function escapeRegExp(str: string) {
       return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
@@ -20,5 +28,43 @@ export const _notif = (id: any, messageApi: any, setSelectedOrder: any) => {
       if (escapedSearchOrder.length > 2) {
         return order?.orderNum?.match(new RegExp(escapedSearchOrder, "i"));
       }
+        return undefined;
+      
+
     }))
   }
+
+
+   /********************************
+   * Change order status
+   *******************************/
+
+  export const _updateStatus = (id: any, orderData: any, setOrderData: any, messageApi: any, setSelectedOrder: any, objectif: any ) => {
+    const indx = orderData?.findIndex((order: any) => order.id === id);
+    const filteredOrder = orderData?.filter((order: any) => order.id === id);
+
+    const newTab = [...orderData];
+    const newStatus = {
+      id: filteredOrder[0].id,
+      location: filteredOrder[0].location,
+      orderNum: filteredOrder[0].orderNum,
+      temp: filteredOrder[0].temp,
+      numbContainer: filteredOrder[0].numbContainer,
+      firstNameCustom: filteredOrder[0].firstNameCustom,
+      LastNameCustom: filteredOrder[0].LastNameCustom,
+      detailOrder: filteredOrder[0].detailOrder,
+      status: objectif,
+    };
+    newTab[indx] = newStatus;
+
+    setOrderData(newTab);
+
+    _successNotif(filteredOrder[0].id, messageApi, setSelectedOrder);
+
+    if (filteredOrder.length > 0) {
+      _successNotif(filteredOrder[0].id, messageApi, setSelectedOrder);
+    } else {
+      _errorNotif(filteredOrder[0].id, messageApi, setSelectedOrder);
+    }
+  };
+

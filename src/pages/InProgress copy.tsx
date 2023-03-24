@@ -30,61 +30,68 @@ const InProgress: React.FC = () => {
 
   const objectif ="delivered"
 
-  const orderTab = orderData
-
+  const orderTab = orderData.filter(
+    (order: any) =>
+      order.status === "inProgress" && order.location === selectedStore
+  );
 
   const [deliveries, setDeliveries] = React.useState<any>({});
   const [allUser, setAllUser] = React.useState<any>([]);
+  const [user, setUser] = React.useState<any>([]);
   const [myData, setMyData] = React.useState<any>([]);
   const [allSlot, setAllSlot] = React.useState<any>([]);
 
   const userToken = localStorage.getItem("user");
 
+  console.log(orderData)
 
   React.useEffect(() => {
     
- 
+    getDeliveries()
     getMyData(dataStore.token)
-    getBookingSlot(dataStore.token, 5)
+    getBookingSlot(dataStore.token)
+    // getUserById("3")
   }, []);
 
 
 
   React.useEffect(() => {
-    _searchWithRegex(searchOrder, orderData, setOrderFilter);
+    _searchWithRegex(searchOrder, orderTab, setOrderFilter);
   }, [searchOrder]);
 
 
+  // const filteredDeliveries = deliveries.filter((delivery: any) => )
 
   
-  // const getDeliveries = () => {
-  //   let config = {
-  //     method: 'get',
-  //     maxBodyLength: Infinity,
-  //     url: 'http://192.168.1.186:8000/api/deliveries',
-  //     headers: {
-  //       Authorization:
-  //         'Bearer ' + dataStore.token,
-  //     },
-  //   }
+  const getDeliveries = () => {
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'http://192.168.1.186:8000/api/deliveries',
+      headers: {
+        Authorization:
+          'Bearer ' + dataStore.token,
+      },
+    }
 
-  //   axios
-  //     .request(config)
-  //     .then((response) => {
-  //       setDeliveries(response.data)
-  //       setOrderData(response.data)
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //     })
-  // }
-  
-const getBookingSlot = (token: any, id: any) => {
-  BookingSlotservice.slot(token, id)
+    axios
+      .request(config)
+      .then((response) => {
+        setDeliveries(response.data)
+        setOrderData(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+const getBookingSlot = (token: any) => {
+  BookingSlotservice.allSlot(token)
   .then((response: any) => {
     setAllSlot(response.data)
   })
 }
+console.log(deliveries)
 
   const getMyData = (token: any) => {
     UserService.me(token)
@@ -92,24 +99,31 @@ const getBookingSlot = (token: any, id: any) => {
     setMyData(response.data)
   })
 }
+console.log(myData)
 
-console.log(allSlot)
+
+
+  const getAllUsers = (token: any) => {
+    UserService.getAllUser(token).then((response: any) => {
+      setAllUser(response.data)
+    })
+  }
+
+  console.log(allUser)
 
   const searchBarProps = {
     searchOrder,
     setSearchOrder,
     selectedStore,
     setSelectedStore,
-    allSlot,
   };
   
   const orderListProps = {
-    orderData,
+    orderTab,
     filteredOrder,
     setSelectedOrder,
     searchOrder,
     setSearchOrder,
-    allSlot
   };
  
   const scanPageProps = {

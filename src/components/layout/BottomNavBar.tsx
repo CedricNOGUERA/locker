@@ -1,13 +1,13 @@
 import { Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const BottomNavBar = ({commandes, selectedStore}: any) => {
+const BottomNavBar = ({orderData, selectedStore}: any) => {
 
-  const retrieve = commandes?.filter((order: any) => order.status === "toRetrieve" && order.location === selectedStore)
-  const progress = commandes?.filter((order: any) => order.status === "inProgress" && order.location === selectedStore)
-  const delivered = commandes?.filter((order: any) => order.status === "delivered" && order.location === selectedStore)
+  const retrieve = orderData?.filter((order: any) => order.status === "toRetrieve" && order.location === selectedStore)
+  const progress = orderData?.filter((order: any) => order.status === "inProgress" && order.location === selectedStore)
+  const delivered = orderData?.filter((order: any) => order.status === "delivered" && order.location === selectedStore)
 
-  console.log(retrieve?.length)
+ 
 
   return (
     <Container fluid className="bottom-navbar bg-secondary py-1 shadow">

@@ -6,7 +6,7 @@ const QrCode = ({orderNum}: any) => {
 
   return (
     <QRCode
-      size={256}
+      size={512}
       style={{
         height: "auto",
         maxWidth: "100%",
@@ -14,7 +14,7 @@ const QrCode = ({orderNum}: any) => {
       }}
       fgColor="#3262a8"
       value={orderNum}
-      viewBox={`0 0 256 256`}
+      viewBox={`0 0 512 512`}
     />
   );
 }

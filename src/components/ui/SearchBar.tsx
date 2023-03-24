@@ -1,7 +1,10 @@
 import React from 'react'
 import { Container, Row, Col, Dropdown } from 'react-bootstrap'
 
-const SearchBar = ({searchOrder, setSearchOrder, selectedStore, setSelectedStore }: any) => {
+const SearchBar = ({searchBarProps}: any) => {
+  
+  const {searchOrder, setSearchOrder, selectedStore, setSelectedStore, allSlot } = searchBarProps
+
   return (
     
       <Container className="mt-2 text-center">
@@ -38,39 +41,19 @@ const SearchBar = ({searchOrder, setSearchOrder, selectedStore, setSelectedStore
                     id="dropdown-basic"
                     className="text-light"
                   >
-                    <span className="py-0 ">{selectedStore}</span>
+                    <span className="py-0" >{allSlot?.slot?.temperatureZone?.locker?.city}</span>
                   </Dropdown.Toggle>
                 </Col>
               </Row>
             </Container>
           <Dropdown.Menu className="shadow">
-            <Dropdown.Item
-              onClick={() => setSelectedStore("Punaauia")}
-            >
-              <Row className="">
-                <Col xs={3}>
-                  {" "}
-                  <i className="ri-store-2-line fs-5"></i>
-                </Col>{" "}
-                <Col className="m-auto user-name">Punaauia</Col>
-              </Row>
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => setSelectedStore("Faa'a")}>
+            <Dropdown.Item  title={allSlot?.slot?.temperatureZone?.locker?.location} onClick={() => setSelectedStore(allSlot?.slot?.temperatureZone?.locker?.city)}>
               <Row className="">
                 <Col xs={3}>
                   {" "}
                   <i className="ri-store-2-line fs-5"></i>
                 </Col>{" "}
                 <Col className="m-auto user-name">Faa'a</Col>
-              </Row>
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => setSelectedStore("Arue")}>
-              <Row className="">
-                <Col xs={3}>
-                  {" "}
-                  <i className="ri-store-2-line fs-5"></i>
-                </Col>{" "}
-                <Col className="m-auto user-name">Arue</Col>
               </Row>
             </Dropdown.Item>
           </Dropdown.Menu>

@@ -14,6 +14,7 @@ import Header from "./components/layout/Header";
 import Delivered from "./pages/Delivered";
 import ScrollToTop from "./components/ui/ScrollToTop";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -51,7 +52,8 @@ const router = createBrowserRouter([
   {
     path: "/connexion",
     element: <Auth />,
-  },
+  }
+  
 ]);
 
 const root = ReactDOM.createRoot(

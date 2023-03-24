@@ -3,7 +3,7 @@
 import {create} from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-const useDataStore = create(
+const userDataStore = create(
   persist(
     (set) => ({
       // initial state
@@ -11,6 +11,8 @@ const useDataStore = create(
       id: null,
       firstname: null,
       company_id: null,
+      company_name: null,
+      token: null,
 
 
       // methods for manipulating state
@@ -18,7 +20,9 @@ const useDataStore = create(
         isLogged: boolean,
         id: string,
         firstname: string,
-        company_id: string,
+        company_id: number,
+        company_name: string,
+        token: any,
         
       ) =>
         set((state: any) => ({
@@ -26,6 +30,8 @@ const useDataStore = create(
           id: id,
           firstname: firstname,
           company_id: company_id,
+          company_name: company_name,
+          token: token,
 
         })),
       authLogout: () =>
@@ -34,6 +40,8 @@ const useDataStore = create(
           id: null,
           firstname: null,
           company_id: null,
+          company_name: null,
+          token: null,
         })),
     }),
     {
@@ -43,4 +51,4 @@ const useDataStore = create(
   )
 );
 
-export default useDataStore;
+export default userDataStore;
