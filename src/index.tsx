@@ -13,6 +13,7 @@ import InProgress from "./pages/InProgress";
 import Header from "./components/layout/Header";
 import Delivered from "./pages/Delivered";
 import ScrollToTop from "./components/ui/ScrollToTop";
+import NewOrder from "./pages/newOrder/NewOrder";
 
 
 const router = createBrowserRouter([
@@ -44,6 +45,15 @@ const router = createBrowserRouter([
           <React.Fragment>
             <Header title="Commandes à récupérer" />
             <ToRetrieve />,
+          </React.Fragment>
+        ),
+      },
+      {
+        path: "nouvelle-commande",
+        element: (
+          <React.Fragment>
+            <Header title="Nouvelle commande" />
+            <NewOrder />,
           </React.Fragment>
         ),
       },

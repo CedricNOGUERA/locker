@@ -26,14 +26,15 @@ const ToRetrieve: React.FC = () => {
 
   const objectif ="inProgress"
 
-  const orderTab = orderData.filter(
-    (order: any) =>
-      order.status === "toRetrieve" && order.location === selectedStore
-  );
+  // const orderTab = orderData.filter(
+  //   (order: any) =>
+  //     order.status === "toRetrieve" && order.location === selectedStore
+  // );
+  const progress = orderData["hydra:member"]?.filter((order: any) => order.status === "operout")
 
-  React.useEffect(() => {
-    _searchWithRegex(searchOrder, orderTab, setOrderFilter);
-  }, [searchOrder]);
+  // React.useEffect(() => {
+  //   _searchWithRegex(searchOrder, orderTab, setOrderFilter);
+  // }, [searchOrder]);
 
   const searchBarProps = {
     searchOrder,
@@ -52,11 +53,12 @@ const ToRetrieve: React.FC = () => {
     objectif,
   };
   const orderListProps = {
-    orderTab,
+    // orderTab,
     filteredOrder,
     setSelectedOrder,
     searchOrder,
     setSearchOrder,
+    progress
   };
 
   return (

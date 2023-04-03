@@ -1,9 +1,24 @@
 .main{
 overflow: hidden;
 }
+
 .top-nav{
   height: 60px;
 }
+.button-auth{
+  background-color: rgb(15, 158, 184);
+  border : 2px solid rgb(15, 158, 184);
+}
+.button-auth:active, .button-auth:hover{
+  background-color: rgb(37, 195, 223);
+  border : 2px solid rgb(15, 158, 184);
+}
+
+.menu-link:hover{
+  background-color: darkgray;
+  cursor: pointer;
+}
+
 
 .cde{
   position: relative;
@@ -11,6 +26,7 @@ overflow: hidden;
   background-color: #fff;
   padding-bottom: 80px;
 }
+
 @media (max-height: 374px){
   .cde{
     height: 150vh;
@@ -36,7 +52,10 @@ overflow: hidden;
 .ff-agency{
   /* font-family: 'Bowlby One SC'; */
   /* font-family: 'Josefin sans', sans-serif; */
-  font-family: 'Lobster', sans-serif;
+  font-family: 'teko', sans-serif;
+  letter-spacing: 0.05rem;
+  font-size: 1rem;
+  /* font-family: 'Lobster', sans-serif; */
 }
 
 .user-name{
@@ -61,6 +80,16 @@ overflow: hidden;
 .bg-content{
   background-image: url('styles/no-order.png');
   background-size: cover;
+}
+
+.item-locker-list, .font-65{
+font-size: 0.65rem;
+
+}
+
+.font-75{
+font-size: 0.75rem;
+
 }
 
 /*-------------------------

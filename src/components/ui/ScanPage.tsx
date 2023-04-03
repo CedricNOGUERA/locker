@@ -11,6 +11,7 @@ const ScanPage = ({ scanPageProps }: any) => {
     setSelectedOrder,
     objectif,
   } = scanPageProps;
+  console.log(selectedOrder?.receiveCode)
   return (
     <Container fluid className="pb-5">
       <Container className="my-2">
@@ -23,7 +24,7 @@ const ScanPage = ({ scanPageProps }: any) => {
               ></i>{" "}
             </Col>
             <Col className="fw-bold m-auto text-light text-end pe-4">
-              # {selectedOrder?.id}
+              # {selectedOrder?.bookingSlot["@id"]}
             </Col>
           </Row>
         </Container>
@@ -53,7 +54,7 @@ const ScanPage = ({ scanPageProps }: any) => {
         }}
       >
         <Col xs={12} sm={5} md={7} lg={3} className="m-auto">
-          <QrCode orderNum={selectedOrder?.orderNum} />
+          <QrCode orderNum={`${selectedOrder?.receiveCode}`} />
         </Col>
       </Container>
       <Container className="text-center text-warning">
@@ -63,7 +64,7 @@ const ScanPage = ({ scanPageProps }: any) => {
       </Container>
       <Container className="px-2 text-center mt-4">
         <div className="bg-secondary text-light rounded-pill shadow">
-          Saisie manuelle :{" "}
+          Saisie manuelle : {selectedOrder?.receiveCode}
           <p className="text-info fw-bold">{selectedOrder?.orderNum}</p>
         </div>
       </Container>

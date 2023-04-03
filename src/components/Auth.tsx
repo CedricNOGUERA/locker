@@ -1,141 +1,182 @@
-
-import { Card, Form, Button, Container, Alert } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
-import {users} from '../data/users'
-import userDataStore from "../store/userDataStore";
-import { useEffect, useState } from "react";
-import Loading from "./ui/Loading";
-import "../App.css";
-import AuthService from "../service/Auth/AuthService";
-import UserService from "../service/UserService";
+import { Card, Form, Container, Alert, Spinner, InputGroup } from 'react-bootstrap'
+import { Navigate } from 'react-router-dom'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import userDataStore from '../store/userDataStore'
+import { useEffect, useState } from 'react'
+import Loading from './ui/Loading'
+import '../App.css'
+import AuthService from '../service/Auth/AuthService'
+import UserService from '../service/UserService'
+import InfoAlert from './ui/warning/InfoAlert'
 
 type Inputs = {
-    userName: string,
-    pass: string,
-  };
+  userName: string
+  pass: string
+}
 
 const Auth = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>()
 
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm<Inputs>();
-    
-    const authLogin = userDataStore((state: any) => state.authLogin)
-    const isLogged = userDataStore((state: any) => state.isLogged)
-    const dataStore = userDataStore((state: any) => state)
-    
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isError, setIsError] = useState<boolean>(false)
-    const [token, setToken] = useState<any>([])
-    const [formData, setFormData] = useState<any>([])
-    // const [isLogged, setIsLogged] = useState<boolean>(false)
-  const [myData, setMyData] = useState<any>([]);
+  const authLogin = userDataStore((state: any) => state.authLogin)
+  const isLogged = userDataStore((state: any) => state.isLogged)
+  const dataStore = userDataStore((state: any) => state)
 
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoadingAuth, setIsLoadingAuth] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false)
+  const [isView, setIsView] = useState<boolean>(false)
+  const [msgError, setMsgError] = useState<string>('')
+  const [token, setToken] = useState<any>([])
+  const [formData, setFormData] = useState<any>([])
+  const [myData, setMyData] = useState<any>([])
 
-  
-
-
-    useEffect(() => {
+  useEffect(() => {
+    if (token && token.length > 0) {
       getMyData(token)
- 
-    }, [token])
-
-
-    useEffect(() => {
-    
-         if (token && token.length > 0) {
-           authLogin(true, myData.id, myData.firstName, myData?.memberOf ? myData?.memberOf[0]?.id : null, myData?.memberOf ? myData?.memberOf[0]?.name : null, token)
-         }
-
-    }, [myData])
-
-    
-
-    const signUp: SubmitHandler<Inputs> = (dataz: any, e: any) => {
-      e.preventDefault()
-
-      AuthService.login(dataz.userName, dataz.pass, setToken)
-        setIsLoading(false)
-        setFormData(dataz)
-        
-      }
       
-      
-      const getMyData = (token: any) => {
-        UserService.me(token)
-        .then((response: any) => {
-          setMyData(response.data)
-        })
-      }
+    }
+  }, [token])
+
+  useEffect(() => {
+    if (token && token.length > 0) {
+      authLogin(
+        true,
+        myData.id,
+        myData.firstName,
+        myData?.memberOf ? myData?.memberOf[0]?.id : null,
+        myData?.memberOf ? myData?.memberOf[0]?.cleveronCompanyId : null,
+        myData?.memberOf ? myData?.memberOf[0]?.name : null,
+        token
+      )
+    }
+  }, [myData])
 
 
- console.log(myData.firstName)
+
+  const signUp: SubmitHandler<Inputs> = (dataz: any, e: any) => {
+    e.preventDefault()
+
+    AuthService.login(
+      dataz.userName,
+      dataz.pass,
+      setToken,
+      setMsgError,
+      setIsError,
+      setIsLoadingAuth
+    )
+
+    setIsLoading(false)
+    setFormData(dataz)
+  }
+  const getMyData = (token: any) => {
+    UserService.me(token).then((response: any) => {
+      setMyData(response.data)
+    })
+  }
+
   return (
-    <Container className="col-11 col-lg-4 mt-5">
-        {isLogged && (
-            <Navigate to="/in-progress" />
-            // <p>Welcome</p>
-        )}
+    <Container className='col-11 col-lg-4 mt-5'>
+      {isLogged && (
+        <Navigate to='/in-progress' />
+      )}
       {isLoading ? (
-       <Loading variant="info" />
+        <Loading variant='info' />
       ) : (
-        <Card className="">
+        <Card className='shadow mt-md-5 animate__animated animate__fadeIn'>
           <Card.Body>
-            <div className="text-center animate__animated animate__fadeIn">
-            
-              <img alt="Kangaroo icon" src="https://img.icons8.com/external-others-inmotus-design/64/external-Kangaroo-animal-faces-others-inmotus-design-2.png"/>
+            <div className='text-center '>
+              <img
+                alt='Conteneur'
+                src={'https://img.icons8.com/ios-filled/128/exercise.png'}
+                width={64}
+                height={64}
+              />
             </div>
-            <div className="text-center">
-              <h4>Lockery</h4>
+            <div className='text-center'>
+              <h4>Locker</h4>
             </div>
             <Form onSubmit={handleSubmit(signUp)}>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Username</Form.Label>
+              <Form.Group className='mb-3' controlId='formBasicEmail'>
+                <Form.Label>Identifiant</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="Entrer votre username"
-                  {...register("userName", { required: true })}
+                  className='shadow'
+                  type='text'
+                  placeholder='Entrez votre identifiant'
+                  {...register('userName', { required: true })}
                 />
                 {errors.userName && (
-                 <Alert variant="danger" className="mt-2 py-0 w-75">
-                    Ce champ est obligatoire
+                  <Alert variant='danger' className='mt-2 py-0 text-center'>
+                    <InfoAlert
+                      icon='ri-error-warning-line'
+                      iconColor='danger'
+                      message={'Ce champ est obligatoire'}
+                      fontSize='font-75'
+                    />
                   </Alert>
                 )}
               </Form.Group>
-
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Entrer votre password"
-                  {...register("pass", { required: true })}
-                />
+              <Form.Group className='mb-3' controlId='formBasicPassword'>
+                <Form.Label>Mot de passe</Form.Label>
+                <InputGroup className='mb-3'>
+                  <Form.Control
+                    className='shadow'
+                    style={{ position: 'relative' }}
+                    type={!isView ? 'password' : 'text'}
+                    placeholder='Entrez votre mot de passe'
+                    {...register('pass', { required: true })}
+                  />
+                  <InputGroup.Text id='eyeOrNot' onClick={() => setIsView(!isView)}>
+                    {' '}
+                    <i
+                      className={
+                        !isView
+                          ? 'ri-eye-fill text-secondary ms-1 '
+                          : 'ri-eye-off-fill text-secondary ms-1 '
+                      }
+                    ></i>
+                  </InputGroup.Text>
+                </InputGroup>
                 {errors.pass && (
-                  <Alert variant="danger" className="mt-2 py-0 w-75">
-                 <small> Ce champ est obligatoire </small>
+                  <Alert variant='danger' className='mt-2 py-0 text-center'>
+                    <InfoAlert
+                      icon='ri-error-warning-line'
+                      iconColor='danger'
+                      message={'Ce champ est obligatoire'}
+                      fontSize='font-75'
+                    />
                   </Alert>
                 )}
               </Form.Group>
               {isError && (
-                <Form.Text className="text-danger">
-                  <small>
-                    Une erreur s'est glissée dans vos données, merci de
-                    réessayer
-                  </small>
-                </Form.Text>
+                <>
+                  <Alert variant='danger' className='py-2 px-1 text-center'>
+                    <InfoAlert
+                      icon='ri-error-warning-line'
+                      iconColor='danger'
+                      message={msgError}
+                      fontSize='font-65'
+                    />
+                  </Alert>
+                </>
               )}
-              <Button variant="info" type="submit" className="w-100 mt-4 text-light">
-                Valider
-              </Button>
+
+              <button
+                type='submit'
+                id=""
+                className='button-auth rounded  w-100 py-2 mt-4 text-light shadow'
+              >
+                {isLoadingAuth && <Spinner variant='light' size='sm' />} Valider
+              </button>
             </Form>
           </Card.Body>
         </Card>
       )}
     </Container>
-  );
-};
+  )
+}
 
-export default Auth;
+export default Auth

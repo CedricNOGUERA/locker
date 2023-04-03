@@ -1,14 +1,14 @@
 import { Button, Col, Row } from "react-bootstrap";
 
-const ItemList = ({ cde, setSelectedOrder, setSearchOrder, indx, myData, allSlot }: any) => {
+const ItemList = ({ liv, setSelectedOrder, setSearchOrder, indx, myData, allSlot }: any) => {
   
 
-  const tempZone = allSlot?.slot?.temperatureZone?.keyTemp === "NORMAL" ? "dry" : cde?.slot?.temperatureZone?.keyTemp === "FRESH" ? "organic-food" : "winter"
+  const tempZone = allSlot?.slot?.temperatureZone?.keyTemp === "NORMAL" ? "dry" : liv?.slot?.temperatureZone?.keyTemp === "FRESH" ? "organic-food" : "winter"
 
   return (
-    <div className='my-3 px-3 py-0 bg-white rounded-pill shadow'>
+    <div className='my-3 px-3 py-2 bg-white rounded-pill shadow'>
       <Row className='py-1'>
-        <Col xs={4} className='m-auto'>
+        <Col xs={2} className='m-auto'>
           <span key={Math.random()}>
             <img
               alt='Refroidissement icon'
@@ -17,13 +17,13 @@ const ItemList = ({ cde, setSelectedOrder, setSearchOrder, indx, myData, allSlot
             />{' '}
           </span>
         </Col>
-        <Col className='text-secondary align-middle m-auto'>{cde?.barcode}</Col>
+        <Col className='text-secondary text-center align-middle m-auto'>{liv?.status} {liv?.barcode}</Col>
         <Col xs={3} className='m-auto'>
           <Button
             variant='outline-info'
             onClick={() => {
               setSearchOrder('')
-              setSelectedOrder(cde)
+              setSelectedOrder(liv)
             }}
             className='ms-2 rounded text-center px-2 py-0 border border-info border-2'
           >

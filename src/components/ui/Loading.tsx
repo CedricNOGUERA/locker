@@ -5,7 +5,7 @@ const Loading = ({variant} :any) => {
   return (
     <div>
     <Spinner variant={variant} animation="border" role="status" />
-    <span className="ms-3">Loading...</span>
+    <div className="ms-3 text-secondary">Loading...</div>
   </div>
   )
 }

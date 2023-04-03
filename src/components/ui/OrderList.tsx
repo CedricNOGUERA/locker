@@ -4,17 +4,17 @@ import images from "../../styles/no-order.png";
 
 
 const OrderList = ({orderListProps, deliveries}:  any) => {
-  const {orderData, filteredOrder, setSelectedOrder, searchOrder, setSearchOrder, allSlot} = orderListProps
+  const {orderData, filteredOrder, setSelectedOrder, searchOrder, setSearchOrder, allSlot, progress} = orderListProps
 
 
 return (
     <Container className="animate__animated animate__backInLeft  ">
-    {orderData?.["hydra:member"]?.length > 0 ? (
+    {progress?.length > 0 ? (
       // filteredOrder.length > 0 ? (
-      //   filteredOrder?.map((cde: any, indx: any) => (
+      //   filteredOrder?.map((liv: any, indx: any) => (
       //     <ItemList
       //       key={Math.random()}
-      //       cde={cde}
+      //       liv={liv}
       //       indx={indx}
       //       setSelectedOrder={setSelectedOrder}
       //       setSearchOrder={setSearchOrder}
@@ -34,10 +34,10 @@ return (
       //     />
       //   </div>
       // ) : (
-        orderData?.["hydra:member"]?.map((cde: any, indx: any) => (
+        progress?.map((liv: any, indx: any) => (
           <ItemList
             key={Math.random()}
-            cde={cde}
+            liv={liv}
             indx={indx}
             setSelectedOrder={setSelectedOrder}
             setSearchOrder={setSearchOrder}

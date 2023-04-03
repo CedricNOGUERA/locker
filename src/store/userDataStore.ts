@@ -11,6 +11,7 @@ const userDataStore = create(
       id: null,
       firstname: null,
       company_id: null,
+      cleveronCompany_id: null,
       company_name: null,
       token: null,
 
@@ -21,6 +22,7 @@ const userDataStore = create(
         id: string,
         firstname: string,
         company_id: number,
+        cleveronCompany_id: string,
         company_name: string,
         token: any,
         
@@ -30,6 +32,7 @@ const userDataStore = create(
           id: id,
           firstname: firstname,
           company_id: company_id,
+          cleveronCompany_id: cleveronCompany_id,
           company_name: company_name,
           token: token,
 
@@ -40,6 +43,7 @@ const userDataStore = create(
           id: null,
           firstname: null,
           company_id: null,
+          cleveronCompany_id: null,
           company_name: null,
           token: null,
         })),

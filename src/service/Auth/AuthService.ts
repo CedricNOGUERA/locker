@@ -1,11 +1,12 @@
 import axios from "axios";
+import { getError } from "../../utils/errors/AxiosError";
 
 const API_URL = "http://192.168.1.186:8000/api/";
 
 
 class AuthService {
-    login(userName: string, pass: string, setToken: any) {
-
+    login(userName: string, pass: string, setToken: any, setMsg: any, setIsError: any, setIsLoadingAuth: any) {
+      setIsLoadingAuth(true)
         let data = JSON.stringify({
             "username": userName,
             "password": pass
@@ -25,9 +26,14 @@ class AuthService {
           .then((response) => {
             setToken(response.data.token)
             localStorage.setItem("user", response.data.token);
+            setIsLoadingAuth(false)
           })
           .catch((error) => {
             console.log(error);
+            setMsg(getError(error))
+            setIsError(true)
+            setIsLoadingAuth(false)
+
           });
   }
 

@@ -4,8 +4,7 @@ import "./App.css";
 import userDataStore from "./store/userDataStore";
 import "animate.css";
 import BottomNavBar from "./components/layout/BottomNavBar";
-import { commandes } from "./data/commandes2";
-import DeliveriesService from "./service/Deliveries/DeliveriesService";
+import OrdersService from "./service/Orders/OrdersService";
 
 function App() {
   const isLogged = userDataStore((state: any) => state.isLogged);
@@ -19,7 +18,7 @@ function App() {
 
   React.useEffect(() => {
     
-      getAllDeliveries(token)
+      getallOrders(token)
     
   }, []);
 
@@ -27,8 +26,8 @@ function App() {
 
 
 
-  const getAllDeliveries = (token: any) =>{
-    DeliveriesService.allDeliveries(token)
+  const getallOrders = (token: any) =>{
+    OrdersService.allOrders(token)
     .then((response: any) => {
       setOrderData(response.data)
     })
@@ -36,17 +35,17 @@ function App() {
 
 
 
-
-
   return (
-    <div className="">
+    <div className="f">
       {!isLogged && <Navigate to="/connexion" />}
 
       <Outlet
         context={[selectedStore, setSelectedStore, orderData, setOrderData]}
       />
-
-      {/* <BottomNavBar orderData={orderData} selectedStore={selectedStore} /> */}
+      <BottomNavBar 
+      orderData={orderData}
+       selectedStore={selectedStore}
+       />
     </div>
   );
 }
