@@ -3,11 +3,9 @@ import { Link } from "react-router-dom";
 
 const BottomNavBar = ({orderData, selectedStore}: any) => {
 
-  const retrieve = orderData["hydra:member"]?.filter((order: any) => order.status === "operout")
-  const progress = orderData["hydra:member"]?.filter((order: any) => order.status === "operin")
-  // const retrieve = orderData?.filter((order: any) => order.status === "operout" && order.location === selectedStore)
-  // const progress = orderData?.filter((order: any) => order.status === "inProgress" && order.location === selectedStore)
-  // const delivered = orderData?.filter((order: any) => order.status === "delivered" && order.location === selectedStore)
+  const retrieve = orderData["hydra:member"]?.filter((order: any) => order.status === "operout" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
+  const progress = orderData["hydra:member"]?.filter((order: any) => order.status === "created" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
+  const delivered = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
 
  
   return (
@@ -37,8 +35,8 @@ const BottomNavBar = ({orderData, selectedStore}: any) => {
             )}
 
             <br />
-            OperIn
-            {/* En cours */}
+            {/* OperIn */}
+            En cours
           </Link>
         </Nav.Item>
         <Nav.Item className="nav-item text-center">
@@ -48,9 +46,9 @@ const BottomNavBar = ({orderData, selectedStore}: any) => {
             className="text-info py-1 text-decoration-none"
           >
             <i className="ri-inbox-archive-line fs-4 "></i>
-            {/* {delivered.length > 0 && (
+            {delivered?.length > 0 && (
             <span className=" badge rounded-pill bg-danger">{delivered?.length}</span>
-            )} */}
+            )}
             <br />
             Déposées
           </Link>

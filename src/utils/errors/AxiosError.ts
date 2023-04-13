@@ -1,6 +1,7 @@
 export const getError = (error: any) => {
   // Error Network
-  if (error.code === "ERR_NETWORK") {
+  if (error.code === "ERR_NETWORK" &&
+  (error.message === "Request failed with status code 500" && error.message === "Network Error")) {
     return "Erreur du serveur, contactez votre administrateur";
   }
   // Error Network

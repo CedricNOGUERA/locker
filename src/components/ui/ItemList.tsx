@@ -1,6 +1,6 @@
 import { Button, Col, Row } from "react-bootstrap";
 
-const ItemList = ({ liv, setSelectedOrder, setSearchOrder, indx, myData, allSlot }: any) => {
+const ItemList = ({ liv, setSelectedOrder, setSearchOrder, indx, allSlot }: any) => {
   
 
   const tempZone = allSlot?.slot?.temperatureZone?.keyTemp === "NORMAL" ? "dry" : liv?.slot?.temperatureZone?.keyTemp === "FRESH" ? "organic-food" : "winter"
@@ -17,7 +17,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, indx, myData, allSlot
             />{' '}
           </span>
         </Col>
-        <Col className='text-secondary text-center align-middle m-auto'>{liv?.status} {liv?.barcode}</Col>
+        <Col className='text-secondary text-center align-middle m-auto'>{liv?.barcode}</Col>
         <Col xs={3} className='m-auto'>
           <Button
             variant='outline-info'

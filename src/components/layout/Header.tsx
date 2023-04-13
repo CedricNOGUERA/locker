@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Row, Col, Modal, Button, Offcanvas } from 'react-bootstrap'
 import userDataStore from '../../store/userDataStore'
-import imag from '../../styles/openai-logo.png'
+import imag from '../../styles/openai-logo-min.png'
 import QrCode from '../QrCode'
 import AuthService from '../../service/Auth/AuthService'
 import { Divider } from 'antd'
@@ -56,7 +56,7 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
             </Container>
             <Container className='bg-light p-2    animate__animated animate__fadeInDown'>
               <Col xs={12} sm={5} md={7} lg={5} className='m-auto'>
-                <QrCode orderNum={`${dataStore.id}`} />
+                <QrCode data={`${dataStore.id}`} />
               </Col>
             </Container>
             <Container className='text-center text-warning'>
@@ -66,11 +66,11 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
             </Container>
           </Container>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant='info' className='text-light' onClick={handleClose}>
+        <Container className='text-end'>
+          <Button variant='secondary' className='text-light w-25 m-3' onClick={handleClose}>
             Fermer
           </Button>
-        </Modal.Footer>
+        </Container>
       </Modal>
 
       <Container
@@ -87,8 +87,8 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
             md={3}
             className='text-center align-middle animate__animated animate__bounceIn top-menu border-start '
           >
-            <span onClick={handleShowOffcanvas}>
-              Fare Rata{' '}
+            <span className="company-name" onClick={handleShowOffcanvas}>
+            {dataStore.company_name}{' '}
               <Button variant='secondary' className=''>
                 <i className='ri-menu-line'></i>
               </Button>
@@ -100,7 +100,7 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
         show={showOffcanvas}
         onHide={handleCloseOffcanvas}
         placement='end'
-        className='w-75'
+        className='menu-right '
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>
@@ -111,39 +111,53 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body className='text-secondary'>
-          <Container>
-            <Row className=' menu-link' onClick={() => {handleShow()
-            handleCloseOffcanvas()
+          <Container className="mb-3">
+            <Row className=' menu-link' onClick={() => {
+              handleShow()
+              handleCloseOffcanvas()
             }}>
-              <Col xs={3}>
+              <Col xs={2}>
                 {' '}
                 <i className='ri-qr-code-line fs-5'></i>
               </Col>{' '}
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
-          <Container>
+          <Container className="mb-3">
             <Link className='text-decoration-none text-secondary' to="/nouvelle-commande" onClick={handleCloseOffcanvas}>
             <Row className=' menu-link'>
-              <Col xs={3}>
+              <Col xs={2}>
                 {' '}
                 <i className='ri-file-add-line fs-5'></i>
               </Col>{' '}
               <Col className='m-auto user-name'>
-                N<sup>velle</sup> commande
+                Nouvelle commande
               </Col>
             </Row>
             </Link>
           </Container>
-          <Divider></Divider>
-          <Container>
+          <Container className="mb-3">
+            <Link className='text-decoration-none text-secondary' to="/map" onClick={handleCloseOffcanvas}>
+            <Row className=' menu-link'>
+              <Col xs={2}>
+                {' '}
+                <i className='ri-map-pin-line fs-5'></i>
+              </Col>{' '}
+              <Col className='m-auto user-name'>
+                Map
+              </Col>
+            </Row>
+            </Link>
+          </Container>
+          <Divider className="log-out pb-4 me-4"></Divider>
+          <Container className="log-out">
             <Row className='menu-link' onClick={() => {
                     authLogout()
                     newOrderDelete()
                     bookingRemove()
                     AuthService.logout()
                   }}>
-              <Col xs={3}>
+              <Col xs={2}>
                 {' '}
                 <i className='ri-logout-box-r-line fs-5'></i>
               </Col>{' '}

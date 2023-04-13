@@ -3,10 +3,11 @@ import { Container, Row, Col, Dropdown, Tooltip, OverlayTrigger } from 'react-bo
 
 const SearchBar = ({searchBarProps}: any) => {
   
-  const {searchOrder, setSearchOrder, selectedStore, setSelectedStore, allSlot } = searchBarProps
-
+  const {searchOrder, setSearchOrder, selectedStore, setSelectedStore, selectedOrderCity,
+    setSelectedOrderCity, allSlot } = searchBarProps
 
   const bookingLocker = allSlot?.["hydra:member"]?.map((locker: any) => locker?.slot?.temperatureZone?.locker)
+
 
 
   return (
@@ -37,7 +38,7 @@ const SearchBar = ({searchBarProps}: any) => {
               </Col>
               <Col xs={4} md={2} className='text-start text-md-end'>
                 <Dropdown.Toggle variant='' id='dropdown-basic' className='text-light'>
-                  {selectedStore}
+                {selectedOrderCity}
                 </Dropdown.Toggle>
               </Col>
             </Row>
@@ -54,10 +55,11 @@ const SearchBar = ({searchBarProps}: any) => {
               <Dropdown.Item
               {...triggerHandler}
                 title={locker?.location}
-                onClick={() => setSelectedStore(locker?.city)}
+                onClick={() => {
+                  setSelectedOrderCity(locker?.city)
+                  setSelectedStore(locker?.location)}}
                 ref={ref}
               >
-        
                   <Row className='' >
                     <Col xs={3}>
                       {' '}

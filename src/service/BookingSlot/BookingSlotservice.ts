@@ -10,6 +10,7 @@ class BookingSlotService {
     slot(token: any, id: any) {
         return axios.get(API_URL + "booking_slots/" + id, {headers: {"Authorization": "Bearer " + token}})
     }
+    
       
 }
 

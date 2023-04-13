@@ -2,7 +2,7 @@ import React from 'react'
 import QRCode from "react-qr-code";
 
 
-const QrCode = ({orderNum}: any) => {
+const QrCode = ({data}: any) => {
 
   return (
     <QRCode
@@ -13,7 +13,7 @@ const QrCode = ({orderNum}: any) => {
         width: "100%",
       }}
       fgColor="#3262a8"
-      value={orderNum}
+      value={data}
       viewBox={`0 0 512 512`}
     />
   );

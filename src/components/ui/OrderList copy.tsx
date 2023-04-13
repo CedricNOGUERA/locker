@@ -9,8 +9,8 @@ const OrderList = ({orderListProps, deliveries}:  any) => {
 
 return (
     <Container className="animate__animated animate__backInLeft  ">
-    {orderTab.length > 0 ? (
-      filteredOrder.length > 0 ? (
+    {orderTab?.length > 0 ? (
+      filteredOrder?.length > 0 ? (
         filteredOrder?.map((cde: any, indx: any) => (
           <ItemList
             key={Math.random()}
@@ -21,7 +21,7 @@ return (
             myData={deliveries}
           />
         ))
-      ) : filteredOrder.length === 0 && searchOrder.length > 2 ? (
+      ) : filteredOrder?.length === 0 && searchOrder?.length > 2 ? (
         <div className=" text-center mt-5 pt-5">
           <div className="user-name fs-3 fw-bold text-secondary">
             Aucune commande trouvée 🔍

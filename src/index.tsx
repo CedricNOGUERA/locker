@@ -6,7 +6,7 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Auth from "./components/Auth";
+import Auth from "./pages/Public/Auth";
 import "animate.css";
 import ToRetrieve from "./pages/ToRetrieve";
 import InProgress from "./pages/InProgress";
@@ -14,6 +14,7 @@ import Header from "./components/layout/Header";
 import Delivered from "./pages/Delivered";
 import ScrollToTop from "./components/ui/ScrollToTop";
 import NewOrder from "./pages/newOrder/NewOrder";
+import Map from "./pages/Map/Map";
 
 
 const router = createBrowserRouter([
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
         element: (
           <React.Fragment>
             <Header title="Commandes à récupérer" />
-            <ToRetrieve />,
+            <ToRetrieve />
           </React.Fragment>
         ),
       },
@@ -53,7 +54,16 @@ const router = createBrowserRouter([
         element: (
           <React.Fragment>
             <Header title="Nouvelle commande" />
-            <NewOrder />,
+            <NewOrder />
+          </React.Fragment>
+        ),
+      },
+      {
+        path: "map",
+        element: (
+          <React.Fragment>
+            <Header title="Mapping" />
+            <Map />
           </React.Fragment>
         ),
       },

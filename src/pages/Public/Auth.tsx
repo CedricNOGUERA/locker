@@ -1,13 +1,13 @@
 import { Card, Form, Container, Alert, Spinner, InputGroup } from 'react-bootstrap'
 import { Navigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import userDataStore from '../store/userDataStore'
+import userDataStore from '../../store/userDataStore'
 import { useEffect, useState } from 'react'
-import Loading from './ui/Loading'
-import '../App.css'
-import AuthService from '../service/Auth/AuthService'
-import UserService from '../service/UserService'
-import InfoAlert from './ui/warning/InfoAlert'
+import Loading from '../../components/ui/Loading'
+import '../../App.css'
+import AuthService from '../../service/Auth/AuthService'
+import UserService from '../../service/UserService'
+import InfoAlert from '../../components/ui/warning/InfoAlert'
 
 type Inputs = {
   userName: string
@@ -35,14 +35,15 @@ const Auth = () => {
   const [myData, setMyData] = useState<any>([])
 
   useEffect(() => {
-    if (token && token.length > 0) {
+    if (token && token?.length > 0) {
       getMyData(token)
+     
       
     }
   }, [token])
 
   useEffect(() => {
-    if (token && token.length > 0) {
+    if (token && token?.length > 0) {
       authLogin(
         true,
         myData.id,
@@ -52,14 +53,20 @@ const Auth = () => {
         myData?.memberOf ? myData?.memberOf[0]?.name : null,
         token
       )
+      if(dataStore.company_name === null){
+        setIsError(true)
+        setMsgError("Vous n'êtes affilié à aucune companie, contacté votre adminitrateur")
+      }
     }
   }, [myData])
+
+  
 
 
 
   const signUp: SubmitHandler<Inputs> = (dataz: any, e: any) => {
     e.preventDefault()
-
+    setIsError(false)
     AuthService.login(
       dataz.userName,
       dataz.pass,
@@ -78,15 +85,16 @@ const Auth = () => {
     })
   }
 
+  console.log(dataStore.company_name)
   return (
-    <Container className='col-11 col-lg-4 mt-5'>
-      {isLogged && (
+    <Container className='col-12 col-lg-4 px-0  vh-100 '>
+      {( dataStore.token && dataStore.company_name) && (
         <Navigate to='/in-progress' />
       )}
       {isLoading ? (
         <Loading variant='info' />
       ) : (
-        <Card className='shadow mt-md-5 animate__animated animate__fadeIn'>
+        <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
           <Card.Body>
             <div className='text-center '>
               <img
@@ -96,56 +104,62 @@ const Auth = () => {
                 height={64}
               />
             </div>
-            <div className='text-center'>
+            <div className='text-center mb-5'>
               <h4>Locker</h4>
             </div>
             <Form onSubmit={handleSubmit(signUp)}>
               <Form.Group className='mb-3' controlId='formBasicEmail'>
-                <Form.Label>Identifiant</Form.Label>
+                
+                <Form.Label className='d-none'>Identifiant</Form.Label>
+                <InputGroup className='mb-3'>
+
+                <InputGroup.Text id="basic-addon1" className='rounded-0 border-0'>< i className="ri-user-fill text-muted"></i></InputGroup.Text>
                 <Form.Control
-                  className='shadow'
+                  className='shadow rounded-0 border-0'
                   type='text'
-                  placeholder='Entrez votre identifiant'
+                  placeholder='Identifiant'
                   {...register('userName', { required: true })}
-                />
+                  />
+                  </InputGroup>
                 {errors.userName && (
-                  <Alert variant='danger' className='mt-2 py-0 text-center'>
+                  <Alert variant='danger' className='mt-2 py-0 text-cente'>
                     <InfoAlert
                       icon='ri-error-warning-line'
                       iconColor='danger'
-                      message={'Ce champ est obligatoire'}
+                      message={'Saisissez votre identifiant'}
                       fontSize='font-75'
                     />
                   </Alert>
                 )}
               </Form.Group>
               <Form.Group className='mb-3' controlId='formBasicPassword'>
-                <Form.Label>Mot de passe</Form.Label>
+              <Form.Label className='d-none' >Mot de passe</Form.Label>
                 <InputGroup className='mb-3'>
+                <InputGroup.Text id="basic-addon1" className='rounded-0 border-0'>< i className="ri-lock-2-fill text-muted"></i></InputGroup.Text>
                   <Form.Control
-                    className='shadow'
+                    className='shadow border-0'
                     style={{ position: 'relative' }}
                     type={!isView ? 'password' : 'text'}
-                    placeholder='Entrez votre mot de passe'
+                    placeholder='Mot de passe'
                     {...register('pass', { required: true })}
                   />
-                  <InputGroup.Text id='eyeOrNot' onClick={() => setIsView(!isView)}>
+                  <InputGroup.Text id='eyeOrNot' className='rounded-0 border-0' onClick={() => setIsView(!isView)}>
                     {' '}
                     <i
                       className={
                         !isView
-                          ? 'ri-eye-fill text-secondary ms-1 '
-                          : 'ri-eye-off-fill text-secondary ms-1 '
-                      }
+                          ? 'ri-eye-fill text-secondary'
+                          : 'ri-eye-off-fill text-secondary'
+                      } 
                     ></i>
                   </InputGroup.Text>
                 </InputGroup>
                 {errors.pass && (
-                  <Alert variant='danger' className='mt-2 py-0 text-center'>
+                  <Alert variant='danger' className='mt-2 py-0 text-cente'>
                     <InfoAlert
                       icon='ri-error-warning-line'
                       iconColor='danger'
-                      message={'Ce champ est obligatoire'}
+                      message={'Saisissez votre mot de passe'}
                       fontSize='font-75'
                     />
                   </Alert>

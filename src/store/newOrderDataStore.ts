@@ -9,6 +9,7 @@ const newOrderDataStore = create(
       // initial state
       lockerId: null,
       location: null,
+      bookingSlotId: null,
       companyId: null,
       companyName: null,
       lockerType: null,
@@ -16,13 +17,15 @@ const newOrderDataStore = create(
       tempZone: null,
       slotSize: null,
       numberCart: 0,
+      ageRestriction: null,
 
      
       // methods for manipulating state
       newOrderRegister: (
-      
+        
         lockerId: string,
         location: string,
+        bookingSlotId: string,
         companyId: number,
         companyName: string,
         lockerType: number,
@@ -30,10 +33,12 @@ const newOrderDataStore = create(
         tempZone: string,
         slotSize: string,
         numberCart: number,
+        ageRestriction: number,
       ) =>
         set((state: any) => ({
           lockerId: lockerId,
           location: location,
+          bookingSlotId: bookingSlotId,
           companyId: companyId,
           companyName: companyName,
           lockerType: lockerType,
@@ -41,11 +46,13 @@ const newOrderDataStore = create(
           tempZone: tempZone,
           slotSize: slotSize,
           numberCart: numberCart,
+          ageRestriction: ageRestriction,
         })),
       newOrderDelete: () =>
         set((state: any) => ({
           lockerId: null,
           location: null,
+          bookingSlotId: null,
           companyId: null,
           companyName: null,
           lockerType: null,
@@ -53,6 +60,7 @@ const newOrderDataStore = create(
           tempZone: null,
           slotSize: null,
           numberCart: null,
+          ageRestriction: null,
         })),
     }),
     {

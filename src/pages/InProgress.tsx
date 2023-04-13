@@ -5,92 +5,56 @@ import userDataStore from '../store/userDataStore'
 import '../App.css'
 import 'animate.css'
 import { message } from 'antd'
-import { _searchWithRegex, _updateStatus } from '../utils/functions'
+import { _searchWithRegex, _UpdateStatus } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import OrderList from '../components/ui/OrderList'
 import ScanPage from '../components/ui/ScanPage'
 import { Container } from 'react-bootstrap'
-import axios from 'axios'
-import UserService from '../service/UserService'
 import BookingSlotservice from '../service/BookingSlot/BookingSlotservice'
+import AlertIsError from '../components/ui/warning/AlertIsError'
 
 const InProgress: React.FC = () => {
-  const isLogged = userDataStore((state: any) => state.isLogged)
-  const dataStore = userDataStore((state: any) => state)
-  const [selectedStore, setSelectedStore, orderData, setOrderData] = useOutletContext<any>()
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isError, setIsError] = React.useState<boolean>(false)
+  
+  //////////////////////////
+  // Store & context state 
+  /////////////////////////
+  const isLogged = userDataStore((state: any) => state.isLogged)
+  const dataStore = userDataStore((state: any) => state)
+  const [selectedStore, setSelectedStore, orderData, setOrderData, selectedOrderCity, setSelectedOrderCity, allSlot, setAllSlot] = useOutletContext<any>()
+  const userToken = localStorage.getItem('user')
+  const [messageApi, contextHolder] = message.useMessage()
+
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
-  const [filteredOrder, setOrderFilter] = React.useState<any>([])
+  const [filteredOrder, setFilteredOrder] = React.useState<any>([])
 
-  const [messageApi, contextHolder] = message.useMessage()
+  
+  
+  
+  
+  const objectif = 'operin'
 
-  const objectif = 'delivered'
 
-  const orderTab = orderData
-
-  const [deliveries, setDeliveries] = React.useState<any>({})
-  const [allUser, setAllUser] = React.useState<any>([])
-  const [myData, setMyData] = React.useState<any>([])
-  const [allSlot, setAllSlot] = React.useState<any>([])
-
-  const userToken = localStorage.getItem('user')
-
-  const progress = orderData["hydra:member"]?.filter((order: any) => order.status === "operin")
+  const progress = orderData["hydra:member"]?.filter((order: any) => order.status === "created" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
 
   React.useEffect(() => {
-    getDeliveries()
-    getMyData(dataStore.token)
-    getBookingAllSlot(dataStore.token)
+  
+    if(orderData){
+      setIsLoading(false)
+    }
+    else{
+      setIsLoading(true)
+    }
   }, [])
 
 
-  // React.useEffect(() => {
-  //   _searchWithRegex(searchOrder, orderData, setOrderFilter);
-  // }, [searchOrder]);
-
-  const getDeliveries = () => {
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: 'http://192.168.1.186:8000/api/orders',
-      headers: {
-        Authorization: 'Bearer ' + dataStore.token,
-      },
-    }
-
-    axios
-      .request(config)
-      .then((response) => {
-        setDeliveries(response.data)
-        setOrderData(response.data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  // const getBookingSlot = (token: any, id: any) => {
-  //   BookingSlotservice.slot(token, id)
-  //   .then((response: any) => {
-  //     setAllSlot(response.data)
-  //   })
-  // }
-
-  const getBookingAllSlot = (token: any) => {
-    BookingSlotservice.allSlot(token).then((response: any) => {
-      setAllSlot(response.data)
-    })
-  }
-
-  const getMyData = (token: any) => {
-    UserService.me(token).then((response: any) => {
-      setMyData(response.data)
-    })
-  }
-
+  React.useEffect(() => {
+    _searchWithRegex(searchOrder, progress, setFilteredOrder);
+  }, [searchOrder]);
 
 
   const searchBarProps = {
@@ -98,6 +62,8 @@ const InProgress: React.FC = () => {
     setSearchOrder,
     selectedStore,
     setSelectedStore,
+    selectedOrderCity,
+    setSelectedOrderCity,
     allSlot,
   }
 
@@ -112,20 +78,30 @@ const InProgress: React.FC = () => {
   }
 
   const scanPageProps = {
-    _updateStatus,
     selectedOrder,
-    orderData,
     setOrderData,
     messageApi,
     setSelectedOrder,
     objectif,
   }
 
+
+  console.log(selectedOrder)
+
+
+
+
   return (
-    <div className='cde App'>
+    <Container  fluid className='cde App px-0'>
       {contextHolder}
-      {(!isLogged || !userToken) && <Navigate to='/connexion' />}
-      {isLoading ? (
+      {(!isLogged || !userToken || !dataStore.company_name) && <Navigate to='/connexion' />}
+
+      {isError ? (
+        <Container className='text-center mt-5'>
+          <AlertIsError title="Une erreur s'est produite" msg="Vérifiez votre connexion internet" />
+         
+        </Container>
+      ) : isLoading ? (
         <Container className='text-center mt-5'>
           <Loading />
         </Container>
@@ -134,14 +110,14 @@ const InProgress: React.FC = () => {
           {!selectedOrder ? (
             <>
               <SearchBar searchBarProps={searchBarProps} />
-              <OrderList orderListProps={orderListProps} deliveries={deliveries} />
+              <OrderList orderListProps={orderListProps} />
             </>
           ) : (
             <ScanPage scanPageProps={scanPageProps} />
           )}
         </>
       )}
-    </div>
+    </Container>
   )
 }
 

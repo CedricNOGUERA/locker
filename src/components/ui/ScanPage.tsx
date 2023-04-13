@@ -1,30 +1,74 @@
 import { Container, Row, Col } from "react-bootstrap";
 import QrCode from "../QrCode";
+import userDataStore from "../../store/userDataStore";
+import axios from "axios";
+import OrdersService from "../../service/Orders/OrdersService";
 
 const ScanPage = ({ scanPageProps }: any) => {
+  const dataStore = userDataStore((states: any) => states)
   const {
-    _updateStatus,
+    
     selectedOrder,
-    orderData,
+  
     setOrderData,
     messageApi,
     setSelectedOrder,
     objectif,
-  } = scanPageProps;
-  console.log(selectedOrder?.receiveCode)
+  } = scanPageProps
+
+  console.log(selectedOrder.id)
+
+  const getallOrders = (token: any) =>{
+    OrdersService.allOrders(token)
+    .then((response: any) => {
+      setOrderData(response.data)
+    })
+  }
+
+
+
+  const changeStatus = () =>{
+    let data = {
+      "status": objectif
+    };
+    
+    let config = {
+      method: 'patch',
+      maxBodyLength: Infinity,
+      url: 'http://192.168.1.186:8000/api/orders/' + selectedOrder.id,
+      headers: { 
+        'Content-Type': 'application/merge-patch+json', 
+        'Authorization': 'Bearer ' + dataStore.token
+      },
+      data : data
+    };
+    
+    axios.request(config)
+    .then((response: any) => {
+      console.log(response.data);
+      getallOrders(dataStore.token)
+      setSelectedOrder(null)
+
+    })
+    .catch((error: any) => {
+      console.log(error);
+    });
+  }
+
+
   return (
     <Container fluid className="pb-5">
       <Container className="my-2">
         <Container className="px-3 py-0 bg-secondary rounded-pill shadow my-auto ">
           <Row>
-            <Col xs={4} md={5} lg={5}>
+            <Col xs={2} md={5} lg={5}>
               <i
                 className="ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill"
                 onClick={() => setSelectedOrder("")}
               ></i>{" "}
             </Col>
-            <Col className="fw-bold m-auto text-light text-end pe-4">
-              # {selectedOrder?.bookingSlot["@id"]}
+            <Col className="fw-bold m-auto text-light text-center pe-4">
+              {selectedOrder?.barcode}
             </Col>
           </Row>
         </Container>
@@ -43,18 +87,11 @@ const ScanPage = ({ scanPageProps }: any) => {
       <Container
         className="bg-light p-2 w-75   animate__animated animate__fadeInDown"
         onClick={() => {
-          _updateStatus(
-            selectedOrder?.id,
-            orderData,
-            setOrderData,
-            messageApi,
-            setSelectedOrder,
-            objectif
-          );
+          changeStatus()
         }}
       >
-        <Col xs={12} sm={5} md={7} lg={3} className="m-auto">
-          <QrCode orderNum={`${selectedOrder?.receiveCode}`} />
+        <Col xs={12} sm={5} md={7} lg={3} className="m-auto" >
+          <QrCode data={`${selectedOrder?.barcode}`} />
         </Col>
       </Container>
       <Container className="text-center text-warning">
@@ -64,8 +101,8 @@ const ScanPage = ({ scanPageProps }: any) => {
       </Container>
       <Container className="px-2 text-center mt-4">
         <div className="bg-secondary text-light rounded-pill shadow">
-          Saisie manuelle : {selectedOrder?.receiveCode}
-          <p className="text-info fw-bold">{selectedOrder?.orderNum}</p>
+          Saisie manuelle : 
+          <p className="text-info fw-bold">{selectedOrder?.barcode}</p>
         </div>
       </Container>
     </Container>

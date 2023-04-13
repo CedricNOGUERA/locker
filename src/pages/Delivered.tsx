@@ -5,7 +5,7 @@ import userDataStore from "../store/userDataStore";
 import "../App.css";
 import "animate.css";
 import { message } from "antd";
-import { _searchWithRegex, _updateStatus } from "../utils/functions";
+import { _searchWithRegex, _updateStatus, _UpdateStatus } from "../utils/functions";
 import SearchBar from "../components/ui/SearchBar";
 import OrderList from "../components/ui/OrderList";
 import ScanPage from "../components/ui/ScanPage";
@@ -13,54 +13,57 @@ import { Container } from "react-bootstrap";
 
 const Delivered: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged);
-  const [selectedStore, setSelectedStore, orderData, setOrderData] =
-    useOutletContext<any>();
+  const [selectedStore, setSelectedStore, orderData, setOrderData, selectedOrderCity, setSelectedOrderCity] = useOutletContext<any>()
+
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>("");
   const [searchOrder, setSearchOrder] = React.useState<any>("");
-  const [filteredOrder, setOrderFilter] = React.useState<any>([]);
+  const [filteredOrder, setFilteredOrder] = React.useState<any>([]);
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const objectif ="toRetrieve"
+  const objectif ="operout"
 
-  const orderTab = orderData.filter(
-    (order: any) =>
-      order.status === "delivered" && order.location === selectedStore
-  );
+  const progress = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore );
+  // const orderTab = orderData.filter(
+  //   (order: any) =>
+  //     order.status === "delivered" && order.location === selectedStore
+  // );
 
-  React.useEffect(() => {
-    _searchWithRegex(searchOrder, orderTab, setOrderFilter);
-  }, [searchOrder]);
+  // React.useEffect(() => {
+  //   _searchWithRegex(searchOrder, orderTab, setFilteredOrder);
+  // }, [searchOrder]);
 
   const searchBarProps = {
     searchOrder,
     setSearchOrder,
     selectedStore,
     setSelectedStore,
+    selectedOrderCity,
+    setSelectedOrderCity,
   };
 
   const scanPageProps = {
-    _updateStatus,
+   
     selectedOrder,
-    orderData,
     setOrderData,
     messageApi,
     setSelectedOrder,
     objectif,
   };
   const orderListProps = {
-    orderTab,
+    // orderTab,
     filteredOrder,
     setSelectedOrder,
     searchOrder,
     setSearchOrder,
+    progress,
   };
 
   return (
-    <div className="cde App">
+    <Container fluid className="cde App px-md-0">
       {contextHolder}
       {!isLogged && <Navigate to="/connexion" />}
       {isLoading ? (
@@ -79,7 +82,7 @@ const Delivered: React.FC = () => {
           )}
         </>
       )}
-    </div>
+    </Container>
   );
 };
 

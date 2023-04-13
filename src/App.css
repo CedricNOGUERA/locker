@@ -6,7 +6,8 @@ overflow: hidden;
   height: 60px;
 }
 .button-auth{
-  background-color: rgb(15, 158, 184);
+  /* background-color: rgb(15, 158, 184); */
+  background-color: rgb(61, 165, 184);
   border : 2px solid rgb(15, 158, 184);
 }
 .button-auth:active, .button-auth:hover{
@@ -14,17 +15,32 @@ overflow: hidden;
   border : 2px solid rgb(15, 158, 184);
 }
 
+.auth-form{
+  padding-top: 30%;
+  /* background-color: #313030; */
+}
+
 .menu-link:hover{
   background-color: darkgray;
   cursor: pointer;
 }
 
+.log-out{
+  position: absolute;
+  bottom: 10px;
+  right: -15px;
+}
+
+.company-name{
+  font-size: 0.85rem;
+}
 
 .cde{
   position: relative;
   overflow: auto;
+  min-height: 100vh;
   background-color: #fff;
-  padding-bottom: 80px;
+  padding-bottom: 180px;
 }
 
 @media (max-height: 374px){
@@ -50,12 +66,36 @@ overflow: hidden;
 }
 
 .ff-agency{
-  /* font-family: 'Bowlby One SC'; */
-  /* font-family: 'Josefin sans', sans-serif; */
-  font-family: 'teko', sans-serif;
-  letter-spacing: 0.05rem;
+  /* letter-spacing: 0.05rem; */
+  line-height: 20px;
   font-size: 1rem;
-  /* font-family: 'Lobster', sans-serif; */
+  font-family: 'Lobster', sans-serif;
+}
+
+.menu-right{
+  width: 75% !important;
+}
+
+@media (min-width: 768px) {
+
+
+  .ff-agency {
+    letter-spacing: 0.07rem;
+    font-size: 1.2rem;
+  }
+
+
+  .menu-right {
+   
+    width: 50% !important;
+  }
+}
+@media (min-width: 915px) {
+
+  .menu-right {
+   
+    width: 25% !important;
+  }
 }
 
 .user-name{
@@ -78,7 +118,7 @@ overflow: hidden;
 
 
 .bg-content{
-  background-image: url('styles/no-order.png');
+  background-image: url('styles/no-order-min.png');
   background-size: cover;
 }
 

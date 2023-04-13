@@ -24,7 +24,7 @@ const InProgress: React.FC = () => {
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>("");
   const [searchOrder, setSearchOrder] = React.useState<any>("");
-  const [filteredOrder, setOrderFilter] = React.useState<any>([]);
+  const [filteredOrder, setFilteredOrder] = React.useState<any>([]);
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -56,7 +56,7 @@ const InProgress: React.FC = () => {
 
 
   React.useEffect(() => {
-    _searchWithRegex(searchOrder, orderTab, setOrderFilter);
+    _searchWithRegex(searchOrder, orderTab, setFilteredOrder);
   }, [searchOrder]);
 
 
@@ -66,7 +66,7 @@ const InProgress: React.FC = () => {
   const getDeliveries = () => {
     let config = {
       method: 'get',
-      maxBodyLength: Infinity,
+      // maxBodyLength: Infinity,
       url: 'http://192.168.1.186:8000/api/deliveries',
       headers: {
         Authorization:

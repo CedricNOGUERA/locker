@@ -1,39 +1,37 @@
 import { Container } from 'react-bootstrap'
 import ItemList from './ItemList'
-import images from "../../styles/no-order.png";
+import images from "../../styles/no-order-min.png";
 
 
-const OrderList = ({orderListProps, deliveries}:  any) => {
+const OrderList = ({orderListProps}:  any) => {
   const {orderData, filteredOrder, setSelectedOrder, searchOrder, setSearchOrder, allSlot, progress} = orderListProps
 
-
 return (
-    <Container className="animate__animated animate__backInLeft  ">
-    {progress?.length > 0 ? (
-      // filteredOrder.length > 0 ? (
-      //   filteredOrder?.map((liv: any, indx: any) => (
-      //     <ItemList
-      //       key={Math.random()}
-      //       liv={liv}
-      //       indx={indx}
-      //       setSelectedOrder={setSelectedOrder}
-      //       setSearchOrder={setSearchOrder}
-      //       myData={deliveries}
-      //     />
-      //   ))
-      // ) : filteredOrder.length === 0 && searchOrder.length > 2 ? (
-      //   <div className=" text-center mt-5 pt-5">
-      //     <div className="user-name fs-3 fw-bold text-secondary">
-      //       Aucune commande trouvée 🔍
-      //     </div>
-      //     <img
-      //       className=""
-      //       alt="icon"
-      //       src={images}
-      //       style={{ height: "256px" }}
-      //     />
-      //   </div>
-      // ) : (
+    <Container className="order-list animate__animated animate__backInLeft">
+    {progress && progress?.length > 0 ? (
+      filteredOrder && filteredOrder?.length > 0 ? (
+        filteredOrder?.map((liv: any, indx: any) => (
+          <ItemList
+            key={Math.random()}
+            liv={liv}
+            indx={indx}
+            setSelectedOrder={setSelectedOrder}
+            setSearchOrder={setSearchOrder}
+          />
+        ))
+      ) : filteredOrder?.length === 0 && searchOrder?.length > 2 ? (
+        <div className=" text-center mt-5 pt-5">
+          <div className="user-name fs-3 fw-bold text-secondary">
+            Aucune commande trouvée 🔍
+          </div>
+          <img
+            className=""
+            alt="icon"
+            src={images}
+            style={{ height: "256px" }}
+          />
+        </div>
+      ) : (
         progress?.map((liv: any, indx: any) => (
           <ItemList
             key={Math.random()}
@@ -41,10 +39,9 @@ return (
             indx={indx}
             setSelectedOrder={setSelectedOrder}
             setSearchOrder={setSearchOrder}
-            myData={deliveries}
             allSlot={allSlot}
           />
-        ))
+        )))
       ) : (
     // ) : (
       <div className=" text-center mt-5 pt-5">
