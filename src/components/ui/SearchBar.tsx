@@ -21,6 +21,7 @@ const SearchBar = ({searchBarProps}: any) => {
             <Row className='align-middle'>
               <Col className='m-auto text-start'>
                 <div className='input-group'>
+                < i className="ri-search-line me-1"></i>
                   <input
                     type='text'
                     className='form-control rounded-pill'

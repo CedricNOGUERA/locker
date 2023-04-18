@@ -4,11 +4,11 @@ import images from "../../styles/no-order-min.png";
 
 
 const OrderList = ({orderListProps}:  any) => {
-  const {orderData, filteredOrder, setSelectedOrder, searchOrder, setSearchOrder, allSlot, progress} = orderListProps
+  const {orderData, filteredOrder, setSelectedOrder, searchOrder, setSearchOrder, allSlot, orderByStatus} = orderListProps
 
 return (
     <Container className="order-list animate__animated animate__backInLeft">
-    {progress && progress?.length > 0 ? (
+    {orderByStatus && orderByStatus?.length > 0 ? (
       filteredOrder && filteredOrder?.length > 0 ? (
         filteredOrder?.map((liv: any, indx: any) => (
           <ItemList
@@ -22,7 +22,7 @@ return (
       ) : filteredOrder?.length === 0 && searchOrder?.length > 2 ? (
         <div className=" text-center mt-5 pt-5">
           <div className="user-name fs-3 fw-bold text-secondary">
-            Aucune commande trouvée 🔍
+          < i className="ri-search-line me-1 align-bottom"></i> Aucune commande trouvée
           </div>
           <img
             className=""
@@ -32,7 +32,7 @@ return (
           />
         </div>
       ) : (
-        progress?.map((liv: any, indx: any) => (
+        orderByStatus?.map((liv: any, indx: any) => (
           <ItemList
             key={Math.random()}
             liv={liv}

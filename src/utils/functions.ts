@@ -20,14 +20,14 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
     };
 
 
-  export const _searchWithRegex = (searchOrder: any, orderTab: any, setFilteredOrder: any ) => {
+  export const _searchWithRegex = (searchOrder: any, orderByStatus: any, setFilteredOrder: any ) => {
     function escapeRegExp(str: string) {
       return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
   
     const escapedSearchOrder = escapeRegExp(searchOrder);
   
-    setFilteredOrder(orderTab?.filter((order: any) => {
+    setFilteredOrder(orderByStatus?.filter((order: any) => {
       if (escapedSearchOrder.length > 2) {
         return order?.barcode?.match(new RegExp(escapedSearchOrder, "i"));
       }

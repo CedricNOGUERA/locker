@@ -1,5 +1,15 @@
 import React from 'react'
-import { Badge, Button, Col, Container, FormCheck, FormGroup, Row } from 'react-bootstrap'
+import {
+  Alert,
+  Badge,
+  Button,
+  Col,
+  Container,
+  FormCheck,
+  FormGroup,
+  Placeholder,
+  Row,
+} from 'react-bootstrap'
 import { Link, Navigate, useOutletContext } from 'react-router-dom'
 import Loading from '../../components/ui/Loading'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
@@ -11,6 +21,7 @@ import { _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
+import { getError } from '../../utils/errors/GetError'
 
 const NewOrder = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
@@ -33,32 +44,60 @@ const NewOrder = () => {
   ] = useOutletContext<any>()
 
   const [bookingSlot, setBookingSlot] = React.useState<any>('')
-  // const [filteredBooking, setFilteredBooking] = React.useState<any>('')
   const [qty, setQty] = React.useState<any>()
+  const [availableSlot, setAvailableSlot] = React.useState<any>()
+
+  const [msgError, setMsgError] = React.useState<any>()
+  const [codeError, setCodeError] = React.useState<any>()
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
 
   const [allSlot, setAllSlot] = React.useState<any>([])
+
+  const isSlotAvailable = availableSlot >= parseInt(qty);
 
   React.useEffect(() => {
     getBookingAllSlot(dataStore.token)
   }, [dataStore.token])
 
-
   const getBookingAllSlot = (token: any) => {
-    BookingSlotservice.allSlot(token).then((response: any) => {
-      setAllSlot(response.data)
-      setIsLoading(false)
-      bookingSet(response.data)
-    })
-    .catch((error) =>{
-      setIsError(true)
-      console.log(isError)
-    })
+    setIsLoading(true)
+    BookingSlotservice.allSlot(token)
+      .then((response: any) => {
+        setAllSlot(response.data)
+        setIsLoading(false)
+        bookingSet(response.data)
+      })
+      .catch((error) => {
+        setIsError(true)
+        setMsgError(getError(error))
+        setCodeError(error.response.data.code)
+      })
   }
 
   const getallOrders = (token: any) => {
-    OrdersService.allOrders(token).then((response: any) => {
-      setOrderData(response.data)
+    setIsLoading(true)
+    OrdersService.allOrders(token)
+      .then((response: any) => {
+        setOrderData(response.data)
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        setIsError(true)
+        setMsgError(getError(error))
+        setCodeError(error.response.data.code)
+      })
+  }
+
+  const popUpError = (code: any, text: any) => {
+    Swal.fire({
+      position: 'top-end',
+      background: 'rgb(238, 195, 195)',
+      toast: true,
+      icon: 'error',
+      title: `Erreur : ${code}`,
+      text: text,
+      showConfirmButton: false,
+      timer: 4000,
     })
   }
 
@@ -66,42 +105,80 @@ const NewOrder = () => {
     function entierAleatoire(min: any, max: any) {
       return Math.floor(Math.random() * (max - min + 1)) + min
     }
-
+    const multiOrderCode = _strRandom('popopopp').toLocaleUpperCase()
+    const receiveCodeAlt = entierAleatoire(10000000, 99999999)
     const randomCode = _strRandom('popopop').toLocaleUpperCase() + entierAleatoire(1, 9)
-    const receiveCode = entierAleatoire(100000000, 999999999)
+    const randomCodeMultiOrder = _strRandom('popopop').toLocaleUpperCase()
+    const receiveCode = entierAleatoire(10000000, 99999999)
 
-    let myOrder = {
-      service: 'B2C',
-      ageRestriction: orderStore.ageRestriction ,
-      barcode: dataStore.cleveronCompany_id + '-' + randomCode,
-      destination: {
-        apm: orderStore?.lockerId,
-      },
+    let dataOrder: any =
+      parseInt(qty) <= 1
+        ? {
+            service: 'B2C',
+            ageRestriction: orderStore.ageRestriction,
+            barcode: orderStore.companyName + '-' + randomCode,
+            destination: {
+              apm: orderStore?.lockerId,
+            },
 
-      receiveCode: `${receiveCode}`,
+            receiveCode: `${receiveCode}`,
+            keyTemp: orderStore.tempZone,
+            // temperatureZonePredefined: orderStore.tempZone,
 
-      changesTimestamp: new Date(Date.now()).toISOString(),
-      bookingSlot: orderStore.bookingSlotId,
+            changesTimestamp: new Date(Date.now()).toISOString(),
+            bookingSlot: orderStore.bookingSlotId,
 
-      totalSlot: parseInt(qty),
-    }
+            totalSlot: parseInt(qty),
+          }
+        : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
+            service: 'B2C',
+            ageRestriction: orderStore.ageRestriction,
+            barcode: orderStore.companyName + '-' + randomCodeMultiOrder + (indx + 1),
+            destination: {
+              apm: orderStore?.lockerId,
+            },
+            receiveCode: `${receiveCode}`,
 
-    let config = {
+            multiOrder: {
+              code: multiOrderCode,
+              itemCount: parseInt(qty),
+            },
+            extra: {
+              receiveCodeAlt: receiveCodeAlt,
+              companyId: orderStore.companyId,
+            },
+            dropOff: {
+              code: randomCodeMultiOrder + (indx + 1),
+              type: 'SEND',
+            },
+            changesTimestamp: new Date(Date.now()).toISOString(),
+            bookingSlot: orderStore.bookingSlotId,
+            temperatureZonePredefined: orderStore.keyTemp,
+
+            totalSlot: parseInt(qty),
+          }))
+
+if(parseInt(qty) === 1){
+
+  
+  let config = {
       method: 'post',
       url: 'http://192.168.1.186:8000/api/orders',
       headers: {
         Authorization: 'Bearer ' + dataStore.token,
         'Content-Type': 'application/json',
       },
-      data: myOrder,
+      data: dataOrder,
     }
 
     axios
       .request(config)
       .then((response) => {
-        // newOrderDelete()
+        newOrderDelete()
         setQty(null)
         getallOrders(dataStore.token)
+        getBookingAllSlot(dataStore.token)
+
         Swal.fire({
           position: 'top-end',
           toast: true,
@@ -113,22 +190,58 @@ const NewOrder = () => {
         })
       })
       .catch((error) => {
-        console.log(error)
-
-        Swal.fire({
-          position: 'top-end',
-          toast: true,
-          icon: 'error',
-          title: 'Commande non validée',
-          text: 'Une erreur s\'est produite, Réessayer',
-          showConfirmButton: false,
-          timer: 4000,
-        })
-        //envoyer email à ITL et enregistrer log dans BDD
-
+        console.log(getError(error))
+        console.log(error.message)
+        setMsgError(getError(error))
+        popUpError(error.response.status, error.response.statusText)
       })
+    }
+    else{
+      let config: any = {
+        method: 'post',
+        url: 'http://192.168.1.186:8000/api/orders',
+        headers: {
+          Authorization: 'Bearer ' + dataStore.token,
+          'Content-Type': 'application/json',
+        },
+      }
+      
+      let promises = []
+      
+      for (let i = 0; i < dataOrder?.length; i++) {
+        config.data = dataOrder[i]
+        promises.push(axios.request(config))
+      }
+      
+      Promise.all(promises)
+        .then((responses) => {
+          newOrderDelete()
+          setQty(null)
+          getallOrders(dataStore.token)
 
+          Swal.fire({
+            position: 'top-end',
+            toast: true,
+            icon: 'success',
+            title: 'Commande(s) validée(s)',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          })
+        })
+        .catch((error) => {
+          console.log(getError(error))
+          console.log(error.message)
+          console.log(error)
+          setMsgError(getError(error))
+          popUpError(error.response.status, error.response.statusText)
+        })
+        console.log(promises)
+    }
+      console.log(dataOrder)
   }
+
+  // console.log(msgError)
 
   const newOrderModal = async (e: any) => {
     e.preventDefault()
@@ -145,7 +258,6 @@ const NewOrder = () => {
     })
 
     if (accept) {
-     
       createNewOrder()
     } else {
       Swal.fire({
@@ -167,7 +279,7 @@ const NewOrder = () => {
   const noDispoModal = async () => {
     const { value: accept } = await Swal.fire({
       icon: 'warning',
-      title: 'Locker plein',
+      title: 'Indisponible',
       text: "Aucun casier n'est disponible",
       inputValue: 1,
       showConfirmButton: false,
@@ -186,15 +298,12 @@ const NewOrder = () => {
         showConfirmButton: false,
         timer: 3000,
       })
-      
     }
   }
-
 
   return (
     <div>
       {(!isLogged || !dataStore.token) && <Navigate to='/connexion' />}
-
       <Container className='my-2'>
         <Container className='px-3 py-0 bg-secondary rounded-pill shadow my-auto '>
           <Row>
@@ -220,7 +329,8 @@ const NewOrder = () => {
                   xs={2}
                   md={5}
                   lg={5}
-                  onClick={() =>
+                  onClick={() => {
+                    setQty(null)
                     newOrderRegister(
                       null,
                       orderStore.location,
@@ -231,10 +341,11 @@ const NewOrder = () => {
                       orderStore.delivererId,
                       null,
                       null,
+                      null,
                       0,
                       0
                     )
-                  }
+                  }}
                 >
                   <i className='ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill'></i>{' '}
                 </Col>
@@ -248,15 +359,32 @@ const NewOrder = () => {
         </Container>
       </Container>
       {isError ? (
-        <Container className='text-center mt-5'>
-          <AlertIsError
-            title="Une erreur s'est produite"
-            msg='Vérifiez votre connexion internet ou contactez votre administrateur'
-          />
+        <Container className='text-center mt-3'>
+          <AlertIsError title={`Erreur : ${codeError}`} msg={msgError} />
         </Container>
       ) : isLoading ? (
-        <Container className='text-center mt-5'>
-          <Loading variant='warning' />
+        <Container className='text-center mt-3'>
+          <Placeholder as='p' animation='glow'>
+            <Placeholder xs={12} className='py-4 rounded-pill' />
+          </Placeholder>
+          <Placeholder as='p' animation='glow'>
+            <Placeholder xs={12} className='py-4 rounded-pill' />
+          </Placeholder>
+          <Placeholder as='p' animation='glow'>
+            <Placeholder xs={12} className='py-4 rounded-pill' />
+          </Placeholder>
+          <Placeholder as='p' animation='glow'>
+            <Placeholder xs={12} className='py-4 rounded-pill' />
+          </Placeholder>
+          <Placeholder as='p' animation='glow'>
+            <Placeholder xs={12} className='py-4 rounded-pill' />
+          </Placeholder>
+          <Placeholder as='p' animation='glow'>
+            <Placeholder xs={12} className='py-4 rounded-pill' />
+          </Placeholder>
+          <Placeholder as='p' animation='glow'>
+            <Placeholder xs={12} className='py-4 rounded-pill' />
+          </Placeholder>
         </Container>
       ) : (
         <Container className='pb-5'>
@@ -267,6 +395,7 @@ const NewOrder = () => {
                 className='my-3 px-2 py-2 bg-white rounded-pill shadow w-100'
                 onClick={() => {
                   setBookingSlot(locker['@id'])
+                  setAvailableSlot(locker.available)
                   locker?.available > 0
                     ? newOrderRegister(
                         locker?.slot.temperatureZone.locker.cleveronApmId,
@@ -277,6 +406,7 @@ const NewOrder = () => {
                         locker?.slot.temperatureZone.locker.type,
                         dataStore.id,
                         locker?.slot.temperatureZone?.keyTemp,
+                        locker?.slot.temperatureZone?.myKey,
                         locker?.slot?.size,
                         0,
                         0
@@ -284,7 +414,7 @@ const NewOrder = () => {
                     : noDispoModal()
                 }}
               >
-                <Row className='py-2' disabled>
+                <Row className='py-2'>
                   <Col xs={10} className='m-auto text-secondary pe-0'>
                     <img
                       alt='zone'
@@ -302,7 +432,10 @@ const NewOrder = () => {
                     />{' '}
                     {locker?.slot.size} -{' '}
                     <span className='item-locker-list fw-bold'>
-                      {locker?.slot?.temperatureZone?.locker?.city?.toUpperCase()} -{' '}
+                      {locker?.slot?.temperatureZone?.locker?.location
+                        ?.toUpperCase()
+                        .slice(0, 30)}{' '}
+                      -{' '}
                       <Badge
                         bg={
                           locker?.slot?.temperatureZone?.keyTemp === 'FRESH'
@@ -316,7 +449,7 @@ const NewOrder = () => {
                       </Badge>
                     </span>
                   </Col>
-                  <Col xs={2} className=''>
+                  <Col xs={1} className='me-4'>
                     <span
                       className={
                         locker?.available > 0
@@ -345,6 +478,7 @@ const NewOrder = () => {
                     orderStore.lockerType,
                     orderStore.delivererId,
                     orderStore.tempZone,
+                    orderStore.keyTemp,
                     orderStore.slotSize,
                     parseInt(qty),
                     ageRestriction === true ? 18 : 0
@@ -360,11 +494,35 @@ const NewOrder = () => {
                   onChange={(e) => setQty(e.currentTarget.value)}
                   required
                 />
+                {availableSlot < parseInt(qty) && (
+                  <>
+                    {/* <AlertIsError title={"Attention"} msg={"Vous n'avez pas assez de casiers disponibles dans la zone choisie"} /> */}
+                    <Alert variant='danger' className='rounded-0'>
+                      <Alert.Heading className='text-center'>
+                        <i className='ri-error-warning-fill text-danger align-middle fs-3'></i>
+                        <span className='align-middle'> Attention</span>
+                      </Alert.Heading>
+                      <div className='text-center font-75 '>
+                        Vous n'avez pas assez de casiers disponibles dans la zone choisie.
+                        Réduisez le nombre de panier
+                      </div>
+                    </Alert>
+                  </>
+                )}
                 <FormGroup className='mb-3 text-muted' controlId='formBasicCheckbox'>
-                  <FormCheck type='checkbox' label="Restriction d'âge" checked={ageRestriction} onChange={() => setAgeRestriction(!ageRestriction)}  />
+                  <FormCheck
+                    type='checkbox'
+                    label="Restriction d'âge"
+                    checked={ageRestriction}
+                    onChange={() => setAgeRestriction(!ageRestriction)}
+                  />
                 </FormGroup>
                 <div className='w-100 text-end'>
-                  <Button type='submit' variant='outline-warning' className='rounded-pill'>
+                  <Button
+                    type='submit'
+                    variant='info'
+                    className={`rounded-pill text-light ${!isSlotAvailable ? 'disabled' : ''}`}
+                  >
                     Valider
                   </Button>
                 </div>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const BottomNavBar = ({orderData, selectedStore}: any) => {
 
-  const retrieve = orderData["hydra:member"]?.filter((order: any) => order.status === "operout" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
+  const retrieve = orderData["hydra:member"]?.filter((order: any) => order.status === "overtime" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
   const progress = orderData["hydra:member"]?.filter((order: any) => order.status === "created" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
   const delivered = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
 
@@ -21,8 +21,8 @@ const BottomNavBar = ({orderData, selectedStore}: any) => {
             <span className="badge rounded-pill bg-danger">{retrieve?.length}</span>
              )}
             <br />
-            OperOut
-            {/* A récupérer */}
+            {/* OperOut */}
+            A récupérer
           </Link>
         </Nav.Item>
         <Nav.Item className="nav-item text-center">

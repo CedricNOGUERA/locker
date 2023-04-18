@@ -13,7 +13,7 @@ import { Container } from "react-bootstrap";
 
 const Delivered: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged);
-  const [selectedStore, setSelectedStore, orderData, setOrderData, selectedOrderCity, setSelectedOrderCity] = useOutletContext<any>()
+  const [selectedStore, setSelectedStore, orderData, setOrderData, selectedOrderCity, setSelectedOrderCity,  allSlot, setAllSlot] = useOutletContext<any>()
 
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -24,17 +24,14 @@ const Delivered: React.FC = () => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const objectif ="operout"
+  const objectif ="receive"
 
-  const progress = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore );
-  // const orderTab = orderData.filter(
-  //   (order: any) =>
-  //     order.status === "delivered" && order.location === selectedStore
-  // );
+  const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore );
 
-  // React.useEffect(() => {
-  //   _searchWithRegex(searchOrder, orderTab, setFilteredOrder);
-  // }, [searchOrder]);
+
+  React.useEffect(() => {
+    _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder);
+  }, [searchOrder]);
 
   const searchBarProps = {
     searchOrder,
@@ -43,6 +40,8 @@ const Delivered: React.FC = () => {
     setSelectedStore,
     selectedOrderCity,
     setSelectedOrderCity,
+    allSlot,
+
   };
 
   const scanPageProps = {
@@ -59,11 +58,11 @@ const Delivered: React.FC = () => {
     setSelectedOrder,
     searchOrder,
     setSearchOrder,
-    progress,
+    orderByStatus,
   };
 
   return (
-    <Container fluid className="cde App px-md-0">
+    <Container fluid className="cde App px-0">
       {contextHolder}
       {!isLogged && <Navigate to="/connexion" />}
       {isLoading ? (

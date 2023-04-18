@@ -49,7 +49,7 @@ function App() {
     })
   }
 
-console.log(allSlot)
+// console.log(allSlot)
 
 
   return (

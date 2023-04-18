@@ -17,8 +17,8 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, indx, allSlot }: any)
             />{' '}
           </span>
         </Col>
-        <Col className='text-secondary text-center align-middle m-auto'>{liv?.barcode}</Col>
-        <Col xs={3} className='m-auto'>
+        <Col className='text-secondary text-center align-middle m-auto'><small>{liv?.barcode}</small></Col>
+        <Col xs={2} className='m-auto me-3'>
           <Button
             variant='outline-info'
             onClick={() => {

@@ -20,8 +20,21 @@ overflow: hidden;
   /* background-color: #313030; */
 }
 
+@media (max-height: 376px){
+  .auth-form{
+    padding-top: 0%;
+    height:500px;
+  }
+  .auth-cont{
+    height:500px;
+    
+  }
+  }
+
+
 .menu-link:hover{
-  background-color: darkgray;
+  background-color: rgb(238, 195, 195);
+  /* background-color: darkgray; */
   cursor: pointer;
 }
 
@@ -33,6 +46,7 @@ overflow: hidden;
 
 .company-name{
   font-size: 0.85rem;
+  margin: auto;
 }
 
 .cde{

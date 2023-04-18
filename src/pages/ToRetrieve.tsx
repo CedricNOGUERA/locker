@@ -27,13 +27,13 @@ const ToRetrieve: React.FC = () => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const objectif ="inProgress"
+  const objectif ="operout"
 
   // const orderTab = orderData.filter(
   //   (order: any) =>
   //     order.status === "toRetrieve" && order.location === selectedStore
   // );
-  const progress = orderData["hydra:member"]?.filter((order: any) => order.status === "operout" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
+  const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "overtime" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
 
   React.useEffect(() => {
    
@@ -42,7 +42,7 @@ const ToRetrieve: React.FC = () => {
 
 
   React.useEffect(() => {
-    _searchWithRegex(searchOrder, progress, setFilteredOrder);
+    _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder);
   }, [searchOrder]);
 
 
@@ -78,7 +78,7 @@ const ToRetrieve: React.FC = () => {
     setSelectedOrder,
     searchOrder,
     setSearchOrder,
-    progress
+    orderByStatus
   };
 
   console.log(filteredOrder)

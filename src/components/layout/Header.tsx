@@ -32,7 +32,6 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
 
 
 
-
   return (
     <>
       <Modal show={show} onHide={handleClose} animation={false} centered>
@@ -79,20 +78,21 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
       >
         <Row className='align-middle'>
           <Col className='ff-agency m-auto '>
-            <img alt='Kangaroo icon' src={imag} style={{ height: '24px' }} />{' '}
+            {/* <img alt='Kangaroo icon' src={imag} style={{ height: '24px' }} />{' '} */}
+            <i className="ri-settings-6-line fs-4 align-bottom"></i>{' '}
             {title}
           </Col>
           <Col
             xs={5}
             md={3}
-            className='text-center align-middle animate__animated animate__bounceIn top-menu border-start '
+            className='company-name text-center align-middle animate__animated animate__bounceIn top-menu border-start '
           >
-            <span className="company-name" onClick={handleShowOffcanvas}>
+            {/* <span className="company-name" > */}
             {dataStore.company_name}{' '}
-              <Button variant='secondary' className=''>
+              <Button variant='secondary' className='' onClick={handleShowOffcanvas}>
                 <i className='ri-menu-line'></i>
               </Button>
-            </span>
+            {/* </span> */}
           </Col>
         </Row>
       </Container>

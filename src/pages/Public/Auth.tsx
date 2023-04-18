@@ -8,6 +8,8 @@ import '../../App.css'
 import AuthService from '../../service/Auth/AuthService'
 import UserService from '../../service/UserService'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
+import AlertIsError from '../../components/ui/warning/AlertIsError'
+import imag from '../../styles/g1348.png'
 
 type Inputs = {
   userName: string
@@ -30,6 +32,8 @@ const Auth = () => {
   const [isError, setIsError] = useState<boolean>(false)
   const [isView, setIsView] = useState<boolean>(false)
   const [msgError, setMsgError] = useState<string>('')
+  const [codeError, setCodeError] = useState<any>()
+
   const [token, setToken] = useState<any>([])
   const [formData, setFormData] = useState<any>([])
   const [myData, setMyData] = useState<any>([])
@@ -73,7 +77,8 @@ const Auth = () => {
       setToken,
       setMsgError,
       setIsError,
-      setIsLoadingAuth
+      setIsLoadingAuth,
+      setCodeError
     )
 
     setIsLoading(false)
@@ -85,42 +90,48 @@ const Auth = () => {
     })
   }
 
-  console.log(dataStore.company_name)
+
   return (
-    <Container className='col-12 col-lg-4 px-0  vh-100 '>
-      {( dataStore.token && dataStore.company_name) && (
-        <Navigate to='/in-progress' />
-      )}
+    <Container fluid className='auth-cont   col-12 col-lg-4 px-0 bg-secondary'>
+      {dataStore.token && dataStore.company_name && <Navigate to='/in-progress' />}
       {isLoading ? (
         <Loading variant='info' />
       ) : (
         <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
           <Card.Body>
-            <div className='text-center '>
-              <img
+            <div className='text-center text-light'>
+              {/* <img
                 alt='Conteneur'
                 src={'https://img.icons8.com/ios-filled/128/exercise.png'}
                 width={64}
+                height={64}*
+                 height={64}
+              /> */}
+              <img
+                alt='Conteneur'
+                src={imag}
+                width={64}
                 height={64}
               />
+              {/* <i className="ri-settings-6-line fs-1 align-bottom"></i>{' '} */}
             </div>
-            <div className='text-center mb-5'>
+            <div className='text-center mb-5 text-light'>
               <h4>Locker</h4>
             </div>
             <Form onSubmit={handleSubmit(signUp)}>
               <Form.Group className='mb-3' controlId='formBasicEmail'>
-                
                 <Form.Label className='d-none'>Identifiant</Form.Label>
                 <InputGroup className='mb-3'>
-
-                <InputGroup.Text id="basic-addon1" className='rounded-0 border-0'>< i className="ri-user-fill text-muted"></i></InputGroup.Text>
-                <Form.Control
-                  className='shadow rounded-0 border-0'
-                  type='text'
-                  placeholder='Identifiant'
-                  {...register('userName', { required: true })}
+                  <InputGroup.Text id='basic-addon1' className='rounded-0 border-0'>
+                    <i className='ri-user-fill text-muted'></i>
+                  </InputGroup.Text>
+                  <Form.Control
+                    className='shadow rounded-0 border-0'
+                    type='text'
+                    placeholder='Identifiant'
+                    {...register('userName', { required: true })}
                   />
-                  </InputGroup>
+                </InputGroup>
                 {errors.userName && (
                   <Alert variant='danger' className='mt-2 py-0 text-cente'>
                     <InfoAlert
@@ -133,9 +144,11 @@ const Auth = () => {
                 )}
               </Form.Group>
               <Form.Group className='mb-3' controlId='formBasicPassword'>
-              <Form.Label className='d-none' >Mot de passe</Form.Label>
+                <Form.Label className='d-none'>Mot de passe</Form.Label>
                 <InputGroup className='mb-3'>
-                <InputGroup.Text id="basic-addon1" className='rounded-0 border-0'>< i className="ri-lock-2-fill text-muted"></i></InputGroup.Text>
+                  <InputGroup.Text id='basic-addon1' className='rounded-0 border-0'>
+                    <i className='ri-lock-2-fill text-muted'></i>
+                  </InputGroup.Text>
                   <Form.Control
                     className='shadow border-0'
                     style={{ position: 'relative' }}
@@ -143,14 +156,18 @@ const Auth = () => {
                     placeholder='Mot de passe'
                     {...register('pass', { required: true })}
                   />
-                  <InputGroup.Text id='eyeOrNot' className='rounded-0 border-0' onClick={() => setIsView(!isView)}>
+                  <InputGroup.Text
+                    id='eyeOrNot'
+                    className='rounded-0 border-0'
+                    onClick={() => setIsView(!isView)}
+                  >
                     {' '}
                     <i
                       className={
                         !isView
                           ? 'ri-eye-fill text-secondary'
                           : 'ri-eye-off-fill text-secondary'
-                      } 
+                      }
                     ></i>
                   </InputGroup.Text>
                 </InputGroup>
@@ -165,22 +182,11 @@ const Auth = () => {
                   </Alert>
                 )}
               </Form.Group>
-              {isError && (
-                <>
-                  <Alert variant='danger' className='py-2 px-1 text-center'>
-                    <InfoAlert
-                      icon='ri-error-warning-line'
-                      iconColor='danger'
-                      message={msgError}
-                      fontSize='font-65'
-                    />
-                  </Alert>
-                </>
-              )}
+              {isError && <AlertIsError title={`Erruer : ${codeError}`} msg={msgError} />}
 
               <button
                 type='submit'
-                id=""
+                id=''
                 className='button-auth rounded  w-100 py-2 mt-4 text-light shadow'
               >
                 {isLoadingAuth && <Spinner variant='light' size='sm' />} Valider
