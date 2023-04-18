@@ -17,6 +17,7 @@ import newOrderDataStore from '../../store/newOrderDataStore'
 import userDataStore from '../../store/userDataStore'
 import Swal from 'sweetalert2'
 import bookingStore from '../../store/bookingStore'
+import logsStore from '../../store/logsStore'
 import { _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
@@ -33,6 +34,19 @@ const NewOrder = () => {
   const orderStore = newOrderDataStore((state: any) => state)
   const bookingSet = bookingStore((state: any) => state.bookingSet)
   const bookingstore = bookingStore((state: any) => state)
+  
+  
+  const logs = logsStore((state: any) => state)
+  const logCatcher = logsStore((state: any) => state.logCatcher)
+
+  if (logs.logApp){
+    console.log("fill")
+  }else{
+    console.log("empty")
+
+  }
+
+console.log(logs.logApp)
 
   const [
     selectedStore,
@@ -123,7 +137,7 @@ const NewOrder = () => {
 
             receiveCode: `${receiveCode}`,
             keyTemp: orderStore.tempZone,
-            // temperatureZonePredefined: orderStore.tempZone,
+            temperatureZonePredefined: orderStore.keyTemp,
 
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
@@ -158,90 +172,98 @@ const NewOrder = () => {
             totalSlot: parseInt(qty),
           }))
 
-if(parseInt(qty) === 1){
-
-  
+if (parseInt(qty) === 1) {
   let config = {
-      method: 'post',
-      url: 'http://192.168.1.186:8000/api/orders',
-      headers: {
-        Authorization: 'Bearer ' + dataStore.token,
-        'Content-Type': 'application/json',
-      },
-      data: dataOrder,
-    }
-
-    axios
-      .request(config)
-      .then((response) => {
-        newOrderDelete()
-        setQty(null)
-        getallOrders(dataStore.token)
-        getBookingAllSlot(dataStore.token)
-
-        Swal.fire({
-          position: 'top-end',
-          toast: true,
-          icon: 'success',
-          title: 'Commande validée',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-        })
-      })
-      .catch((error) => {
-        console.log(getError(error))
-        console.log(error.message)
-        setMsgError(getError(error))
-        popUpError(error.response.status, error.response.statusText)
-      })
-    }
-    else{
-      let config: any = {
-        method: 'post',
-        url: 'http://192.168.1.186:8000/api/orders',
-        headers: {
-          Authorization: 'Bearer ' + dataStore.token,
-          'Content-Type': 'application/json',
-        },
-      }
-      
-      let promises = []
-      
-      for (let i = 0; i < dataOrder?.length; i++) {
-        config.data = dataOrder[i]
-        promises.push(axios.request(config))
-      }
-      
-      Promise.all(promises)
-        .then((responses) => {
-          newOrderDelete()
-          setQty(null)
-          getallOrders(dataStore.token)
-
-          Swal.fire({
-            position: 'top-end',
-            toast: true,
-            icon: 'success',
-            title: 'Commande(s) validée(s)',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-          })
-        })
-        .catch((error) => {
-          console.log(getError(error))
-          console.log(error.message)
-          console.log(error)
-          setMsgError(getError(error))
-          popUpError(error.response.status, error.response.statusText)
-        })
-        console.log(promises)
-    }
-      console.log(dataOrder)
+    method: 'post',
+    url: 'http://192.168.1.250:8000/api/orders',
+    headers: {
+      Authorization: 'Bearer ' + dataStore.token,
+      'Content-Type': 'application/json',
+    },
+    data: dataOrder,
   }
 
-  // console.log(msgError)
+  axios
+    .request(config)
+    .then((response) => {
+      newOrderDelete()
+      setQty(null)
+      getallOrders(dataStore.token)
+      getBookingAllSlot(dataStore.token)
+
+      Swal.fire({
+        position: 'top-end',
+        toast: true,
+        icon: 'success',
+        title: 'Commande validée',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      })
+    })
+    .catch((error) => {
+      const now: any =  Date.now()
+      console.log(getError(error))
+      console.log(error.message)
+      setMsgError(getError(error))
+      if (logs.logApp){
+        // console.log("fill")
+        logCatcher(logs.logApp + " / date :" +  now  + "-" +  error.response.statusText)
+       
+      }else{
+        console.log("empty")
+        logCatcher("date :" +  now  + "-" +  error.response.statusText)
+    
+      }
+    
+      popUpError(error.response.status, error.response.statusText)
+    })
+} else {
+  let config: any = {
+    method: 'post',
+    url: 'http://192.168.1.250:8000/api/orders',
+    headers: {
+      Authorization: 'Bearer ' + dataStore.token,
+      'Content-Type': 'application/json',
+    },
+  }
+
+  let promises = []
+
+  for (let i = 0; i < dataOrder?.length; i++) {
+    config.data = dataOrder[i]
+    promises.push(axios.request(config))
+  }
+
+  Promise.all(promises)
+    .then((responses) => {
+      newOrderDelete()
+      setQty(null)
+      getallOrders(dataStore.token)
+
+      Swal.fire({
+        position: 'top-end',
+        toast: true,
+        icon: 'success',
+        title: 'Commande(s) validée(s)',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      })
+    })
+    .catch((error) => {
+      console.log(getError(error))
+      console.log(error.message)
+      console.log(error)
+      logCatcher(error.response.statusText)
+      setMsgError(getError(error))
+      popUpError(error.response.status, error.response.statusText)
+    })
+  }
+  console.log(dataOrder)
+}
+
+console.log(logCatcher.logApp)
 
   const newOrderModal = async (e: any) => {
     e.preventDefault()
@@ -272,7 +294,6 @@ if(parseInt(qty) === 1){
       newOrderDelete()
       setQty(null)
       setAgeRestriction(false)
-      // envoyer un email a ITL + log
     }
   }
 
@@ -350,7 +371,7 @@ if(parseInt(qty) === 1){
                   <i className='ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill'></i>{' '}
                 </Col>
                 <Col className='m-auto text-light text-start pe-4'>
-                  <i className='ri-shopping-basket-2-line align-bottom me-2'></i>{' '}
+                  <i className='ri-shopping-basket-2-line align-bottom '></i>{' '}
                   <span className='fw-bold'>Nombre de panier nécessaire</span>
                 </Col>
               </>
@@ -360,7 +381,7 @@ if(parseInt(qty) === 1){
       </Container>
       {isError ? (
         <Container className='text-center mt-3'>
-          <AlertIsError title={`Erreur : ${codeError}`} msg={msgError} />
+          <AlertIsError title={`Erreur : ${codeError}`} msg={msgError} colorIcon="danger" />
         </Container>
       ) : isLoading ? (
         <Container className='text-center mt-3'>
@@ -414,8 +435,8 @@ if(parseInt(qty) === 1){
                     : noDispoModal()
                 }}
               >
-                <Row className='py-2'>
-                  <Col xs={10} className='m-auto text-secondary pe-0'>
+                <Row className='py-2 justify-content-around text-secondary'>
+                  <Col  className='m-auto  pe-0'>
                     <img
                       alt='zone'
                       src={
@@ -428,9 +449,11 @@ if(parseInt(qty) === 1){
                         '.png'
                       }
                       style={{ width: '20px' }}
-                      className=''
+                      
                     />{' '}
                     {locker?.slot.size} -{' '}
+                    </Col>
+                    <Col xs={8} className='px-0 m-auto'>
                     <span className='item-locker-list fw-bold'>
                       {locker?.slot?.temperatureZone?.locker?.location
                         ?.toUpperCase()
@@ -496,7 +519,7 @@ if(parseInt(qty) === 1){
                 />
                 {availableSlot < parseInt(qty) && (
                   <>
-                    {/* <AlertIsError title={"Attention"} msg={"Vous n'avez pas assez de casiers disponibles dans la zone choisie"} /> */}
+                    <AlertIsError title={"Attention"} msg={"Vous n'avez pas assez de casiers disponibles dans la zone choisie. Réduisez le nombre de panier"} colorIcon='danger'/>
                     <Alert variant='danger' className='rounded-0'>
                       <Alert.Heading className='text-center'>
                         <i className='ri-error-warning-fill text-danger align-middle fs-3'></i>

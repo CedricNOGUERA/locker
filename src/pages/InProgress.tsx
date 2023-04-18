@@ -1,20 +1,21 @@
 import React from 'react'
 import { Navigate, useOutletContext } from 'react-router-dom'
-import Loading from '../components/ui/Loading'
 import userDataStore from '../store/userDataStore'
 import '../App.css'
 import 'animate.css'
 import { message } from 'antd'
-import { _searchWithRegex, _UpdateStatus } from '../utils/functions'
+import { _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import OrderList from '../components/ui/OrderList'
 import ScanPage from '../components/ui/ScanPage'
 import { Container, Placeholder } from 'react-bootstrap'
-import BookingSlotservice from '../service/BookingSlot/BookingSlotservice'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 
 const InProgress: React.FC = () => {
 
+   //////////////////////////
+  // booleans States
+  /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
   
@@ -31,31 +32,28 @@ const InProgress: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
-
-  
-  
-  
   
   const objectif = 'operin'
 
-
   const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "created" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
+
 
   React.useEffect(() => {
   
-    if(orderData && orderData["hydra:member"]?.length > 0){
+    if(orderByStatus && orderData && orderData["hydra:member"]?.length > 0){
       setIsLoading(false)
     }
     else{
+      // 
       setIsLoading(true)
     }
+      
   }, [orderData])
 
 
   React.useEffect(() => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder);
   }, [searchOrder]);
-
 
 
   const searchBarProps = {
@@ -89,8 +87,6 @@ const InProgress: React.FC = () => {
 
   console.log(allSlot)
 
-
-
   return (
     <Container fluid className='cde App px-0'>
       {contextHolder}
@@ -100,7 +96,8 @@ const InProgress: React.FC = () => {
         <Container className='text-center mt-5'>
           <AlertIsError
             title="Une erreur s'est produite"
-            msg='Vérifiez votre connexion internet'
+            msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
+            colorIcon='danger'
           />
         </Container>
       ) : isLoading ? (

@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         path: "in-progress",
         element: (
           <React.Fragment>
-            <Header title="Commandes en cours" />
+            <Header title="Livraisons en cours" />
             <InProgress />
           </React.Fragment>
         ),
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
         path: "orders-delivered",
         element: (
           <React.Fragment>
-            <Header title="Commandes déposées" />
+            <Header title="Livraisons déposées" />
             <Delivered />
           </React.Fragment>
         ),
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         path: "orders-to-retrieve",
         element: (
           <React.Fragment>
-            <Header title="Commandes à récupérer" />
+            <Header title="Livraisons à récupérer" />
             <ToRetrieve />
           </React.Fragment>
         ),

@@ -35,7 +35,7 @@ const ScanPage = ({ scanPageProps }: any) => {
     let config = {
       method: 'patch',
       maxBodyLength: Infinity,
-      url: 'http://192.168.1.186:8000/api/orders/' + selectedOrder.id,
+      url: 'http://192.168.1.250:8000/api/orders/' + selectedOrder.id,
       headers: { 
         'Content-Type': 'application/merge-patch+json', 
         'Authorization': 'Bearer ' + dataStore.token

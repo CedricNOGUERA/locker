@@ -84,6 +84,8 @@ const Auth = () => {
     setIsLoading(false)
     setFormData(dataz)
   }
+
+
   const getMyData = (token: any) => {
     UserService.me(token).then((response: any) => {
       setMyData(response.data)
@@ -182,7 +184,7 @@ const Auth = () => {
                   </Alert>
                 )}
               </Form.Group>
-              {isError && <AlertIsError title={`Erruer : ${codeError}`} msg={msgError} />}
+              {isError && <AlertIsError title={`Erruer : ${codeError}`} msg={msgError} colorIcon='danger' />}
 
               <button
                 type='submit'

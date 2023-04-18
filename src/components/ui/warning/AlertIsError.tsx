@@ -1,13 +1,22 @@
 import React from 'react'
 import { Alert } from 'react-bootstrap'
 
-const AlertIsError = ({title, msg}: any) => {
+interface AlertIsErrorProps {
+  title: string
+  msg: string
+  colorIcon: string
+
+}
+
+
+const AlertIsError: React.FC<AlertIsErrorProps> = ({title, msg, colorIcon}: any) => {
+
   return (
     <Alert variant='danger' className="rounded-0">
       <Alert.Heading className='text-center'>
-        <i className='ri-error-warning-fill text-warning align-middle fs-3'></i><span className='align-middle'> {title}</span>
+        <i className={`ri-error-warning-line text-${colorIcon} align-middle fs-3`}></i><span className={`align-middle`}> {title}</span>
       </Alert.Heading>
-      {msg}
+      <div className='text-center font-75'>{msg}</div>
     </Alert>
   )
 }

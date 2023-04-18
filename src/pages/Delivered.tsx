@@ -5,7 +5,7 @@ import userDataStore from "../store/userDataStore";
 import "../App.css";
 import "animate.css";
 import { message } from "antd";
-import { _searchWithRegex, _updateStatus, _UpdateStatus } from "../utils/functions";
+import { _searchWithRegex } from "../utils/functions";
 import SearchBar from "../components/ui/SearchBar";
 import OrderList from "../components/ui/OrderList";
 import ScanPage from "../components/ui/ScanPage";
@@ -30,6 +30,19 @@ const Delivered: React.FC = () => {
 
 
   React.useEffect(() => {
+  
+    if(orderData && orderData["hydra:member"]?.length > 0){
+      setIsLoading(false)
+    }
+    else{
+      // setIsError(true)
+      setIsLoading(true)
+    }
+      
+  }, [orderData])
+
+
+  React.useEffect(() => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder);
   }, [searchOrder]);
 
@@ -44,14 +57,6 @@ const Delivered: React.FC = () => {
 
   };
 
-  const scanPageProps = {
-   
-    selectedOrder,
-    setOrderData,
-    messageApi,
-    setSelectedOrder,
-    objectif,
-  };
   const orderListProps = {
     // orderTab,
     filteredOrder,
@@ -59,6 +64,15 @@ const Delivered: React.FC = () => {
     searchOrder,
     setSearchOrder,
     orderByStatus,
+  };
+  
+  const scanPageProps = {
+   
+    selectedOrder,
+    setOrderData,
+    messageApi,
+    setSelectedOrder,
+    objectif,
   };
 
   return (

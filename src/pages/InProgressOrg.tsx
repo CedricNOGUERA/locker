@@ -67,7 +67,7 @@ const InProgress: React.FC = () => {
     let config = {
       method: 'get',
       // maxBodyLength: Infinity,
-      url: 'http://192.168.1.186:8000/api/deliveries',
+      url: 'http://192.168.1.250:8000/api/deliveries',
       headers: {
         Authorization:
           'Bearer ' + dataStore.token,
