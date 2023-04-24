@@ -1,13 +1,13 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import "./App.css";
-import userDataStore from "./store/userDataStore";
-import "animate.css";
-import BottomNavBar from "./components/layout/BottomNavBar";
-import OrdersService from "./service/Orders/OrdersService";
-import Loading from "./components/ui/Loading";
-import { Container } from "react-bootstrap";
-import BookingSlotservice from "./service/BookingSlot/BookingSlotservice";
+import React from 'react'
+import { Navigate, Outlet } from 'react-router-dom'
+import './App.css'
+import userDataStore from './store/userDataStore'
+import 'animate.css'
+import BottomNavBar from './components/layout/BottomNavBar'
+import OrdersService from './service/Orders/OrdersService'
+import Loading from './components/ui/Loading'
+import { Container } from 'react-bootstrap'
+import BookingSlotservice from './service/BookingSlot/BookingSlotservice'
 
 function App() {
   const isLogged = userDataStore((state: any) => state.isLogged)
@@ -38,9 +38,6 @@ function App() {
     )
   }, [allSlot])
 
-  
-
-  
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
       setIsLoading(false)
@@ -57,7 +54,7 @@ function App() {
   // console.log(allSlot)
 
   return (
-    <div className='f'>
+    <div className=''>
       {!isLogged && <Navigate to='/connexion' />}
 
       {isLoading ? (
@@ -85,4 +82,4 @@ function App() {
   )
 }
 
-export default App;
+export default App

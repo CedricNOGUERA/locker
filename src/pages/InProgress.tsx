@@ -1,60 +1,69 @@
 import React from 'react'
 import { Navigate, useOutletContext } from 'react-router-dom'
-import userDataStore from '../store/userDataStore'
-import '../App.css'
-import 'animate.css'
 import { message } from 'antd'
+import { Container } from 'react-bootstrap'
+import userDataStore from '../store/userDataStore'
 import { _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import OrderList from '../components/ui/OrderList'
 import ScanPage from '../components/ui/ScanPage'
-import { Container, Placeholder } from 'react-bootstrap'
 import AlertIsError from '../components/ui/warning/AlertIsError'
+import PlaceHolder from '../components/ui/loading/PlaceHolder'
+import '../App.css'
+import 'animate.css'
 
 const InProgress: React.FC = () => {
-
-   //////////////////////////
+  //////////////////////////
   // booleans States
   /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
-  
+
   //////////////////////////
-  // Store & context state 
+  // Store & context state
   /////////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
-  const [selectedStore, setSelectedStore, orderData, setOrderData, selectedOrderCity, setSelectedOrderCity, allSlot, setAllSlot] = useOutletContext<any>()
+  const [
+    selectedStore,
+    setSelectedStore,
+    orderData,
+    setOrderData,
+    selectedOrderCity,
+    setSelectedOrderCity,
+    allSlot,
+    setAllSlot,
+  ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
   const [messageApi, contextHolder] = message.useMessage()
-
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
-  
+
   const objectif = 'operin'
 
-  const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "created" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore)
-
+  const orderByStatus = orderData['hydra:member']?.filter(
+    (order: any) =>
+      order.status === 'created' &&
+      order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
+  )
 
   React.useEffect(() => {
-  
-    if(orderByStatus && orderData && orderData["hydra:member"]?.length > 0){
+    if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
       setIsLoading(false)
-    }
-    else{
-      // 
+    } else {
+      if (orderData && orderData['hydra:member']?.length < 0) {
+        setIsError(true)
+        setIsLoading(false)
+      }
       setIsLoading(true)
     }
-      
   }, [orderData])
 
-
   React.useEffect(() => {
-    _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder);
-  }, [searchOrder]);
-
+    _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
+  }, [searchOrder])
 
   const searchBarProps = {
     searchOrder,
@@ -84,9 +93,6 @@ const InProgress: React.FC = () => {
     objectif,
   }
 
-
-  console.log(allSlot)
-
   return (
     <Container fluid className='cde App px-0'>
       {contextHolder}
@@ -102,24 +108,7 @@ const InProgress: React.FC = () => {
         </Container>
       ) : isLoading ? (
         <Container className='text-center mt-2'>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-3 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
+          <PlaceHolder paddingYFirst='3' />
         </Container>
       ) : (
         <>

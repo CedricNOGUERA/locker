@@ -48,9 +48,9 @@ export const getError = (error: any) => {
   };
   
   const handleBadRequestError = (error: any) => {
-    if (error.response.data.message === "Cannot find user") {
-      return "You are not registered yet";
-    }
+    // if (error.response.statusText === "Unauthorized") {
+    //   return "Votre sesion a expirée, identifiez-vous à nouveau";
+    // }
     if (error.response.data.message === "Invalid credentials.") {
       return "Email ou mot de passe incorrect, réessayez";
     }

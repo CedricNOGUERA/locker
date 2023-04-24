@@ -23,6 +23,8 @@ import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
 import { getError } from '../../utils/errors/GetError'
+import PlaceHolder from '../../components/ui/loading/PlaceHolder'
+import images from '../../styles/no-order-min.png'
 
 const NewOrder = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
@@ -34,19 +36,13 @@ const NewOrder = () => {
   const orderStore = newOrderDataStore((state: any) => state)
   const bookingSet = bookingStore((state: any) => state.bookingSet)
   const bookingstore = bookingStore((state: any) => state)
-  
-  
+
   const logs = logsStore((state: any) => state)
   const logCatcher = logsStore((state: any) => state.logCatcher)
 
-  if (logs.logApp){
-    console.log("fill")
-  }else{
-    console.log("empty")
+  const now: any = Date.now()
 
-  }
-
-console.log(logs.logApp)
+  console.log(logs.logApp)
 
   const [
     selectedStore,
@@ -59,15 +55,18 @@ console.log(logs.logApp)
 
   const [bookingSlot, setBookingSlot] = React.useState<any>('')
   const [qty, setQty] = React.useState<any>()
-  const [availableSlot, setAvailableSlot] = React.useState<any>()
+  const [clientEmail, setClientEmail] = React.useState<string>()
+  const [clientName, setClientName] = React.useState<string>()
 
+  const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
+
+  const [availableSlot, setAvailableSlot] = React.useState<any>()
   const [msgError, setMsgError] = React.useState<any>()
   const [codeError, setCodeError] = React.useState<any>()
-  const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
 
   const [allSlot, setAllSlot] = React.useState<any>([])
 
-  const isSlotAvailable = availableSlot >= parseInt(qty);
+  const isSlotAvailable = availableSlot >= parseInt(qty)
 
   React.useEffect(() => {
     getBookingAllSlot(dataStore.token)
@@ -113,6 +112,7 @@ console.log(logs.logApp)
       showConfirmButton: false,
       timer: 4000,
     })
+    newOrderDelete()
   }
 
   const createNewOrder = () => {
@@ -141,6 +141,8 @@ console.log(logs.logApp)
 
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
+            clientEmail: clientEmail,
+            clientName: clientName,
 
             totalSlot: parseInt(qty),
           }
@@ -168,102 +170,104 @@ console.log(logs.logApp)
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
             temperatureZonePredefined: orderStore.keyTemp,
+            clientEmail: clientEmail,
+            clientName: clientName,
 
             totalSlot: parseInt(qty),
           }))
 
-if (parseInt(qty) === 1) {
-  let config = {
-    method: 'post',
-    url: 'http://192.168.1.250:8000/api/orders',
-    headers: {
-      Authorization: 'Bearer ' + dataStore.token,
-      'Content-Type': 'application/json',
-    },
-    data: dataOrder,
-  }
-
-  axios
-    .request(config)
-    .then((response) => {
-      newOrderDelete()
-      setQty(null)
-      getallOrders(dataStore.token)
-      getBookingAllSlot(dataStore.token)
-
-      Swal.fire({
-        position: 'top-end',
-        toast: true,
-        icon: 'success',
-        title: 'Commande validée',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-      })
-    })
-    .catch((error) => {
-      const now: any =  Date.now()
-      console.log(getError(error))
-      console.log(error.message)
-      setMsgError(getError(error))
-      if (logs.logApp){
-        // console.log("fill")
-        logCatcher(logs.logApp + " / date :" +  now  + "-" +  error.response.statusText)
-       
-      }else{
-        console.log("empty")
-        logCatcher("date :" +  now  + "-" +  error.response.statusText)
-    
+    if (parseInt(qty) === 1) {
+      let config = {
+        method: 'post',
+        url: 'http://192.168.1.250:8000/api/orders',
+        headers: {
+          Authorization: 'Bearer ' + dataStore.token,
+          'Content-Type': 'application/json',
+        },
+        data: dataOrder,
       }
-    
-      popUpError(error.response.status, error.response.statusText)
-    })
-} else {
-  let config: any = {
-    method: 'post',
-    url: 'http://192.168.1.250:8000/api/orders',
-    headers: {
-      Authorization: 'Bearer ' + dataStore.token,
-      'Content-Type': 'application/json',
-    },
+
+      axios
+        .request(config)
+        .then((response) => {
+          newOrderDelete()
+          setQty(null)
+          getallOrders(dataStore.token)
+          getBookingAllSlot(dataStore.token)
+
+          Swal.fire({
+            position: 'top-end',
+            toast: true,
+            icon: 'success',
+            title: 'Commande validée',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          })
+        })
+        .catch((error) => {
+          console.log(getError(error))
+          console.log(error.message)
+          setMsgError(getError(error))
+          if (logs.logApp) {
+            logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
+          } else {
+            logCatcher('date :' + now + '-' + error.response.statusText)
+          }
+
+          popUpError(error.response.status, error.response.statusText)
+        })
+    } else {
+      let config: any = {
+        method: 'post',
+        url: 'http://192.168.1.250:8000/api/orders',
+        headers: {
+          Authorization: 'Bearer ' + dataStore.token,
+          'Content-Type': 'application/json',
+        },
+      }
+
+      let promises = []
+
+      for (let i = 0; i < dataOrder?.length; i++) {
+        config.data = dataOrder[i]
+        promises.push(axios.request(config))
+      }
+
+      Promise.all(promises)
+        .then((responses) => {
+          newOrderDelete()
+          setQty(null)
+          getallOrders(dataStore.token)
+
+          Swal.fire({
+            position: 'top-end',
+            toast: true,
+            icon: 'success',
+            title: 'Commande(s) validée(s)',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+          })
+        })
+        .catch((error) => {
+          console.log(getError(error))
+          console.log(error.message)
+          console.log(error)
+          logCatcher(error.response.statusText)
+          setMsgError(getError(error))
+          popUpError(error.response.status, error.response.statusText)
+          if (logs.logApp) {
+            logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
+          } else {
+            logCatcher('date :' + now + '-' + error.response.statusText)
+          }
+        })
+    }
+    console.log(dataOrder)
   }
 
-  let promises = []
-
-  for (let i = 0; i < dataOrder?.length; i++) {
-    config.data = dataOrder[i]
-    promises.push(axios.request(config))
-  }
-
-  Promise.all(promises)
-    .then((responses) => {
-      newOrderDelete()
-      setQty(null)
-      getallOrders(dataStore.token)
-
-      Swal.fire({
-        position: 'top-end',
-        toast: true,
-        icon: 'success',
-        title: 'Commande(s) validée(s)',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-      })
-    })
-    .catch((error) => {
-      console.log(getError(error))
-      console.log(error.message)
-      console.log(error)
-      logCatcher(error.response.statusText)
-      setMsgError(getError(error))
-      popUpError(error.response.status, error.response.statusText)
-    })
-  }
-  console.log(dataOrder)
-}
-
-console.log(logCatcher.logApp)
+  console.log(logCatcher.logApp)
 
   const newOrderModal = async (e: any) => {
     e.preventDefault()
@@ -286,7 +290,7 @@ console.log(logCatcher.logApp)
         position: 'top-end',
         toast: true,
         icon: 'error',
-        title: 'Commande annulée',
+        title: 'Commande non finalisée',
         showConfirmButton: false,
         timer: 3000,
         // timerProgressBar: true,
@@ -294,6 +298,11 @@ console.log(logCatcher.logApp)
       newOrderDelete()
       setQty(null)
       setAgeRestriction(false)
+      if (logs.logApp) {
+        logCatcher(logs.logApp + ' / date :' + now + '-' + 'Commande non finalisée')
+      } else {
+        logCatcher('date :' + now + '-' + 'Commande non finalisée')
+      }
     }
   }
 
@@ -315,12 +324,18 @@ console.log(logCatcher.logApp)
         position: 'top-end',
         toast: true,
         icon: 'error',
-        title: 'Commande non validée',
+        title: 'finalisée',
         showConfirmButton: false,
         timer: 3000,
       })
+      if (logs.logApp) {
+        logCatcher(logs.logApp + ' / date :' + now + '-' + "Aucun casier n'est disponible")
+      } else {
+        logCatcher('date :' + now + '-' + "Aucun casier n'est disponible")
+      }
     }
   }
+  console.log(allSlot)
 
   return (
     <div>
@@ -370,8 +385,8 @@ console.log(logCatcher.logApp)
                 >
                   <i className='ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill'></i>{' '}
                 </Col>
-                <Col className='m-auto text-light text-start pe-4'>
-                  <i className='ri-shopping-basket-2-line align-bottom '></i>{' '}
+                <Col className='m-auto text-light text-start pe-2'>
+                  <i className='ri-shopping-basket-2-line align-bottom me-2'></i>{' '}
                   <span className='fw-bold'>Nombre de panier nécessaire</span>
                 </Col>
               </>
@@ -381,111 +396,101 @@ console.log(logCatcher.logApp)
       </Container>
       {isError ? (
         <Container className='text-center mt-3'>
-          <AlertIsError title={`Erreur : ${codeError}`} msg={msgError} colorIcon="danger" />
+          <AlertIsError title={`Erreur : ${codeError}`} msg={msgError} colorIcon='danger' />
         </Container>
       ) : isLoading ? (
         <Container className='text-center mt-3'>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
-          <Placeholder as='p' animation='glow'>
-            <Placeholder xs={12} className='py-4 rounded-pill' />
-          </Placeholder>
+          <PlaceHolder paddingYFirst='4' />
         </Container>
       ) : (
         <Container className='pb-5'>
           {orderStore.lockerId === null &&
-            allSlot['hydra:member']?.map((locker: any) => (
-              <Container
-                key={locker?.id}
-                className='my-3 px-2 py-2 bg-white rounded-pill shadow w-100'
-                onClick={() => {
-                  setBookingSlot(locker['@id'])
-                  setAvailableSlot(locker.available)
-                  locker?.available > 0
-                    ? newOrderRegister(
-                        locker?.slot.temperatureZone.locker.cleveronApmId,
-                        locker?.slot.temperatureZone.locker?.location,
-                        locker?.['@id'],
-                        dataStore.company_id,
-                        dataStore.company_name,
-                        locker?.slot.temperatureZone.locker.type,
-                        dataStore.id,
-                        locker?.slot.temperatureZone?.keyTemp,
-                        locker?.slot.temperatureZone?.myKey,
-                        locker?.slot?.size,
-                        0,
-                        0
-                      )
-                    : noDispoModal()
-                }}
-              >
-                <Row className='py-2 justify-content-around text-secondary'>
-                  <Col  className='m-auto  pe-0'>
-                    <img
-                      alt='zone'
-                      src={
-                        'https://img.icons8.com/color/512/' +
-                        (locker?.slot?.temperatureZone?.keyTemp === 'FRESH'
-                          ? 'organic-food'
-                          : locker?.slot?.temperatureZone.keyTemp === 'FREEZE'
-                          ? 'winter'
-                          : 'dry') +
-                        '.png'
-                      }
-                      style={{ width: '20px' }}
-                      
-                    />{' '}
-                    {locker?.slot.size} -{' '}
-                    </Col>
-                    <Col xs={8} className='px-0 m-auto'>
-                    <span className='item-locker-list fw-bold'>
-                      {locker?.slot?.temperatureZone?.locker?.location
-                        ?.toUpperCase()
-                        .slice(0, 30)}{' '}
-                      -{' '}
-                      <Badge
-                        bg={
-                          locker?.slot?.temperatureZone?.keyTemp === 'FRESH'
-                            ? 'success'
+            allSlot['hydra:member']?.map((locker: any, indx: any) =>
+              locker?.active === true ? (
+                <Container
+                  key={locker?.id}
+                  className='my-3 px-2 py-2 bg-white rounded-pill shadow w-100'
+                  onClick={() => {
+                    setBookingSlot(locker['@id'])
+                    setAvailableSlot(locker.available)
+                    locker?.available > 0
+                      ? newOrderRegister(
+                          locker?.slot.temperatureZone.locker.cleveronApmId,
+                          locker?.slot.temperatureZone.locker?.location,
+                          locker?.['@id'],
+                          dataStore.company_id,
+                          dataStore.company_name,
+                          locker?.slot.temperatureZone.locker.type,
+                          dataStore.id,
+                          locker?.slot.temperatureZone?.keyTemp,
+                          locker?.slot.temperatureZone?.myKey,
+                          locker?.slot?.size,
+                          0,
+                          0
+                        )
+                      : noDispoModal()
+                  }}
+                >
+                  <Row className='py-2 justify-content-around text-secondary'>
+                    <Col className='m-auto  pe-0'>
+                      <img
+                        alt='zone'
+                        src={
+                          'https://img.icons8.com/color/512/' +
+                          (locker?.slot?.temperatureZone?.keyTemp === 'FRESH'
+                            ? 'organic-food'
                             : locker?.slot?.temperatureZone.keyTemp === 'FREEZE'
-                            ? 'info'
-                            : 'warning'
+                            ? 'winter'
+                            : 'dry') +
+                          '.png'
+                        }
+                        style={{ width: '20px' }}
+                      />{' '}
+                      {locker?.slot.size} -{' '}
+                    </Col>
+                    <Col xs={8} className='px-0 m-auto text-center'>
+                      <span className='item-locker-list fw-bold'>
+                        {locker?.slot?.temperatureZone?.locker?.location
+                          ?.toUpperCase()
+                          .slice(0, 30)}{' '}
+                        -{' '}
+                        <Badge
+                          bg={
+                            locker?.slot?.temperatureZone?.keyTemp === 'FRESH'
+                              ? 'success'
+                              : locker?.slot?.temperatureZone.keyTemp === 'FREEZE'
+                              ? 'info'
+                              : 'warning'
+                          }
+                        >
+                          {locker?.company.name}
+                        </Badge>
+                      </span>
+                    </Col>
+                    <Col xs={1} className='me-4'>
+                      <span
+                        className={
+                          locker?.available > 0
+                            ? 'rounded-pill bg-warning item-locker-list badge'
+                            : 'rounded-pill bg-danger item-locker-list badge'
                         }
                       >
-                        {locker?.company.name}
-                      </Badge>
-                    </span>
-                  </Col>
-                  <Col xs={1} className='me-4'>
-                    <span
-                      className={
-                        locker?.available > 0
-                          ? 'rounded-pill bg-warning item-locker-list badge'
-                          : 'rounded-pill bg-danger item-locker-list badge'
-                      }
-                    >
-                      {locker?.available}
-                    </span>
-                  </Col>
-                </Row>
-              </Container>
-            ))}
+                        {locker?.available}
+                      </span>
+                    </Col>
+                  </Row>
+                </Container>
+              ) : (
+                indx === 0 && (
+                  <div className=' text-center mt-5 pt-5'>
+                    <img className='' alt='no slot' src={images} style={{ height: '256px' }} />
+                    <div className='user-name fs-3 fw-bold text-secondary'>
+                      Aucune réservation
+                    </div>
+                  </div>
+                )
+              )
+            )}
           {orderStore?.slotSize !== null && (
             <Container>
               <div className='mb-3 mt-4 text-secondary '></div>
@@ -517,20 +522,30 @@ console.log(logCatcher.logApp)
                   onChange={(e) => setQty(e.currentTarget.value)}
                   required
                 />
+                <input
+                  className='form-control mb-3'
+                  type='text'
+                  placeholder='Nom du client'
+                  value={clientName}
+                  onChange={(e) => setClientName(e.currentTarget.value)}
+                  required
+                />
+                <input
+                  className='form-control mb-3'
+                  type='email'
+                  placeholder='Email du client'
+                  value={clientEmail}
+                  onChange={(e) => setClientEmail(e.currentTarget.value)}
+                  required
+                />
                 {availableSlot < parseInt(qty) && (
-                  <>
-                    <AlertIsError title={"Attention"} msg={"Vous n'avez pas assez de casiers disponibles dans la zone choisie. Réduisez le nombre de panier"} colorIcon='danger'/>
-                    <Alert variant='danger' className='rounded-0'>
-                      <Alert.Heading className='text-center'>
-                        <i className='ri-error-warning-fill text-danger align-middle fs-3'></i>
-                        <span className='align-middle'> Attention</span>
-                      </Alert.Heading>
-                      <div className='text-center font-75 '>
-                        Vous n'avez pas assez de casiers disponibles dans la zone choisie.
-                        Réduisez le nombre de panier
-                      </div>
-                    </Alert>
-                  </>
+                  <AlertIsError
+                    title={'Attention'}
+                    msg={
+                      "Vous n'avez pas assez de casiers disponibles dans la zone choisie. Réduisez le nombre de panier"
+                    }
+                    colorIcon='danger'
+                  />
                 )}
                 <FormGroup className='mb-3 text-muted' controlId='formBasicCheckbox'>
                   <FormCheck

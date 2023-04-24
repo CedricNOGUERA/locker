@@ -2,6 +2,10 @@
 overflow: hidden;
 }
 
+.logo-app{
+  --animate-duration:1s;
+}
+
 .top-nav{
   height: 60px;
 }
@@ -16,7 +20,7 @@ overflow: hidden;
 }
 
 .auth-form{
-  padding-top: 30%;
+  padding-top: 20%;
   /* background-color: #313030; */
 }
 
@@ -29,12 +33,22 @@ overflow: hidden;
     height:500px;
     
   }
+  .menu-link{
+    padding: 0;
+   }
   }
 
 
+.menu-link{
+ padding: 10px 0;
+}
 .menu-link:hover{
-  background-color: rgb(238, 195, 195);
-  /* background-color: darkgray; */
+  background-color: rgb(255, 255, 255);
+  /* background-color: rgb(238, 195, 195); */
+  color: darkgray;
+  border-start-start-radius: 2px;
+  border-end-start-radius: 2px;
+  border-left: 4px solid #3cb5d3;
   cursor: pointer;
 }
 
@@ -47,6 +61,7 @@ overflow: hidden;
 .company-name{
   font-size: 0.85rem;
   margin: auto;
+  padding-top: 5px;
 }
 
 .cde{
@@ -80,9 +95,13 @@ overflow: hidden;
 }
 
 .ff-agency{
-  /* letter-spacing: 0.05rem; */
   line-height: 20px;
   font-size: 1rem;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.teko{
+  font-size: 3.5rem;
   font-family: 'Lobster', sans-serif;
 }
 
@@ -112,8 +131,8 @@ overflow: hidden;
   }
 }
 
-.user-name{
-  font-family: Changa
+.user-name {
+  font-family: Changa, sans-serif;
 }
 .user-name > b {
   font-size: 0.8rem;

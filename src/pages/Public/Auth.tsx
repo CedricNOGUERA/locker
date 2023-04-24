@@ -9,7 +9,7 @@ import AuthService from '../../service/Auth/AuthService'
 import UserService from '../../service/UserService'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
-import imag from '../../styles/g1348.png'
+import imag from '../../styles/g4523.png'
 
 type Inputs = {
   userName: string
@@ -41,8 +41,6 @@ const Auth = () => {
   useEffect(() => {
     if (token && token?.length > 0) {
       getMyData(token)
-     
-      
     }
   }, [token])
 
@@ -57,16 +55,16 @@ const Auth = () => {
         myData?.memberOf ? myData?.memberOf[0]?.name : null,
         token
       )
-      if(dataStore.company_name === null){
-        setIsError(true)
-        setMsgError("Vous n'êtes affilié à aucune companie, contacté votre adminitrateur")
-      }
     }
   }, [myData])
 
-  
+  if (dataStore.company_name === undefined) {
+    setIsError(true)
+    setCodeError(402)
+    setMsgError("Vous n'êtes affilié à aucune companie, contacté votre adminitrateur")
+  }
 
-
+  console.log(dataStore.company_name)
 
   const signUp: SubmitHandler<Inputs> = (dataz: any, e: any) => {
     e.preventDefault()
@@ -85,13 +83,11 @@ const Auth = () => {
     setFormData(dataz)
   }
 
-
   const getMyData = (token: any) => {
     UserService.me(token).then((response: any) => {
       setMyData(response.data)
     })
   }
-
 
   return (
     <Container fluid className='auth-cont   col-12 col-lg-4 px-0 bg-secondary'>
@@ -101,7 +97,7 @@ const Auth = () => {
       ) : (
         <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
           <Card.Body>
-            <div className='text-center text-light'>
+            <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
               {/* <img
                 alt='Conteneur'
                 src={'https://img.icons8.com/ios-filled/128/exercise.png'}
@@ -109,16 +105,11 @@ const Auth = () => {
                 height={64}*
                  height={64}
               /> */}
-              <img
-                alt='Conteneur'
-                src={imag}
-                width={64}
-                height={64}
-              />
+              <img alt='Conteneur' src={imag} width={64} height={64} />
               {/* <i className="ri-settings-6-line fs-1 align-bottom"></i>{' '} */}
             </div>
-            <div className='text-center mb-5 text-light'>
-              <h4>Locker</h4>
+            <div className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
+              Locker
             </div>
             <Form onSubmit={handleSubmit(signUp)}>
               <Form.Group className='mb-3' controlId='formBasicEmail'>
@@ -184,7 +175,13 @@ const Auth = () => {
                   </Alert>
                 )}
               </Form.Group>
-              {isError && <AlertIsError title={`Erruer : ${codeError}`} msg={msgError} colorIcon='danger' />}
+              {isError && (
+                <AlertIsError
+                  title={`Erruer : ${codeError}`}
+                  msg={msgError}
+                  colorIcon='danger'
+                />
+              )}
 
               <button
                 type='submit'

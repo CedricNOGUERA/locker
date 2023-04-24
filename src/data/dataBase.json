@@ -1,0 +1,135 @@
+{
+    "abonnement": [
+        {
+            "id_abonnement": "258-zer-456-ert",
+            "company_id": "987-zerg-741-rte",
+            "companyName" : "fare rata",
+            "email": true,
+            "sms": true
+        },
+        {
+            "id_abonnement": "654-frv-789-kon",
+            "company_id": "127-gtb-321-nhy",
+            "companyName" : "media nui",
+            "email": true,
+            "sms": false
+        }
+    ],
+    "historiqueAbonnement": [ 
+        {
+            "id_historique_envoi_auto": "814-vsv-81v-6ze-81v",
+            "abonnement_id": "258-zer-456-ert",
+            "period": 
+            [
+                {
+                    "2023": [
+                        {
+                            "month": "05",
+                            "countOfEmail": "300",
+                            "countOfSms": "300"
+                        },
+                        {
+                            "month": "06",
+                            "countOfEmail": "150",
+                            "countOfSms": "150"
+                        },
+                        {
+                            "month": "07",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        },
+                        {
+                            "month": "08",
+                            "countOfEmail": "220",
+                            "countOfSms": "220"
+                        },
+                        {
+                            "month": "09",
+                            "countOfEmail": "230",
+                            "countOfSms": "210"
+                        },
+                        {
+                            "month": "10",
+                            "countOfEmail": "400",
+                            "countOfSms": "400"
+                        },
+                        {
+                            "month": "11",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        },
+                      
+                        {
+                            "month": "12",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        }
+                    ]
+                },
+                {
+                    "2024": [
+                        {
+                            "month": "05",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        },
+                        {
+                            "month": "06",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        },
+                        {
+                            "month": "07",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id_historique_envoi_auto": "87ed8-vsv5-aze45-5edc-e1z2",
+            "abonnement_id": "654-frv-789-kon",
+            "period": [
+                {
+                    "2023": [
+                        {
+                            "month": "05",
+                            "countOfEmail": "300",
+                            "countOfSms": "300"
+                        },
+                        {
+                            "month": "06",
+                            "countOfEmail": "150",
+                            "countOfSms": "150"
+                        },
+                        {
+                            "month": "07",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        }
+                    ]
+                },
+                {
+                    "2024": [
+                        {
+                            "month": "05",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        },
+                        {
+                            "month": "06",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        },
+                        {
+                            "month": "07",
+                            "countOfEmail": "200",
+                            "countOfSms": "200"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

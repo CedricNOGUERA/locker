@@ -3,7 +3,7 @@ import { Button, Col, Row } from "react-bootstrap";
 const ItemList = ({ liv, setSelectedOrder, setSearchOrder, indx, allSlot }: any) => {
   
 
-  const tempZone = liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/5" ? "dry" : liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/4" ? "organic-food"  : (liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/3"  ||liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/1") ? "winter" : ""
+  const tempZone = liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/3" ? "dry" : (liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/4" || liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/2") ? "organic-food"  : (liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/1") ? "winter" : ""
 
   return (
     <div className='my-3 px-3 py-2 bg-white rounded-pill shadow'>

@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom'
 import newOrderDataStore from '../../store/newOrderDataStore'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
+import imag from '../../styles/g4523.png'
+
 
 interface headerProps {
   title: string
@@ -38,7 +40,7 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
     <>
       <Modal show={show} onHide={handleClose} animation={false} centered>
         <Modal.Header closeButton>
-          <Modal.Title>
+          <Modal.Title className='text-secondary'>
             {dataStore.firstname} - ({dataStore.id})
           </Modal.Title>
         </Modal.Header>
@@ -75,16 +77,18 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
       </Modal>
       <Container
         fluid={'lg'}
-        className='top-nav sticky-top bg-secondary py-2 text-light shadow'
+        className='top-nav sticky-top bg-secondary py-2 text-info shadow'
       >
-        <Row className='align-middle'>
+        <Row className='align-middle pe-0'>
           <Col className='ff-agency m-auto '>
-            <i className='ri-settings-6-line fs-4 align-bottom'></i> {title}
+            {/* <i className='ri-settings-6-line fs-4 align-bottom'></i>  */}
+            {/* <img alt='Conteneur' src={imag} width={24} height={24} /> */}
+            <span className='ps-2'>{title}</span>
           </Col>
           <Col
             xs={5}
             md={3}
-            className='company-name text-center align-middle animate__animated animate__bounceIn top-menu border-start '
+            className='company-name align-bottom  text-center align-middle animate__animated animate__bounceIn top-menu border-start fw-bold'
           >
             {dataStore.company_name}{' '}
             <Button variant='secondary' className='' onClick={handleShowOffcanvas}>
@@ -97,9 +101,9 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
         show={showOffcanvas}
         onHide={handleCloseOffcanvas}
         placement='end'
-        className='menu-right '
+        className='menu-right bg-secondary border-0'
       >
-        <Offcanvas.Header closeButton>
+        <Offcanvas.Header closeButton closeVariant='white'>
           <Offcanvas.Title>
             {' '}
             <b className='text-info'>
@@ -107,7 +111,7 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
             </b>
           </Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body className='text-secondary'>
+        <Offcanvas.Body className='text-light'>
           <Container className='mb-3'>
             <Row
               className=' menu-link'
@@ -125,7 +129,7 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
           </Container>
           <Container className='mb-3'>
             <Link
-              className='text-decoration-none text-secondary'
+              className='text-decoration-none text-light'
               to='/nouvelle-commande'
               onClick={handleCloseOffcanvas}
             >
@@ -140,7 +144,7 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
           </Container>
           <Container className='mb-3'>
             <Link
-              className='text-decoration-none text-secondary'
+              className='text-decoration-none text-light'
               to='/map'
               onClick={handleCloseOffcanvas}
             >
@@ -153,7 +157,7 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
               </Row>
             </Link>
           </Container>
-          <Divider className='log-out pb-4 me-4'></Divider>
+          <Divider className='log-out pb-5 me-3'></Divider>
           <Container className='log-out'>
             <Row
               className='menu-link'
@@ -169,7 +173,7 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
                 {' '}
                 <i className='ri-logout-box-r-line fs-5'></i>
               </Col>{' '}
-              <Col className='m-auto user-name'> Log out</Col>
+              <Col className='m-auto user-name'>Déconnexion</Col>
             </Row>
           </Container>
         </Offcanvas.Body>
