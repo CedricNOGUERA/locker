@@ -4,7 +4,6 @@ import images from '../../styles/no-order-min.png'
 
 const OrderList = ({ orderListProps }: any) => {
   const {
-    orderData,
     filteredOrder,
     setSelectedOrder,
     searchOrder,

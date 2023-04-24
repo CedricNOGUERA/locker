@@ -1,11 +1,10 @@
 import React from 'react'
-import { Container, Row, Col, Dropdown, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { Container, Row, Col, Dropdown } from 'react-bootstrap'
 
 const SearchBar = ({ searchBarProps }: any) => {
   const {
     searchOrder,
     setSearchOrder,
-    selectedStore,
     setSelectedStore,
     selectedOrderCity,
     setSelectedOrderCity,

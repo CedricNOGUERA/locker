@@ -35,7 +35,6 @@ const Auth = () => {
   const [codeError, setCodeError] = useState<any>()
 
   const [token, setToken] = useState<any>([])
-  const [formData, setFormData] = useState<any>([])
   const [myData, setMyData] = useState<any>([])
 
   useEffect(() => {
@@ -80,7 +79,6 @@ const Auth = () => {
     )
 
     setIsLoading(false)
-    setFormData(dataz)
   }
 
   const getMyData = (token: any) => {

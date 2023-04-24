@@ -8,9 +8,7 @@ const ScanPage = ({ scanPageProps }: any) => {
   const dataStore = userDataStore((states: any) => states)
   const {
     selectedOrder,
-
     setOrderData,
-    messageApi,
     setSelectedOrder,
     objectif,
   } = scanPageProps

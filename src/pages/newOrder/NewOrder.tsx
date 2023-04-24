@@ -1,17 +1,14 @@
 import React from 'react'
 import {
-  Alert,
   Badge,
   Button,
   Col,
   Container,
   FormCheck,
   FormGroup,
-  Placeholder,
   Row,
 } from 'react-bootstrap'
 import { Link, Navigate, useOutletContext } from 'react-router-dom'
-import Loading from '../../components/ui/Loading'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 import newOrderDataStore from '../../store/newOrderDataStore'
 import userDataStore from '../../store/userDataStore'
@@ -35,7 +32,6 @@ const NewOrder = () => {
   const newOrderDelete = newOrderDataStore((state: any) => state.newOrderDelete)
   const orderStore = newOrderDataStore((state: any) => state)
   const bookingSet = bookingStore((state: any) => state.bookingSet)
-  const bookingstore = bookingStore((state: any) => state)
 
   const logs = logsStore((state: any) => state)
   const logCatcher = logsStore((state: any) => state.logCatcher)
