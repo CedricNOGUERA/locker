@@ -14,21 +14,22 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
   )
   const delivered = orderData['hydra:member']?.filter(
     (order: any) =>
-      order.status === 'receive' &&
+      order.status === 'operin' &&
       order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
   )
 
   return (
     <Container fluid className='bottom-navbar bg-secondary py-1 shadow'>
       <Nav className='justify-content-evenly' activeKey='/home'>
+      
         <Nav.Item className='nav-item text-center'>
-          <Link to='orders-to-retrieve' className='text-info py-1 text-decoration-none'>
-            <i className='ri-inbox-unarchive-line fs-4 text-center'></i>
-            {retrieve?.length > 0 && (
-              <span className='badge rounded-pill bg-danger'>{retrieve?.length}</span>
-            )}
+          <div className='text-center '></div>
+          <Link to='/dashboard' className='text-info py-1 text-decoration-none'>
+            <i className='ri-home-2-line fs-4 '></i>
+           
             <br />
-            {/* Overtime */}A récupérer
+            {/* OperIn */}
+            Home
           </Link>
         </Nav.Item>
         <Nav.Item className='nav-item text-center'>
@@ -39,11 +40,22 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
               <span className='badge rounded-pill bg-danger'>{progress?.length}</span>
             )}
             <br />
-            {/* OperIn */}
-            En cours
+            {/* create */}
+            A livrer
           </Link>
         </Nav.Item>
         <Nav.Item className='nav-item text-center'>
+          <Link to='orders-to-retrieve' className='text-info py-1 text-decoration-none'>
+            <i className='ri-inbox-unarchive-line fs-4 text-center'></i>
+            {retrieve?.length > 0 && (
+              <span className='badge rounded-pill bg-danger'>{retrieve?.length}</span>
+            )}
+            <br />
+            {/* Overtime */}
+            A récupérer
+          </Link>
+        </Nav.Item>
+        {/* <Nav.Item className='nav-item text-center'>
           <Link to='/orders-delivered' className='text-info py-1 text-decoration-none'>
             <i className='ri-inbox-archive-line fs-4 '></i>
             {delivered?.length > 0 && (
@@ -52,7 +64,7 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
             <br />
             Déposées
           </Link>
-        </Nav.Item>
+        </Nav.Item> */}
       </Nav>
     </Container>
   )

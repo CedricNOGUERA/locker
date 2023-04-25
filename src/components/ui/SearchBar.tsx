@@ -20,13 +20,13 @@ const SearchBar = ({ searchBarProps }: any) => {
       <Container
         fluid
         className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill shadow my-auto '
-      >
+        >
         <Dropdown>
           <Container fluid className='px-0'>
             <Row className='align-middle'>
               <Col className='m-auto text-start'>
                 <div className='input-group'>
-                  <i className='ri-search-line me-1'></i>
+                  <i className='ri-search-line me-1 '></i>
                   <input
                     type='text'
                     className='form-control rounded-pill'
@@ -39,12 +39,10 @@ const SearchBar = ({ searchBarProps }: any) => {
                   />
                 </div>
               </Col>
-              <Col xs={1} className='m-auto text-start text-md-end'>
-                <i className='ri-store-2-line fs-5 '></i>{' '}
-              </Col>
-              <Col xs={4} md={2} className='text-start text-md-end'>
+             
+              <Col xs={4} md={2} className='text-end'>
                 <Dropdown.Toggle variant='' id='dropdown-basic' className='text-light'>
-                  {selectedOrderCity}
+                <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '} <span> {selectedOrderCity}</span>
                 </Dropdown.Toggle>
               </Col>
             </Row>
@@ -58,12 +56,12 @@ const SearchBar = ({ searchBarProps }: any) => {
                   setSelectedStore(locker?.location)
                 }}
               >
-                <Row className=''>
+                <Row className=' text-secondary'>
                   <Col xs={3}>
                     {' '}
                     <i className='ri-store-2-line fs-5'></i>
                   </Col>{' '}
-                  <Col className='m-auto user-name'>{locker.city}</Col>
+                  <Col className='m-auto user-name '>{locker.city}</Col>
                 </Row>
               </Dropdown.Item>
             ))}

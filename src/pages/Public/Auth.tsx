@@ -89,7 +89,7 @@ const Auth = () => {
 
   return (
     <Container fluid className='auth-cont   col-12 col-lg-4 px-0 bg-secondary'>
-      {dataStore.token && dataStore.company_name && <Navigate to='/in-progress' />}
+      {dataStore.token && dataStore.company_name && <Navigate to='/dashboard' />}
       {isLoading ? (
         <Loading variant='info' />
       ) : (

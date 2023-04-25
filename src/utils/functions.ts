@@ -20,6 +20,11 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
     };
 
 
+
+  /********************************
+  * Search order by num
+  *******************************/
+
   export const _searchWithRegex = (searchOrder: any, orderByStatus: any, setFilteredOrder: any ) => {
     function escapeRegExp(str: string) {
       return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

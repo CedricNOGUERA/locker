@@ -165,6 +165,23 @@ font-size: 0.75rem;
 
 }
 
+.font-85{
+font-size: 0.85rem;
+
+}
+
+
+
+.dash-placeholder{ 
+
+  height: 80px;
+}
+
+.input-prime{
+  width: 100% !important;
+}
+
+
 /*-------------------------
     Back To Top  
 --------------------------*/

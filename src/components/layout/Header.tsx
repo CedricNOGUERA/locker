@@ -13,9 +13,10 @@ import imag from '../../styles/g4523.png'
 
 interface headerProps {
   title: string
+  icon: string
 }
 
-const Header: React.FC<headerProps> = ({ title }: any) => {
+const Header: React.FC<headerProps> = ({ title, icon }: any) => {
 
   //////////////////////////
   // Store states
@@ -81,7 +82,8 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
       >
         <Row className='align-middle pe-0'>
           <Col className='ff-agency m-auto '>
-            {/* <i className='ri-settings-6-line fs-4 align-bottom'></i>  */}
+            <i className={`${icon} fs-4 align-bottom`}></i> 
+            {/* <i className={`ri-settings-6-line fs-4 align-bottom`}></i>  */}
             {/* <img alt='Conteneur' src={imag} width={24} height={24} /> */}
             <span className='ps-2'>{title}</span>
           </Col>
@@ -127,6 +129,21 @@ const Header: React.FC<headerProps> = ({ title }: any) => {
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
+          {/* <Container className='mb-3'>
+            <Link
+              className='text-decoration-none text-light'
+              to='/dashboard'
+              onClick={handleCloseOffcanvas}
+            >
+              <Row className=' menu-link'>
+                <Col xs={2}>
+                  {' '}
+                  <i className='ri-pie-chart-2-fill fs-5'></i>
+                </Col>{' '}
+                <Col className='m-auto user-name'>Tableau de bord</Col>
+              </Row>
+            </Link>
+          </Container> */}
           <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'

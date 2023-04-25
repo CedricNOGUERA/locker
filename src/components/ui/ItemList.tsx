@@ -7,13 +7,13 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, indx, allSlot }: any)
 
   return (
     <div className='my-3 px-3 py-2 bg-white rounded-pill shadow'>
-      <Row className='py-1'>
+      <Row className='py-'>
         <Col xs={2} className='m-auto'>
           <span key={Math.random()}>
             <img
               alt='Refroidissement icon'
               src={'https://img.icons8.com/color/512/' + tempZone + '.png'}
-              style={{ width: '20px' }}
+              style={{ width: '40px' }}
             />{' '}
           </span>
         </Col>

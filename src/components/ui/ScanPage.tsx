@@ -60,8 +60,12 @@ const ScanPage = ({ scanPageProps }: any) => {
                 onClick={() => setSelectedOrder('')}
               ></i>{' '}
             </Col>
-            <Col className='fw-bold m-auto text-light text-center pe-4'>
-              {selectedOrder?.barcode}
+            <Col className='fw-bold m-auto text-light text-center pe-4 font-85'>
+            <i className='ri-qr-code-fill fs-5 align-bottom float-start'></i>
+            <div className="pt-1" >
+
+             Présentez le qrcode au locker
+            </div>
             </Col>
           </Row>
         </Container>
@@ -93,8 +97,8 @@ const ScanPage = ({ scanPageProps }: any) => {
         </small>
       </Container>
       <Container className='px-2 text-center mt-4'>
-        <div className='bg-secondary text-light rounded-pill shadow'>
-          Saisie manuelle :<p className='text-info fw-bold'>{selectedOrder?.barcode}</p>
+        <div className='bg-secondary text-light rounded-pill shadow py-1'>
+          Saisie manuelle :<p className='text-info fw-bold m-0'>{selectedOrder?.barcode}</p>
         </div>
       </Container>
     </Container>

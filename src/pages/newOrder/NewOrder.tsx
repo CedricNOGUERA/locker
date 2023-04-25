@@ -4,9 +4,14 @@ import {
   Button,
   Col,
   Container,
+  Dropdown,
+  DropdownButton,
+  Form,
   FormCheck,
   FormGroup,
+  InputGroup,
   Row,
+  Spinner,
 } from 'react-bootstrap'
 import { Link, Navigate, useOutletContext } from 'react-router-dom'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
@@ -22,10 +27,14 @@ import AlertIsError from '../../components/ui/warning/AlertIsError'
 import { getError } from '../../utils/errors/GetError'
 import PlaceHolder from '../../components/ui/loading/PlaceHolder'
 import images from '../../styles/no-order-min.png'
+import { AutoComplete } from 'primereact/autocomplete';
 
 const NewOrder = () => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(true)
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isOrderCreate, setIsOrderCreate] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
+
+
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
   const newOrderRegister = newOrderDataStore((state: any) => state.newOrderRegister)
@@ -53,6 +62,9 @@ const NewOrder = () => {
   const [qty, setQty] = React.useState<any>()
   const [clientEmail, setClientEmail] = React.useState<string>()
   const [clientName, setClientName] = React.useState<string>()
+  const [filteredEmail, setFilteredEmail] = React.useState<any>()
+  const [filteredName, setFilteredName] = React.useState<any>([])
+  const [isShowName, setIsShowName] = React.useState<boolean>(false)
 
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
 
@@ -64,9 +76,35 @@ const NewOrder = () => {
 
   const isSlotAvailable = availableSlot >= parseInt(qty)
 
+
+  const autoCompletTab = [
+    { email: 'grout@mail.pf', name: "Grout" },
+    { email: 'fred.fred@miel.pf', name: "grog" },
+  ];
+
+
+
   React.useEffect(() => {
     getBookingAllSlot(dataStore.token)
   }, [dataStore.token])
+
+  React.useEffect(() => {
+    // _searchWithRegex(clientName, autoCompletTab, setFilteredName)
+    
+  }, [clientName])
+  
+  React.useEffect(() => {
+    // _searchWithRegex2(clientEmail, autoCompletTab, setFilteredEmail)
+    
+  }, [clientEmail])
+
+  React.useEffect(() => {
+    if(filteredName && filteredName?.length > 0 ){
+      setIsShowName(true)
+    }else{
+      setIsShowName(false)
+    }
+  }, [clientName])
 
   const getBookingAllSlot = (token: any) => {
     setIsLoading(true)
@@ -121,6 +159,7 @@ const NewOrder = () => {
     const randomCodeMultiOrder = _strRandom('popopop').toLocaleUpperCase()
     const receiveCode = entierAleatoire(10000000, 99999999)
 
+    setIsOrderCreate(true)
     let dataOrder: any =
       parseInt(qty) <= 1
         ? {
@@ -190,14 +229,16 @@ const NewOrder = () => {
           setQty(null)
           getallOrders(dataStore.token)
           getBookingAllSlot(dataStore.token)
+          setIsOrderCreate(false)
 
           Swal.fire({
             position: 'top-end',
             toast: true,
             icon: 'success',
             title: 'Commande validée',
+            text: orderStore.companyName + '-' + randomCode,
             showConfirmButton: false,
-            timer: 3000,
+            timer: 5000,
             timerProgressBar: true,
           })
         })
@@ -235,6 +276,7 @@ const NewOrder = () => {
           newOrderDelete()
           setQty(null)
           getallOrders(dataStore.token)
+          setIsOrderCreate(false)
 
           Swal.fire({
             position: 'top-end',
@@ -242,7 +284,7 @@ const NewOrder = () => {
             icon: 'success',
             title: 'Commande(s) validée(s)',
             showConfirmButton: false,
-            timer: 3000,
+            timer: 5000,
             timerProgressBar: true,
           })
         })
@@ -263,7 +305,6 @@ const NewOrder = () => {
     console.log(dataOrder)
   }
 
-  console.log(logCatcher.logApp)
 
   const newOrderModal = async (e: any) => {
     e.preventDefault()
@@ -331,7 +372,76 @@ const NewOrder = () => {
       }
     }
   }
-  console.log(allSlot)
+  console.log(filteredName)
+
+
+  const _searchWithRegex = (searchOrder: any, orderByStatus: any, setFilteredOrder: any ) => {
+    function escapeRegExp(str: string) {
+      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+  
+    const escapedSearchOrder = escapeRegExp(searchOrder);
+  
+    setFilteredOrder(orderByStatus?.filter((order: any) => {
+      if (escapedSearchOrder?.length > 2) {
+        return order?.name?.match(new RegExp(escapedSearchOrder, "i"));
+      }
+        return undefined;
+      
+
+    }))
+  }
+
+  const _searchWithRegex2 = (searchOrder: any, orderByStatus: any, setFilteredOrder: any ) => {
+    function escapeRegExp(str: string) {
+      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+  
+    const escapedSearchOrder = escapeRegExp(searchOrder);
+  
+    setFilteredOrder(orderByStatus?.filter((order: any) => {
+      if (escapedSearchOrder?.length > 2) {
+        return order?.email?.match(new RegExp(escapedSearchOrder, "i"));
+      }
+        return undefined;
+      
+
+    }))
+  }
+  const search = (event: any) => {
+    // Timeout to emulate a network connection
+    // setTimeout(() => {
+        let _filteredCountries;
+
+        if (!event.query.trim().length) {
+            _filteredCountries = [...autoCompletTab];
+        }
+        else {
+            _filteredCountries = autoCompletTab.filter((country: any) => {
+                return country.email.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+
+        setFilteredEmail(_filteredCountries);
+    // }, 250);
+}
+  const search2 = (event: any) => {
+    // Timeout to emulate a network connection
+    // setTimeout(() => {
+        let _filteredCountries;
+
+        if (!event.query.trim().length) {
+            _filteredCountries = [...autoCompletTab];
+        }
+        else {
+            _filteredCountries = autoCompletTab.filter((country: any) => {
+                return country.name.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+
+        setFilteredName(_filteredCountries);
+    // }, 250);
+}
 
   return (
     <div>
@@ -392,7 +502,7 @@ const NewOrder = () => {
       </Container>
       {isError ? (
         <Container className='text-center mt-3'>
-          <AlertIsError title={`Erreur : ${codeError}`} msg={msgError} colorIcon='danger' />
+          <AlertIsError title={`Erreur : ${codeError === undefined ? "" : codeError}`} msg={msgError} colorIcon='danger' />
         </Container>
       ) : isLoading ? (
         <Container className='text-center mt-3'>
@@ -509,7 +619,7 @@ const NewOrder = () => {
                   )
                 }}
               >
-                <input
+                 <input
                   className='form-control mb-3'
                   type='number'
                   min={1}
@@ -518,22 +628,96 @@ const NewOrder = () => {
                   onChange={(e) => setQty(e.currentTarget.value)}
                   required
                 />
-                <input
+
+                {/* <InputGroup className='mb-3'>
+                  <Form.Control
+                    aria-label='Text input with dropdown button'
+                    type='text'
+                    placeholder='Nom du client'
+                    value={clientName}
+                    onChange={(e) => setClientName(e.currentTarget.value)}
+                    required
+                  />
+
+                  {filteredName && filteredName?.length > 0 && (
+                    <DropdownButton
+                      variant='outline-secondary'
+                      title=''
+                      id='input-group-dropdown-2'
+                      align='end'
+                      show={filteredName && filteredName?.length > 0  ? true : false}
+                    >
+                      {filteredName?.map((client: any) => (
+                        <Dropdown.Item
+                          href='#'
+                          onClick={() => {
+                            setClientName(client?.name)
+                            setFilteredName([])
+                            setIsShowName(false)
+                          }}
+                        >
+                          {client?.name}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  )}
+                </InputGroup> */}
+                {/* <InputGroup className='mb-3'>
+                  <Form.Control
+                    aria-label='Text input with dropdown button'
+                    type='text'
+                    placeholder='Email du client'
+                    value={clientEmail}
+                    onChange={(e) => setClientEmail(e.currentTarget.value)}
+                    required
+                  />
+
+                  {filteredEmail && filteredEmail?.length > 0 && (
+                    <DropdownButton
+                      variant='outline-secondary'
+                      title=''
+                      id='input-group-dropdown-2'
+                      align='end'
+                      onClick={() => setFilteredEmail([])}
+                      show={filteredEmail && filteredEmail?.length > 0  ? true : false}
+                    >
+                      {filteredEmail?.map((client: any) => (
+                        <Dropdown.Item
+                          href='#'
+                          onClick={() => {
+                            setClientEmail(client?.email)
+                            setFilteredEmail([])
+                          }}
+                        >
+                          {client?.email}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  )}
+                </InputGroup> */}
+                <div className='flex flex-wrap'>
+
+                <AutoComplete style={{ width: '300px' }} className="p-inputtext-l" field="name" value={clientName} suggestions={filteredName} completeMethod={search2} onChange={(e) => setClientName(e.value)} />
+                
+                </div>
+                <AutoComplete field="email" value={clientEmail} suggestions={filteredEmail} completeMethod={search} onChange={(e) => setClientEmail(e.value)} />
+               
+                {/* <input
                   className='form-control mb-3'
                   type='text'
                   placeholder='Nom du client'
                   value={clientName}
                   onChange={(e) => setClientName(e.currentTarget.value)}
                   required
-                />
-                <input
+                /> */}
+                {/* <input
                   className='form-control mb-3'
                   type='email'
                   placeholder='Email du client'
                   value={clientEmail}
                   onChange={(e) => setClientEmail(e.currentTarget.value)}
                   required
-                />
+                /> */}
                 {availableSlot < parseInt(qty) && (
                   <AlertIsError
                     title={'Attention'}
@@ -543,7 +727,9 @@ const NewOrder = () => {
                     colorIcon='danger'
                   />
                 )}
-                <FormGroup className='mb-3 text-muted' controlId='formBasicCheckbox'>
+                {/* <Row>
+                  <Col xs={6} className='pe-0' > */}
+                <FormGroup className='mb- text-muted w-auto' controlId='formBasicCheckbox'>
                   <FormCheck
                     type='checkbox'
                     label="Restriction d'âge"
@@ -551,12 +737,28 @@ const NewOrder = () => {
                     onChange={() => setAgeRestriction(!ageRestriction)}
                   />
                 </FormGroup>
+                {/* </Col>
+                  <Col className='ps-0' > */}
+                <i
+                  className='ri-error-warning-line align-bottom text-warning'
+                  title='avez-vous 18 ans '
+                ></i>{' '}
+                <span className='font-75 text-muted'>
+                  Avez-vous 18 ans? Pour tout achat d'alcool vous devez être majeur.
+                </span>
+                {/* </Col>
+                </Row> */}
                 <div className='w-100 text-end'>
                   <Button
                     type='submit'
                     variant='info'
                     className={`rounded-pill text-light ${!isSlotAvailable ? 'disabled' : ''}`}
                   >
+                    {isOrderCreate && 
+                    
+                    <Spinner  size="sm" className='me-1'/>
+                    }
+
                     Valider
                   </Button>
                 </div>

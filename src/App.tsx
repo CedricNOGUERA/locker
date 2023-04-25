@@ -10,14 +10,15 @@ import { Container } from 'react-bootstrap'
 import BookingSlotservice from './service/BookingSlot/BookingSlotservice'
 
 function App() {
+
   const isLogged = userDataStore((state: any) => state.isLogged)
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+
   const token = userDataStore((state: any) => state.token)
 
   const [selectedStore, setSelectedStore] = React.useState<any>('')
   const [allSlot, setAllSlot] = React.useState<any>([])
   const [selectedOrderCity, setSelectedOrderCity] = React.useState<any>('')
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-
   const [orderData, setOrderData] = React.useState<any>([])
 
   React.useEffect(() => {
@@ -60,7 +61,7 @@ function App() {
       {isLoading ? (
         <>
           <Container className='text-center pt-5 vh-100'>
-            <Loading vairant='warnin' className='' />
+            <Loading vairant='warning' className='' />
           </Container>
         </>
       ) : (
@@ -74,10 +75,13 @@ function App() {
             setSelectedOrderCity,
             allSlot,
             setAllSlot,
+             
           ]}
         />
       )}
+      
       <BottomNavBar orderData={orderData} selectedStore={selectedStore} />
+       
     </div>
   )
 }
