@@ -83,8 +83,6 @@ const Header: React.FC<headerProps> = ({ title, icon }: any) => {
         <Row className='align-middle pe-0'>
           <Col className='ff-agency m-auto '>
             <i className={`${icon} fs-4 align-bottom`}></i> 
-            {/* <i className={`ri-settings-6-line fs-4 align-bottom`}></i>  */}
-            {/* <img alt='Conteneur' src={imag} width={24} height={24} /> */}
             <span className='ps-2'>{title}</span>
           </Col>
           <Col

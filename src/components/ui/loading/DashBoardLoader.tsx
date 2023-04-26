@@ -8,19 +8,19 @@ const DashBoardLoader= () => {
   return (
     <>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='dash-placeholder' />
+        <Placeholder xs={12} className='dash-placeholder rounded' />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='dash-placeholder' />
+        <Placeholder xs={12} className='dash-placeholder rounded' />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='dash-placeholder' />
+        <Placeholder xs={12} className='dash-placeholder rounded' />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='dash-placeholder' />
+        <Placeholder xs={12} className='dash-placeholder rounded' />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='dash-placeholder' />
+        <Placeholder xs={12} className='dash- rounded' />
       </Placeholder>
     </>
   )

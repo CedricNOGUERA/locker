@@ -107,14 +107,17 @@ const NewOrder = () => {
   }, [dataStore.token])
 
   React.useEffect(() => {
-    // _searchWithRegex(clientName, autoCompletTab, setFilteredName)
+    _searchWithRegex(clientName, autoCompletTab, setFilteredName)
     
   }, [clientName])
   
   React.useEffect(() => {
-    // _searchWithRegex2(clientEmail, autoCompletTab, setFilteredEmail)
+    _searchWithRegex2(clientEmail, autoCompletTab, setFilteredEmail)
     
   }, [clientEmail])
+console.log(filteredName)
+console.log(clientName)
+console.log(qty)
 
   React.useEffect(() => {
     if(filteredName && filteredName?.length > 0 ){
@@ -123,6 +126,8 @@ const NewOrder = () => {
       setIsShowName(false)
     }
   }, [clientName])
+
+
 
   const getBookingAllSlot = (token: any) => {
     setIsLoading(true)
@@ -574,7 +579,7 @@ const validOrder = (e: any) => {
               locker?.active === true ? (
                 <Container
                   key={locker?.id}
-                  className='my-3 px-2 py-2 bg-white rounded-pill shadow w-100'
+                  className='my-3 px-2 py-2 bg-white rounded shadow w-100'
                   onClick={() => {
                     setBookingSlot(locker['@id'])
                     setAvailableSlot(locker.available)
@@ -632,7 +637,7 @@ const validOrder = (e: any) => {
                         </Badge>
                       </span>
                     </Col>
-                    <Col xs={1} className='me-4'>
+                    <Col xs={1} className='me-4 m-auto'>
                       <span
                         className={
                           locker?.available > 0
@@ -699,6 +704,72 @@ const validOrder = (e: any) => {
                     />
                   </Alert>
                 )}
+                <InputGroup className='mb-3'>
+                  <Form.Control
+                    aria-label='Text input with dropdown button'
+                    value={clientName}
+                    onChange={(e: any) => {
+                      setClientName(e.currentTarget.value)
+                    }}
+                    placeholder='Nom du client*'
+                    required
+                    
+                  />
+                  {filteredName && filteredName?.length > 0 &&
+                  <DropdownButton
+                  variant='secondary'
+                  title=''
+                  className=''
+                  id='input-group-dropdown-2'
+                  align='end'
+                  show={true}
+                  >
+                    {filteredName?.map((user: any) => (
+                      <Dropdown.Item onClick={() => {
+                        setFilteredName([])
+                        setClientName(user.name)}}>{user.name}</Dropdown.Item>
+                      ))}
+                  </DropdownButton>
+                    }
+                </InputGroup>
+                {isMsgErrorName && (
+                  <Alert variant='danger' className='mt-2 py-0'>
+                    <InfoAlert
+                      icon='ri-error-warning-line'
+                      iconColor='danger'
+                      message={'Ce champ est obligatoire'}
+                      fontSize='font-75'
+                    />
+                  </Alert>
+                )}
+                  <InputGroup className='mb-3'>
+                  <Form.Control
+                    aria-label='Text input with dropdown button'
+                    value={clientEmail}
+                    onChange={(e: any) => {
+                      setClientEmail(e.currentTarget.value)
+                    }}
+                    placeholder='Email du client*'
+                    required
+                    
+                  />
+                  {filteredEmail && filteredEmail?.length > 0 &&
+                  <DropdownButton
+                  variant=''
+                  title=''
+                  className=''
+                  id='input-group-dropdown-2'
+                  align='end'
+                  show={true}
+                  >
+                    {filteredEmail?.map((user: any) => (
+                      <Dropdown.Item onClick={() => {
+                        setFilteredEmail([])
+                        setClientEmail(user.email)}}>{user.email}</Dropdown.Item>
+                      ))}
+                  </DropdownButton>
+                    }
+                </InputGroup>
                 {/* <AutoComplete
                   inputClassName='custom-dropdown'
                   className=' mb-3 text-base text-color surface-overlay border-0 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full'
@@ -748,7 +819,6 @@ const validOrder = (e: any) => {
                     colorIcon='danger'
                   />
                 )}
-               
                 <FormGroup className='mb- text-muted w-auto' controlId='formBasicCheckbox'>
                   <FormCheck
                     type='checkbox'
@@ -764,7 +834,6 @@ const validOrder = (e: any) => {
                 <span className='font-75 text-muted'>
                   Avez-vous 18 ans? Pour tout achat d'alcool vous devez être majeur.
                 </span>
-                
                 <div className='w-100 text-end'>
                   <Button
                     type='submit'

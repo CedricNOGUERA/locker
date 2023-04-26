@@ -32,17 +32,17 @@ const DashBoard = () => {
 
  
 
-  // React.useEffect(() => {
-  //   if (allSlot && allSlot['hydra:member']?.length > 0) {
-  //     setIsLoading(false)
-  //   } else {
-  //     if (allSlot && allSlot['hydra:member']?.length < 0) {
-  //       setIsError(true)
-  //       setIsLoading(false)
-  //     }
-  //     setIsLoading(true)
-  //   }
-  // }, [allSlot])
+  React.useEffect(() => {
+    if (allSlot && allSlot['hydra:member']?.length > 0) {
+      setIsLoading(false)
+    } else {
+      if (allSlot && allSlot['hydra:member']?.length < 0) {
+        setIsError(true)
+        setIsLoading(false)
+      }
+      setIsLoading(true)
+    }
+  }, [allSlot])
 
   const rtn = () => {
     window.history.back()
@@ -56,8 +56,8 @@ const DashBoard = () => {
         <Navigate to='/connexion' />
       )} */}
 
-      <div className='ff-agency text-info bg-secondary rounded-pill  py-2 my-4'>
-        <Row>
+      <div className='ff-agency text-info bg-secondary rounded-pill  mt-2 mb-3'>
+        <Row className='p'>
           <Col xs={2}>
             <i
               className='ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill align-bottom'
@@ -69,22 +69,22 @@ const DashBoard = () => {
       </div>
 
       {
-      // isError ? (
-        // <Container className='text-center mt-5'>
-        //   <AlertIsError
-        //     title="Une erreur s'est produite"
-        //     msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
-        //     colorIcon='danger'
-        //   />
-        // </Container>
-      // ) : 
+      isError ? (
+        <Container className='text-center mt-5'>
+          <AlertIsError
+            title="Une erreur s'est produite"
+            msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
+            colorIcon='danger'
+          />
+        </Container>
+      ) : 
       isLoading ? (
         <DashBoardLoader />
       ) : (
         allSlot?.['hydra:member']?.map((slot: any) => (
           <Card
             key={Math.random()}
-            className='py-2 mb-3 border-0 rounded-0 bg-secondary animate__animated'
+            className='py-0 mb-3 border-0 rounded bg-secondary animate__animated'
             onClick={() => {
               setSelectedStore(slot?.slot.temperatureZone.locker.location)
               setSelectedOrderCity(slot?.slot.temperatureZone.locker.city)
@@ -98,9 +98,9 @@ const DashBoard = () => {
                   <span>{slot?.slot.temperatureZone.locker.location} </span> -{' '}
                   <span>{slot?.slot.temperatureZone.locker.city} </span>
                 </Col>
-                <Col className='pe-4 text-end'>
+                <Col className='me-2 text-end'>
                   <Row>
-                    <Col xs={12} className='mb-2'>
+                    <Col xs={12} className='mb-1 py-0'>
                       <Badge bg='info' className='py-2 w-100'>
                         En cours :{' '}
                         {
@@ -113,7 +113,7 @@ const DashBoard = () => {
                         }
                       </Badge>
                     </Col>
-                    <Col>
+                    <Col className='py-0'>
                       <Badge bg='warning' className='py-2 w-100'>
                         A récupérer : {''}
                         {
