@@ -22,9 +22,9 @@ const SearchBar = ({ searchBarProps }: any) => {
         className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill shadow my-auto '
         >
         <Dropdown>
-          <Container fluid className='px-0'>
+          <Container fluid className='px-0 py-0'>
             <Row className='align-middle'>
-              <Col className='m-auto text-start'>
+              <Col className=' text-start '>
                 <div className='input-group'>
                   <i className='ri-search-line me-1 '></i>
                   <input
@@ -40,9 +40,9 @@ const SearchBar = ({ searchBarProps }: any) => {
                 </div>
               </Col>
              
-              <Col xs={4} md={2} className='text-end'>
-                <Dropdown.Toggle variant='' id='dropdown-basic' className='text-light'>
-                <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '} <span> {selectedOrderCity}</span>
+              <Col xs={4} md={2} className='text- p-0 m-auto'>
+                <Dropdown.Toggle as="div" variant='' id='dropdown-basic' className='text-light'>
+                <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '} <span>{selectedOrderCity}</span>
                 </Dropdown.Toggle>
               </Col>
             </Row>

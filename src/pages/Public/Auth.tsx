@@ -96,13 +96,6 @@ const Auth = () => {
         <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
           <Card.Body>
             <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
-              {/* <img
-                alt='Conteneur'
-                src={'https://img.icons8.com/ios-filled/128/exercise.png'}
-                width={64}
-                height={64}*
-                 height={64}
-              /> */}
               <img alt='Conteneur' src={imag} width={64} height={64} />
               {/* <i className="ri-settings-6-line fs-1 align-bottom"></i>{' '} */}
             </div>

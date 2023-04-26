@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  Alert,
   Badge,
   Button,
   Col,
@@ -28,11 +29,23 @@ import { getError } from '../../utils/errors/GetError'
 import PlaceHolder from '../../components/ui/loading/PlaceHolder'
 import images from '../../styles/no-order-min.png'
 import { AutoComplete } from 'primereact/autocomplete';
+import InfoAlert from '../../components/ui/warning/InfoAlert'
+import { SubmitHandler, useForm } from 'react-hook-form'
+
+type Inputs = {
+  // qty: number
+  clientName: any
+  clientEmail: any
+}
+
 
 const NewOrder = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isOrderCreate, setIsOrderCreate] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
+  const [isMsgErrorQty, setIsMsgErrorQty] = React.useState<boolean>(false)
+  const [isMsgErrorName, setIsMsgErrorName] = React.useState<boolean>(false)
+  const [isMsgErrorEmail, setIsMsgErrorEmail] = React.useState<boolean>(false)
 
 
   const isLogged = userDataStore((state: any) => state.isLogged)
@@ -60,8 +73,8 @@ const NewOrder = () => {
 
   const [bookingSlot, setBookingSlot] = React.useState<any>('')
   const [qty, setQty] = React.useState<any>()
-  const [clientEmail, setClientEmail] = React.useState<string>()
-  const [clientName, setClientName] = React.useState<string>()
+  const [clientEmail, setClientEmail] = React.useState<any>()
+  const [clientName, setClientName] = React.useState<any>()
   const [filteredEmail, setFilteredEmail] = React.useState<any>()
   const [filteredName, setFilteredName] = React.useState<any>([])
   const [isShowName, setIsShowName] = React.useState<boolean>(false)
@@ -82,6 +95,11 @@ const NewOrder = () => {
     { email: 'fred.fred@miel.pf', name: "grog" },
   ];
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>()
 
 
   React.useEffect(() => {
@@ -176,8 +194,8 @@ const NewOrder = () => {
 
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
-            clientEmail: clientEmail,
-            clientName: clientName,
+            clientEmail: clientEmail?.email ? clientEmail?.email : clientEmail,
+            clientName: clientName?.name ? clientName?.name : clientName,
 
             totalSlot: parseInt(qty),
           }
@@ -205,8 +223,8 @@ const NewOrder = () => {
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
             temperatureZonePredefined: orderStore.keyTemp,
-            clientEmail: clientEmail,
-            clientName: clientName,
+            clientEmail: clientEmail?.email ? clientEmail?.email : clientEmail,
+            clientName: clientName?.name ? clientName?.name : clientName,
 
             totalSlot: parseInt(qty),
           }))
@@ -366,13 +384,12 @@ const NewOrder = () => {
         timer: 3000,
       })
       if (logs.logApp) {
-        logCatcher(logs.logApp + ' / date :' + now + '-' + "Aucun casier n'est disponible")
+        logCatcher(logs.logApp + " / date :" + now + " - Aucun casier n'est disponible")
       } else {
-        logCatcher('date :' + now + '-' + "Aucun casier n'est disponible")
+        logCatcher("date :" + now + "- Aucun casier n'est disponible")
       }
     }
   }
-  console.log(filteredName)
 
 
   const _searchWithRegex = (searchOrder: any, orderByStatus: any, setFilteredOrder: any ) => {
@@ -408,9 +425,8 @@ const NewOrder = () => {
 
     }))
   }
+
   const search = (event: any) => {
-    // Timeout to emulate a network connection
-    // setTimeout(() => {
         let _filteredCountries;
 
         if (!event.query.trim().length) {
@@ -423,11 +439,8 @@ const NewOrder = () => {
         }
 
         setFilteredEmail(_filteredCountries);
-    // }, 250);
 }
   const search2 = (event: any) => {
-    // Timeout to emulate a network connection
-    // setTimeout(() => {
         let _filteredCountries;
 
         if (!event.query.trim().length) {
@@ -440,8 +453,50 @@ const NewOrder = () => {
         }
 
         setFilteredName(_filteredCountries);
-    // }, 250);
 }
+
+const validOrder = (e: any) => {
+    e.preventDefault()
+
+    if(!clientName){
+      setIsMsgErrorName(true)
+      console.log("object")
+    }
+    if(!clientEmail){
+      setIsMsgErrorEmail(true)
+    }
+    if(!qty){
+      setIsMsgErrorQty(true)
+    }
+    
+    if(clientName && clientEmail && qty){
+
+      setIsError(false)
+      setIsMsgErrorQty(false)
+      setIsMsgErrorName(false)
+      setIsMsgErrorEmail(false)
+      setQty(null)
+      setClientName("")
+      setClientEmail("")
+      
+      newOrderModal(e)
+      newOrderRegister(
+        orderStore.lockerId,
+        orderStore.location,
+        orderStore.bookingSlot,
+        orderStore.companyId,
+        orderStore.companyName,
+        orderStore.lockerType,
+        orderStore.delivererId,
+        orderStore.tempZone,
+        orderStore.keyTemp,
+        orderStore.slotSize,
+        parseInt(qty),
+        ageRestriction === true ? 18 : 0
+      )
+    }
+
+  }
 
   return (
     <div>
@@ -502,7 +557,11 @@ const NewOrder = () => {
       </Container>
       {isError ? (
         <Container className='text-center mt-3'>
-          <AlertIsError title={`Erreur : ${codeError === undefined ? "" : codeError}`} msg={msgError} colorIcon='danger' />
+          <AlertIsError
+            title={`Erreur : ${codeError === undefined ? '' : codeError}`}
+            msg={msgError}
+            colorIcon='danger'
+          />
         </Container>
       ) : isLoading ? (
         <Container className='text-center mt-3'>
@@ -550,11 +609,11 @@ const NewOrder = () => {
                             : 'dry') +
                           '.png'
                         }
-                        style={{ width: '20px' }}
+                        style={{ width: '40px' }}
                       />{' '}
                       {locker?.slot.size} -{' '}
                     </Col>
-                    <Col xs={8} className='px-0 m-auto text-center'>
+                    <Col xs={7} className='px-0 m-auto text-center'>
                       <span className='item-locker-list fw-bold'>
                         {locker?.slot?.temperatureZone?.locker?.location
                           ?.toUpperCase()
@@ -601,123 +660,85 @@ const NewOrder = () => {
             <Container>
               <div className='mb-3 mt-4 text-secondary '></div>
               <form
-                onSubmit={(e) => {
-                  newOrderModal(e)
-                  newOrderRegister(
-                    orderStore.lockerId,
-                    orderStore.location,
-                    orderStore.bookingSlot,
-                    orderStore.companyId,
-                    orderStore.companyName,
-                    orderStore.lockerType,
-                    orderStore.delivererId,
-                    orderStore.tempZone,
-                    orderStore.keyTemp,
-                    orderStore.slotSize,
-                    parseInt(qty),
-                    ageRestriction === true ? 18 : 0
-                  )
-                }}
+                onSubmit={validOrder}
+                // onSubmit={(e) => {
+                //   newOrderModal(e)
+                //   newOrderRegister(
+                //     orderStore.lockerId,
+                //     orderStore.location,
+                //     orderStore.bookingSlot,
+                //     orderStore.companyId,
+                //     orderStore.companyName,
+                //     orderStore.lockerType,
+                //     orderStore.delivererId,
+                //     orderStore.tempZone,
+                //     orderStore.keyTemp,
+                //     orderStore.slotSize,
+                //     parseInt(qty),
+                //     ageRestriction === true ? 18 : 0
+                //   )
+                // }}
               >
-                 <input
-                  className='form-control mb-3'
+                <input
+                  className='form-control mb-3 py-2'
                   type='number'
                   min={1}
-                  placeholder='Nombre de panier'
+                  placeholder='Nombre de panier*'
                   value={qty}
                   onChange={(e) => setQty(e.currentTarget.value)}
                   required
+                  // {...register('qty', { required: true })}
                 />
-
-                {/* <InputGroup className='mb-3'>
-                  <Form.Control
-                    aria-label='Text input with dropdown button'
-                    type='text'
-                    placeholder='Nom du client'
-                    value={clientName}
-                    onChange={(e) => setClientName(e.currentTarget.value)}
-                    required
-                  />
-
-                  {filteredName && filteredName?.length > 0 && (
-                    <DropdownButton
-                      variant='outline-secondary'
-                      title=''
-                      id='input-group-dropdown-2'
-                      align='end'
-                      show={filteredName && filteredName?.length > 0  ? true : false}
-                    >
-                      {filteredName?.map((client: any) => (
-                        <Dropdown.Item
-                          href='#'
-                          onClick={() => {
-                            setClientName(client?.name)
-                            setFilteredName([])
-                            setIsShowName(false)
-                          }}
-                        >
-                          {client?.name}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
-                  )}
-                </InputGroup> */}
-                {/* <InputGroup className='mb-3'>
-                  <Form.Control
-                    aria-label='Text input with dropdown button'
-                    type='text'
-                    placeholder='Email du client'
-                    value={clientEmail}
-                    onChange={(e) => setClientEmail(e.currentTarget.value)}
-                    required
-                  />
-
-                  {filteredEmail && filteredEmail?.length > 0 && (
-                    <DropdownButton
-                      variant='outline-secondary'
-                      title=''
-                      id='input-group-dropdown-2'
-                      align='end'
-                      onClick={() => setFilteredEmail([])}
-                      show={filteredEmail && filteredEmail?.length > 0  ? true : false}
-                    >
-                      {filteredEmail?.map((client: any) => (
-                        <Dropdown.Item
-                          href='#'
-                          onClick={() => {
-                            setClientEmail(client?.email)
-                            setFilteredEmail([])
-                          }}
-                        >
-                          {client?.email}
-                        </Dropdown.Item>
-                      ))}
-                    </DropdownButton>
-                  )}
-                </InputGroup> */}
-                <div className='flex flex-wrap'>
-
-                <AutoComplete style={{ width: '300px' }} className="p-inputtext-l" field="name" value={clientName} suggestions={filteredName} completeMethod={search2} onChange={(e) => setClientName(e.value)} />
-                
-                </div>
-                <AutoComplete field="email" value={clientEmail} suggestions={filteredEmail} completeMethod={search} onChange={(e) => setClientEmail(e.value)} />
-               
-                {/* <input
-                  className='form-control mb-3'
-                  type='text'
-                  placeholder='Nom du client'
+                {isMsgErrorQty && (
+                  <Alert variant='danger' className='mt-2 py-0'>
+                    <InfoAlert
+                      icon='ri-error-warning-line'
+                      iconColor='danger'
+                      message={'Ce champ est obligatoire'}
+                      fontSize='font-75'
+                    />
+                  </Alert>
+                )}
+                <AutoComplete
+                  inputClassName='custom-dropdown'
+                  className=' mb-3 text-base text-color surface-overlay border-0 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full'
+                  field='name'
                   value={clientName}
-                  onChange={(e) => setClientName(e.currentTarget.value)}
-                  required
-                /> */}
-                {/* <input
-                  className='form-control mb-3'
-                  type='email'
-                  placeholder='Email du client'
+                  suggestions={filteredName}
+                  completeMethod={search2}
+                  onChange={(e) => setClientName(e.value)}
+                  placeholder='Nom du client*'
+                />
+                {(isMsgErrorName || (clientName && clientName?.length < 1)) && (
+                  <Alert variant='danger' className='mt-2 py-0 '>
+                    <InfoAlert
+                      icon='ri-error-warning-line'
+                      iconColor='danger'
+                      message={'Ce champ est obligatoire'}
+                      fontSize='font-75'
+                    />
+                  </Alert>
+                )}
+                <AutoComplete
+                  inputClassName='custom-dropdown'
+                  className=' mb-3 text-base text-color surface-overlay border-0 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full'
+                  field='email'
                   value={clientEmail}
-                  onChange={(e) => setClientEmail(e.currentTarget.value)}
-                  required
-                /> */}
+                  suggestions={filteredEmail}
+                  completeMethod={search}
+                  onChange={(e) => setClientEmail(e.value)}
+                  placeholder='Email du client*'
+                />
+                {(isMsgErrorEmail || (clientName && clientName?.length < 1)) && (
+                  <Alert variant='danger' className='mt-2 py-0 '>
+                    <InfoAlert
+                      icon='ri-error-warning-line'
+                      iconColor='danger'
+                      message={'Ce champ est obligatoire'}
+                      fontSize='font-75'
+                    />
+                  </Alert>
+                )}
                 {availableSlot < parseInt(qty) && (
                   <AlertIsError
                     title={'Attention'}
@@ -727,8 +748,7 @@ const NewOrder = () => {
                     colorIcon='danger'
                   />
                 )}
-                {/* <Row>
-                  <Col xs={6} className='pe-0' > */}
+               
                 <FormGroup className='mb- text-muted w-auto' controlId='formBasicCheckbox'>
                   <FormCheck
                     type='checkbox'
@@ -737,8 +757,6 @@ const NewOrder = () => {
                     onChange={() => setAgeRestriction(!ageRestriction)}
                   />
                 </FormGroup>
-                {/* </Col>
-                  <Col className='ps-0' > */}
                 <i
                   className='ri-error-warning-line align-bottom text-warning'
                   title='avez-vous 18 ans '
@@ -746,19 +764,15 @@ const NewOrder = () => {
                 <span className='font-75 text-muted'>
                   Avez-vous 18 ans? Pour tout achat d'alcool vous devez être majeur.
                 </span>
-                {/* </Col>
-                </Row> */}
+                
                 <div className='w-100 text-end'>
                   <Button
                     type='submit'
-                    variant='info'
-                    className={`rounded-pill text-light ${!isSlotAvailable ? 'disabled' : ''}`}
+                    className={`button-auth rounded-pill text-light ${
+                      !isSlotAvailable ? 'disabled' : ''
+                    }`}
                   >
-                    {isOrderCreate && 
-                    
-                    <Spinner  size="sm" className='me-1'/>
-                    }
-
+                    {isOrderCreate && <Spinner size='sm' className='me-1' />}
                     Valider
                   </Button>
                 </div>

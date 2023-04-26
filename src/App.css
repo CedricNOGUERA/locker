@@ -11,7 +11,7 @@ overflow: hidden;
 }
 .button-auth{
   /* background-color: rgb(15, 158, 184); */
-  background-color: rgb(61, 165, 184);
+  background-color: rgb(61, 165, 184) !important;
   border : 2px solid rgb(15, 158, 184);
 }
 .button-auth:active, .button-auth:hover{
@@ -177,8 +177,11 @@ font-size: 0.85rem;
   height: 80px;
 }
 
-.input-prime{
-  width: 100% !important;
+
+.custom-dropdown  {
+  width: 100%;
+  padding: 0;
+  font-size: 3.5rem;
 }
 
 
