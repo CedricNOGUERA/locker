@@ -28,7 +28,7 @@ import AlertIsError from '../../components/ui/warning/AlertIsError'
 import { getError } from '../../utils/errors/GetError'
 import PlaceHolder from '../../components/ui/loading/PlaceHolder'
 import images from '../../styles/no-order-min.png'
-import { AutoComplete } from 'primereact/autocomplete';
+// import { AutoComplete } from 'primereact/autocomplete';
 import InfoAlert from '../../components/ui/warning/InfoAlert'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -699,14 +699,14 @@ const validOrder = (e: any) => {
                     />
                   </Alert>
                 )}
-                <AutoComplete
+                {/* <AutoComplete
                   inputClassName='custom-dropdown'
                   className=' mb-3 text-base text-color surface-overlay border-0 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full'
                   field='name'
                   value={clientName}
                   suggestions={filteredName}
                   completeMethod={search2}
-                  onChange={(e) => setClientName(e.value)}
+                  onChange={(e: any) => setClientName(e.value)}
                   placeholder='Nom du client*'
                 />
                 {(isMsgErrorName || (clientName && clientName?.length < 1)) && (
@@ -726,9 +726,9 @@ const validOrder = (e: any) => {
                   value={clientEmail}
                   suggestions={filteredEmail}
                   completeMethod={search}
-                  onChange={(e) => setClientEmail(e.value)}
+                  onChange={(e: any) => setClientEmail(e.value)}
                   placeholder='Email du client*'
-                />
+                /> */}
                 {(isMsgErrorEmail || (clientName && clientName?.length < 1)) && (
                   <Alert variant='danger' className='mt-2 py-0 '>
                     <InfoAlert
