@@ -50,6 +50,7 @@ const SearchBar = ({ searchBarProps }: any) => {
           <Dropdown.Menu className='shadow'>
             {bookingLocker?.map((locker: any) => (
               <Dropdown.Item
+              key={Math.random()}
                 title={locker?.location}
                 onClick={() => {
                   setSelectedOrderCity(locker?.city)
@@ -57,11 +58,11 @@ const SearchBar = ({ searchBarProps }: any) => {
                 }}
               >
                 <Row className=' text-secondary'>
-                  <Col xs={3}>
+                  <Col xs={2}>
                     {' '}
                     <i className='ri-store-2-line fs-5'></i>
                   </Col>{' '}
-                  <Col className='m-auto user-name '>{locker.city}</Col>
+                  <Col xs={10} className='m-auto user-name '>{locker.location}</Col>
                 </Row>
               </Dropdown.Item>
             ))}

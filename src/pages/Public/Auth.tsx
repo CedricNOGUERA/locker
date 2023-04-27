@@ -9,7 +9,7 @@ import AuthService from '../../service/Auth/AuthService'
 import UserService from '../../service/UserService'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
-import imag from '../../styles/g4523.png'
+import imag from '../../styles/logo512.png'
 
 type Inputs = {
   userName: string
@@ -24,7 +24,6 @@ const Auth = () => {
   } = useForm<Inputs>()
 
   const authLogin = userDataStore((state: any) => state.authLogin)
-  const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -63,8 +62,6 @@ const Auth = () => {
     setMsgError("Vous n'êtes affilié à aucune companie, contacté votre adminitrateur")
   }
 
-  console.log(dataStore.company_name)
-
   const signUp: SubmitHandler<Inputs> = (dataz: any, e: any) => {
     e.preventDefault()
     setIsError(false)
@@ -96,8 +93,7 @@ const Auth = () => {
         <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
           <Card.Body>
             <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
-              <img alt='Conteneur' src={imag} width={64} height={64} />
-              {/* <i className="ri-settings-6-line fs-1 align-bottom"></i>{' '} */}
+              <img alt='Conteneur' src={imag} width={72} height={72} />
             </div>
             <div className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
               Locker

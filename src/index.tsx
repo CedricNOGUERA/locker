@@ -1,80 +1,77 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import reportWebVitals from "./reportWebVitals";
-import "bootstrap/dist/css/bootstrap.min.css";
-// import "primereact/resources/primereact.min.css";  
-// import "primereact/resources/themes/lara-light-indigo/theme.css";  
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Auth from "./pages/Public/Auth";
-import "animate.css";
-import ToRetrieve from "./pages/ToRetrieve";
-import InProgress from "./pages/InProgress";
-import Header from "./components/layout/Header";
-import Delivered from "./pages/Delivered";
-import ScrollToTop from "./components/ui/ScrollToTop";
-import NewOrder from "./pages/newOrder/NewOrder";
-import Map from "./pages/Map/Map";
-import DashBoard from "./pages/DashBoard";
-
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './index.css'
+import App from './App'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
+import reportWebVitals from './reportWebVitals'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Auth from './pages/Public/Auth'
+import 'animate.css'
+import ToRetrieve from './pages/ToRetrieve'
+import InProgress from './pages/InProgress'
+import HeaderDesign from './components/layout/HeaderDesign'
+import Delivered from './pages/Delivered'
+import ScrollToTop from './components/ui/ScrollToTop'
+import NewOrder from './pages/newOrder/NewOrder'
+import Map from './pages/Map/Map'
+import DashBoard from './pages/DashBoard'
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
     children: [
       {
-        path: "dashboard",
+        path: 'dashboard',
         element: (
           <React.Fragment>
-            <Header title="Tableau de bord" icon="ri-pie-chart-2-fill" />
+            <HeaderDesign title='Tableau de bord' icon='ri-pie-chart-2-fill' />
             <DashBoard />
           </React.Fragment>
         ),
       },
       {
-        path: "in-progress",
+        path: 'in-progress',
         element: (
           <React.Fragment>
-            <Header title="A livrer"  icon="ri-file-list-line"/>
+            <HeaderDesign title='A livrer' icon='ri-file-list-line' />
             <InProgress />
           </React.Fragment>
         ),
       },
       {
-        path: "orders-delivered",
+        path: 'orders-delivered',
         element: (
           <React.Fragment>
-            <Header title="Livraisons déposées" icon="" />
+            <HeaderDesign title='Livraisons déposées' icon='' />
             <Delivered />
           </React.Fragment>
         ),
       },
       {
-        path: "orders-to-retrieve",
+        path: 'orders-to-retrieve',
         element: (
           <React.Fragment>
-            <Header title="A récupérer" icon="ri-inbox-unarchive-line" />
+            <HeaderDesign title='A récupérer' icon='ri-inbox-unarchive-line' />
             <ToRetrieve />
           </React.Fragment>
         ),
       },
       {
-        path: "nouvelle-commande",
+        path: 'nouvelle-commande',
         element: (
           <React.Fragment>
-            <Header title="Nouvelle commande" icon="ri-file-add-line" />
+            <HeaderDesign title='Nouvelle commande' icon='ri-file-add-line' />
             <NewOrder />
           </React.Fragment>
         ),
       },
       {
-        path: "map",
+        path: 'map',
         element: (
           <React.Fragment>
-            <Header title="Mapping" icon="" />
+            <HeaderDesign title='Mapping' icon='' />
             <Map />
           </React.Fragment>
         ),
@@ -82,21 +79,17 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/connexion",
+    path: '/connexion',
     element: <Auth />,
-  }
-  
-]);
+  },
+])
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
     <ScrollToTop />
-
   </React.StrictMode>
-);
-serviceWorkerRegistration.register();
-reportWebVitals();
+)
+serviceWorkerRegistration.register()
+reportWebVitals()

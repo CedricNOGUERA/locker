@@ -1,19 +1,17 @@
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Col, Alert } from 'react-bootstrap'
 import QrCode from '../QrCode'
 import userDataStore from '../../store/userDataStore'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
+import BackBar from './BackBar'
 
 const ScanPage = ({ scanPageProps }: any) => {
-  const dataStore = userDataStore((states: any) => states)
-  const {
-    selectedOrder,
-    setOrderData,
-    setSelectedOrder,
-    objectif,
-  } = scanPageProps
+  ////////////////////
+  //Props
+  ///////////////////
+  const { selectedOrder, setOrderData, setSelectedOrder, objectif } = scanPageProps
 
-  console.log(selectedOrder.id)
+  const dataStore = userDataStore((states: any) => states)
 
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
@@ -51,24 +49,8 @@ const ScanPage = ({ scanPageProps }: any) => {
 
   return (
     <Container fluid className='pb-5'>
-      <Container className='my-2'>
-        <Container className='px-3 py-0 bg-secondary rounded-pill shadow my-auto '>
-          <Row>
-            <Col xs={2} md={5} lg={5}>
-              <i
-                className='ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill'
-                onClick={() => setSelectedOrder('')}
-              ></i>{' '}
-            </Col>
-            <Col className='fw-bold m-auto text-light text-center pe-4 font-85'>
-            <i className='ri-qr-code-fill fs-5 align-bottom float-start'></i>
-            <div className="pt-1" >
-
-             Présentez le qrcode au locker
-            </div>
-            </Col>
-          </Row>
-        </Container>
+      <Container className='my-2 px-0'>
+        <BackBar setSelectedOrder={setSelectedOrder} />
       </Container>
       <Container className='text-center text-danger py-0  m-auto opacity-75'>
         <span className='align-middle'>
@@ -82,7 +64,7 @@ const ScanPage = ({ scanPageProps }: any) => {
         </div>
       </Container>
       <Container
-        className='bg-light p-3 w-75   animate__animated animate__fadeInDown'
+        className='bg-light p-3 w-75 border  animate__animated animate__fadeInDown'
         onClick={() => {
           changeStatus()
         }}
@@ -91,15 +73,15 @@ const ScanPage = ({ scanPageProps }: any) => {
           <QrCode data={`${selectedOrder?.barcode}`} />
         </Col>
       </Container>
-      <Container className='text-center text-warning'>
+      <Container className='text-center text-secondary font-85'>
         <small>
-          <b>Respectez le sens du qrcode lors du scan</b>
+          <>Respectez le sens du qrcode lors du scan</>
         </small>
       </Container>
-      <Container className='px-2 text-center mt-4'>
-        <div className='bg-secondary text-light rounded-pill shadow py-1'>
+      <Container className='text-center mt-4 px-0'>
+        <Alert variant='secondary' className='border-2 border-secondary'>
           Saisie manuelle :<p className='text-info fw-bold m-0'>{selectedOrder?.barcode}</p>
-        </div>
+        </Alert>
       </Container>
     </Container>
   )

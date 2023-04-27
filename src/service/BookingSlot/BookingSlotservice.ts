@@ -1,6 +1,7 @@
 import axios from "axios";
 
 
+// const API_URL = "https://backend-locker-itl.herokuapp.com/api/"
 const API_URL = "http://192.168.1.250:8000/api/"
 
 class BookingSlotService {

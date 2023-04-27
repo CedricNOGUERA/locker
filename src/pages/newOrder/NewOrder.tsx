@@ -31,13 +31,14 @@ import images from '../../styles/no-order-min.png'
 // import { AutoComplete } from 'primereact/autocomplete';
 import InfoAlert from '../../components/ui/warning/InfoAlert'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import BackButton from '../../components/ui/BackButton'
+import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 
 type Inputs = {
   // qty: number
   clientName: any
   clientEmail: any
 }
-
 
 const NewOrder = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
@@ -46,7 +47,7 @@ const NewOrder = () => {
   const [isMsgErrorQty, setIsMsgErrorQty] = React.useState<boolean>(false)
   const [isMsgErrorName, setIsMsgErrorName] = React.useState<boolean>(false)
   const [isMsgErrorEmail, setIsMsgErrorEmail] = React.useState<boolean>(false)
-
+  const [isValid, setIsValid] = React.useState<boolean>(false)
 
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
@@ -60,7 +61,7 @@ const NewOrder = () => {
 
   const now: any = Date.now()
 
-  console.log(logs.logApp)
+  
 
   const [
     selectedStore,
@@ -89,11 +90,10 @@ const NewOrder = () => {
 
   const isSlotAvailable = availableSlot >= parseInt(qty)
 
-
   const autoCompletTab = [
-    { email: 'grout@mail.pf', name: "Grout" },
-    { email: 'fred.fred@miel.pf', name: "grog" },
-  ];
+    { email: 'grout@mail.pf', name: 'Grout' },
+    { email: 'fred.fred@miel.pf', name: 'grog' },
+  ]
 
   const {
     register,
@@ -101,33 +101,25 @@ const NewOrder = () => {
     formState: { errors },
   } = useForm<Inputs>()
 
-
   React.useEffect(() => {
     getBookingAllSlot(dataStore.token)
   }, [dataStore.token])
 
   React.useEffect(() => {
     _searchWithRegex(clientName, autoCompletTab, setFilteredName)
-    
   }, [clientName])
-  
-  React.useEffect(() => {
-    _searchWithRegex2(clientEmail, autoCompletTab, setFilteredEmail)
-    
-  }, [clientEmail])
-console.log(filteredName)
-console.log(clientName)
-console.log(qty)
 
   React.useEffect(() => {
-    if(filteredName && filteredName?.length > 0 ){
+    _searchWithRegex2(clientEmail, autoCompletTab, setFilteredEmail)
+  }, [clientEmail])
+
+  React.useEffect(() => {
+    if (filteredName && filteredName?.length > 0) {
       setIsShowName(true)
-    }else{
+    } else {
       setIsShowName(false)
     }
   }, [clientName])
-
-
 
   const getBookingAllSlot = (token: any) => {
     setIsLoading(true)
@@ -237,6 +229,7 @@ console.log(qty)
     if (parseInt(qty) === 1) {
       let config = {
         method: 'post',
+        // url: 'https://backend-locker-itl.herokuapp.com/api/orders',
         url: 'http://192.168.1.250:8000/api/orders',
         headers: {
           Authorization: 'Bearer ' + dataStore.token,
@@ -253,7 +246,7 @@ console.log(qty)
           getallOrders(dataStore.token)
           getBookingAllSlot(dataStore.token)
           setIsOrderCreate(false)
-
+          setIsValid(false)
           Swal.fire({
             position: 'top-end',
             toast: true,
@@ -269,6 +262,7 @@ console.log(qty)
           console.log(getError(error))
           console.log(error.message)
           setMsgError(getError(error))
+          setIsValid(false)
           if (logs.logApp) {
             logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
           } else {
@@ -288,26 +282,31 @@ console.log(qty)
       }
 
       let promises = []
-
+      
       for (let i = 0; i < dataOrder?.length; i++) {
         config.data = dataOrder[i]
         promises.push(axios.request(config))
       }
-
+      
       Promise.all(promises)
-        .then((responses) => {
+      .then((responses) => {
+          const numOrder = responses?.map((num: any) => (
+            num?.data?.barcode
+          ))
           newOrderDelete()
           setQty(null)
           getallOrders(dataStore.token)
           setIsOrderCreate(false)
-
+          console.log(responses)
           Swal.fire({
             position: 'top-end',
             toast: true,
             icon: 'success',
             title: 'Commande(s) validée(s)',
+            // text: orderStore.companyName + '-' + randomCode,
+            text: orderStore.companyName + '-' + numOrder,
             showConfirmButton: false,
-            timer: 5000,
+            timer: 7000,
             timerProgressBar: true,
           })
         })
@@ -328,10 +327,9 @@ console.log(qty)
     console.log(dataOrder)
   }
 
-
   const newOrderModal = async (e: any) => {
     e.preventDefault()
-
+    
     const { value: accept } = await Swal.fire({
       icon: 'question',
       title: 'Voulez-vous valider la commande ?',
@@ -358,6 +356,7 @@ console.log(qty)
       newOrderDelete()
       setQty(null)
       setAgeRestriction(false)
+      setIsValid(false)
       if (logs.logApp) {
         logCatcher(logs.logApp + ' / date :' + now + '-' + 'Commande non finalisée')
       } else {
@@ -384,106 +383,103 @@ console.log(qty)
         position: 'top-end',
         toast: true,
         icon: 'error',
-        title: 'finalisée',
+        title: 'Commande non finalisée',
         showConfirmButton: false,
         timer: 3000,
       })
       if (logs.logApp) {
-        logCatcher(logs.logApp + " / date :" + now + " - Aucun casier n'est disponible")
+        logCatcher(logs.logApp + ' / date :' + now + " - Aucun casier n'est disponible")
       } else {
-        logCatcher("date :" + now + "- Aucun casier n'est disponible")
+        logCatcher('date :' + now + "- Aucun casier n'est disponible")
       }
     }
   }
 
-
-  const _searchWithRegex = (searchOrder: any, orderByStatus: any, setFilteredOrder: any ) => {
+  const _searchWithRegex = (searchOrder: any, orderByStatus: any, setFilteredOrder: any) => {
     function escapeRegExp(str: string) {
-      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     }
-  
-    const escapedSearchOrder = escapeRegExp(searchOrder);
-  
-    setFilteredOrder(orderByStatus?.filter((order: any) => {
-      if (escapedSearchOrder?.length > 2) {
-        return order?.name?.match(new RegExp(escapedSearchOrder, "i"));
-      }
-        return undefined;
-      
 
-    }))
+    const escapedSearchOrder = escapeRegExp(searchOrder)
+
+    setFilteredOrder(
+      orderByStatus?.filter((order: any) => {
+        if (escapedSearchOrder?.length > 2) {
+          return order?.name?.match(new RegExp(escapedSearchOrder, 'i'))
+        }
+        return undefined
+      })
+    )
   }
 
-  const _searchWithRegex2 = (searchOrder: any, orderByStatus: any, setFilteredOrder: any ) => {
+  const _searchWithRegex2 = (searchOrder: any, orderByStatus: any, setFilteredOrder: any) => {
     function escapeRegExp(str: string) {
-      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     }
-  
-    const escapedSearchOrder = escapeRegExp(searchOrder);
-  
-    setFilteredOrder(orderByStatus?.filter((order: any) => {
-      if (escapedSearchOrder?.length > 2) {
-        return order?.email?.match(new RegExp(escapedSearchOrder, "i"));
-      }
-        return undefined;
-      
 
-    }))
+    const escapedSearchOrder = escapeRegExp(searchOrder)
+
+    setFilteredOrder(
+      orderByStatus?.filter((order: any) => {
+        if (escapedSearchOrder?.length > 2) {
+          return order?.email?.match(new RegExp(escapedSearchOrder, 'i'))
+        }
+        return undefined
+      })
+    )
   }
 
-  const search = (event: any) => {
-        let _filteredCountries;
+  // const search = (event: any) => {
+  //   let _filteredCountries
 
-        if (!event.query.trim().length) {
-            _filteredCountries = [...autoCompletTab];
-        }
-        else {
-            _filteredCountries = autoCompletTab.filter((country: any) => {
-                return country.email.toLowerCase().startsWith(event.query.toLowerCase());
-            });
-        }
+  //   if (!event.query.trim().length) {
+  //     _filteredCountries = [...autoCompletTab]
+  //   } else {
+  //     _filteredCountries = autoCompletTab.filter((country: any) => {
+  //       return country.email.toLowerCase().startsWith(event.query.toLowerCase())
+  //     })
+  //   }
 
-        setFilteredEmail(_filteredCountries);
-}
-  const search2 = (event: any) => {
-        let _filteredCountries;
+  //   setFilteredEmail(_filteredCountries)
+  // }
+  // const search2 = (event: any) => {
+  //   let _filteredCountries
 
-        if (!event.query.trim().length) {
-            _filteredCountries = [...autoCompletTab];
-        }
-        else {
-            _filteredCountries = autoCompletTab.filter((country: any) => {
-                return country.name.toLowerCase().startsWith(event.query.toLowerCase());
-            });
-        }
+  //   if (!event.query.trim().length) {
+  //     _filteredCountries = [...autoCompletTab]
+  //   } else {
+  //     _filteredCountries = autoCompletTab.filter((country: any) => {
+  //       return country.name.toLowerCase().startsWith(event.query.toLowerCase())
+  //     })
+  //   }
 
-        setFilteredName(_filteredCountries);
-}
+  //   setFilteredName(_filteredCountries)
+  // }
 
-const validOrder = (e: any) => {
+  const validOrder = (e: any) => {
     e.preventDefault()
 
-    if(!clientName){
+    if (!clientName) {
       setIsMsgErrorName(true)
-      console.log("object")
+      console.log('object')
     }
-    if(!clientEmail){
+    if (!clientEmail) {
       setIsMsgErrorEmail(true)
     }
-    if(!qty){
+    if (!qty) {
       setIsMsgErrorQty(true)
     }
-    
-    if(clientName && clientEmail && qty){
 
+    if (clientName && clientEmail && qty) {
       setIsError(false)
       setIsMsgErrorQty(false)
       setIsMsgErrorName(false)
       setIsMsgErrorEmail(false)
-      setQty(null)
-      setClientName("")
-      setClientEmail("")
       
+      setClientName('')
+      setClientEmail('')
+      setIsValid(true)
+
       newOrderModal(e)
       newOrderRegister(
         orderStore.lockerId,
@@ -500,8 +496,8 @@ const validOrder = (e: any) => {
         ageRestriction === true ? 18 : 0
       )
     }
-
   }
+  console.log(isValid)
 
   return (
     <div>
@@ -511,16 +507,16 @@ const validOrder = (e: any) => {
           <Row>
             {orderStore.lockerId === null ? (
               <>
-                <Col xs={2} md={5} lg={5}>
+                <Col xs={2} md={5} lg={5} className='py-0'>
                   <Link
                     to='/in-progress'
                     className='text-decoration-none'
                     onClick={() => newOrderDelete()}
                   >
-                    <i className='ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill'></i>{' '}
+                    <BackButton />
                   </Link>
                 </Col>
-                <Col className='m-auto text-light text-start pe-4'>
+                <Col className='m-auto text-light text-start pe-4 py-0'>
                   <i className='ri-inbox-fill align-bottom me-2'></i>{' '}
                   <span className='fw-bold'>sélectionnez un locker</span>
                 </Col>
@@ -531,6 +527,7 @@ const validOrder = (e: any) => {
                   xs={2}
                   md={5}
                   lg={5}
+                  className='py-0'
                   onClick={() => {
                     setQty(null)
                     newOrderRegister(
@@ -549,16 +546,42 @@ const validOrder = (e: any) => {
                     )
                   }}
                 >
-                  <i className='ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill'></i>{' '}
+                  <BackButton />
                 </Col>
-                <Col className='m-auto text-light text-start pe-2'>
+                <Col className='m-auto text-light text-start pe-2 py-0'>
                   <i className='ri-shopping-basket-2-line align-bottom me-2'></i>{' '}
                   <span className='fw-bold'>Nombre de panier nécessaire</span>
                 </Col>
               </>
             )}
           </Row>
+
         </Container>
+        {orderStore.lockerId === null ? (
+      <Container>
+        <Row>
+          <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
+          <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
+          <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
+        </Row>
+      </Container>
+        ) : !isValid ? (
+          <Container>
+          <Row>
+            <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
+            <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
+            <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
+          </Row>
+        </Container>
+        ) : isValid && (
+          <Container>
+          <Row>
+            <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
+            <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
+            <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
+          </Row>
+        </Container>
+        ) }
       </Container>
       {isError ? (
         <Container className='text-center mt-3'>
@@ -570,7 +593,8 @@ const validOrder = (e: any) => {
         </Container>
       ) : isLoading ? (
         <Container className='text-center mt-3'>
-          <PlaceHolder paddingYFirst='4' />
+          {/* <PlaceHolder paddingYFirst='4' /> */}
+          <DashBoardLoader />
         </Container>
       ) : (
         <Container className='pb-5'>
@@ -616,25 +640,11 @@ const validOrder = (e: any) => {
                         }
                         style={{ width: '40px' }}
                       />{' '}
-                      {locker?.slot.size} -{' '}
                     </Col>
+                    <Col className='m-auto pe-0 fw-bold'>{locker?.slot.size}</Col>
                     <Col xs={7} className='px-0 m-auto text-center'>
-                      <span className='item-locker-list fw-bold'>
-                        {locker?.slot?.temperatureZone?.locker?.location
-                          ?.toUpperCase()
-                          .slice(0, 30)}{' '}
-                        -{' '}
-                        <Badge
-                          bg={
-                            locker?.slot?.temperatureZone?.keyTemp === 'FRESH'
-                              ? 'success'
-                              : locker?.slot?.temperatureZone.keyTemp === 'FREEZE'
-                              ? 'info'
-                              : 'warning'
-                          }
-                        >
-                          {locker?.company.name}
-                        </Badge>
+                      <span className='item-locker-lis'>
+                        {locker?.slot?.temperatureZone?.locker?.location?.toUpperCase()}
                       </span>
                     </Col>
                     <Col xs={1} className='me-4 m-auto'>
@@ -664,36 +674,25 @@ const validOrder = (e: any) => {
           {orderStore?.slotSize !== null && (
             <Container>
               <div className='mb-3 mt-4 text-secondary '></div>
-              <form
-                onSubmit={validOrder}
-                // onSubmit={(e) => {
-                //   newOrderModal(e)
-                //   newOrderRegister(
-                //     orderStore.lockerId,
-                //     orderStore.location,
-                //     orderStore.bookingSlot,
-                //     orderStore.companyId,
-                //     orderStore.companyName,
-                //     orderStore.lockerType,
-                //     orderStore.delivererId,
-                //     orderStore.tempZone,
-                //     orderStore.keyTemp,
-                //     orderStore.slotSize,
-                //     parseInt(qty),
-                //     ageRestriction === true ? 18 : 0
-                //   )
-                // }}
-              >
-                <input
-                  className='form-control mb-3 py-2'
-                  type='number'
-                  min={1}
-                  placeholder='Nombre de panier*'
-                  value={qty}
-                  onChange={(e) => setQty(e.currentTarget.value)}
-                  required
-                  // {...register('qty', { required: true })}
-                />
+              <form onSubmit={validOrder}>
+                <div>
+                  <InputGroup className='mb-3'>
+                    <InputGroup.Text id='basic-addon1' className='border-end-0 bg-light'>
+                      <i className='ri-shopping-basket-2-line text-secondary'></i>
+                    </InputGroup.Text>
+                    <Form.Control
+                      aria-label='panier'
+                      aria-describedby='basic-addon1'
+                      className='border-start-0'
+                      type='number'
+                      min={1}
+                      placeholder='Nombre de panier*'
+                      value={qty}
+                      onChange={(e) => setQty(e.currentTarget.value)}
+                      required
+                    />
+                  </InputGroup>
+                </div>{' '}
                 {isMsgErrorQty && (
                   <Alert variant='danger' className='mt-2 py-0'>
                     <InfoAlert
@@ -705,6 +704,9 @@ const validOrder = (e: any) => {
                   </Alert>
                 )}
                 <InputGroup className='mb-3'>
+                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-light'>
+                    <i className='ri-user-line text-secondary'></i>
+                  </InputGroup.Text>
                   <Form.Control
                     aria-label='Text input with dropdown button'
                     value={clientName}
@@ -713,24 +715,29 @@ const validOrder = (e: any) => {
                     }}
                     placeholder='Nom du client*'
                     required
-                    
+                    className='border-start-0'
                   />
-                  {filteredName && filteredName?.length > 0 &&
-                  <DropdownButton
-                  variant='secondary'
-                  title=''
-                  className=''
-                  id='input-group-dropdown-2'
-                  align='end'
-                  show={true}
-                  >
-                    {filteredName?.map((user: any) => (
-                      <Dropdown.Item onClick={() => {
-                        setFilteredName([])
-                        setClientName(user.name)}}>{user.name}</Dropdown.Item>
+                  {filteredName && filteredName?.length > 0 && (
+                    <DropdownButton
+                      variant='secondary'
+                      title=''
+                      className=''
+                      id='input-group-dropdown-2'
+                      align='end'
+                      show={true}
+                    >
+                      {filteredName?.map((user: any) => (
+                        <Dropdown.Item
+                          onClick={() => {
+                            setFilteredName([])
+                            setClientName(user.name)
+                          }}
+                        >
+                          {user.name}
+                        </Dropdown.Item>
                       ))}
-                  </DropdownButton>
-                    }
+                    </DropdownButton>
+                  )}
                 </InputGroup>
                 {isMsgErrorName && (
                   <Alert variant='danger' className='mt-2 py-0'>
@@ -742,7 +749,11 @@ const validOrder = (e: any) => {
                     />
                   </Alert>
                 )}
-                  <InputGroup className='mb-3'>
+                <InputGroup className='mb-3'>
+                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-light'>
+                    <i className='ri-at-line text-secondary'></i>
+                    {/* @ */}
+                  </InputGroup.Text>
                   <Form.Control
                     aria-label='Text input with dropdown button'
                     value={clientEmail}
@@ -751,55 +762,30 @@ const validOrder = (e: any) => {
                     }}
                     placeholder='Email du client*'
                     required
-                    
+                    className='border-start-0'
                   />
-                  {filteredEmail && filteredEmail?.length > 0 &&
-                  <DropdownButton
-                  variant=''
-                  title=''
-                  className=''
-                  id='input-group-dropdown-2'
-                  align='end'
-                  show={true}
-                  >
-                    {filteredEmail?.map((user: any) => (
-                      <Dropdown.Item onClick={() => {
-                        setFilteredEmail([])
-                        setClientEmail(user.email)}}>{user.email}</Dropdown.Item>
+                  {filteredEmail && filteredEmail?.length > 0 && (
+                    <DropdownButton
+                      variant=''
+                      title=''
+                      className=''
+                      id='input-group-dropdown-2'
+                      align='end'
+                      show={true}
+                    >
+                      {filteredEmail?.map((user: any) => (
+                        <Dropdown.Item
+                          onClick={() => {
+                            setFilteredEmail([])
+                            setClientEmail(user.email)
+                          }}
+                        >
+                          {user.email}
+                        </Dropdown.Item>
                       ))}
-                  </DropdownButton>
-                    }
+                    </DropdownButton>
+                  )}
                 </InputGroup>
-                {/* <AutoComplete
-                  inputClassName='custom-dropdown'
-                  className=' mb-3 text-base text-color surface-overlay border-0 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full'
-                  field='name'
-                  value={clientName}
-                  suggestions={filteredName}
-                  completeMethod={search2}
-                  onChange={(e: any) => setClientName(e.value)}
-                  placeholder='Nom du client*'
-                />
-                {(isMsgErrorName || (clientName && clientName?.length < 1)) && (
-                  <Alert variant='danger' className='mt-2 py-0 '>
-                    <InfoAlert
-                      icon='ri-error-warning-line'
-                      iconColor='danger'
-                      message={'Ce champ est obligatoire'}
-                      fontSize='font-75'
-                    />
-                  </Alert>
-                )}
-                <AutoComplete
-                  inputClassName='custom-dropdown'
-                  className=' mb-3 text-base text-color surface-overlay border-0 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full'
-                  field='email'
-                  value={clientEmail}
-                  suggestions={filteredEmail}
-                  completeMethod={search}
-                  onChange={(e: any) => setClientEmail(e.value)}
-                  placeholder='Email du client*'
-                /> */}
                 {(isMsgErrorEmail || (clientName && clientName?.length < 1)) && (
                   <Alert variant='danger' className='mt-2 py-0 '>
                     <InfoAlert
@@ -837,9 +823,8 @@ const validOrder = (e: any) => {
                 <div className='w-100 text-end'>
                   <Button
                     type='submit'
-                    className={`button-auth rounded-pill text-light ${
-                      !isSlotAvailable ? 'disabled' : ''
-                    }`}
+                    className={`button-auth rounded-pill text-light
+                    `}
                   >
                     {isOrderCreate && <Spinner size='sm' className='me-1' />}
                     Valider

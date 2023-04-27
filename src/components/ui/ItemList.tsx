@@ -1,6 +1,6 @@
 import { Button, Col, Row } from "react-bootstrap";
 
-const ItemList = ({ liv, setSelectedOrder, setSearchOrder, indx, allSlot }: any) => {
+const ItemList = ({ liv, setSelectedOrder, setSearchOrder }: any) => {
   
 
   const tempZone = liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/3" ? "dry" : (liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/4" || liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/2") ? "organic-food"  : (liv?.bookingSlot.slot.temperatureZone["@id"] === "/api/temperature_zones/1") ? "winter" : ""
@@ -17,7 +17,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, indx, allSlot }: any)
             />{' '}
           </span>
         </Col>
-        <Col className='text-secondary text-center align-middle m-auto py-0'><small>{liv?.barcode}</small></Col>
+        <Col className='ff-agency text-secondary text-center align-middle m-auto py-0'><small>{liv?.barcode}</small></Col>
         <Col xs={2} className='m-auto me-3 py-0'>
           <Button
             variant='outline-info'

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import userDataStore from '../store/userDataStore'
-import { useOutletContext, Link } from 'react-router-dom'
+import { useOutletContext, Link, Navigate } from 'react-router-dom'
 import DashBoardLoader from '../components/ui/loading/DashBoardLoader'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 
@@ -11,7 +11,6 @@ const DashBoard = () => {
   /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
-  const [isTest, setIsTest] = React.useState<boolean>(false)
 
   //////////////////////////
   // Store & context state
@@ -48,14 +47,12 @@ const DashBoard = () => {
     window.history.back()
   }
 
-  console.log(allSlot)
 
   return (
     <Container className='text-center mt-2'>
-      {/* {(!isLogged || !dataStore.userToken || !dataStore.company_name) && (
+      {(!isLogged || !dataStore.token || !dataStore.company_name) && (
         <Navigate to='/connexion' />
-      )} */}
-
+      )}
       <div className='ff-agency text-info bg-secondary rounded-pill  mt-2 mb-3'>
         <Row className='p'>
           <Col xs={2}>
@@ -68,8 +65,7 @@ const DashBoard = () => {
         </Row>
       </div>
 
-      {
-      isError ? (
+      {isError ? (
         <Container className='text-center mt-5'>
           <AlertIsError
             title="Une erreur s'est produite"
@@ -77,8 +73,7 @@ const DashBoard = () => {
             colorIcon='danger'
           />
         </Container>
-      ) : 
-      isLoading ? (
+      ) : isLoading ? (
         <DashBoardLoader />
       ) : (
         allSlot?.['hydra:member']?.map((slot: any) => (

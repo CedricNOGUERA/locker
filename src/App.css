@@ -9,6 +9,11 @@ overflow: hidden;
 .top-nav{
   height: 60px;
 }
+.top-nav-design, .bottom-navbar{
+  background-color: #343a40;
+  /* background-color: #1f2b2b; */
+  height: 60px;
+}
 .button-auth{
   /* background-color: rgb(15, 158, 184); */
   background-color: rgb(61, 165, 184) !important;
@@ -91,7 +96,7 @@ overflow: hidden;
 }
 
 .nav-item{
-  width: 30%;
+  width: 20%;
 }
 
 .ff-agency{
@@ -182,6 +187,12 @@ font-size: 0.85rem;
   width: 100%;
   padding: 0;
   font-size: 3.5rem;
+}
+
+.manual{
+
+  opacity: 100%;
+
 }
 
 
