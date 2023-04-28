@@ -164,7 +164,7 @@ const Auth = () => {
               </Form.Group>
               {isError && (
                 <AlertIsError
-                  title={`Erruer : ${codeError}`}
+                  title={`Erreur : ${codeError}`}
                   msg={msgError}
                   colorIcon='danger'
                 />

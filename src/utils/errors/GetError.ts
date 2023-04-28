@@ -86,7 +86,7 @@ export const getError = (error: any) => {
   
   // Not Found errors (422)
   const isUnprocessableContent = (error: any) => {
-    return ((error.response.status === 422 || error.response.status === "ERR_BAD_REQUEST") && (error.response.statusText === "Unprocessable Content" || error.message === "Request failed with status code 422"));
+    return ((error?.response?.status === 422 || error?.response?.status === "ERR_BAD_REQUEST") && (error?.response?.statusText === "Unprocessable Content" || error?.message === "Request failed with status code 422"));
   };
   
   const handleUnprocessableContent = (error: any) => {

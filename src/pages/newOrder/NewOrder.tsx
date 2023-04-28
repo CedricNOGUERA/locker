@@ -33,6 +33,7 @@ import InfoAlert from '../../components/ui/warning/InfoAlert'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import BackButton from '../../components/ui/BackButton'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
+import ClientService from '../../service/Client/ClientService'
 
 type Inputs = {
   // qty: number
@@ -61,8 +62,6 @@ const NewOrder = () => {
 
   const now: any = Date.now()
 
-  
-
   const [
     selectedStore,
     setSelectedStore,
@@ -76,9 +75,11 @@ const NewOrder = () => {
   const [qty, setQty] = React.useState<any>()
   const [clientEmail, setClientEmail] = React.useState<any>()
   const [clientName, setClientName] = React.useState<any>()
-  const [filteredEmail, setFilteredEmail] = React.useState<any>()
+  const [filteredEmail, setFilteredEmail] = React.useState<any>([])
   const [filteredName, setFilteredName] = React.useState<any>([])
-  const [isShowName, setIsShowName] = React.useState<boolean>(false)
+  const [autoCompletTab, setAutoCompletTab] = React.useState<any>([])
+  const [choosedName, setChoosedName] = React.useState<any>('')
+  const [choosedEmail, setChoosedEmail] = React.useState<any>('')
 
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
 
@@ -90,10 +91,11 @@ const NewOrder = () => {
 
   const isSlotAvailable = availableSlot >= parseInt(qty)
 
-  const autoCompletTab = [
-    { email: 'grout@mail.pf', name: 'Grout' },
-    { email: 'fred.fred@miel.pf', name: 'grog' },
-  ]
+  // const autoCompletTab = [
+  //   { email: 'grout@mail.pf', name: 'Grout' },
+  //   { email: 'fred.fred@miel.pf', name: 'Fred' },
+  //   { email: 'grout.galax@miel.pf', name: 'Grout' },
+  // ]
 
   const {
     register,
@@ -103,23 +105,39 @@ const NewOrder = () => {
 
   React.useEffect(() => {
     getBookingAllSlot(dataStore.token)
+    getClients(dataStore.token)
   }, [dataStore.token])
 
   React.useEffect(() => {
-    _searchWithRegex(clientName, autoCompletTab, setFilteredName)
+    _searchWithRegex(clientName, autoCompletTab["hydra:member"], setFilteredName)
   }, [clientName])
 
   React.useEffect(() => {
-    _searchWithRegex2(clientEmail, autoCompletTab, setFilteredEmail)
+    _searchWithRegex2(clientEmail, autoCompletTab["hydra:member"], setFilteredEmail)
   }, [clientEmail])
 
-  React.useEffect(() => {
-    if (filteredName && filteredName?.length > 0) {
-      setIsShowName(true)
-    } else {
-      setIsShowName(false)
-    }
-  }, [clientName])
+  console.log(autoCompletTab)
+  console.log(clientEmail)
+  
+  // React.useEffect(() => {
+  //   if (filteredName && filteredName?.length > 0) {
+  //     setIsShowName(true)
+  //   } else {
+  //     setIsShowName(false)
+  //   }
+  // }, [clientName])
+
+  const getClients = (token: any) => {
+    ClientService.allClients(token)
+    .then((response :any) => {
+      setAutoCompletTab(response.data)
+    })
+    .catch((error) => {
+      setIsError(true)
+      setMsgError(getError(error))
+      setCodeError(error.response.data.code)
+    })
+  }
 
   const getBookingAllSlot = (token: any) => {
     setIsLoading(true)
@@ -191,8 +209,8 @@ const NewOrder = () => {
 
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
-            clientEmail: clientEmail?.email ? clientEmail?.email : clientEmail,
-            clientName: clientName?.name ? clientName?.name : clientName,
+            clientEmail: choosedEmail ? choosedEmail: clientEmail?.email ? clientEmail?.email : clientEmail,
+            clientName: choosedName ? choosedName : clientName?.name ? clientName?.name : clientName,
 
             totalSlot: parseInt(qty),
           }
@@ -220,8 +238,8 @@ const NewOrder = () => {
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
             temperatureZonePredefined: orderStore.keyTemp,
-            clientEmail: clientEmail?.email ? clientEmail?.email : clientEmail,
-            clientName: clientName?.name ? clientName?.name : clientName,
+            clientEmail: choosedEmail ? choosedEmail : clientEmail?.email ? clientEmail?.email : clientEmail,
+            clientName: choosedName ? choosedName : clientName?.name ? clientName?.name : clientName,
 
             totalSlot: parseInt(qty),
           }))
@@ -282,17 +300,15 @@ const NewOrder = () => {
       }
 
       let promises = []
-      
+
       for (let i = 0; i < dataOrder?.length; i++) {
         config.data = dataOrder[i]
         promises.push(axios.request(config))
       }
-      
+
       Promise.all(promises)
-      .then((responses) => {
-          const numOrder = responses?.map((num: any) => (
-            num?.data?.barcode
-          ))
+        .then((responses) => {
+          const numOrder = responses?.map((num: any) => num?.data?.barcode)
           newOrderDelete()
           setQty(null)
           getallOrders(dataStore.token)
@@ -317,6 +333,7 @@ const NewOrder = () => {
           logCatcher(error.response.statusText)
           setMsgError(getError(error))
           popUpError(error.response.status, error.response.statusText)
+          setIsOrderCreate(false)
           if (logs.logApp) {
             logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
           } else {
@@ -329,7 +346,7 @@ const NewOrder = () => {
 
   const newOrderModal = async (e: any) => {
     e.preventDefault()
-    
+
     const { value: accept } = await Swal.fire({
       icon: 'question',
       title: 'Voulez-vous valider la commande ?',
@@ -395,12 +412,12 @@ const NewOrder = () => {
     }
   }
 
-  const _searchWithRegex = (searchOrder: any, orderByStatus: any, setFilteredOrder: any) => {
+  const _searchWithRegex = (search: any, orderByStatus: any, setFilteredOrder: any) => {
     function escapeRegExp(str: string) {
       return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     }
 
-    const escapedSearchOrder = escapeRegExp(searchOrder)
+    const escapedSearchOrder = escapeRegExp(search)
 
     setFilteredOrder(
       orderByStatus?.filter((order: any) => {
@@ -429,33 +446,6 @@ const NewOrder = () => {
     )
   }
 
-  // const search = (event: any) => {
-  //   let _filteredCountries
-
-  //   if (!event.query.trim().length) {
-  //     _filteredCountries = [...autoCompletTab]
-  //   } else {
-  //     _filteredCountries = autoCompletTab.filter((country: any) => {
-  //       return country.email.toLowerCase().startsWith(event.query.toLowerCase())
-  //     })
-  //   }
-
-  //   setFilteredEmail(_filteredCountries)
-  // }
-  // const search2 = (event: any) => {
-  //   let _filteredCountries
-
-  //   if (!event.query.trim().length) {
-  //     _filteredCountries = [...autoCompletTab]
-  //   } else {
-  //     _filteredCountries = autoCompletTab.filter((country: any) => {
-  //       return country.name.toLowerCase().startsWith(event.query.toLowerCase())
-  //     })
-  //   }
-
-  //   setFilteredName(_filteredCountries)
-  // }
-
   const validOrder = (e: any) => {
     e.preventDefault()
 
@@ -470,14 +460,13 @@ const NewOrder = () => {
       setIsMsgErrorQty(true)
     }
 
-    if (clientName && clientEmail && qty) {
+    if ((clientName || choosedName) && (clientEmail || choosedEmail) && qty) {
       setIsError(false)
       setIsMsgErrorQty(false)
       setIsMsgErrorName(false)
       setIsMsgErrorEmail(false)
+
       
-      setClientName('')
-      setClientEmail('')
       setIsValid(true)
 
       newOrderModal(e)
@@ -529,6 +518,8 @@ const NewOrder = () => {
                   lg={5}
                   className='py-0'
                   onClick={() => {
+                    setChoosedName('')
+                    setChoosedEmail('')
                     setQty(null)
                     newOrderRegister(
                       null,
@@ -555,33 +546,34 @@ const NewOrder = () => {
               </>
             )}
           </Row>
-
         </Container>
         {orderStore.lockerId === null ? (
-      <Container>
-        <Row>
-          <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
-          <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
-          <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
-        </Row>
-      </Container>
+          <Container>
+            <Row>
+              <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
+              <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
+              <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
+            </Row>
+          </Container>
         ) : !isValid ? (
           <Container>
-          <Row>
-            <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
-            <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
-            <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
-          </Row>
-        </Container>
-        ) : isValid && (
-          <Container>
-          <Row>
-            <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
-            <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
-            <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
-          </Row>
-        </Container>
-        ) }
+            <Row>
+              <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
+              <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
+              <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
+            </Row>
+          </Container>
+        ) : (
+          isValid && (
+            <Container>
+              <Row>
+                <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
+                <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
+                <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
+              </Row>
+            </Container>
+          )
+        )}
       </Container>
       {isError ? (
         <Container className='text-center mt-3'>
@@ -709,9 +701,11 @@ const NewOrder = () => {
                   </InputGroup.Text>
                   <Form.Control
                     aria-label='Text input with dropdown button'
-                    value={clientName}
+                    value={choosedName ? choosedName : clientName}
                     onChange={(e: any) => {
-                      setClientName(e.currentTarget.value)
+                      choosedName
+                        ? setChoosedName(e.currentTarget.value)
+                        : setClientName(e.currentTarget.value)
                     }}
                     placeholder='Nom du client*'
                     required
@@ -729,11 +723,13 @@ const NewOrder = () => {
                       {filteredName?.map((user: any) => (
                         <Dropdown.Item
                           onClick={() => {
+                            setChoosedName(user.name)
+                            setChoosedEmail(user.email)
                             setFilteredName([])
-                            setClientName(user.name)
+                            setFilteredEmail([])
                           }}
                         >
-                          {user.name}
+                          {user.name} - {user.email}
                         </Dropdown.Item>
                       ))}
                     </DropdownButton>
@@ -752,13 +748,14 @@ const NewOrder = () => {
                 <InputGroup className='mb-3'>
                   <InputGroup.Text id='basic-addon1' className='border-end-0 bg-light'>
                     <i className='ri-at-line text-secondary'></i>
-                    {/* @ */}
                   </InputGroup.Text>
                   <Form.Control
                     aria-label='Text input with dropdown button'
-                    value={clientEmail}
+                    value={choosedEmail ? choosedEmail : clientEmail}
                     onChange={(e: any) => {
-                      setClientEmail(e.currentTarget.value)
+                      choosedEmail
+                        ? setChoosedEmail(e.currentTarget.value)
+                        : setClientEmail(e.currentTarget.value)
                     }}
                     placeholder='Email du client*'
                     required
@@ -776,8 +773,8 @@ const NewOrder = () => {
                       {filteredEmail?.map((user: any) => (
                         <Dropdown.Item
                           onClick={() => {
+                            setChoosedEmail(user.email)
                             setFilteredEmail([])
-                            setClientEmail(user.email)
                           }}
                         >
                           {user.email}
@@ -786,7 +783,7 @@ const NewOrder = () => {
                     </DropdownButton>
                   )}
                 </InputGroup>
-                {(isMsgErrorEmail || (clientName && clientName?.length < 1)) && (
+                {(isMsgErrorEmail && (clientName && clientName?.length < 1) && (choosedEmail && choosedEmail?.length < 1)) && (
                   <Alert variant='danger' className='mt-2 py-0 '>
                     <InfoAlert
                       icon='ri-error-warning-line'
