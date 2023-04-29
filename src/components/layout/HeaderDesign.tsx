@@ -48,7 +48,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
           <Col className='ff-agency m-auto '>
             <i className={`${icon} fs-4 align-bottom`}></i>
           </Col>
-          <Col xs={8} md={3} className='ff-agency m-auto text-center '>
+          <Col xs={8} className='ff-agency m-auto text-center '>
             <div className='font-75 text-light'>{dataStore.company_name} </div>
             <div className=''>{title}</div>
           </Col>

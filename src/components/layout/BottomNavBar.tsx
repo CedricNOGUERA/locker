@@ -21,12 +21,12 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
   const retrieve = orderData['hydra:member']?.filter(
     (order: any) =>
       order.status === 'overtime' &&
-      order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
+      order.bookingSlot.slot?.temperatureZone.locker.location === selectedStore
   )
   const progress = orderData['hydra:member']?.filter(
     (order: any) =>
       order.status === 'created' &&
-      order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
+      order.bookingSlot.slot?.temperatureZone.locker.location === selectedStore
   )
  
 

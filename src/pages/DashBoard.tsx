@@ -1,5 +1,5 @@
 import React from 'react'
-import { Badge, Card, Col, Container, Row } from 'react-bootstrap'
+import { Alert, Badge, Card, Col, Container, Row } from 'react-bootstrap'
 import userDataStore from '../store/userDataStore'
 import { useOutletContext, Link, Navigate } from 'react-router-dom'
 import DashBoardLoader from '../components/ui/loading/DashBoardLoader'
@@ -47,6 +47,7 @@ const DashBoard = () => {
     window.history.back()
   }
 
+console.log(allSlot)
 
   return (
     <Container className='text-center mt-2'>
@@ -81,45 +82,87 @@ const DashBoard = () => {
             key={Math.random()}
             className='py-0 mb-3 border-0 rounded bg-secondary animate__animated'
             onClick={() => {
-              setSelectedStore(slot?.slot.temperatureZone.locker.location)
-              setSelectedOrderCity(slot?.slot.temperatureZone.locker.city)
+              setSelectedStore(slot?.slot?.temperatureZone?.locker?.location)
+              setSelectedOrderCity(slot?.slot?.temperatureZone?.locker?.city)
             }}
           >
             <Link to='/in-progress' className=' text-decoration-none'>
               {' '}
-              <Row className=''>
-                <Col xs={7} className='m-auto ff-agency text-light ps-4 text-start'>
-                  <i className='ri-store-2-line  '></i> -{' '}
-                  <span>{slot?.slot.temperatureZone.locker.location} </span> -{' '}
-                  <span>{slot?.slot.temperatureZone.locker.city} </span>
+              <Row className='pe-0'>
+                <Col xs={2} className='m-auto ms-2 me-0 text-end'>
+                  <img
+                    alt='zone'
+                    src={
+                      'https://img.icons8.com/color/512/' +
+                      (slot?.slot?.temperatureZone?.keyTemp === 'FRESH'
+                        ? 'organic-food'
+                        : slot?.slot?.temperatureZone?.keyTemp === 'FREEZE'
+                        ? 'winter'
+                        : 'dry') +
+                      '.png'
+                    }
+                    style={{ width: '40px' }}
+                  />
                 </Col>
-                <Col className='me-2 text-end'>
+                <Col xs={6} className='m-auto mx-1 text-light text-start font-85 '>
+                  <span className=' font-85'>
+                    {slot?.slot?.temperatureZone.locker.location}{' '}
+                  </span>{' '}
+                  -{' '}
+                  <span className=' font-85'>{slot?.slot?.temperatureZone.locker.city} </span>
+                </Col>
+                <Col xs={3} className='me- text-start ps-0 pe-0'>
                   <Row>
-                    <Col xs={12} className='mb-1 py-0'>
-                      <Badge bg='info' className='py-2 w-100'>
-                        En cours :{' '}
+                    <Col xs={12} className='mb-1 py-0 text-light px-0'>
+                      <i className='ri-file-list-line text-info me-1 align-bottom'></i>
+                      <span className=' font-75'>
+                        {' '}
+                        A livrer :{' '}
                         {
                           orderData['hydra:member']?.filter(
                             (order: any) =>
                               order.status === 'created' &&
-                              order.bookingSlot.slot.temperatureZone.locker.location ===
-                                slot?.slot.temperatureZone.locker.location
+                              order.bookingSlot.slot?.temperatureZone.locker.location ===
+                                slot?.slot?.temperatureZone.locker.location &&
+                              order.bookingSlot.slot?.temperatureZone.keyTemp ===
+                                slot?.slot?.temperatureZone?.keyTemp
                           )?.length
                         }
-                      </Badge>
+                      </span>
                     </Col>
-                    <Col className='py-0'>
-                      <Badge bg='warning' className='py-2 w-100'>
+                    <Col className='py-0 text-light px-0'>
+                      <i className='ri-inbox-unarchive-line text-info  me-1 align-bottom'></i>
+
+                      <span className=' font-75'>
+                        {' '}
+                        A récupérer :{' '}
+                        {
+                          orderData['hydra:member']?.filter(
+                            (order: any) =>
+                              order.status === 'overtime' &&
+                              order.bookingSlot.slot?.temperatureZone.locker.location ===
+                                slot?.slot?.temperatureZone.locker.location &&
+                              order.bookingSlot.slot?.temperatureZone.keyTemp ===
+                                slot?.slot?.temperatureZone?.keyTemp
+                          )?.length
+                        }
+                      </span>
+                      {/* <Alert variant='info' className='py-0 px-1 me-3 pe- border-2 border-info text-center'>
+                      <span className=' font-75'>
+
                         A récupérer : {''}
                         {
                           orderData['hydra:member']?.filter(
                             (order: any) =>
-                              order.status === 'operin' &&
-                              order.bookingSlot.slot.temperatureZone.locker.location ===
-                                slot?.slot.temperatureZone.locker.location
-                          )?.length
-                        }
-                      </Badge>
+                            order.status === 'overtime' &&
+                            order.bookingSlot.slot?.temperatureZone.locker.location ===
+                            slot?.slot?.temperatureZone.locker.location && 
+                            order.bookingSlot.slot?.temperatureZone.keyTemp === slot?.slot?.temperatureZone?.keyTemp
+                            
+                            )?.length
+                          }
+                          </span>
+                      </Alert> */}
                     </Col>
                   </Row>
                 </Col>

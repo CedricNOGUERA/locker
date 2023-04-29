@@ -109,16 +109,16 @@ const NewOrder = () => {
   }, [dataStore.token])
 
   React.useEffect(() => {
-    _searchWithRegex(clientName, autoCompletTab["hydra:member"], setFilteredName)
+    _searchWithRegex(clientName, autoCompletTab['hydra:member'], setFilteredName)
   }, [clientName])
 
   React.useEffect(() => {
-    _searchWithRegex2(clientEmail, autoCompletTab["hydra:member"], setFilteredEmail)
+    _searchWithRegex2(clientEmail, autoCompletTab['hydra:member'], setFilteredEmail)
   }, [clientEmail])
 
   console.log(autoCompletTab)
   console.log(clientEmail)
-  
+
   // React.useEffect(() => {
   //   if (filteredName && filteredName?.length > 0) {
   //     setIsShowName(true)
@@ -129,14 +129,14 @@ const NewOrder = () => {
 
   const getClients = (token: any) => {
     ClientService.allClients(token)
-    .then((response :any) => {
-      setAutoCompletTab(response.data)
-    })
-    .catch((error) => {
-      setIsError(true)
-      setMsgError(getError(error))
-      setCodeError(error.response.data.code)
-    })
+      .then((response: any) => {
+        setAutoCompletTab(response.data)
+      })
+      .catch((error) => {
+        setIsError(true)
+        setMsgError(getError(error))
+        setCodeError(error.response.data.code)
+      })
   }
 
   const getBookingAllSlot = (token: any) => {
@@ -204,13 +204,21 @@ const NewOrder = () => {
             },
 
             receiveCode: `${receiveCode}`,
-            keyTemp: orderStore.tempZone,
-            temperatureZonePredefined: orderStore.keyTemp,
+            keyTemp: orderStore.keyTemp,
+            temperatureZonePredefined: orderStore.tempZone,
 
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
-            clientEmail: choosedEmail ? choosedEmail: clientEmail?.email ? clientEmail?.email : clientEmail,
-            clientName: choosedName ? choosedName : clientName?.name ? clientName?.name : clientName,
+            clientEmail: choosedEmail
+              ? choosedEmail
+              : clientEmail?.email
+              ? clientEmail?.email
+              : clientEmail,
+            clientName: choosedName
+              ? choosedName
+              : clientName?.name
+              ? clientName?.name
+              : clientName,
 
             totalSlot: parseInt(qty),
           }
@@ -237,9 +245,18 @@ const NewOrder = () => {
             },
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
-            temperatureZonePredefined: orderStore.keyTemp,
-            clientEmail: choosedEmail ? choosedEmail : clientEmail?.email ? clientEmail?.email : clientEmail,
-            clientName: choosedName ? choosedName : clientName?.name ? clientName?.name : clientName,
+            keyTemp: orderStore.keyTemp,
+            temperatureZonePredefined: orderStore.tempZone,
+            clientEmail: choosedEmail
+              ? choosedEmail
+              : clientEmail?.email
+              ? clientEmail?.email
+              : clientEmail,
+            clientName: choosedName
+              ? choosedName
+              : clientName?.name
+              ? clientName?.name
+              : clientName,
 
             totalSlot: parseInt(qty),
           }))
@@ -247,8 +264,7 @@ const NewOrder = () => {
     if (parseInt(qty) === 1) {
       let config = {
         method: 'post',
-        // url: 'https://backend-locker-itl.herokuapp.com/api/orders',
-        url: 'http://192.168.1.250:8000/api/orders',
+        url: process.env.REACT_APP_END_POINT + 'orders',
         headers: {
           Authorization: 'Bearer ' + dataStore.token,
           'Content-Type': 'application/json',
@@ -265,6 +281,10 @@ const NewOrder = () => {
           getBookingAllSlot(dataStore.token)
           setIsOrderCreate(false)
           setIsValid(false)
+          setClientName('')
+          setClientEmail('')
+          setChoosedName('')
+          setChoosedEmail('')
           Swal.fire({
             position: 'top-end',
             toast: true,
@@ -292,7 +312,7 @@ const NewOrder = () => {
     } else {
       let config: any = {
         method: 'post',
-        url: 'http://192.168.1.250:8000/api/orders',
+        uurl: process.env.REACT_APP_END_POINT + 'orders',
         headers: {
           Authorization: 'Bearer ' + dataStore.token,
           'Content-Type': 'application/json',
@@ -313,6 +333,10 @@ const NewOrder = () => {
           setQty(null)
           getallOrders(dataStore.token)
           setIsOrderCreate(false)
+          setClientName('')
+          setClientEmail('')
+          setChoosedName('')
+          setChoosedEmail('')
           console.log(responses)
           Swal.fire({
             position: 'top-end',
@@ -466,7 +490,6 @@ const NewOrder = () => {
       setIsMsgErrorName(false)
       setIsMsgErrorEmail(false)
 
-      
       setIsValid(true)
 
       newOrderModal(e)
@@ -518,6 +541,8 @@ const NewOrder = () => {
                   lg={5}
                   className='py-0'
                   onClick={() => {
+                    setClientName('')
+                    setClientEmail('')
                     setChoosedName('')
                     setChoosedEmail('')
                     setQty(null)
@@ -585,7 +610,6 @@ const NewOrder = () => {
         </Container>
       ) : isLoading ? (
         <Container className='text-center mt-3'>
-          {/* <PlaceHolder paddingYFirst='4' /> */}
           <DashBoardLoader />
         </Container>
       ) : (
@@ -608,8 +632,8 @@ const NewOrder = () => {
                           dataStore.company_name,
                           locker?.slot.temperatureZone.locker.type,
                           dataStore.id,
-                          locker?.slot.temperatureZone?.keyTemp,
                           locker?.slot.temperatureZone?.myKey,
+                          locker?.slot.temperatureZone?.keyTemp,
                           locker?.slot?.size,
                           0,
                           0
@@ -633,7 +657,7 @@ const NewOrder = () => {
                         style={{ width: '40px' }}
                       />{' '}
                     </Col>
-                    <Col className='m-auto pe-0 fw-bold'>{locker?.slot.size}</Col>
+                    <Col className='m-auto pe-0 fw-bold'>{locker?.slot?.size}</Col>
                     <Col xs={7} className='px-0 m-auto text-center'>
                       <span className='item-locker-lis'>
                         {locker?.slot?.temperatureZone?.locker?.location?.toUpperCase()}
@@ -783,16 +807,20 @@ const NewOrder = () => {
                     </DropdownButton>
                   )}
                 </InputGroup>
-                {(isMsgErrorEmail && (clientName && clientName?.length < 1) && (choosedEmail && choosedEmail?.length < 1)) && (
-                  <Alert variant='danger' className='mt-2 py-0 '>
-                    <InfoAlert
-                      icon='ri-error-warning-line'
-                      iconColor='danger'
-                      message={'Ce champ est obligatoire'}
-                      fontSize='font-75'
-                    />
-                  </Alert>
-                )}
+                {isMsgErrorEmail &&
+                  clientName &&
+                  clientName?.length < 1 &&
+                  choosedEmail &&
+                  choosedEmail?.length < 1 && (
+                    <Alert variant='danger' className='mt-2 py-0 '>
+                      <InfoAlert
+                        icon='ri-error-warning-line'
+                        iconColor='danger'
+                        message={'Ce champ est obligatoire'}
+                        fontSize='font-75'
+                      />
+                    </Alert>
+                  )}
                 {availableSlot < parseInt(qty) && (
                   <AlertIsError
                     title={'Attention'}
@@ -820,7 +848,7 @@ const NewOrder = () => {
                 <div className='w-100 text-end'>
                   <Button
                     type='submit'
-                    className={`button-auth rounded-pill text-light
+                    className={`bg-info rounded-pill border-info text-light 
                     `}
                   >
                     {isOrderCreate && <Spinner size='sm' className='me-1' />}

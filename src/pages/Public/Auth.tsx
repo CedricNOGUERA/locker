@@ -1,5 +1,14 @@
-import { Card, Form, Container, Alert, Spinner, InputGroup } from 'react-bootstrap'
-import { Navigate } from 'react-router-dom'
+import {
+  Card,
+  Form,
+  Container,
+  Alert,
+  Spinner,
+  InputGroup,
+  Modal,
+  Button,
+} from 'react-bootstrap'
+import { Link, Navigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import userDataStore from '../../store/userDataStore'
 import { useEffect, useState } from 'react'
@@ -35,6 +44,11 @@ const Auth = () => {
 
   const [token, setToken] = useState<any>([])
   const [myData, setMyData] = useState<any>([])
+
+  const [show, setShow] = useState(false)
+
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
   useEffect(() => {
     if (token && token?.length > 0) {
@@ -93,7 +107,7 @@ const Auth = () => {
         <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
           <Card.Body>
             <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
-              <img alt='Conteneur' src={imag} width={72} height={72} />
+              <img alt='Conteneur' src={imag} width={120} height={120} />
             </div>
             <div className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
               Locker
@@ -169,6 +183,9 @@ const Auth = () => {
                   colorIcon='danger'
                 />
               )}
+              <p className='text-light text-end font-75' onClick={handleShow}>
+                <u>Mot de passe oublié ?</u>
+              </p>
 
               <button
                 type='submit'
@@ -181,6 +198,39 @@ const Auth = () => {
           </Card.Body>
         </Card>
       )}
+      <Modal show={show} onHide={handleClose} centered className='rounded-0'>
+        <Modal.Header className='border-bottom-0'>
+          <Modal.Title>Mot de passe oublié</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group className='mb-3' controlId='formBasicEmail'>
+            <Form.Label className='d-none'>email</Form.Label>
+            <InputGroup className='mb-3'>
+              <InputGroup.Text id='basic-addon1' className='rounded-0 border'>
+                <i className='ri-at-line text-muted'></i>
+              </InputGroup.Text>
+              <Form.Control
+                className=' rounded-0 border'
+                type='text'
+                placeholder='email'
+                {...register('userName', { required: true })}
+              />
+            </InputGroup>
+          </Form.Group>
+          <Alert variant="warning" className='border-2 border-warning py-1 rounded-0'>
+                <i className='ri-information-line text-warning align-bottom'></i> {' '}
+        <span className=' font-75 text-secondary mb-0' >Suivez les instructions qui vous seront envoyées pour réinitialiser votre mot de passe.</span>
+        </Alert>
+        </Modal.Body>
+        <Modal.Footer className='text-light border-top-0'>
+          <Button variant='warning' onClick={handleClose} className='text-light'>
+            Fermer
+          </Button>
+          <Button variant='info' onClick={handleClose} className='text-light'>
+            Envoyer
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   )
 }

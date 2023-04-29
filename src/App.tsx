@@ -29,12 +29,12 @@ function App() {
   React.useEffect(() => {
     setSelectedOrderCity(
       allSlot?.['hydra:member']
-        ? allSlot?.['hydra:member'][0]?.slot.temperatureZone.locker.city
+        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker.city
         : ''
     )
     setSelectedStore(
       allSlot?.['hydra:member']
-        ? allSlot?.['hydra:member'][0]?.slot.temperatureZone.locker.location
+        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker.location
         : ''
     )
   }, [allSlot])
