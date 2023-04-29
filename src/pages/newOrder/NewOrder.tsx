@@ -91,11 +91,6 @@ const NewOrder = () => {
 
   const isSlotAvailable = availableSlot >= parseInt(qty)
 
-  // const autoCompletTab = [
-  //   { email: 'grout@mail.pf', name: 'Grout' },
-  //   { email: 'fred.fred@miel.pf', name: 'Fred' },
-  //   { email: 'grout.galax@miel.pf', name: 'Grout' },
-  // ]
 
   const {
     register,
@@ -115,17 +110,6 @@ const NewOrder = () => {
   React.useEffect(() => {
     _searchWithRegex2(clientEmail, autoCompletTab['hydra:member'], setFilteredEmail)
   }, [clientEmail])
-
-  console.log(autoCompletTab)
-  console.log(clientEmail)
-
-  // React.useEffect(() => {
-  //   if (filteredName && filteredName?.length > 0) {
-  //     setIsShowName(true)
-  //   } else {
-  //     setIsShowName(false)
-  //   }
-  // }, [clientName])
 
   const getClients = (token: any) => {
     ClientService.allClients(token)
@@ -246,7 +230,7 @@ const NewOrder = () => {
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
             keyTemp: orderStore.keyTemp,
-            temperatureZonePredefined: orderStore.tempZone,
+            temperatureZonePredefined: orderStore?.tempZone,
             clientEmail: choosedEmail
               ? choosedEmail
               : clientEmail?.email
@@ -306,13 +290,12 @@ const NewOrder = () => {
           } else {
             logCatcher('date :' + now + '-' + error.response.statusText)
           }
-
           popUpError(error.response.status, error.response.statusText)
         })
     } else {
       let config: any = {
         method: 'post',
-        uurl: process.env.REACT_APP_END_POINT + 'orders',
+        url: process.env.REACT_APP_END_POINT + 'orders',
         headers: {
           Authorization: 'Bearer ' + dataStore.token,
           'Content-Type': 'application/json',
@@ -509,7 +492,6 @@ const NewOrder = () => {
       )
     }
   }
-  console.log(isValid)
 
   return (
     <div>

@@ -2,7 +2,6 @@ import React from 'react'
 import { Modal, Container, Col, Button, Alert } from 'react-bootstrap'
 import QrCode from '../../QrCode'
 import userDataStore from '../../../store/userDataStore'
-import BackBar from '../BackBar'
 
 const UserQrcode = ({show, handleClose, setSelectedOrder}: any) => {
     const dataStore = userDataStore((state: any) => state)
