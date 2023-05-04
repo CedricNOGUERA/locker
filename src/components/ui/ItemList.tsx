@@ -3,14 +3,17 @@ import { Button, Col, Row } from "react-bootstrap";
 const ItemList = ({ liv, setSelectedOrder, setSearchOrder }: any) => {
   
 
-  const tempZone = liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FRESH" ? "organic-food" : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FREEZE") ? "winter"  : liv?.bookingSlot.slot.temperatureZone?.keyTemp === "NORMAL" ? "dry" : ""
+  const tempZone = (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FRESH" || liv?.bookingSlot.slot.temperatureZone?.myKey === "C" ) ? "organic-food" : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FREEZE" || liv?.bookingSlot.slot.temperatureZone?.myKey === "F") ? "winter"  : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "NORMAL" || liv?.bookingSlot.slot.temperatureZone?.myKey === "CA") ? "dry" : ""
+ 
+
+
   return (
     <div className='my-3 px-3 py-2 bg-white rounded shadow'>
       <Row className='py-'>
         <Col xs={2} className='m-auto'>
           <span key={Math.random()}>
             <img
-              alt='Refroidissement icon'
+              alt='Temp icon'
               src={'https://img.icons8.com/color/512/' + tempZone + '.png'}
               style={{ width: '40px' }}
             />{' '}

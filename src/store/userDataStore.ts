@@ -14,6 +14,7 @@ const userDataStore = create(
       cleveronCompany_id: null,
       company_name: null,
       token: null,
+      subToken: null,
 
 
       // methods for manipulating state
@@ -25,6 +26,7 @@ const userDataStore = create(
         cleveronCompany_id: string,
         company_name: string,
         token: any,
+        subToken: any,
         
       ) =>
         set((state: any) => ({
@@ -35,6 +37,7 @@ const userDataStore = create(
           cleveronCompany_id: cleveronCompany_id,
           company_name: company_name,
           token: token,
+          subToken: subToken,
 
         })),
       authLogout: () =>
@@ -46,6 +49,7 @@ const userDataStore = create(
           cleveronCompany_id: null,
           company_name: null,
           token: null,
+          subToken: null,
         })),
     }),
     {

@@ -24,7 +24,7 @@ const Delivered: React.FC = () => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const objectif ="receive"
+  const  newStatus ="receive"
 
   const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore );
 
@@ -72,7 +72,7 @@ const Delivered: React.FC = () => {
     setOrderData,
     messageApi,
     setSelectedOrder,
-    objectif,
+     newStatus,
   };
 
   return (

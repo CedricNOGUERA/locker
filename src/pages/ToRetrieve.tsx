@@ -1,18 +1,16 @@
 import React from 'react'
 import { Navigate, useOutletContext } from 'react-router-dom'
-import Loading from '../components/ui/Loading'
 import userDataStore from '../store/userDataStore'
-import '../App.css'
-import 'animate.css'
 import { message } from 'antd'
-import { _searchWithRegex, _updateStatus } from '../utils/functions'
+import { Container } from 'react-bootstrap'
+import { _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import OrderList from '../components/ui/OrderList'
 import ScanPage from '../components/ui/ScanPage'
-import { Container } from 'react-bootstrap'
-import BookingSlotservice from '../service/BookingSlot/BookingSlotservice'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
+import '../App.css'
+import 'animate.css'
 
 const ToRetrieve: React.FC = () => {
   //////////////////////////
@@ -42,7 +40,7 @@ const ToRetrieve: React.FC = () => {
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
 
-  const objectif = 'created'
+  const newStatus = 'operout'
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
@@ -85,16 +83,14 @@ const ToRetrieve: React.FC = () => {
   }
 
   const scanPageProps = {
-    _updateStatus,
     selectedOrder,
     orderData,
     setOrderData,
     messageApi,
     setSelectedOrder,
-    objectif,
+    newStatus,
   }
 
-  console.log(filteredOrder)
 
   return (
     <Container fluid className='cde App px-0'>

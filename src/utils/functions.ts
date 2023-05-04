@@ -47,17 +47,17 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
    * Change order status
    *******************************/
 
-  export const _updateStatus = (id: any, orderData: any, setOrderData: any, messageApi: any, setSelectedOrder: any, objectif: any ) => {
+  export const _updateStatus = (id: any, orderData: any, setOrderData: any, messageApi: any, setSelectedOrder: any,  newStatus: any ) => {
     const indx = orderData?.["hydra:member"]?.findIndex((order: any) => order.id === id);
     const filteredOrder = orderData?.["hydra:member"]?.filter((order: any) => order.id === id);
 
    
     const newTab = [...orderData?.["hydra:member"]];
-    const newStatus = {
+    const newStatuss = {
       id: filteredOrder[0].id,
    
       
-      status: objectif,
+      status:  newStatus,
       
     };
     newTab[indx] = newStatus;

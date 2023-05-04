@@ -36,9 +36,11 @@ import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 
 type Inputs = {
-  // qty: number
+  qty: any
   clientName: any
   clientEmail: any
+  chooseName: any
+  chooseEmail: any
 }
 
 const NewOrder = () => {
@@ -72,9 +74,9 @@ const NewOrder = () => {
   ] = useOutletContext<any>()
 
   const [bookingSlot, setBookingSlot] = React.useState<any>('')
-  const [qty, setQty] = React.useState<any>()
-  const [clientEmail, setClientEmail] = React.useState<any>()
-  const [clientName, setClientName] = React.useState<any>()
+  const [qty, setQty] = React.useState<any>(undefined)
+  const [clientEmail, setClientEmail] = React.useState<any>('')
+  const [clientName, setClientName] = React.useState<any>('')
   const [filteredEmail, setFilteredEmail] = React.useState<any>([])
   const [filteredName, setFilteredName] = React.useState<any>([])
   const [autoCompletTab, setAutoCompletTab] = React.useState<any>([])
@@ -182,7 +184,7 @@ const NewOrder = () => {
         ? {
             service: 'B2C',
             ageRestriction: orderStore.ageRestriction,
-            barcode: orderStore.companyName + '-' + randomCode,
+            barcode: orderStore.companyName.toUpperCase() + '-' + randomCode,
             destination: {
               apm: orderStore?.lockerId,
             },
@@ -209,7 +211,7 @@ const NewOrder = () => {
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
             ageRestriction: orderStore.ageRestriction,
-            barcode: orderStore.companyName + '-' + randomCodeMultiOrder + (indx + 1),
+            barcode: orderStore.companyName.toUpperCase() + '-' + randomCodeMultiOrder + (indx + 1),
             destination: {
               apm: orderStore?.lockerId,
             },
@@ -260,7 +262,7 @@ const NewOrder = () => {
         .request(config)
         .then((response) => {
           newOrderDelete()
-          setQty(null)
+          setQty('')
           getallOrders(dataStore.token)
           getBookingAllSlot(dataStore.token)
           setIsOrderCreate(false)
@@ -274,9 +276,9 @@ const NewOrder = () => {
             toast: true,
             icon: 'success',
             title: 'Commande validée',
-            text: orderStore.companyName + '-' + randomCode,
+            text: orderStore.companyName.toUpperCase() + '-' + randomCode,
             showConfirmButton: false,
-            timer: 5000,
+            timer: 7000,
             timerProgressBar: true,
           })
         })
@@ -313,8 +315,9 @@ const NewOrder = () => {
         .then((responses) => {
           const numOrder = responses?.map((num: any) => num?.data?.barcode)
           newOrderDelete()
-          setQty(null)
+          setQty('')
           getallOrders(dataStore.token)
+          getBookingAllSlot(dataStore.token)
           setIsOrderCreate(false)
           setClientName('')
           setClientEmail('')
@@ -326,8 +329,7 @@ const NewOrder = () => {
             toast: true,
             icon: 'success',
             title: 'Commande(s) validée(s)',
-            // text: orderStore.companyName + '-' + randomCode,
-            text: orderStore.companyName + '-' + numOrder,
+            text: orderStore.companyName.toUpperCase() + '-' + numOrder,
             showConfirmButton: false,
             timer: 7000,
             timerProgressBar: true,
@@ -378,13 +380,13 @@ const NewOrder = () => {
         // timerProgressBar: true,
       })
       newOrderDelete()
-      setQty(null)
+      setQty('')
       setAgeRestriction(false)
       setIsValid(false)
       if (logs.logApp) {
-        logCatcher(logs.logApp + ' / date :' + now + '-' + 'Commande non finalisée')
+        logCatcher(logs.logApp + ' / date :' + now + '- Commande non finalisée')
       } else {
-        logCatcher('date :' + now + '-' + 'Commande non finalisée')
+        logCatcher('date :' + now + '- Commande non finalisée')
       }
     }
   }
@@ -403,14 +405,14 @@ const NewOrder = () => {
     })
 
     if (!accept) {
-      Swal.fire({
-        position: 'top-end',
-        toast: true,
-        icon: 'error',
-        title: 'Commande non finalisée',
-        showConfirmButton: false,
-        timer: 3000,
-      })
+      // Swal.fire({
+      //   position: 'top-end',
+      //   toast: true,
+      //   icon: 'error',
+      //   title: 'Commande non finalisée',
+      //   showConfirmButton: false,
+      //   timer: 3000,
+      // })
       if (logs.logApp) {
         logCatcher(logs.logApp + ' / date :' + now + " - Aucun casier n'est disponible")
       } else {
@@ -527,7 +529,7 @@ const NewOrder = () => {
                     setClientEmail('')
                     setChoosedName('')
                     setChoosedEmail('')
-                    setQty(null)
+                    setQty('')
                     newOrderRegister(
                       null,
                       orderStore.location,
@@ -600,7 +602,7 @@ const NewOrder = () => {
             allSlot['hydra:member']?.map((locker: any, indx: any) =>
               locker?.active === true ? (
                 <Container
-                  key={locker?.id}
+                  key={Math.random()}
                   className='my-3 px-2 py-2 bg-white rounded shadow w-100'
                   onClick={() => {
                     setBookingSlot(locker['@id'])
@@ -629,11 +631,15 @@ const NewOrder = () => {
                         alt='zone'
                         src={
                           'https://img.icons8.com/color/512/' +
-                          (locker?.slot?.temperatureZone?.keyTemp === 'FRESH'
+                          (locker?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                          locker?.slot.temperatureZone?.myKey === 'C'
                             ? 'organic-food'
-                            : locker?.slot?.temperatureZone.keyTemp === 'FREEZE'
+                            : locker?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                              locker?.slot.temperatureZone?.myKey === 'F'
                             ? 'winter'
-                            : 'dry') +
+                            : (locker?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                locker?.slot.temperatureZone?.myKey === 'CA') &&
+                              'dry') +
                           '.png'
                         }
                         style={{ width: '40px' }}
@@ -728,6 +734,7 @@ const NewOrder = () => {
                     >
                       {filteredName?.map((user: any) => (
                         <Dropdown.Item
+                          key={Math.random()}
                           onClick={() => {
                             setChoosedName(user.name)
                             setChoosedEmail(user.email)
@@ -735,7 +742,7 @@ const NewOrder = () => {
                             setFilteredEmail([])
                           }}
                         >
-                          {user.name} - {user.email}
+                          <i className='ri-user-line'></i> {user.name} - {user.email}
                         </Dropdown.Item>
                       ))}
                     </DropdownButton>
@@ -778,6 +785,7 @@ const NewOrder = () => {
                     >
                       {filteredEmail?.map((user: any) => (
                         <Dropdown.Item
+                          key={Math.random()}
                           onClick={() => {
                             setChoosedEmail(user.email)
                             setFilteredEmail([])

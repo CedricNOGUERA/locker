@@ -16,6 +16,7 @@ import ScrollToTop from './components/ui/ScrollToTop'
 import NewOrder from './pages/newOrder/NewOrder'
 import Map from './pages/Map/Map'
 import DashBoard from './pages/DashBoard'
+import Forgot from './pages/Public/Forgot'
 
 const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
   {
     path: '/connexion',
     element: <Auth />,
+  },
+  {
+    path: '/forgot-pass/:token',
+    element: <Forgot />,
   },
 ])
 

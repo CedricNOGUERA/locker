@@ -1,8 +1,8 @@
 import React from 'react'
 import { Navigate, useOutletContext } from 'react-router-dom'
+import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
 import { Container } from 'react-bootstrap'
-import userDataStore from '../store/userDataStore'
 import { _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import OrderList from '../components/ui/OrderList'
@@ -41,7 +41,7 @@ const InProgress: React.FC = () => {
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
 
-  const objectif = 'overtime'
+  const newStatus = 'overtime'
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
@@ -90,7 +90,7 @@ const InProgress: React.FC = () => {
     setOrderData,
     messageApi,
     setSelectedOrder,
-    objectif,
+    newStatus,
   }
 
   return (
