@@ -13,6 +13,11 @@ class UserService {
         return axios.get(API_URL + "me", {headers: {"Authorization": "Bearer " + token}})
         
     }   
+    
+    updatePassword(token: any, id: any, data: any) {
+        return axios.patch(API_URL + "users/" + id + "/update-password", {headers: { "Content-Type": "application/merge-patch+json","Authorization": "Bearer " + token}, data: data})
+        
+    }   
 }
 
 export default new UserService();

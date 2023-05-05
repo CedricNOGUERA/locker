@@ -20,14 +20,12 @@ import InfoAlert from '../../components/ui/warning/InfoAlert'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
 import imag from '../../styles/logo512.png'
 import Swal from 'sweetalert2'
-import emailjs from '@emailjs/browser';
+import emailjs from '@emailjs/browser'
 import { _strRandom } from '../../utils/functions'
-
 
 type Inputs = {
   userName: string
   pass: string
-
 }
 
 const Auth = () => {
@@ -35,10 +33,8 @@ const Auth = () => {
     register,
     handleSubmit,
     formState: { errors },
-    resetField,
   } = useForm<Inputs>()
-  const form: any = useRef();
-
+  const form: any = useRef()
 
   const authLogin = userDataStore((state: any) => state.authLogin)
   const dataStore = userDataStore((state: any) => state)
@@ -53,18 +49,14 @@ const Auth = () => {
   const [token, setToken] = useState<any>([])
   const [myData, setMyData] = useState<any>([])
   const [isNotEmail, setIsNotEmail] = useState<boolean>(false)
-  const [myEmail, setMyEmail] = useState<any>("")
+  const [myEmail, setMyEmail] = useState<any>('')
 
   const [show, setShow] = useState(false)
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
-
-
-
   const myToken = _strRandom('popopopopop').toLocaleUpperCase()
-
 
   useEffect(() => {
     if (token && token?.length > 0) {
@@ -84,9 +76,10 @@ const Auth = () => {
         token
       )
     }
-  }, [myData])
+  }, [authLogin, myData, token])
+
   useEffect(() => {
-    if(myEmail){
+    if (myEmail) {
       setIsNotEmail(false)
     }
   }, [myEmail])
@@ -119,15 +112,12 @@ const Auth = () => {
     })
   }
 
-
-  const forgot= (e: any) => {
+  const forgot = (e: any) => {
     e.preventDefault()
 
-    if(!myEmail){
-setIsNotEmail(true)
-    }else{
-
-      
+    if (!myEmail) {
+      setIsNotEmail(true)
+    } else {
       Swal.fire({
         position: 'top-end',
         toast: true,
@@ -142,32 +132,28 @@ setIsNotEmail(true)
       handleClose()
       setMyEmail('')
       authLogin(false, null, null, null, null, null, null, myToken)
-
     }
-      
   }
 
-
-
   const sendEmail = () => {
-  
     console.log(form.current.email?.value)
-    
-   
-    emailjs.sendForm('invoiceitl_service', 'template_pnr0mid', form?.current, 'GivYhKQYsq1vBus6G')
-      .then((result) => {
-          console.log(form?.current);
-          console.log(result);
-          // navigate('/')
-        }, (error) => {
-          console.log(error.text);
-          alert(error.text)
-        });
-  };
 
-  
+    emailjs
+      .sendForm('invoiceitl_service', 'template_pnr0mid', form?.current, 'GivYhKQYsq1vBus6G')
+      .then(
+        (result) => {
+          console.log(form?.current)
+          console.log(result)
+        },
+        (error) => {
+          console.log(error.text)
+          alert(error.text)
+        }
+      )
+  }
+
   return (
-    <Container fluid className='auth-cont   col-12 col-lg-4 px-0 bg-secondary'>
+    <Container fluid className='auth-cont col-12 col-lg-4 px-0 bg-secondary'>
       {dataStore.token && dataStore.company_name && <Navigate to='/dashboard' />}
       {isLoading ? (
         <Loading variant='info' />
@@ -260,7 +246,11 @@ setIsNotEmail(true)
                 id=''
                 className='button-auth rounded  w-100 py-2 mt-4 text-light shadow'
               >
-                {isLoadingAuth && <Spinner variant='light' size='sm' />} Valider
+                {isLoadingAuth ? <Spinner variant='light' size='sm' />
+                :
+                <>
+                 Valider
+                </>}
               </button>
             </Form>
           </Card.Body>
@@ -270,49 +260,52 @@ setIsNotEmail(true)
         <Modal.Header className='border-bottom-0'>
           <Modal.Title>Mot de passe oublié</Modal.Title>
         </Modal.Header>
-        <Form ref={form}  onSubmit={forgot}>
-        <Modal.Body>
-        <input type='hidden' name='my_token' value={myToken} />
-          <Form.Group className='mb-3' controlId='formBasicEmail'>
-            <Form.Label className='d-none'>email</Form.Label>
-            <InputGroup className='mb-3'>
-              <InputGroup.Text id='basic-addon1' className='rounded-0 border'>
-                <i className='ri-at-line text-muted'></i>
-              </InputGroup.Text>
-              <Form.Control
-                className=' rounded-0 border'
-                type='email'
-                name="user_email"
-                placeholder='email'
-                value={myEmail}
-                onChange={(e) => setMyEmail(e.currentTarget.value)}
-              />
-            </InputGroup>
-            {isNotEmail && (
-                  <Alert variant='danger' className='mt-2 py-0 text-cente'>
-                    <InfoAlert
-                      icon='ri-error-warning-line'
-                      iconColor='danger'
-                      message={'Saisissez votre email'}
-                      fontSize='font-75'
-                    />
-                  </Alert>
-                )}
-          </Form.Group>
-          <Alert variant="warning" className='border-2 border-warning py-1 rounded-0'>
-                <i className='ri-information-line text-warning align-bottom'></i> {' '}
-        <span className=' font-75 text-secondary mb-0' >Suivez les instructions qui vous seront envoyées pour réinitialiser votre mot de passe.</span>
-        </Alert>
-        </Modal.Body>
-        <Modal.Footer className='text-light border-top-0'>
-          <Button variant='warning' onClick={handleClose} className='text-light'>
-            Fermer
-          </Button>
-          <Button type="submit" variant='info' className='text-light'>
-            Envoyer
-          </Button>
-        </Modal.Footer>
-          </Form>
+        <Form ref={form} onSubmit={forgot}>
+          <Modal.Body>
+            <input type='hidden' name='my_token' value={myToken} />
+            <Form.Group className='mb-3' controlId='formBasicEmail'>
+              <Form.Label className='d-none'>email</Form.Label>
+              <InputGroup className='mb-3'>
+                <InputGroup.Text id='basic-addon1' className='rounded-0 border'>
+                  <i className='ri-at-line text-muted'></i>
+                </InputGroup.Text>
+                <Form.Control
+                  className=' rounded-0 border'
+                  type='email'
+                  name='user_email'
+                  placeholder='email'
+                  value={myEmail}
+                  onChange={(e) => setMyEmail(e.currentTarget.value)}
+                />
+              </InputGroup>
+              {isNotEmail && (
+                <Alert variant='danger' className='mt-2 py-0 text-cente'>
+                  <InfoAlert
+                    icon='ri-error-warning-line'
+                    iconColor='danger'
+                    message={'Saisissez votre email'}
+                    fontSize='font-75'
+                  />
+                </Alert>
+              )}
+            </Form.Group>
+            <Alert variant='warning' className='border-2 border-warning py-1 rounded-0'>
+              <i className='ri-information-line text-warning align-bottom'></i>{' '}
+              <span className=' font-75 text-secondary mb-0'>
+                Suivez les instructions qui vous seront envoyées pour réinitialiser votre mot
+                de passe.
+              </span>
+            </Alert>
+          </Modal.Body>
+          <Modal.Footer className='text-light border-top-0'>
+            <Button variant='warning' onClick={handleClose} className='text-light'>
+              Fermer
+            </Button>
+            <Button type='submit' variant='info' className='text-light'>
+              Envoyer
+            </Button>
+          </Modal.Footer>
+        </Form>
       </Modal>
     </Container>
   )

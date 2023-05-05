@@ -46,7 +46,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
       >
         <Row className='align-middle pe-0'>
           <Col className='ff-agency m-auto '>
-            <i className={`${icon} fs-4 align-bottom`}></i>
+            <i className={`${icon} fs-2 align-bottom`}></i>
           </Col>
           <Col xs={8} className='ff-agency m-auto text-center '>
             <div className='font-75 text-light'>{dataStore.company_name} </div>
@@ -110,12 +110,27 @@ const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
               to='/map'
               onClick={handleCloseOffcanvas}
             >
-              <Row className=' menu-link'>
+              <Row className='menu-link'>
                 <Col xs={2}>
                   {' '}
                   <i className='ri-map-pin-line fs-5'></i>
                 </Col>{' '}
                 <Col className='m-auto user-name'>Map</Col>
+              </Row>
+            </Link>
+          </Container>
+          <Container className='mb-3'>
+            <Link
+              className='text-decoration-none text-light'
+              to='/update-password'
+              onClick={handleCloseOffcanvas}
+            >
+              <Row className='menu-link'>
+                <Col xs={2}>
+                  {' '}
+                  <i className='ri-lock-line fs-5'></i>
+                </Col>{' '}
+                <Col className='m-auto user-name'>Modifier votre mot passe</Col>
               </Row>
             </Link>
           </Container>

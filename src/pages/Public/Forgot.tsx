@@ -1,28 +1,25 @@
-import { Card, Form, Container, Alert, Spinner, InputGroup } from 'react-bootstrap'
+import { Card, Form, Container, Alert, InputGroup } from 'react-bootstrap'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../App.css'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
 import Swal from 'sweetalert2'
+import UserService from '../../service/UserService'
 
 const Forgot = () => {
   //////////////////////////
   // booleans States
   /////////////////////////
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [isLoadingAuth, setIsLoadingAuth] = useState<boolean>(false)
+
   const [isError, setIsError] = React.useState<boolean>(false)
   const [isView, setIsView] = useState<boolean>(false)
   const [isView2, setIsView2] = useState<boolean>(false)
-  const [msgError, setMsgError] = useState<string>('')
-  const [codeError, setCodeError] = useState<any>()
 
   //////////////////////////
   // states
   /////////////////////////
 
-  const form: any = useRef()
   const token = 'myLongToken'
 
   const [pass1, setPass1] = React.useState('')
@@ -36,7 +33,6 @@ const Forgot = () => {
       setIsError(false)
     }
   }, [pass1, pass2])
-
 
   const updatePass = (e: any) => {
     e.preventDefault()
@@ -64,8 +60,13 @@ const Forgot = () => {
     }
   }
 
+  // const updateUserPass = () => {
+  //   UserService.updatePassword()
+
+  // }
+
   return (
-    <Container fluid className='cde App px-0'>
+    <Container fluid className='auth-cont col-12 col-lg-4 px-0 bg-secondary'>
       {token === params.token ? (
         <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
           <Card.Body>
@@ -81,12 +82,12 @@ const Forgot = () => {
                 }}
               />
             </div>
-            <div className=' text-center mb-5 text-light animate__animated animate__fadeInUp'>
-              Réinitialisé votre mot de passe
+            <div className=' text-center my-5 text-light animate__animated animate__fadeInUp'>
+              <h3>Réinitialisé votre mot de passe</h3>
             </div>
             <Form onSubmit={updatePass}>
               <Form.Group className='mb-3' controlId='formBasicEmail'>
-                <Form.Label className='d-none'>PASS1</Form.Label>
+                <Form.Label className='d-none'>nouveau password</Form.Label>
                 <InputGroup className='mb-3'>
                   <InputGroup.Text id='basic-addon1' className='rounded-0 border-0'>
                     <i className='ri-lock-unlock-fill text-muted'></i>
@@ -117,7 +118,7 @@ const Forgot = () => {
                 </InputGroup>
               </Form.Group>
               <Form.Group className='mb-3' controlId='formBasicPassword'>
-                <Form.Label className='d-none'>Mot de passe</Form.Label>
+                <Form.Label className='d-none'>Mot de passe de confirmation</Form.Label>
                 <InputGroup className='mb-3'>
                   <InputGroup.Text id='basic-addon1' className='rounded-0 border-0'>
                     <i className='ri-rotate-lock-fill text-muted'></i>
@@ -161,7 +162,7 @@ const Forgot = () => {
               {isError && (
                 <AlertIsError
                   title={`Erreur :`}
-                  msg={"Les mots de passe ne sont pas les mêmes"}
+                  msg={'Les mots de passe ne sont pas les mêmes'}
                   colorIcon='danger'
                 />
               )}

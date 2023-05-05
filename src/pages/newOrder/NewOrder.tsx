@@ -93,7 +93,6 @@ const NewOrder = () => {
 
   const isSlotAvailable = availableSlot >= parseInt(qty)
 
-
   const {
     register,
     handleSubmit,
@@ -211,7 +210,8 @@ const NewOrder = () => {
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
             ageRestriction: orderStore.ageRestriction,
-            barcode: orderStore.companyName.toUpperCase() + '-' + randomCodeMultiOrder + (indx + 1),
+            barcode:
+              orderStore.companyName.toUpperCase() + '-' + randomCodeMultiOrder + (indx + 1),
             destination: {
               apm: orderStore?.lockerId,
             },

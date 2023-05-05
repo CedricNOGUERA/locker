@@ -109,8 +109,7 @@ const DashBoard = () => {
                   <span className='font-85'>
                     {slot?.slot?.temperatureZone.locker.location}{' '}
                   </span>{' '}
-                  -{' '}
-                  <span className='font-85'>{slot?.slot?.temperatureZone.locker.city} </span>
+                  - <span className='font-85'>{slot?.slot?.temperatureZone.locker.city} </span>
                 </Col>
                 <Col xs={4} className='me- text-start ps-0 pe-0'>
                   <Row>

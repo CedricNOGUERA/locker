@@ -5,7 +5,6 @@ import imag from '../../../src/styles/g5635.png'
 import UserQrcode from '../ui/modals/UserQrcode'
 
 const BottomNavBar = ({ orderData, selectedStore }: any) => {
-
   //////////////////////
   //Auth deliverer modal
   //////////////////////
@@ -28,7 +27,6 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
       order.status === 'created' &&
       order.bookingSlot.slot?.temperatureZone.locker.location === selectedStore
   )
- 
 
   return (
     <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
@@ -64,9 +62,9 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
         <Nav.Item className='nav-item text-center pt-2'>
           <div className='text-center '></div>
           <Link to='/in-progress' className='text-info py-1 text-decoration-none'>
-            <i className='ri-file-list-line fs-4 '></i>
+            <i className='ri-truck-line fs-4 '></i>
             {progress?.length > 0 && (
-              <span className='badge rounded-pill bg-warning'>{progress?.length}</span>
+              <span className='badge rounded-pill bg-info'>{progress?.length}</span>
             )}
           </Link>
         </Nav.Item>
@@ -74,7 +72,7 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
           <Link to='orders-to-retrieve' className='text-info py-1 text-decoration-none'>
             <i className='ri-inbox-unarchive-line fs-4 text-center'></i>
             {retrieve?.length > 0 && (
-              <span className='badge rounded-pill bg-warning'>{retrieve?.length}</span>
+              <span className='badge rounded-pill bg-info'>{retrieve?.length}</span>
             )}
           </Link>
         </Nav.Item>

@@ -11,11 +11,9 @@ overflow: hidden;
 }
 .top-nav-design, .bottom-navbar{
   background-color: #343a40;
-  /* background-color: #1f2b2b; */
   height: 60px;
 }
 .button-auth{
-  /* background-color: rgb(15, 158, 184); */
   background-color: rgb(61, 165, 184) !important;
   border : 2px solid rgb(15, 158, 184);
 }
@@ -26,7 +24,6 @@ overflow: hidden;
 
 .auth-form{
   padding-top: 20%;
-  /* background-color: #313030; */
 }
 
 @media (max-height: 376px){
@@ -49,7 +46,6 @@ overflow: hidden;
 }
 .menu-link:hover{
   background-color: rgb(255, 255, 255);
-  /* background-color: rgb(238, 195, 195); */
   color: darkgray;
   border-start-start-radius: 2px;
   border-end-start-radius: 2px;
@@ -204,12 +200,5 @@ font-size: 0.85rem;
   bottom: 65px;
   right: 10px;
   z-index: 9;
-  transition: all 0.3s;
+  /* transition: all 0.3s; */
 }
-
-
- /* .search-icon{
-  position: absolute;
-  left: 20px;
-  top: 1px;
- } */

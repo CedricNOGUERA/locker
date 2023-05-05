@@ -31,7 +31,7 @@ const ScrollToTop = () => {
     >
       {isVisible && 
 
-      <i className="ri-arrow-up-circle-fill fs-1 text-info border border-3 rounded-circle border-secondary"></i>
+      <i className="ri-arrow-up-circle-fill fs-1 text-info border-3 border-secondary rounded-circle "></i>
       }
     </div>
   );
