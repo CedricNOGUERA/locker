@@ -82,7 +82,7 @@ const router = createBrowserRouter([
         path: 'update-password',
         element: (
           <React.Fragment>
-            <HeaderDesign title='Mot de passe' icon='ri-lock-line' />
+            <HeaderDesign title='Mot de passe' icon='ri-rotate-lock-line' />
             <UpdatePassword />
           </React.Fragment>
         ),

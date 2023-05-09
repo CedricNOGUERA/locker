@@ -35,6 +35,11 @@ const InProgress: React.FC = () => {
     setAllSlot,
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
+
+  //////////////////////////
+  // States
+  /////////////////////////
+
   const [messageApi, contextHolder] = message.useMessage()
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
@@ -49,6 +54,9 @@ const InProgress: React.FC = () => {
       order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
   )
 
+  //////////////////////////
+  // UseEffect
+  /////////////////////////
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
       setIsLoading(false)
@@ -65,6 +73,9 @@ const InProgress: React.FC = () => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
   }, [searchOrder])
 
+  //////////////////////////
+  // Component Props
+  /////////////////////////
   const searchBarProps = {
     searchOrder,
     setSearchOrder,

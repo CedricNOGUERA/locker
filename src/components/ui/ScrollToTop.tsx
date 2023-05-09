@@ -1,40 +1,36 @@
-import React from "react";
+import React from 'react'
 
 const ScrollToTop = () => {
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [isVisible, setIsVisible] = React.useState(false)
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
-    });
-  };
+      behavior: 'smooth',
+    })
+  }
 
   React.useEffect(() => {
     const toggleVisibility = () => {
       if (window.pageYOffset > 50) {
-        setIsVisible(true);
+        setIsVisible(true)
       } else {
-        setIsVisible(false);
+        setIsVisible(false)
       }
-    };
+    }
 
-    window.addEventListener("scroll", toggleVisibility);
+    window.addEventListener('scroll', toggleVisibility)
 
-    return () => window.removeEventListener("scroll", toggleVisibility);
-  }, []);
+    return () => window.removeEventListener('scroll', toggleVisibility)
+  }, [])
 
   return (
-    <div
-      onClick={scrollToTop}
-      className=" back-to-top animate__animated animate__bounce "
-    >
-      {isVisible && 
-
-      <i className="ri-arrow-up-circle-fill fs-1 text-info border-3 border-secondary rounded-circle "></i>
-      }
+    <div onClick={scrollToTop} className=' back-to-top animate__animated animate__bounce '>
+      {isVisible && (
+        <i className='ri-arrow-up-circle-fill fs-1 text-info border-3 border-secondary rounded-circle '></i>
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default ScrollToTop;
+export default ScrollToTop

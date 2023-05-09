@@ -28,6 +28,9 @@ const DashBoard = () => {
     setAllSlot,
   ] = useOutletContext<any>()
 
+  //////////////////////////
+  // UseEffect
+  /////////////////////////
   React.useEffect(() => {
     if (allSlot && allSlot['hydra:member']?.length > 0) {
       setIsLoading(false)
@@ -40,11 +43,12 @@ const DashBoard = () => {
     }
   }, [allSlot])
 
+  /////////////////////////
+  //Fonction de retour en arrière
+  ////////////////////////
   const rtn = () => {
     window.history.back()
   }
-
-  console.log(allSlot)
 
   return (
     <Container className='text-center mt-2'>
@@ -114,7 +118,7 @@ const DashBoard = () => {
                 <Col xs={4} className='me- text-start ps-0 pe-0'>
                   <Row>
                     <Col xs={12} className='mb-1 py-0 text-light px-0'>
-                      <i className='ri-file-list-line text-info me-1 align-bottom'></i>
+                      <i className='ri-truck-line text-info me-1 align-bottom'></i>
                       <span className=' font-75'>
                         {' '}
                         A livrer :{' '}

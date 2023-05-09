@@ -8,7 +8,7 @@ import {
   Modal,
   Button,
 } from 'react-bootstrap'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import userDataStore from '../../store/userDataStore'
 import { useEffect, useRef, useState } from 'react'
@@ -22,6 +22,7 @@ import imag from '../../styles/logo512.png'
 import Swal from 'sweetalert2'
 import emailjs from '@emailjs/browser'
 import { _strRandom } from '../../utils/functions'
+import AuthForm from '../../components/ui/auth/AuthForm'
 
 type Inputs = {
   userName: string
@@ -29,6 +30,9 @@ type Inputs = {
 }
 
 const Auth = () => {
+  ////////////////////
+  //form States
+  ///////////////////
   const {
     register,
     handleSubmit,
@@ -36,6 +40,9 @@ const Auth = () => {
   } = useForm<Inputs>()
   const form: any = useRef()
 
+  ////////////////////
+  //States
+  ///////////////////
   const authLogin = userDataStore((state: any) => state.authLogin)
   const dataStore = userDataStore((state: any) => state)
 
@@ -44,13 +51,22 @@ const Auth = () => {
   const [isError, setIsError] = useState<boolean>(false)
   const [isView, setIsView] = useState<boolean>(false)
   const [msgError, setMsgError] = useState<string>('')
-  const [codeError, setCodeError] = useState<any>()
+  const [codeError, setCodeError] = useState<string>('')
 
   const [token, setToken] = useState<any>([])
   const [myData, setMyData] = useState<any>([])
+
+  
+  ////////////////////
+  //Forgot pass States
+  ///////////////////
   const [isNotEmail, setIsNotEmail] = useState<boolean>(false)
   const [myEmail, setMyEmail] = useState<any>('')
 
+
+   ////////////////////
+  //Forgot modal states
+  ///////////////////
   const [show, setShow] = useState(false)
 
   const handleClose = () => setShow(false)
@@ -58,6 +74,11 @@ const Auth = () => {
 
   const myToken = _strRandom('popopopopop').toLocaleUpperCase()
 
+
+
+   ////////////////////
+  //UseEffect
+  ///////////////////
   useEffect(() => {
     if (token && token?.length > 0) {
       getMyData(token)
@@ -84,9 +105,14 @@ const Auth = () => {
     }
   }, [myEmail])
 
+
+
+   ////////////////////
+  //events
+  ///////////////////
+
   if (dataStore.company_name === undefined) {
     setIsError(true)
-    setCodeError(402)
     setMsgError("Vous n'êtes affilié à aucune companie, contacté votre adminitrateur")
   }
 
@@ -152,6 +178,9 @@ const Auth = () => {
       )
   }
 
+
+  const formProps = {handleSubmit, register, errors, signUp, isView, setIsView, handleShow, isError, codeError, msgError, isLoadingAuth}
+
   return (
     <Container fluid className='auth-cont col-12 col-lg-4 px-0 bg-secondary'>
       {dataStore.token && dataStore.company_name && <Navigate to='/dashboard' />}
@@ -166,93 +195,7 @@ const Auth = () => {
             <div className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
               Locker
             </div>
-            <Form onSubmit={handleSubmit(signUp)}>
-              <Form.Group className='mb-3' controlId='formBasicEmail'>
-                <Form.Label className='d-none'>Identifiant</Form.Label>
-                <InputGroup className='mb-3'>
-                  <InputGroup.Text id='basic-addon1' className='rounded-0 border-0'>
-                    <i className='ri-user-fill text-muted'></i>
-                  </InputGroup.Text>
-                  <Form.Control
-                    className='shadow rounded-0 border-0'
-                    type='text'
-                    placeholder='Identifiant'
-                    {...register('userName', { required: true })}
-                  />
-                </InputGroup>
-                {errors.userName && (
-                  <Alert variant='danger' className='mt-2 py-0 text-cente'>
-                    <InfoAlert
-                      icon='ri-error-warning-line'
-                      iconColor='danger'
-                      message={'Saisissez votre identifiant'}
-                      fontSize='font-75'
-                    />
-                  </Alert>
-                )}
-              </Form.Group>
-              <Form.Group className='mb-3' controlId='formBasicPassword'>
-                <Form.Label className='d-none'>Mot de passe</Form.Label>
-                <InputGroup className='mb-3'>
-                  <InputGroup.Text id='basic-addon1' className='rounded-0 border-0'>
-                    <i className='ri-lock-2-fill text-muted'></i>
-                  </InputGroup.Text>
-                  <Form.Control
-                    className='shadow border-0'
-                    style={{ position: 'relative' }}
-                    type={!isView ? 'password' : 'text'}
-                    placeholder='Mot de passe'
-                    {...register('pass', { required: true })}
-                  />
-                  <InputGroup.Text
-                    id='eyeOrNot'
-                    className='rounded-0 border-0'
-                    onClick={() => setIsView(!isView)}
-                  >
-                    {' '}
-                    <i
-                      className={
-                        !isView
-                          ? 'ri-eye-fill text-secondary'
-                          : 'ri-eye-off-fill text-secondary'
-                      }
-                    ></i>
-                  </InputGroup.Text>
-                </InputGroup>
-                {errors.pass && (
-                  <Alert variant='danger' className='mt-2 py-0 text-cente'>
-                    <InfoAlert
-                      icon='ri-error-warning-line'
-                      iconColor='danger'
-                      message={'Saisissez votre mot de passe'}
-                      fontSize='font-75'
-                    />
-                  </Alert>
-                )}
-              </Form.Group>
-              {isError && (
-                <AlertIsError
-                  title={`Erreur : ${codeError}`}
-                  msg={msgError}
-                  colorIcon='danger'
-                />
-              )}
-              <p className='text-light text-end font-75' onClick={handleShow}>
-                <u>Mot de passe oublié ?</u>
-              </p>
-
-              <button
-                type='submit'
-                id=''
-                className='button-auth rounded  w-100 py-2 mt-4 text-light shadow'
-              >
-                {isLoadingAuth ? <Spinner variant='light' size='sm' />
-                :
-                <>
-                 Valider
-                </>}
-              </button>
-            </Form>
+            <AuthForm formProps={formProps} />
           </Card.Body>
         </Card>
       )}
@@ -299,9 +242,11 @@ const Auth = () => {
           </Modal.Body>
           <Modal.Footer className='text-light border-top-0'>
             <Button variant='warning' onClick={handleClose} className='text-light'>
-              Fermer
+            <Link to="/forgot-pass/myLongToken">
+             Fermer
+             </Link>
             </Button>
-            <Button type='submit' variant='info' className='text-light'>
+            <Button type='submit'  variant='info' className='text-light'>
               Envoyer
             </Button>
           </Modal.Footer>

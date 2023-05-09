@@ -9,10 +9,13 @@ const ScanPage = ({ scanPageProps }: any) => {
   ////////////////////
   //Props
   ///////////////////
-  const { selectedOrder, setOrderData, setSelectedOrder, objectif } = scanPageProps
+  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
 
   const dataStore = userDataStore((states: any) => states)
 
+  //////////////////////////
+  // Events
+  /////////////////////////
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
       setOrderData(response.data)
@@ -21,7 +24,7 @@ const ScanPage = ({ scanPageProps }: any) => {
 
   const changeStatus = () => {
     let data = {
-      status: objectif,
+      status: newStatus,
     }
 
     let config = {

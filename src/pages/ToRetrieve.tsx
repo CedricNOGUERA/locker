@@ -36,6 +36,11 @@ const ToRetrieve: React.FC = () => {
   ] = useOutletContext<any>()
   const [messageApi, contextHolder] = message.useMessage()
 
+
+
+  //////////////////////////
+  // States
+  /////////////////////////
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
@@ -47,6 +52,11 @@ const ToRetrieve: React.FC = () => {
       order.status === 'overtime' &&
       order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
   )
+
+  
+  //////////////////////////
+  // UseEffect
+  /////////////////////////
 
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
@@ -64,6 +74,12 @@ const ToRetrieve: React.FC = () => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
   }, [searchOrder])
 
+
+
+
+  //////////////////////////
+  // Component Props
+  /////////////////////////
   const searchBarProps = {
     searchOrder,
     setSearchOrder,

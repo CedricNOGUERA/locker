@@ -1,17 +1,15 @@
-import { Card, Form, Container, Alert, InputGroup } from 'react-bootstrap'
+import { Card, Container } from 'react-bootstrap'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import '../../App.css'
-import InfoAlert from '../../components/ui/warning/InfoAlert'
-import AlertIsError from '../../components/ui/warning/AlertIsError'
 import Swal from 'sweetalert2'
-import UserService from '../../service/UserService'
+import ForgotForm from '../../components/ui/auth/ForgotForm'
 
 const Forgot = () => {
   //////////////////////////
   // booleans States
   /////////////////////////
-
+  const [isLoadingAuth, setIsLoadingAuth] = useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
   const [isView, setIsView] = useState<boolean>(false)
   const [isView2, setIsView2] = useState<boolean>(false)
@@ -28,12 +26,18 @@ const Forgot = () => {
   const params = useParams()
   const navigate = useNavigate()
 
+  //////////////////////////
+  // Useeffect
+  /////////////////////////
   useEffect(() => {
     if (pass1 === pass2) {
       setIsError(false)
     }
   }, [pass1, pass2])
 
+  //////////////////////////
+  // Event
+  /////////////////////////
   const updatePass = (e: any) => {
     e.preventDefault()
 
@@ -60,10 +64,19 @@ const Forgot = () => {
     }
   }
 
-  // const updateUserPass = () => {
-  //   UserService.updatePassword()
-
-  // }
+  const formProps = {
+    updatePass,
+    isView,
+    setIsView,
+    isView2,
+    setIsView2,
+    pass1,
+    setPass1,
+    pass2,
+    setPass2,
+    isError,
+    isLoadingAuth
+  }
 
   return (
     <Container fluid className='auth-cont col-12 col-lg-4 px-0 bg-secondary'>
@@ -72,10 +85,10 @@ const Forgot = () => {
           <Card.Body>
             <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
               <img
-                src='https://img.icons8.com/?size=512&amp;id=N459Os8TBWED&amp;format=png'
-                alt='Cadenas icon'
+                src='https://img.icons8.com/?size=512&amp;id=11320&amp;format=png'
+                alt='Déverrouiller 2 icon'
                 style={{
-                  width: ' 120px',
+                  width: '120px',
                   height: '120px',
                   filter:
                     'invert(99%) sepia(0%) saturate(0%) hue-rotate(168deg) brightness(102%) contrast(102%)',
@@ -85,97 +98,7 @@ const Forgot = () => {
             <div className=' text-center my-5 text-light animate__animated animate__fadeInUp'>
               <h3>Réinitialisé votre mot de passe</h3>
             </div>
-            <Form onSubmit={updatePass}>
-              <Form.Group className='mb-3' controlId='formBasicEmail'>
-                <Form.Label className='d-none'>nouveau password</Form.Label>
-                <InputGroup className='mb-3'>
-                  <InputGroup.Text id='basic-addon1' className='rounded-0 border-0'>
-                    <i className='ri-lock-unlock-fill text-muted'></i>
-                  </InputGroup.Text>
-                  <Form.Control
-                    className='shadow rounded-0 border-0'
-                    type={isView ? 'text' : 'password'}
-                    placeholder='Nouveau mot de passe'
-                    name='pass1'
-                    value={pass1}
-                    onChange={(e) => setPass1(e.currentTarget.value)}
-                    required
-                  />
-                  <InputGroup.Text
-                    id='eyeOrNot'
-                    className='rounded-0 border-0'
-                    onClick={() => setIsView(!isView)}
-                  >
-                    {' '}
-                    <i
-                      className={
-                        !isView
-                          ? 'ri-eye-off-fill text-secondary'
-                          : 'ri-eye-fill text-secondary'
-                      }
-                    ></i>
-                  </InputGroup.Text>
-                </InputGroup>
-              </Form.Group>
-              <Form.Group className='mb-3' controlId='formBasicPassword'>
-                <Form.Label className='d-none'>Mot de passe de confirmation</Form.Label>
-                <InputGroup className='mb-3'>
-                  <InputGroup.Text id='basic-addon1' className='rounded-0 border-0'>
-                    <i className='ri-rotate-lock-fill text-muted'></i>
-                  </InputGroup.Text>
-                  <Form.Control
-                    className='shadow border-0'
-                    style={{ position: 'relative' }}
-                    type={isView2 ? 'text' : 'password'}
-                    name='pass2'
-                    placeholder='Confirmez votre mot de passe'
-                    value={pass2}
-                    onChange={(e) => setPass2(e.currentTarget.value)}
-                    required
-                  />
-                  <InputGroup.Text
-                    id='eyeOrNot'
-                    className='rounded-0 border-0'
-                    onClick={() => setIsView2(!isView2)}
-                  >
-                    {' '}
-                    <i
-                      className={
-                        !isView2
-                          ? 'ri-eye-off-fill text-secondary'
-                          : 'ri-eye-fill text-secondary'
-                      }
-                    ></i>
-                  </InputGroup.Text>
-                </InputGroup>
-                {pass1 && pass2 && pass2.length > 2 && pass1 !== pass2 && (
-                  <Alert variant='danger' className='mt-2 py-0 text-cente'>
-                    <InfoAlert
-                      icon='ri-error-warning-line'
-                      iconColor='danger'
-                      message={'Vous devez saisir le même mot de passe'}
-                      fontSize='font-75'
-                    />
-                  </Alert>
-                )}
-              </Form.Group>
-              {isError && (
-                <AlertIsError
-                  title={`Erreur :`}
-                  msg={'Les mots de passe ne sont pas les mêmes'}
-                  colorIcon='danger'
-                />
-              )}
-              <button
-                type='submit'
-                id=''
-                className='button-auth rounded  w-100 py-2 mt-4 text-light shadow'
-                disabled={pass1 && pass2 && pass1 !== pass2 ? true : false}
-              >
-                {/* {isLoadingAuth && <Spinner variant='light' size='sm' />} */}
-                Réinitialiser
-              </button>
-            </Form>
+            <ForgotForm formProps={formProps} />
           </Card.Body>
         </Card>
       ) : (

@@ -123,7 +123,7 @@ const UpdatePassword = () => {
         <Card.Body>
           <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
             <img
-              src='https://img.icons8.com/?size=512&amp;id=N459Os8TBWED&amp;format=png'
+              src='https://img.icons8.com/?size=512&amp;id=Bw1qS7FPUzIJ&amp;format=png'
               alt='Cadenas icon'
               style={{
                 width: ' 120px',

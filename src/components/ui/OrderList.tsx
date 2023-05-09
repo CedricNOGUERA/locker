@@ -3,6 +3,9 @@ import ItemList from './ItemList'
 import images from '../../styles/no-order-min.png'
 
 const OrderList = ({ orderListProps }: any) => {
+  //////////////////////////
+  // Props
+  /////////////////////////
   const {
     filteredOrder,
     setSelectedOrder,

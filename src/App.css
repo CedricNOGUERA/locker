@@ -93,6 +93,14 @@ overflow: hidden;
 
 .nav-item{
   width: 20%;
+
+}
+.nav-link{
+  border-radius: 50px;
+}
+.nav-link:active{
+  border-radius: 50px;
+  background-color: #9b9b9b;
 }
 
 .ff-agency{

@@ -11,6 +11,9 @@ import BookingSlotservice from './service/BookingSlot/BookingSlotservice'
 
 function App() {
 
+  /////////////////////
+  //States
+  ////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
@@ -21,10 +24,14 @@ function App() {
   const [selectedOrderCity, setSelectedOrderCity] = React.useState<any>('')
   const [orderData, setOrderData] = React.useState<any>([])
 
+
+  /////////////////////
+  //UseEffect
+  ////////////////////
   React.useEffect(() => {
     getallOrders(token)
     getBookingAllSlot(token)
-  }, [])
+  }, [token])
 
   React.useEffect(() => {
     setSelectedOrderCity(
@@ -39,6 +46,12 @@ function App() {
     )
   }, [allSlot])
 
+
+  /////////////////////
+  //Events
+  ////////////////////
+
+
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
       setIsLoading(false)
@@ -51,13 +64,9 @@ function App() {
       setAllSlot(response.data)
     })
   }
-
-  // console.log(allSlot)
-
   return (
     <div className=''>
       {!isLogged && <Navigate to='/connexion' />}
-
       {isLoading ? (
         <>
           <Container className='text-center pt-5 vh-100'>
@@ -79,9 +88,7 @@ function App() {
           ]}
         />
       )}
-      
       <BottomNavBar orderData={orderData} selectedStore={selectedStore} />
-       
     </div>
   )
 }
