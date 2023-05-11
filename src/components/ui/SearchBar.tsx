@@ -5,33 +5,29 @@ const SearchBar = ({ searchBarProps }: any) => {
   const {
     searchOrder,
     setSearchOrder,
+    selectedStore,
     setSelectedStore,
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
   } = searchBarProps
 
-  const [deduplicate, setDeduplicate] = React.useState<any>()
-
-  const bookingLocker: any = allSlot?.['hydra:member']?.map(
-    (locker: any) => locker?.slot?.temperatureZone?.locker
-  )
-
-  const newObject: any = []
+  const [uniqueTab, setUniqueTab] = React.useState([])
+  const [cityTab, setCityTab] = React.useState([])
 
   React.useEffect(() => {
-    unique()
+    const bookingLocker: any = allSlot?.['hydra:member']?.map(
+      (locker: any) => locker?.slot?.temperatureZone?.locker
+    )
+    const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker.location))]
+    setUniqueTab(deduplicate)
+
+  
+    const deduplicateCity: any = [...new Set(bookingLocker?.map((locker: any) => locker.city))]
+    setCityTab(deduplicateCity)
   }, [allSlot])
 
-  const unique = () => {
-    for (var i = 0; i < bookingLocker?.length; i++) {
-      newObject?.push(bookingLocker[i].location)
-    }
-    setDeduplicate(newObject)
-  }
-
-  var uniqueTab = Array.from(new Set(deduplicate))
-
+  console.log(cityTab)
   return (
     <Container className='mt-2 text-center'>
       <Container
@@ -64,29 +60,40 @@ const SearchBar = ({ searchBarProps }: any) => {
                   id='dropdown-basic'
                   className='text-light'
                 >
-                  <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '}
-                  <span>{selectedOrderCity}</span>
+                  <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
+                  <span className='font-85'>{selectedOrderCity}</span>
                 </Dropdown.Toggle>
               </Col>
             </Row>
           </Container>
           <Dropdown.Menu className='shadow'>
-            {uniqueTab?.map((locker: any) => (
+            {uniqueTab?.map((locker: any, indx: any) => (
               <Dropdown.Item
                 key={Math.random()}
                 title={locker}
                 onClick={() => {
+                  setSelectedOrderCity(cityTab[indx])
                   setSelectedStore(locker)
                 }}
               >
-                <Row className=' text-secondary'>
-                  <Col xs={2} className=''>
+                <Row className='item-menu text-secondary align-middle'>
+                  <Col xs={1} className=''>
                     {' '}
-                  <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '}
-
+                    <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '}
                   </Col>{' '}
-                  <Col xs={9} className='m-auto user-name ps-3'>
+                  <Col xs={10} className='m-auto my-0 user-name ps-3 pb-0  text-dark'>
                     {locker}
+                  </Col>
+                </Row>
+                <Row className=' text-secondary '>
+                  <Col xs={1} className=''>
+                    {' '}
+                  </Col>{' '}
+                  <Col
+                    xs={10}
+                    className='font-75 font-weight-300 m-auto ps-3 py-0'
+                  >
+                    {cityTab[indx]}
                   </Col>
                 </Row>
               </Dropdown.Item>

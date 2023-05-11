@@ -597,7 +597,7 @@ const NewOrder = () => {
           <DashBoardLoader />
         </Container>
       ) : (
-        <Container className='pb-5'>
+        <Container className='pb-5 mb-5'>
           {orderStore.lockerId === null &&
             allSlot['hydra:member']?.map((locker: any, indx: any) =>
               locker?.active === true ? (

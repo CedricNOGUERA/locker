@@ -19,7 +19,10 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder }: any) => {
             />{' '}
           </span>
         </Col>
-        <Col className='ff-agency text-secondary text-center align-middle m-auto py-0'><small>{liv?.barcode}</small></Col>
+        <Col className='text-secondary text-center align-middle m-auto py-0'>
+          <small className="ff-agency ">{liv?.barcode}</small>
+          <p className="font-75">{liv?.bookingSlot.slot.temperatureZone.locker.location}</p>
+        </Col>
         <Col xs={2} className='m-auto me-3 py-0'>
           <Button
             variant='outline-info'

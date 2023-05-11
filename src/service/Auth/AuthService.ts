@@ -39,7 +39,7 @@ class AuthService {
       .catch((error) => {
         console.log(error)
         setMsg(getError(error))
-        setCodeError(error.response.data.code)
+        setCodeError(error?.response?.data?.code !== undefined ? error?.response?.data?.code : "")
         setIsError(true)
         setIsLoadingAuth(false)
       })

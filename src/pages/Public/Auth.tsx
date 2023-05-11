@@ -8,6 +8,7 @@ import {
   Modal,
   Button,
 } from 'react-bootstrap'
+import axios from 'axios'
 import { Link, Navigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import userDataStore from '../../store/userDataStore'
@@ -40,6 +41,9 @@ const Auth = () => {
   } = useForm<Inputs>()
   const form: any = useRef()
 
+  const API_URL = process.env.REACT_APP_END_POINT
+
+
   ////////////////////
   //States
   ///////////////////
@@ -62,7 +66,8 @@ const Auth = () => {
   ///////////////////
   const [isNotEmail, setIsNotEmail] = useState<boolean>(false)
   const [myEmail, setMyEmail] = useState<any>('')
-
+  const [forgotToken, setForgotToken] = useState<any>('')
+  
 
    ////////////////////
   //Forgot modal states
@@ -144,20 +149,51 @@ const Auth = () => {
     if (!myEmail) {
       setIsNotEmail(true)
     } else {
-      Swal.fire({
-        position: 'top-end',
-        toast: true,
-        icon: 'success',
-        title: 'Email de réinitilisation',
-        text: 'Envoi en cours',
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
+     
+      let data = JSON.stringify({
+        email: myEmail,
       })
-      sendEmail()
+
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: API_URL + 'forgot-password',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: data,
+      }
+
+      axios
+        .request(config)
+        .then((response: any) => {
+          console.log((response.data.token))
+          setForgotToken(response.data.token)
+          authLogin(false, null, null, null, null, null, null, response.data.token)
+
+
+
+          Swal.fire({
+            position: 'top-end',
+            toast: true,
+            icon: 'success',
+            title: 'Email de réinitilisation',
+            text: 'Envoi en cours',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+          })
+
+        })
+        .catch((error: any) => {
+          console.log(error)
+        })
+
+     
+      // sendEmail()
       handleClose()
       setMyEmail('')
-      authLogin(false, null, null, null, null, null, null, myToken)
+      // authLogin(false, null, null, null, null, null, null, myToken)
     }
   }
 

@@ -18,6 +18,7 @@ import Map from './pages/Map/Map'
 import DashBoard from './pages/DashBoard'
 import Forgot from './pages/Public/Forgot'
 import UpdatePassword from './pages/UpdatePassword/UpdatePassword'
+import History from './pages/History/History'
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
         path: 'in-progress',
         element: (
           <React.Fragment>
-            <HeaderDesign title='A livrer' icon='ri-truck-line' />
+            <HeaderDesign title='Livraisons' icon='ri-truck-line' />
             <InProgress />
           </React.Fragment>
         ),
@@ -70,6 +71,15 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: 'historique',
+        element: (
+          <React.Fragment>
+            <HeaderDesign title='Historique' icon='ri-history-line' />
+            <History />
+          </React.Fragment>
+        ),
+      },
+      {
         path: 'map',
         element: (
           <React.Fragment>
@@ -94,7 +104,7 @@ const router = createBrowserRouter([
     element: <Auth />,
   },
   {
-    path: '/forgot-pass/:token',
+    path: '/forgot-password/:token',
     element: <Forgot />,
   },
 ])

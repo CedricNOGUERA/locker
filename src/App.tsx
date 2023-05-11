@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import './App.css'
 import userDataStore from './store/userDataStore'
@@ -50,7 +50,7 @@ function App() {
   /////////////////////
   //Events
   ////////////////////
-
+ 
 
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
@@ -58,6 +58,8 @@ function App() {
       setOrderData(response.data)
     })
   }
+
+
 
   const getBookingAllSlot = (token: any) => {
     BookingSlotservice.allSlot(token).then((response: any) => {

@@ -5,10 +5,7 @@ import imag from '../../../src/styles/g5635.png'
 import UserQrcode from '../ui/modals/UserQrcode'
 
 const BottomNavBar = ({ orderData, selectedStore }: any) => {
-  const [isSelected, setisSelected] = React.useState<boolean>(false)
-  const [isSelected2, setisSelected2] = React.useState<boolean>(false)
-  const [isSelected3, setisSelected3] = React.useState<boolean>(false)
-  const [isSelected4, setisSelected4] = React.useState<boolean>(false)
+
   const [selectedItem, setSelectedItem] = React.useState<string>('home')
 
   //////////////////////

@@ -107,6 +107,21 @@ const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
           <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'
+              to='/historique'
+              onClick={handleCloseOffcanvas}
+            >
+              <Row className='menu-link'>
+                <Col xs={2}>
+                  {' '}
+                  <i className='ri-history-line fs-5'></i>
+                </Col>{' '}
+                <Col className='m-auto user-name'>Historique</Col>
+              </Row>
+            </Link>
+          </Container>
+          <Container className='mb-3'>
+            <Link
+              className='text-decoration-none text-light'
               to='/map'
               onClick={handleCloseOffcanvas}
             >

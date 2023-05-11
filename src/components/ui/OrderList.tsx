@@ -2,7 +2,7 @@ import { Container } from 'react-bootstrap'
 import ItemList from './ItemList'
 import images from '../../styles/no-order-min.png'
 
-const OrderList = ({ orderListProps }: any) => {
+const   OrderList = ({ orderListProps }: any) => {
   //////////////////////////
   // Props
   /////////////////////////
@@ -14,6 +14,8 @@ const OrderList = ({ orderListProps }: any) => {
     allSlot,
     orderByStatus,
   } = orderListProps
+
+  console.log(orderByStatus)
 
   return (
     <Container className='order-list animate__animated animate__backInLeft'>

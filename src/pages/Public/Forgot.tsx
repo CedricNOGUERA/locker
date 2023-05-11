@@ -4,8 +4,11 @@ import React, { useEffect, useState } from 'react'
 import '../../App.css'
 import Swal from 'sweetalert2'
 import ForgotForm from '../../components/ui/auth/ForgotForm'
+import axios from 'axios'
+import userDataStore from '../../store/userDataStore'
 
 const Forgot = () => {
+  const API_URL = process.env.REACT_APP_END_POINT
   //////////////////////////
   // booleans States
   /////////////////////////
@@ -18,7 +21,8 @@ const Forgot = () => {
   // states
   /////////////////////////
 
-  const token = 'myLongToken'
+  const dataStore = userDataStore((state: any) => state)
+  const token = dataStore.subToken
 
   const [pass1, setPass1] = React.useState('')
   const [pass2, setPass2] = React.useState('')
@@ -40,26 +44,56 @@ const Forgot = () => {
   /////////////////////////
   const updatePass = (e: any) => {
     e.preventDefault()
+    setIsLoadingAuth(true)
 
     if (pass1 === pass2) {
-      Swal.fire({
-        position: 'top-end',
-        toast: true,
-        icon: 'success',
-        title: 'Réinitialisation du mot de passe effectué',
-        text: 'Vous allez être redirigé',
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: () => {
-          setTimeout(() => {
-            navigate('/in-progress')
-          }, 5000)
+      let data = JSON.stringify({
+        "newPassword": pass1,
+        "newPasswordRetyped": pass2
+      });
+      
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: API_URL + 'forgot-password/' + params.token,
+        headers: { 
+          'Content-Type': 'application/json'
         },
+        data : data
+      };
+      
+      axios.request(config)
+      .then((response) => {
+        console.log((response.data));
+        setIsLoadingAuth(false)
+        setIsError(false)
+        Swal.fire({
+          position: 'top-end',
+          toast: true,
+          icon: 'success',
+          title: 'Réinitialisation du mot de passe effectué',
+          text: 'Vous allez être redirigé',
+          showConfirmButton: false,
+          timer: 5000,
+          timerProgressBar: true,
+          didOpen: () => {
+            setTimeout(() => {
+              navigate('/in-progress')
+            }, 5000)
+          },
+        })
       })
-      setIsError(false)
+      .catch((error) => {
+        console.log(error);
+      });
+
+
+
+     
+     
     } else {
       console.log('error')
+      setIsLoadingAuth(false)
       setIsError(true)
     }
   }
