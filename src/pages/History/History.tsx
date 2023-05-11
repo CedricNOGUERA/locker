@@ -1,19 +1,14 @@
 import React from 'react'
-import userDataStore from '../../store/userDataStore'
 import { useOutletContext } from 'react-router-dom'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import ItemList from '../../components/ui/ItemList'
-import images from '../../styles/no-order-min.png'
 import moment from 'moment'
 import BackButton from '../../components/ui/BackButton'
-import PlaceHolder from '../../components/ui/loading/PlaceHolder'
+import SearchBar from '../../components/ui/SearchBar'
+import { _searchWithRegex } from '../../utils/functions'
 
 const History = () => {
-  //////////////////////////
-  // booleans States
-  /////////////////////////
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [isError, setIsError] = React.useState<boolean>(false)
+
 
   //////////////////////////
   // Store & context state
@@ -34,8 +29,20 @@ const History = () => {
   /////////////////////////
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
+  const [filteredOrder, setFilteredOrder] = React.useState<any>([])
+
+console.log(orderData)
+
+  React.useEffect(() => {
+   
+    _searchWithRegex(searchOrder, orderData['hydra:member'], setFilteredOrder)
+
+
+  }, [searchOrder]);
+
 
   console.log(selectedOrder)
+  console.log(filteredOrder)
   const getMsg = (status: any) => {
     if (status === 'created') {
       return <div className='item-detail'>Commande préparée et prête à l'envoi</div>
@@ -54,26 +61,62 @@ const History = () => {
     }
   }
 
+  const searchBarProps = {
+    searchOrder,
+    setSearchOrder,
+    selectedStore,
+    setSelectedStore,
+    selectedOrderCity,
+    setSelectedOrderCity,
+    allSlot,
+  }
+
   return (
     <>
       <Container className='order-list '>
         <Container className='px- py-0 bg-secondary rounded-pill shadow mt-2 '>
           <Row>
-            {selectedOrder && (
-              <Col xs={1} md={5} lg={5} className='py-0' onClick={() => setSelectedOrder('')}>
+            {selectedOrder ? (
+              <Col xs={2} md={5} lg={5} className='py-0' onClick={() => setSelectedOrder('')}>
                 <BackButton />
+              </Col>
+            ) : (
+              <Col xs={7} className=' text-start '>
+                <div className='input-group'>
+                  <i className='ri-search-line me-1 text-info '></i>
+                  <input
+                    type='text'
+                    className='form-control rounded-pill'
+                    placeholder='N° Commande...'
+                    aria-label='Username'
+                    aria-describedby='basic-addon1'
+                    style={{ height: '25px' }}
+                    value={searchOrder}
+                    onChange={(e) => setSearchOrder(e.currentTarget.value)}
+                  />
+                </div>
               </Col>
             )}
             <Col className='bar-title m-auto text-light text-center pe-2 py-0'>
               <span className='fw-bold font-85'>
                 {selectedOrder && selectedOrder?.history?.length > 0
                   ? 'Livraison n°'
-                  : 'Sélectionner une livraison'}
+                  : 'Sélectionner '}
               </span>{' '}
               {selectedOrder.id}
             </Col>
+            {selectedOrder && selectedOrder?.history?.length > 0 && (
+              <Col
+                xs={2}
+                md={5}
+                lg={5}
+                className='py-0'
+                onClick={() => setSelectedOrder('')}
+              ></Col>
+            )}
           </Row>
         </Container>
+        {/* <SearchBar searchBarProps={searchBarProps} /> */}
         {selectedOrder && selectedOrder?.history?.length > 0 && (
           <div className='history-tl-container animate__animated animate__backInLeft pb-5'>
             <ul className='tl'>
@@ -97,24 +140,30 @@ const History = () => {
             </ul>
           </div>
         )}
-        {
-     
-        
-        !selectedOrder &&
-          orderData &&
-          orderData['hydra:member']?.length > 0 &&
-          orderData['hydra:member']?.map((liv: any, indx: any) => (
-            <ItemList
-              key={Math.random()}
-              liv={liv}
-              indx={indx}
-              setSelectedOrder={setSelectedOrder}
-              setSearchOrder={setSearchOrder}
-              allSlot={allSlot}
-            />
-          ))
-          
-          }
+        {!selectedOrder && filteredOrder && filteredOrder.length > 0
+          ? filteredOrder.map((liv: any, indx: any) => (
+              <ItemList
+                key={Math.random()}
+                liv={liv}
+                indx={indx}
+                setSelectedOrder={setSelectedOrder}
+                setSearchOrder={setSearchOrder}
+                allSlot={allSlot}
+              />
+            ))
+          : !selectedOrder &&
+            orderData &&
+            orderData['hydra:member']?.length > 0 &&
+            orderData['hydra:member']?.map((liv: any, indx: any) => (
+              <ItemList
+                key={Math.random()}
+                liv={liv}
+                indx={indx}
+                setSelectedOrder={setSelectedOrder}
+                setSearchOrder={setSearchOrder}
+                allSlot={allSlot}
+              />
+            ))}
       </Container>
     </>
   )
