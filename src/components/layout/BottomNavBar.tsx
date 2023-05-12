@@ -83,12 +83,12 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
           onClick={() => handleSelect('progress')}
         >
           <Link
-            className={`nav-link  text-${
+            className={`nav-link px-0 text-${
               selectedItem === 'progress' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
             to='in-progress'
           >
-            <i className='ri-truck-line fs-4 '></i>
+            <i className='ri-truck-line fs-5 '></i>
             {progress?.length > 0 && (
               <span className='badge rounded-pill bg-info'>{progress?.length}</span>
             )}
@@ -99,7 +99,7 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
           onClick={() => handleSelect('retrieve')}
         >
           <Link
-            className={`nav-link  text-${
+            className={`nav-link px-0  text-${
               selectedItem === 'retrieve' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
             to='orders-to-retrieve'
