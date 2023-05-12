@@ -1,6 +1,7 @@
+import moment from "moment";
 import { Button, Col, Row } from "react-bootstrap";
 
-const ItemList = ({ liv, setSelectedOrder, setSearchOrder }: any) => {
+const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
   
 
   const tempZone = (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FRESH" || liv?.bookingSlot.slot.temperatureZone?.myKey === "C" ) ? "organic-food" : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FREEZE" || liv?.bookingSlot.slot.temperatureZone?.myKey === "F") ? "winter"  : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "NORMAL" || liv?.bookingSlot.slot.temperatureZone?.myKey === "CA") ? "dry" : ""
@@ -8,8 +9,12 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder }: any) => {
 
 
   return (
-    <div className='my-3 px-3 py-2 bg-white rounded shadow'>
-      <Row className='py-'>
+    <div className='mb- px-3  bg-white rounded'  onClick={() => {
+      trigger === "history" && 
+      setSearchOrder('')
+      setSelectedOrder(liv)
+    }}>
+      <Row>
         <Col xs={2} className='m-auto'>
           <span key={Math.random()}>
             <img
@@ -19,10 +24,11 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder }: any) => {
             />{' '}
           </span>
         </Col>
-        <Col className='text-secondary text-center align-middle m-auto py-0'>
-          <small className="ff-agency ">{liv?.barcode}</small>
+        <Col className='text-secondary text-start align-bottom m-auto py-0 pt-3'>
+          <small className="ff-agency font-85 text-dar">{liv?.barcode}</small>
           <p className="font-75">{liv?.bookingSlot.slot.temperatureZone.locker.location}</p>
         </Col>
+        {trigger !== "history" ? (
         <Col xs={2} className='m-auto me-3 py-0'>
           <Button
             variant='outline-info'
@@ -31,10 +37,16 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder }: any) => {
               setSelectedOrder(liv)
             }}
             className='ms-2 rounded text-center px-2 py-0 border border-info border-2'
-          >
+            >
             <i className='ri-qr-code-line text-secondary'></i>
           </Button>
         </Col>
+          ) : (
+            <Col xs={3} className='font-75 m-auto me-3 py-0 text-end text-secondary'>
+              {moment(liv?.updatedAt).format('D MMM')}
+          </Col>
+          )
+          }
       </Row>
     </div>
   )

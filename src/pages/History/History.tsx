@@ -1,6 +1,6 @@
 import React from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import ItemList from '../../components/ui/ItemList'
 import moment from 'moment'
 import BackButton from '../../components/ui/BackButton'
@@ -58,22 +58,24 @@ console.log(orderData)
       return <div className='item-detail'>Commande récupérée par le livreur</div>
     } else if (status === 'receive') {
       return <div className='item-detail'>Commande récupérée par le client</div>
+    } else if (status === 'return') {
+      return <div className='item-detail'>Commande retournée au service client</div>
     }
   }
 
-  const searchBarProps = {
-    searchOrder,
-    setSearchOrder,
-    selectedStore,
-    setSelectedStore,
-    selectedOrderCity,
-    setSelectedOrderCity,
-    allSlot,
-  }
+  // const searchBarProps = {
+  //   searchOrder,
+  //   setSearchOrder,
+  //   selectedStore,
+  //   setSelectedStore,
+  //   selectedOrderCity,
+  //   setSelectedOrderCity,
+  //   allSlot,
+  // }
 
   return (
-    <>
-      <Container className='order-list '>
+  
+      <Container className='order-list pb-5 mb-5'>
         <Container className='px- py-0 bg-secondary rounded-pill shadow mt-2 '>
           <Row>
             {selectedOrder ? (
@@ -99,13 +101,11 @@ console.log(orderData)
             )}
             <Col className='bar-title m-auto text-light text-center pe-2 py-0'>
               <span className='fw-bold font-85'>
-                {selectedOrder && selectedOrder?.history?.length > 0
-                  ? 'Livraison n°'
-                  : 'Sélectionner '}
+                {selectedOrder ? '' : 'Sélectionner '}
               </span>{' '}
-              {selectedOrder.id}
+              {selectedOrder.barcode}
             </Col>
-            {selectedOrder && selectedOrder?.history?.length > 0 && (
+            {selectedOrder &&  (
               <Col
                 xs={2}
                 md={5}
@@ -116,10 +116,9 @@ console.log(orderData)
             )}
           </Row>
         </Container>
-        {/* <SearchBar searchBarProps={searchBarProps} /> */}
-        {selectedOrder && selectedOrder?.history?.length > 0 && (
+        {selectedOrder  && (
           <div className='history-tl-container animate__animated animate__backInLeft pb-5'>
-            <ul className='tl'>
+            <ul className='tl d-flex flex-column-reverse'>
               {selectedOrder &&
                 selectedOrder?.history?.length > 0 &&
                 selectedOrder?.history?.map((order: any) => (
@@ -134,14 +133,22 @@ console.log(orderData)
                     </div>
                     <div className='item-title'>{order.status}</div>
                     {getMsg(order.status)}
-                    {/* <div className='item-detail'>Don't forget the ring</div> */}
                   </li>
                 ))}
+              <li  className='tl-item-current' ng-repeat='item in retailer_histor'>
+                <div className='timestamp-current'>
+                  {moment(selectedOrder.updatedAt).format('DD/MM/YY')}
+                  <br /> {moment(selectedOrder.updatedAt).format('HH:mm:ss')}
+                </div>
+                <div className='item-title'>{selectedOrder.status}</div>
+                {getMsg(selectedOrder.status)}
+              </li>
             </ul>
           </div>
         )}
         {!selectedOrder && filteredOrder && filteredOrder.length > 0
           ? filteredOrder.map((liv: any, indx: any) => (
+            
               <ItemList
                 key={Math.random()}
                 liv={liv}
@@ -149,6 +156,7 @@ console.log(orderData)
                 setSelectedOrder={setSelectedOrder}
                 setSearchOrder={setSearchOrder}
                 allSlot={allSlot}
+                trigger='history'
               />
             ))
           : !selectedOrder &&
@@ -162,10 +170,11 @@ console.log(orderData)
                 setSelectedOrder={setSelectedOrder}
                 setSearchOrder={setSearchOrder}
                 allSlot={allSlot}
+                trigger='history'
               />
             ))}
       </Container>
-    </>
+  
   )
 }
 

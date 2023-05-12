@@ -29,10 +29,10 @@ const SearchBar = ({ searchBarProps }: any) => {
 
   console.log(cityTab)
   return (
-    <Container className='mt-2 text-center'>
+    <Container className='my-2 text-center'>
       <Container
         fluid
-        className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill shadow my-auto '
+        className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill  my-auto '
       >
         <Dropdown>
           <Container fluid className='px-0 py-0'>

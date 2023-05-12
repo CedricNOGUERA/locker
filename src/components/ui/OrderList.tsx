@@ -15,7 +15,7 @@ const   OrderList = ({ orderListProps }: any) => {
     orderByStatus,
   } = orderListProps
 
-  console.log(orderByStatus)
+
 
   return (
     <Container className='order-list animate__animated animate__backInLeft'>
@@ -46,6 +46,7 @@ const   OrderList = ({ orderListProps }: any) => {
               setSelectedOrder={setSelectedOrder}
               setSearchOrder={setSearchOrder}
               allSlot={allSlot}
+              trigger="order"
             />
           ))
         )

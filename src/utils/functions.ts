@@ -22,7 +22,7 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
 
   /********************************
-  * Search order by num
+  * Search order by num (barcode)
   *******************************/
 
   export const _searchWithRegex = (searchOrder: any, orderByStatus: any, setFilteredOrder: any ) => {

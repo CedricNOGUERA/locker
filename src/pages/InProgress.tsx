@@ -46,7 +46,7 @@ const InProgress: React.FC = () => {
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
 
-  const newStatus = 'overtime'
+  const newStatus = 'operin'
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
