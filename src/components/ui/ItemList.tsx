@@ -2,19 +2,20 @@ import moment from "moment";
 import { Button, Col, Row } from "react-bootstrap";
 
 const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
-  
 
   const tempZone = (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FRESH" || liv?.bookingSlot.slot.temperatureZone?.myKey === "C" ) ? "organic-food" : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FREEZE" || liv?.bookingSlot.slot.temperatureZone?.myKey === "F") ? "winter"  : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "NORMAL" || liv?.bookingSlot.slot.temperatureZone?.myKey === "CA") ? "dry" : ""
- 
-
 
   return (
-    <div className='mb- px-3  bg-white rounded'  onClick={() => {
-      trigger === "history" && 
-      setSearchOrder('')
-      setSelectedOrder(liv)
-    }}>
-      <Row>
+    <div className='mb- px-3  bg-white rounded'  >
+      <Row  onClick={() => {
+         if (trigger === "history") {
+          setSearchOrder('');
+          setSelectedOrder(liv);
+        } else {
+      return undefined
+        }
+      
+      }}>
         <Col xs={2} className='m-auto'>
           <span key={Math.random()}>
             <img

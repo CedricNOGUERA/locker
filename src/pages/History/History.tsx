@@ -5,7 +5,7 @@ import ItemList from '../../components/ui/ItemList'
 import moment from 'moment'
 import BackButton from '../../components/ui/BackButton'
 import SearchBar from '../../components/ui/SearchBar'
-import { _searchWithRegex } from '../../utils/functions'
+import { _getStatus, _getStatusMsg, _searchWithRegex } from '../../utils/functions'
 
 const History = () => {
 
@@ -41,42 +41,14 @@ console.log(orderData)
   }, [searchOrder]);
 
 
-  console.log(selectedOrder)
-  console.log(filteredOrder)
-  const getMsg = (status: any) => {
-    if (status === 'created') {
-      return <div className='item-detail'>Commande préparée et prête à l'envoi</div>
-    } else if (status === 'operin') {
-      return <div className='item-detail'>Commande déposée dans locker</div>
-    } else if (status === 'reminder') {
-      return <div className='item-detail'>Envoi du 1🇪🇷 rappel</div>
-    } else if (status === 'overtimedue') {
-      return <div className='item-detail'>Envoi du 2è rappel</div>
-    } else if (status === 'overtime') {
-      return <div className='item-detail'>Commande expirée</div>
-    } else if (status === 'operout') {
-      return <div className='item-detail'>Commande récupérée par le livreur</div>
-    } else if (status === 'receive') {
-      return <div className='item-detail'>Commande récupérée par le client</div>
-    } else if (status === 'return') {
-      return <div className='item-detail'>Commande retournée au service client</div>
-    }
-  }
+ 
 
-  // const searchBarProps = {
-  //   searchOrder,
-  //   setSearchOrder,
-  //   selectedStore,
-  //   setSelectedStore,
-  //   selectedOrderCity,
-  //   setSelectedOrderCity,
-  //   allSlot,
-  // }
 
+ 
   return (
   
       <Container className='order-list pb-5 mb-5'>
-        <Container className='px- py-0 bg-secondary rounded-pill shadow mt-2 '>
+        <Container className='px- py-0 bg-secondary rounded-pill  my-2 '>
           <Row>
             {selectedOrder ? (
               <Col xs={2} md={5} lg={5} className='py-0' onClick={() => setSelectedOrder('')}>
@@ -99,11 +71,10 @@ console.log(orderData)
                 </div>
               </Col>
             )}
-            <Col className='bar-title m-auto text-light text-center pe-2 py-0'>
+            <Col className='bar-tite m-auto text-light text-center pe-2 py-0'>
               <span className='fw-bold font-85'>
-                {selectedOrder ? '' : 'Sélectionner '}
+                {selectedOrder ? selectedOrder.barcode : 'Sélectionner '}
               </span>{' '}
-              {selectedOrder.barcode}
             </Col>
             {selectedOrder &&  (
               <Col
@@ -111,14 +82,13 @@ console.log(orderData)
                 md={5}
                 lg={5}
                 className='py-0'
-                onClick={() => setSelectedOrder('')}
               ></Col>
             )}
           </Row>
         </Container>
         {selectedOrder  && (
           <div className='history-tl-container animate__animated animate__backInLeft pb-5'>
-            <ul className='tl d-flex flex-column-reverse'>
+            <ul className='tl d-flex flex-column-reverse '>
               {selectedOrder &&
                 selectedOrder?.history?.length > 0 &&
                 selectedOrder?.history?.map((order: any) => (
@@ -131,17 +101,19 @@ console.log(orderData)
                       {moment(order.updatedAt).format('DD/MM/YY')}
                       <br /> {moment(order.updatedAt).format('HH:mm:ss')}
                     </div>
-                    <div className='item-title'>{order.status}</div>
-                    {getMsg(order.status)}
+                    <div className='item-title'>{_getStatus(order.status)}</div>
+                    {/* {getStatusMsg(order.status)} */}
+                    <div className='item-detail'> {_getStatusMsg(order.status)}</div>
                   </li>
                 ))}
               <li  className='tl-item-current' ng-repeat='item in retailer_histor'>
-                <div className='timestamp-current'>
+                <div className='timestamp-current fw-bold'>
                   {moment(selectedOrder.updatedAt).format('DD/MM/YY')}
                   <br /> {moment(selectedOrder.updatedAt).format('HH:mm:ss')}
                 </div>
-                <div className='item-title'>{selectedOrder.status}</div>
-                {getMsg(selectedOrder.status)}
+                <div className='item-title-current'>{selectedOrder.status}</div>
+                {/* {getStatusMsg(selectedOrder.status)} */}
+                <div className='item-detail-current fw-bold'> {_getStatusMsg(selectedOrder.status)}</div>
               </li>
             </ul>
           </div>

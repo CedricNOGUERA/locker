@@ -87,6 +87,54 @@ console.log("object")
   }
 
 
+  export const _getStatus = (status: any) => {
+    if (status === 'created') {
+      return "Prêt"
+    } else if (status === 'operin') {
+      return "Déposé"
+    } else if (status === 'reminder') {
+      return "1er Rappel"
+    } else if (status === 'overtimedue') {
+      return "2è Rappel"
+    } else if (status === 'overtime') {
+      return "Expiré"
+    } else if (status === 'operout') {
+      return "Colis récupéré par le coursier"
+    } else if (status === 'receive') {
+      return "Reçu"
+    } else if (status === 'left_for_customer_service') {
+      return "Service client"
+    } else if (status === 'return') {
+      return "Retour"
+    }
+  }
+
+
+
+
+
+
+  export const _getStatusMsg = (status: any) => {
+    if (status === 'created') {
+      return "Colis préparé et prêt à l'envoi"
+    } else if (status === 'operin') {
+      return "Colis déposé par le coursier"
+    } else if (status === 'reminder') {
+      return "Evènement automatique - Rappel d'un colis non récupéré depuis un certain temps"
+    } else if (status === 'overtimedue') {
+      return "Evènement automatique - Colis non récupéré et proche de l'expiration"
+    } else if (status === 'overtime') {
+      return "Evènement automatique - Colis non récupéré et expiré"
+    } else if (status === 'operout') {
+      return "Colis récupéré par le coursier"
+    } else if (status === 'receive') {
+      return "Colis récupéré par le client"
+    } else if (status === 'left_for_customer_service') {
+      return "Un coursier a laissé la commande au service client"
+    } else if (status === 'return') {
+      return "Colis renvoyé dans le locker par le client"
+    }
+  }
 
 
 

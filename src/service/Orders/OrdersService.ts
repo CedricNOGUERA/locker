@@ -12,6 +12,9 @@ class OrderService {
     update(id: any, token: any, data: any) {
         return axios.patch(API_URL + "orders/" + id , {headers: {"Authorization": "Bearer " + token}, data: data})
     }
+    order(id: any, token: any) {
+        return axios.get(API_URL + "orders/" + id , {headers: {"Authorization": "Bearer " + token}})
+    }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

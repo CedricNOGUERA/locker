@@ -41,6 +41,9 @@ const ScanPage = ({ scanPageProps }: any) => {
     axios
       .request(config)
       .then((response: any) => {
+        if(newStatus === 'operin'){
+          console.log(selectedOrder?.client.email)
+        }
         console.log(response.data)
         getallOrders(dataStore.token)
         setSelectedOrder(null)

@@ -19,6 +19,7 @@ import DashBoard from './pages/DashBoard'
 import Forgot from './pages/Public/Forgot'
 import UpdatePassword from './pages/UpdatePassword/UpdatePassword'
 import History from './pages/History/History'
+import HistoryClient from './pages/Public/HistoryClient'
 
 const router = createBrowserRouter([
   {
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
   {
     path: '/forgot-password/:token',
     element: <Forgot />,
+  },
+  {
+    path: '/commande/:id',
+    element: <HistoryClient />,
   },
 ])
 

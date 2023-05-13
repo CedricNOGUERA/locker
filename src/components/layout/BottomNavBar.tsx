@@ -11,7 +11,6 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
   //////////////////////
   //Auth deliverer modal
   //////////////////////
-
   const [show, setShow] = React.useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
@@ -19,7 +18,6 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
   ///////////////////////
   //Filter by status
   ///////////////////////
-
   const retrieve = orderData['hydra:member']?.filter(
     (order: any) =>
       order.status === 'overtime' &&
