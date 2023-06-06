@@ -33,6 +33,8 @@ const ToRetrieve: React.FC = () => {
     setSelectedOrderCity,
     allSlot,
     setAllSlot,
+    selectedItem,
+    setSelectedItem,
   ] = useOutletContext<any>()
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -57,6 +59,11 @@ const ToRetrieve: React.FC = () => {
   //////////////////////////
   // UseEffect
   /////////////////////////
+
+  React.useEffect(() => {
+    setSelectedItem('retrieve')
+  }, [])
+
 
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {

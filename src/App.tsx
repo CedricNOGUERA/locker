@@ -23,7 +23,7 @@ function App() {
   const [allSlot, setAllSlot] = React.useState<any>([])
   const [selectedOrderCity, setSelectedOrderCity] = React.useState<any>('')
   const [orderData, setOrderData] = React.useState<any>([])
-
+  const [selectedItem, setSelectedItem] = React.useState<string>('home')
 
   /////////////////////
   //UseEffect
@@ -86,11 +86,13 @@ function App() {
             setSelectedOrderCity,
             allSlot,
             setAllSlot,
+            selectedItem,
+            setSelectedItem,
              
           ]}
         />
       )}
-      <BottomNavBar orderData={orderData} selectedStore={selectedStore} />
+      <BottomNavBar orderData={orderData} selectedStore={selectedStore} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
     </div>
   )
 }

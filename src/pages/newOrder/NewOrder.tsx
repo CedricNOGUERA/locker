@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   Alert,
-  Badge,
   Button,
   Col,
   Container,
@@ -28,12 +27,12 @@ import AlertIsError from '../../components/ui/warning/AlertIsError'
 import { getError } from '../../utils/errors/GetError'
 import PlaceHolder from '../../components/ui/loading/PlaceHolder'
 import images from '../../styles/no-order-min.png'
-// import { AutoComplete } from 'primereact/autocomplete';
 import InfoAlert from '../../components/ui/warning/InfoAlert'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import BackButton from '../../components/ui/BackButton'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
+import { Divider } from 'antd'
 
 type Inputs = {
   qty: any
@@ -71,9 +70,11 @@ const NewOrder = () => {
     setOrderData,
     selectedOrderCity,
     setSelectedOrderCity,
+    selectedItem,
+    setSelectedItem,
   ] = useOutletContext<any>()
 
-  const [bookingSlot, setBookingSlot] = React.useState<any>('')
+  // const [bookingSlot, setBookingSlot] = React.useState<any>('')
   const [qty, setQty] = React.useState<any>(undefined)
   const [clientEmail, setClientEmail] = React.useState<any>('')
   const [clientName, setClientName] = React.useState<any>('')
@@ -91,7 +92,7 @@ const NewOrder = () => {
 
   const [allSlot, setAllSlot] = React.useState<any>([])
 
-  const isSlotAvailable = availableSlot >= parseInt(qty)
+  // const isSlotAvailable = availableSlot >= parseInt(qty)
 
   const {
     register,
@@ -99,6 +100,12 @@ const NewOrder = () => {
     formState: { errors },
   } = useForm<Inputs>()
 
+
+
+  React.useEffect(() => {
+    setSelectedItem('order')
+  }, [])
+console.log(selectedItem)
   React.useEffect(() => {
     getBookingAllSlot(dataStore.token)
     getClients(dataStore.token)
@@ -183,7 +190,8 @@ const NewOrder = () => {
         ? {
             service: 'B2C',
             ageRestriction: orderStore.ageRestriction,
-            barcode: orderStore.companyName.toUpperCase() + '-' + randomCode,
+            barcode: randomCode,
+            // barcode: orderStore.companyName.toUpperCase() + '-' + randomCode,
             destination: {
               apm: orderStore?.lockerId,
             },
@@ -206,12 +214,14 @@ const NewOrder = () => {
               : clientName,
 
             totalSlot: parseInt(qty),
+            products: ['p1'],
           }
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
             ageRestriction: orderStore.ageRestriction,
             barcode:
-              orderStore.companyName.toUpperCase() + '-' + randomCodeMultiOrder + (indx + 1),
+              // orderStore.companyName.toUpperCase() + '-' + randomCodeMultiOrder + (indx + 1),
+              randomCodeMultiOrder + (indx + 1),
             destination: {
               apm: orderStore?.lockerId,
             },
@@ -245,6 +255,7 @@ const NewOrder = () => {
               : clientName,
 
             totalSlot: parseInt(qty),
+            products: ['p1', 'p2'],
           }))
 
     if (parseInt(qty) === 1) {
@@ -271,6 +282,7 @@ const NewOrder = () => {
           setClientEmail('')
           setChoosedName('')
           setChoosedEmail('')
+          setAgeRestriction(false)
           Swal.fire({
             position: 'top-end',
             toast: true,
@@ -287,6 +299,14 @@ const NewOrder = () => {
           console.log(error.message)
           setMsgError(getError(error))
           setIsValid(false)
+          setQty('')
+          setIsOrderCreate(false)
+          setIsValid(false)
+          setClientName('')
+          setClientEmail('')
+          setChoosedName('')
+          setChoosedEmail('')
+          setAgeRestriction(false)
           if (logs.logApp) {
             logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
           } else {
@@ -323,13 +343,13 @@ const NewOrder = () => {
           setClientEmail('')
           setChoosedName('')
           setChoosedEmail('')
-          console.log(responses)
+          setAgeRestriction(false)
           Swal.fire({
             position: 'top-end',
             toast: true,
             icon: 'success',
             title: 'Commande(s) validée(s)',
-            text: orderStore.companyName.toUpperCase() + '-' + numOrder,
+            text: `${numOrder}`,
             showConfirmButton: false,
             timer: 7000,
             timerProgressBar: true,
@@ -343,6 +363,13 @@ const NewOrder = () => {
           setMsgError(getError(error))
           popUpError(error.response.status, error.response.statusText)
           setIsOrderCreate(false)
+          setQty('')
+
+          setClientName('')
+          setClientEmail('')
+          setChoosedName('')
+          setChoosedEmail('')
+          setAgeRestriction(false)
           if (logs.logApp) {
             logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
           } else {
@@ -605,7 +632,6 @@ const NewOrder = () => {
                   key={Math.random()}
                   className='my-3 px-2 py-2 bg-white rounded shadow w-100'
                   onClick={() => {
-                    setBookingSlot(locker['@id'])
                     setAvailableSlot(locker.available)
                     locker?.available > 0
                       ? newOrderRegister(
@@ -681,7 +707,10 @@ const NewOrder = () => {
               <form onSubmit={validOrder}>
                 <div>
                   <InputGroup className='mb-3'>
-                    <InputGroup.Text id='basic-addon1' className='border-end-0 bg-light'>
+                    <InputGroup.Text
+                      id='basic-addon1'
+                      className='border-end-0 bg-secondary-500'
+                    >
                       <i className='ri-shopping-basket-2-line text-secondary'></i>
                     </InputGroup.Text>
                     <Form.Control
@@ -708,7 +737,7 @@ const NewOrder = () => {
                   </Alert>
                 )}
                 <InputGroup className='mb-3'>
-                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-light'>
+                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-secondary-500'>
                     <i className='ri-user-line text-secondary'></i>
                   </InputGroup.Text>
                   <Form.Control
@@ -759,7 +788,7 @@ const NewOrder = () => {
                   </Alert>
                 )}
                 <InputGroup className='mb-3'>
-                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-light'>
+                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-secondary-500'>
                     <i className='ri-at-line text-secondary'></i>
                   </InputGroup.Text>
                   <Form.Control
@@ -820,6 +849,27 @@ const NewOrder = () => {
                     colorIcon='danger'
                   />
                 )}
+                {/* <Divider></Divider>
+                Liste des produits
+                <InputGroup className='mb-3'>
+                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-secondary-500'>
+                    <i className='ri-at-line text-secondary'></i>
+                  </InputGroup.Text>
+                  <Form.Control
+                    aria-label='Text input with dropdown button'
+                    value={choosedEmail ? choosedEmail : clientEmail}
+                    onChange={(e: any) => {
+                      choosedEmail
+                        ? setChoosedEmail(e.currentTarget.value)
+                        : setClientEmail(e.currentTarget.value)
+                    }}
+                    placeholder='Produit'
+                    required
+                    className='border-start-0'
+                  />
+                 
+                 
+                </InputGroup> */}
                 <FormGroup className='mb- text-muted w-auto' controlId='formBasicCheckbox'>
                   <FormCheck
                     type='checkbox'
@@ -833,7 +883,7 @@ const NewOrder = () => {
                   title='avez-vous 18 ans '
                 ></i>{' '}
                 <span className='font-75 text-muted'>
-                  Avez-vous 18 ans? Pour tout achat d'alcool vous devez être majeur.
+                  Conchez la case, s'il y a des produits alcoolisés dans la commande.
                 </span>
                 <div className='w-100 text-end'>
                   <Button

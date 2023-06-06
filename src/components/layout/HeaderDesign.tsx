@@ -11,9 +11,8 @@ import UserQrcode from '../ui/modals/UserQrcode'
 
 interface headerProps {
   title: string
-  icon: string
 }
-const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
+const HeaderDesign: React.FC<headerProps> = ({ title }) => {
   //////////////////////////
   // Store states
   /////////////////////////
@@ -37,6 +36,17 @@ const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
   const handleCloseOffcanvas = () => setShowOffcanvas(false)
   const handleShowOffcanvas = () => setShowOffcanvas(true)
 
+
+    /////////////////////////
+  //Fonction de retour en arrière
+  ////////////////////////
+  const rtn = () => {
+    window.history.back()
+  }
+  function refreshPage() {
+    window.location.reload();
+  }
+
   return (
     <>
       <UserQrcode show={show} handleClose={handleClose} />
@@ -45,16 +55,18 @@ const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
         className='top-nav-design sticky-top py-2 text-info shadow opacity-75'
       >
         <Row className='align-middle pe-0'>
-          <Col className='ff-agency m-auto '>
-            <i className={`${icon} fs-2 align-bottom`}></i>
+          <Col className='ff-agency m-auto pb-4 '>
+            <i className={`ri-arrow-left-s-line fs-1 align-bottom`}
+            onClick={() => rtn()}
+            ></i>
           </Col>
-          <Col xs={8} className='ff-agency m-auto text-center '>
+          <Col xs={6} sm={8} className='ff-agency m-auto text-center pb-4 '>
             <div className='font-75 text-light'>{dataStore.company_name} </div>
             <div className=''>{title}</div>
           </Col>
-          <Col className='company-name align-bottom  text-center align-middle animate__animated animate__bounceIn top-menu fw-bold'>
+          <Col className='company-name align-bottom  text-end align-middle animate__animated animate__bounceIn top-menu fw-bold'>
             <Button variant='' className='' onClick={handleShowOffcanvas}>
-              <i className='ri-more-fill text-info'></i>
+              <i className='ri-more-2-fill text-info fs-4'></i>
             </Button>
           </Col>
         </Row>
@@ -119,7 +131,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
               </Row>
             </Link>
           </Container>
-          <Container className='mb-3'>
+          {/* <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'
               to='/map'
@@ -133,7 +145,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
                 <Col className='m-auto user-name'>Map</Col>
               </Row>
             </Link>
-          </Container>
+          </Container> */}
           <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'
@@ -148,6 +160,20 @@ const HeaderDesign: React.FC<headerProps> = ({ title, icon }: any) => {
                 <Col className='m-auto user-name'>Modifier votre mot passe</Col>
               </Row>
             </Link>
+          </Container>
+          <Container className='mb-3'>
+            <span
+              className='text-decoration-none text-light'
+              onClick={refreshPage}
+            >
+              <Row className='menu-link'>
+                <Col xs={2}>
+                  {' '}
+                  <i className='ri-restart-line fs-5'></i>
+                </Col>{' '}
+                <Col className='m-auto user-name'>Actualiser l'application</Col>
+              </Row>
+            </span>
           </Container>
           <Divider className='log-out pb-5 me-3'></Divider>
           <Container className='log-out'>

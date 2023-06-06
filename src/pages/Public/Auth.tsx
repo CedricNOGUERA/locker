@@ -185,8 +185,8 @@ const Auth = () => {
           })
 
         })
-        .catch((error: any) => {
-          console.log(error)
+          .catch((error: any) => {
+            console.log(error)
         })
 
      
@@ -278,9 +278,9 @@ const Auth = () => {
           </Modal.Body>
           <Modal.Footer className='text-light border-top-0'>
             <Button variant='warning' onClick={handleClose} className='text-light'>
-            <Link to="/forgot-pass/myLongToken">
+            {/* <Link to="/forgot-pass/myLongToken"> */}
              Fermer
-             </Link>
+             {/* </Link> */}
             </Button>
             <Button type='submit'  variant='info' className='text-light'>
               Envoyer

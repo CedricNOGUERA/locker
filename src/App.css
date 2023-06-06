@@ -15,7 +15,8 @@ overflow: hidden;
   height: 60px;
 }
 .top-nav-design, .bottom-navbar{
-  background-color: #343a40;
+  background-color: #2e3338;
+  /* background-color: #343a40; */
   height: 60px;
   width: 100% !important;
 }
@@ -262,66 +263,73 @@ font-size: 0.65rem;
 }
 
 @media (min-width: 1410px) {
-  .history-tl-container{
-    width:30% !important;
+  .history-tl-container {
+    width: 30% !important;
     /* width:60% !important; */
-}
-.history-tl-container ul.tl{
-  margin:20px 15% !important;
+  }
 
-}
+  .history-tl-container ul.tl {
+    margin: 20px 15% !important;
+
+  }
 
 }
 
 
 @media (min-width: 1095px) and (max-width: 1409px) {
-  .history-tl-container{
-    width:30% !important;
-}
-.history-tl-container ul.tl{
-  margin:20px 64px !important;
+  .history-tl-container {
+    width: 100% !important;
+  }
+
+  .history-tl-container ul.tl {
+    margin: 20px 20% !important;
+
+  }
 
 }
 
-}
 @media (min-width: 915px) {
-  .history-tl-container{
-    width:60% !important;
+  .history-tl-container {
+    width: 100% !important;
+    font-size: 28px;
+  }
+
+  .history-tl-container ul.tl li {
+
+    margin-left: 320px !important;
+  }
+
 }
 
-
-
-}
 @media (min-width: 667px) {
-  .history-tl-container{
-    width:100%;
+  .history-tl-container {
+    width: 100% !important; 
+  }
+
+  .history-tl-container ul.tl li {
+
+    margin-left: 45% !important;
+
+  }
+
 }
 
-.history-tl-container ul.tl li{
-  
-  margin-left: 320px !important;
-
-}
-
-}
-@media (min-width: 360px) and (max-width: 421px) {
-  .history-tl-container{
-    width:100%;
+@media (min-width: 360px) and (max-width: 665px) {
+  .history-tl-container {
+    width: 100%;
     padding-right: 20px;
+  }
+
+  ul.tl li .timestamp-current {
+
+    color: #272727;
+    position: absolute;
+    left: -53%;
+    text-align: right;
+    font-size: 12px;
+  }
 }
 
-
-
-
-ul.tl li .timestamp-current{
-  
-  color: #272727;
-  position: absolute;
-  left: -53%;
-  text-align: right;
-  font-size: 12px;
-}
-}
 
 
 .history-tl-container ul.tl{
@@ -361,7 +369,9 @@ ul.tl li .timestamp-current{
 }
 
 ul.tl li .item-title-current{
-  color: #095ca0;
+  color: #e7bd33be;
+  /* color: #3396e7; */
+  /* color: #095ca0; */
     /* color:rgba(59, 58, 58, 0.842); */
     font-weight: 600;
 }
@@ -390,6 +400,14 @@ ul.tl li .timestamp-current{
     left: -53%;
     text-align: right;
     font-size: 12px;
+}
+
+
+.delete-button{
+  position: absolute;
+  right: 3%;
+  top: 5%;
+  z-index: 10000;
 }
 
 

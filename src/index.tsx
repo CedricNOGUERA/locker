@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         path: 'dashboard',
         element: (
           <React.Fragment>
-            <HeaderDesign title='Tableau de bord' icon='ri-pie-chart-2-fill' />
+            <HeaderDesign title='Tableau de bord' />
             <DashBoard />
           </React.Fragment>
         ),
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         path: 'in-progress',
         element: (
           <React.Fragment>
-            <HeaderDesign title='Livraisons' icon='ri-truck-line' />
+            <HeaderDesign title='Livraisons' />
             <InProgress />
           </React.Fragment>
         ),
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         path: 'orders-delivered',
         element: (
           <React.Fragment>
-            <HeaderDesign title='Livraisons déposées' icon='' />
+            <HeaderDesign title='Livraisons déposées' />
             <Delivered />
           </React.Fragment>
         ),
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
         path: 'orders-to-retrieve',
         element: (
           <React.Fragment>
-            <HeaderDesign title='A récupérer' icon='ri-inbox-unarchive-line' />
+            <HeaderDesign title='A récupérer' />
             <ToRetrieve />
           </React.Fragment>
         ),
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
         path: 'nouvelle-commande',
         element: (
           <React.Fragment>
-            <HeaderDesign title='Nouvelle commande' icon='ri-file-add-line' />
+            <HeaderDesign title='Nouvelle commande' />
             <NewOrder />
           </React.Fragment>
         ),
@@ -75,7 +75,7 @@ const router = createBrowserRouter([
         path: 'historique',
         element: (
           <React.Fragment>
-            <HeaderDesign title='Historique' icon='ri-history-line' />
+            <HeaderDesign title='Historique' />
             <History />
           </React.Fragment>
         ),
@@ -84,7 +84,7 @@ const router = createBrowserRouter([
         path: 'map',
         element: (
           <React.Fragment>
-            <HeaderDesign title='Mapping' icon='ri-map-pin-line' />
+            <HeaderDesign title='Mapping' />
             <Map />
           </React.Fragment>
         ),
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
         path: 'update-password',
         element: (
           <React.Fragment>
-            <HeaderDesign title='Mot de passe' icon='ri-rotate-lock-line' />
+            <HeaderDesign title='Mot de passe' />
             <UpdatePassword />
           </React.Fragment>
         ),

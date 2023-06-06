@@ -27,7 +27,6 @@ const SearchBar = ({ searchBarProps }: any) => {
     setCityTab(deduplicateCity)
   }, [allSlot])
 
-  console.log(cityTab)
   return (
     <Container className='my-2 text-center'>
       <Container

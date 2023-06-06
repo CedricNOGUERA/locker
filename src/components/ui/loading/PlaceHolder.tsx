@@ -13,19 +13,19 @@ const PlaceHolder: React.FC<placeHolderProps> = ({paddingYFirst} ) => {
         <Placeholder xs={12} className={`py-${paddingYFirst} rounded-pill`} />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='py-5 rounded' />
+        <Placeholder xs={12} className='py-4 rounded' />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='py-5 rounded' />
+        <Placeholder xs={12} className='py-4 rounded' />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='py-5 rounded' />
+        <Placeholder xs={12} className='py-4 rounded' />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='py-5 rounded' />
+        <Placeholder xs={12} className='py-4 rounded' />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className='py-5 rounded' />
+        <Placeholder xs={12} className='py-4 rounded' />
       </Placeholder>
     </>
   )

@@ -26,11 +26,17 @@ const DashBoard = () => {
     setSelectedOrderCity,
     allSlot,
     setAllSlot,
+    selectedItem,
+    setSelectedItem,
   ] = useOutletContext<any>()
 
   //////////////////////////
   // UseEffect
   /////////////////////////
+  React.useEffect(() => {
+    setSelectedItem('home')
+  }, [])
+
   React.useEffect(() => {
     if (allSlot && allSlot['hydra:member']?.length > 0) {
       setIsLoading(false)
@@ -42,7 +48,7 @@ const DashBoard = () => {
       setIsLoading(true)
     }
   }, [allSlot])
-
+ 
   /////////////////////////
   //Fonction de retour en arrière
   ////////////////////////
@@ -57,13 +63,7 @@ const DashBoard = () => {
       )}
       <div className='ff-agency text-info bg-secondary rounded-pill  mt-2 mb-3'>
         <Row className='p'>
-          <Col xs={2}>
-            <i
-              className='ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill align-bottom'
-              onClick={() => rtn()}
-            ></i>{' '}
-          </Col>
-          <Col className='text-start ps-5'>Visualisation générale</Col>
+          <Col className='text-center ps-0'>Visualisation générale</Col>
         </Row>
       </div>
 
@@ -85,7 +85,7 @@ const DashBoard = () => {
             onClick={() => {
               setSelectedStore(slot?.slot?.temperatureZone?.locker?.location)
               setSelectedOrderCity(slot?.slot?.temperatureZone?.locker?.city)
-            }}
+              setSelectedItem('progress')            }}
           >
             <Link to='/in-progress' className=' text-decoration-none'>
               {' '}
@@ -109,17 +109,17 @@ const DashBoard = () => {
                     style={{ width: '40px' }}
                   />
                 </Col>
-                <Col xs={5} className='m-auto mx-1 text-light text-start font-85 '>
+                <Col xs={6} className='m-auto mx-1 text-light text-start font-85 '>
                   <span className='font-85'>
                     {slot?.slot?.temperatureZone.locker.location}{' '}
                   </span>{' '}
-                  - <span className='font-85'>{slot?.slot?.temperatureZone.locker.city} </span>
+                  - <span className='font-75'>{slot?.slot?.temperatureZone.locker.city} </span>
                 </Col>
-                <Col xs={4} className='me- text-start ps-0 pe-0'>
+                <Col xs={3} className='me- text-start ps-0 pe-0'>
                   <Row>
                     <Col xs={12} className='mb-1 py-0 text-light px-0'>
                       <i className='ri-truck-line text-info me-1 align-bottom'></i>
-                      <span className=' font-75'>
+                      <span className=' font-65'>
                         {' '}
                         A livrer :{' '}
                         {
@@ -136,7 +136,7 @@ const DashBoard = () => {
                     </Col>
                     <Col className='py-0 text-light px-0'>
                       <i className='ri-inbox-unarchive-line text-info  me-1 align-bottom'></i>
-                      <span className=' font-75'>
+                      <span className=' font-65'>
                         {' '}
                         A récupérer :{' '}
                         {

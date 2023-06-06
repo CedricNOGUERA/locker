@@ -89,19 +89,19 @@ console.log("object")
 
   export const _getStatus = (status: any) => {
     if (status === 'created') {
-      return "Prêt"
+      return "Prête"
     } else if (status === 'operin') {
-      return "Déposé"
+      return "Déposée"
     } else if (status === 'reminder') {
       return "1er Rappel"
     } else if (status === 'overtimedue') {
       return "2è Rappel"
     } else if (status === 'overtime') {
-      return "Expiré"
+      return "Expirée"
     } else if (status === 'operout') {
-      return "Colis récupéré par le coursier"
+      return "Récupérée par le coursier"
     } else if (status === 'receive') {
-      return "Reçu"
+      return "Récupérée par le client"
     } else if (status === 'left_for_customer_service') {
       return "Service client"
     } else if (status === 'return') {
@@ -116,23 +116,23 @@ console.log("object")
 
   export const _getStatusMsg = (status: any) => {
     if (status === 'created') {
-      return "Colis préparé et prêt à l'envoi"
+      return "Commande préparée et prêt à l'envoi"
     } else if (status === 'operin') {
-      return "Colis déposé par le coursier"
+      return "Commande déposée par le coursier"
     } else if (status === 'reminder') {
-      return "Evènement automatique - Rappel d'un colis non récupéré depuis un certain temps"
+      return "Rappel d'une commande non récupérée depuis un certain temps"
     } else if (status === 'overtimedue') {
-      return "Evènement automatique - Colis non récupéré et proche de l'expiration"
+      return "Commande non récupérée et proche de l'expiration"
     } else if (status === 'overtime') {
-      return "Evènement automatique - Colis non récupéré et expiré"
+      return "Commande non récupérée et expiré"
     } else if (status === 'operout') {
-      return "Colis récupéré par le coursier"
+      return "Commande récupérée par le coursier"
     } else if (status === 'receive') {
-      return "Colis récupéré par le client"
+      return "Commande récupérée par le client"
     } else if (status === 'left_for_customer_service') {
       return "Un coursier a laissé la commande au service client"
     } else if (status === 'return') {
-      return "Colis renvoyé dans le locker par le client"
+      return "Commande renvoyée dans le locker par le client"
     }
   }
 

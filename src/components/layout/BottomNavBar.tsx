@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 import imag from '../../../src/styles/g5635.png'
 import UserQrcode from '../ui/modals/UserQrcode'
 
-const BottomNavBar = ({ orderData, selectedStore }: any) => {
+const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }: any) => {
 
-  const [selectedItem, setSelectedItem] = React.useState<string>('home')
-
+ 
+//  const [selectedItem, setSelectedItem] = React.useState<string>('home')
   //////////////////////
   //Auth deliverer modal
   //////////////////////
@@ -42,24 +42,24 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
       <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>
         <Nav.Item className='nav-item text-center pt-2' onClick={() => handleSelect('home')}>
           <Link
-            key='home'
+            
             to='/dashboard'
             className={`nav-link  text-${
               selectedItem === 'home' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
           >
-            <i className='ri-home-2-line fs-4 '></i>
+            <i className='ri-home-2-line fs-3 '></i>
           </Link>
         </Nav.Item>
         <Nav.Item className='nav-item text-center pt-2' onClick={() => handleSelect('user')}>
-          <span
-            onClick={handleShow}
+          <Link
+            to='/historique'
             className={`nav-link  text-${
               selectedItem === 'user' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
           >
-            <i className='ri-user-line fs-4'></i>
-          </span>
+            <i className='ri-history-line fs-3'></i>
+          </Link>
         </Nav.Item>
         <Nav.Item
           className='nav-item text-center '
@@ -86,7 +86,7 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
             } py-1 pb-2 text-decoration-none`}
             to='in-progress'
           >
-            <i className='ri-truck-line fs-5 '></i>
+            <i className='ri-truck-line fs-3 '></i>
             {progress?.length > 0 && (
               <span className='badge rounded-pill bg-info'>{progress?.length}</span>
             )}
@@ -102,7 +102,7 @@ const BottomNavBar = ({ orderData, selectedStore }: any) => {
             } py-1 pb-2 text-decoration-none`}
             to='orders-to-retrieve'
           >
-            <i className='ri-inbox-unarchive-line fs-4 text-center'></i>
+            <i className='ri-inbox-unarchive-line fs-3 text-center'></i>
             {retrieve?.length > 0 && (
               <span className='badge rounded-pill bg-info'>{retrieve?.length}</span>
             )}

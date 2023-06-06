@@ -33,6 +33,8 @@ const InProgress: React.FC = () => {
     setSelectedOrderCity,
     allSlot,
     setAllSlot,
+    selectedItem,
+    setSelectedItem,
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -53,10 +55,12 @@ const InProgress: React.FC = () => {
       order.status === 'created' &&
       order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
   )
-
   //////////////////////////
   // UseEffect
   /////////////////////////
+  React.useEffect(() => {
+    setSelectedItem('progress')
+  }, [])
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
       setIsLoading(false)
