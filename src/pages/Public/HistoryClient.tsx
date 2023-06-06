@@ -39,7 +39,7 @@ const HistoryClient = () => {
       })
     }
 
-    console.log(myOrder.createdAt)
+    console.log(myOrder)
     console.log(myOrder.updatedAt)
 
   return (
@@ -64,6 +64,8 @@ const HistoryClient = () => {
     
       </Container>
     </Navbar>
+    <Container className='text-center text-secondary fw-bold'> Commande n° {myOrder?.barcode}</Container>
+    <Container className='text-center text-secondary fw-bold'>Client : {myOrder?.client?.name}</Container>
       <div className='history-tl-container animate__animated animate__backInLeft pb-5'>
             <ul className='tl d-flex flex-column-reverse'>
               {myOrder &&
