@@ -4,6 +4,8 @@ import userDataStore from '../store/userDataStore'
 import { useOutletContext, Link, Navigate } from 'react-router-dom'
 import DashBoardLoader from '../components/ui/loading/DashBoardLoader'
 import AlertIsError from '../components/ui/warning/AlertIsError'
+import images from '../styles/no-order-min.png'
+
 
 const DashBoard = () => {
   //////////////////////////
@@ -34,6 +36,7 @@ const DashBoard = () => {
   // UseEffect
   /////////////////////////
   React.useEffect(() => {
+    setIsLoading(true)
     setSelectedItem('home')
   }, [])
 
@@ -44,17 +47,14 @@ const DashBoard = () => {
       if (allSlot && allSlot['hydra:member']?.length < 0) {
         setIsError(true)
         setIsLoading(false)
+      }else{
+        
+        // setIsLoading(true)
       }
-      setIsLoading(true)
     }
   }, [allSlot])
  
-  /////////////////////////
-  //Fonction de retour en arrière
-  ////////////////////////
-  const rtn = () => {
-    window.history.back()
-  }
+ 
 
   return (
     <Container className='text-center mt-2'>
@@ -77,7 +77,7 @@ const DashBoard = () => {
         </Container>
       ) : isLoading ? (
         <DashBoardLoader />
-      ) : (
+      ) : allSlot?.['hydra:member']?.length > 0 ? (
         allSlot?.['hydra:member']?.map((slot: any) => (
           <Card
             key={Math.random()}
@@ -89,8 +89,8 @@ const DashBoard = () => {
           >
             <Link to='/in-progress' className=' text-decoration-none'>
               {' '}
-              <Row className='pe-0 ms-1'>
-                <Col xs={2} className='m-auto ms-2 me-0 text-end'>
+              <Row className='pe-0 ps-1 w-100'>
+                <Col xs={1}  className='m-auto ms-0 me-2 text-start'>
                   <img
                     alt='zone'
                     src={
@@ -109,17 +109,17 @@ const DashBoard = () => {
                     style={{ width: '40px' }}
                   />
                 </Col>
-                <Col xs={6} className='m-auto mx-1 text-light text-start font-85 '>
-                  <span className='font-85'>
+                <Col xs={7} className='m-auto mx-1 text-light text-start '>
+                  <span className='dash-location font-7'>
                     {slot?.slot?.temperatureZone.locker.location}{' '}
                   </span>{' '}
-                  - <span className='font-75'>{slot?.slot?.temperatureZone.locker.city} </span>
+                  - <span className='dash-city font-65'>{slot?.slot?.temperatureZone.locker.city} </span>
                 </Col>
-                <Col xs={3} className='me- text-start ps-0 pe-0'>
+                <Col xs={3} className=' text-start ps-0 pe-0'>
                   <Row>
                     <Col xs={12} className='mb-1 py-0 text-light px-0'>
                       <i className='ri-truck-line text-info me-1 align-bottom'></i>
-                      <span className=' font-65'>
+                      <span className='dash-city font-65'>
                         {' '}
                         A livrer :{' '}
                         {
@@ -136,7 +136,7 @@ const DashBoard = () => {
                     </Col>
                     <Col className='py-0 text-light px-0'>
                       <i className='ri-inbox-unarchive-line text-info  me-1 align-bottom'></i>
-                      <span className=' font-65'>
+                      <span className='dash-city font-65'>
                         {' '}
                         A récupérer :{' '}
                         {
@@ -157,6 +157,11 @@ const DashBoard = () => {
             </Link>
           </Card>
         ))
+      ): (
+        <div className=' text-center mt-5 pt-5'>
+          <img className='' alt='no order' src={images} style={{ height: '256px' }} />
+          <div className='user-name fs-3 fw-bold text-secondary'>Aucune Réservation</div>
+        </div>
       )}
     </Container>
   )

@@ -1,4 +1,3 @@
-import axios from "axios";
 import OrdersService from "../service/Orders/OrdersService";
 
 export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) => {
@@ -53,17 +52,9 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
    
     const newTab = [...orderData?.["hydra:member"]];
-    const newStatuss = {
-      id: filteredOrder[0].id,
    
-      
-      status:  newStatus,
-      
-    };
     newTab[indx] = newStatus;
-
     
-
     setOrderData(newTab);
 
     _successNotif(filteredOrder[0].id, messageApi, setSelectedOrder);
@@ -78,7 +69,7 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
   export const _UpdateStatus = (id: any, token: any, data: any) => {
     OrdersService.update(id, token, data).then((response: any) => {
 
-console.log("object")
+    console.log('object')
 
 
     })
@@ -116,7 +107,7 @@ console.log("object")
 
   export const _getStatusMsg = (status: any) => {
     if (status === 'created') {
-      return "Commande préparée et prêt à l'envoi"
+      return "Commande préparée et prête à l'envoi"
     } else if (status === 'operin') {
       return "Commande déposée par le coursier"
     } else if (status === 'reminder') {

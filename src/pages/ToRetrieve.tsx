@@ -61,6 +61,7 @@ const ToRetrieve: React.FC = () => {
   /////////////////////////
 
   React.useEffect(() => {
+    setIsLoading(true)
     setSelectedItem('retrieve')
   }, [])
 
@@ -73,7 +74,7 @@ const ToRetrieve: React.FC = () => {
         setIsError(true)
         setIsLoading(false)
       }
-      setIsLoading(true)
+      setIsLoading(false)
     }
   }, [orderData])
 

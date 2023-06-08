@@ -56,6 +56,9 @@ function App() {
     OrdersService.allOrders(token).then((response: any) => {
       setIsLoading(false)
       setOrderData(response.data)
+    }).catch((error: any) => {
+      setIsLoading(false)
+      
     })
   }
 

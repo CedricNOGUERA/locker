@@ -36,22 +36,27 @@ const SearchBar = ({ searchBarProps }: any) => {
         <Dropdown>
           <Container fluid className='px-0 py-0'>
             <Row className='align-middle'>
-              <Col className=' text-start '>
-                <div className='input-group'>
+              <Col className='text-start'>
+                <div className='input-group '>
                   <i className='ri-search-line me-1 '></i>
                   <input
                     type='text'
-                    className='form-control rounded-pill'
+                    className='form-control rounded-pill '
                     placeholder='N° Commande...'
-                    aria-label='Username'
-                    aria-describedby='basic-addon1'
+                    aria-label='searchOrder'
+                    aria-describedby='search-order'
                     style={{ height: '25px' }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
+                  {searchOrder !== '' && (
+                    <i
+                      className='ri-close-circle-fill text-warning delete-button'
+                      onClick={() => setSearchOrder('')}
+                    ></i>
+                  )}
                 </div>
               </Col>
-
               <Col xs={4} md={2} className='text- p-0 m-auto'>
                 <Dropdown.Toggle
                   as='div'
@@ -88,10 +93,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   <Col xs={1} className=''>
                     {' '}
                   </Col>{' '}
-                  <Col
-                    xs={10}
-                    className='font-75 font-weight-300 m-auto ps-3 py-0'
-                  >
+                  <Col xs={10} className='font-75 font-weight-300 m-auto ps-3 py-0'>
                     {cityTab[indx]}
                   </Col>
                 </Row>

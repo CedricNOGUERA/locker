@@ -189,7 +189,8 @@ console.log(selectedItem)
       parseInt(qty) <= 1
         ? {
             service: 'B2C',
-            ageRestriction: orderStore.ageRestriction,
+            
+            ageRestriction: orderStore.ageRestriction !== false &&  18,
             barcode: randomCode,
             // barcode: orderStore.companyName.toUpperCase() + '-' + randomCode,
             destination: {
@@ -198,8 +199,9 @@ console.log(selectedItem)
 
             receiveCode: `${receiveCode}`,
             keyTemp: orderStore.keyTemp,
-            temperatureZonePredefined: orderStore.tempZone,
+            temperatureZonePredefined: orderStore?.tempZone,
 
+            // extras: {companyId : orderStore.companyId},
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: orderStore.bookingSlotId,
             clientEmail: choosedEmail
@@ -258,125 +260,125 @@ console.log(selectedItem)
             products: ['p1', 'p2'],
           }))
 
-    if (parseInt(qty) === 1) {
-      let config = {
-        method: 'post',
-        url: process.env.REACT_APP_END_POINT + 'orders',
-        headers: {
-          Authorization: 'Bearer ' + dataStore.token,
-          'Content-Type': 'application/json',
-        },
-        data: dataOrder,
-      }
+    // if (parseInt(qty) === 1) {
+    //   let config = {
+    //     method: 'post',
+    //     url: process.env.REACT_APP_END_POINT + 'orders',
+    //     headers: {
+    //       Authorization: 'Bearer ' + dataStore.token,
+    //       'Content-Type': 'application/json',
+    //     },
+    //     data: dataOrder,
+    //   }
 
-      axios
-        .request(config)
-        .then((response) => {
-          newOrderDelete()
-          setQty('')
-          getallOrders(dataStore.token)
-          getBookingAllSlot(dataStore.token)
-          setIsOrderCreate(false)
-          setIsValid(false)
-          setClientName('')
-          setClientEmail('')
-          setChoosedName('')
-          setChoosedEmail('')
-          setAgeRestriction(false)
-          Swal.fire({
-            position: 'top-end',
-            toast: true,
-            icon: 'success',
-            title: 'Commande validée',
-            text: orderStore.companyName.toUpperCase() + '-' + randomCode,
-            showConfirmButton: false,
-            timer: 7000,
-            timerProgressBar: true,
-          })
-        })
-        .catch((error) => {
-          console.log(getError(error))
-          console.log(error.message)
-          setMsgError(getError(error))
-          setIsValid(false)
-          setQty('')
-          setIsOrderCreate(false)
-          setIsValid(false)
-          setClientName('')
-          setClientEmail('')
-          setChoosedName('')
-          setChoosedEmail('')
-          setAgeRestriction(false)
-          if (logs.logApp) {
-            logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
-          } else {
-            logCatcher('date :' + now + '-' + error.response.statusText)
-          }
-          popUpError(error.response.status, error.response.statusText)
-        })
-    } else {
-      let config: any = {
-        method: 'post',
-        url: process.env.REACT_APP_END_POINT + 'orders',
-        headers: {
-          Authorization: 'Bearer ' + dataStore.token,
-          'Content-Type': 'application/json',
-        },
-      }
+    //   axios
+    //     .request(config)
+    //     .then((response) => {
+    //       newOrderDelete()
+    //       setQty('')
+    //       getallOrders(dataStore.token)
+    //       getBookingAllSlot(dataStore.token)
+    //       setIsOrderCreate(false)
+    //       setIsValid(false)
+    //       setClientName('')
+    //       setClientEmail('')
+    //       setChoosedName('')
+    //       setChoosedEmail('')
+    //       setAgeRestriction(false)
+    //       Swal.fire({
+    //         position: 'top-end',
+    //         toast: true,
+    //         icon: 'success',
+    //         title: 'Commande validée',
+    //         text: orderStore.companyName.toUpperCase() + '-' + randomCode,
+    //         showConfirmButton: false,
+    //         timer: 7000,
+    //         timerProgressBar: true,
+    //       })
+    //     })
+    //     .catch((error) => {
+    //       console.log(getError(error))
+    //       console.log(error.message)
+    //       setMsgError(getError(error))
+    //       setIsValid(false)
+    //       setQty('')
+    //       setIsOrderCreate(false)
+    //       setIsValid(false)
+    //       setClientName('')
+    //       setClientEmail('')
+    //       setChoosedName('')
+    //       setChoosedEmail('')
+    //       setAgeRestriction(false)
+    //       if (logs.logApp) {
+    //         logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
+    //       } else {
+    //         logCatcher('date :' + now + '-' + error.response.statusText)
+    //       }
+    //       popUpError(error.response.status, error.response.statusText)
+    //     })
+    // } else {
+    //   let config: any = {
+    //     method: 'post',
+    //     url: process.env.REACT_APP_END_POINT + 'orders',
+    //     headers: {
+    //       Authorization: 'Bearer ' + dataStore.token,
+    //       'Content-Type': 'application/json',
+    //     },
+    //   }
 
-      let promises = []
+    //   let promises = []
 
-      for (let i = 0; i < dataOrder?.length; i++) {
-        config.data = dataOrder[i]
-        promises.push(axios.request(config))
-      }
+    //   for (let i = 0; i < dataOrder?.length; i++) {
+    //     config.data = dataOrder[i]
+    //     promises.push(axios.request(config))
+    //   }
 
-      Promise.all(promises)
-        .then((responses) => {
-          const numOrder = responses?.map((num: any) => num?.data?.barcode)
-          newOrderDelete()
-          setQty('')
-          getallOrders(dataStore.token)
-          getBookingAllSlot(dataStore.token)
-          setIsOrderCreate(false)
-          setClientName('')
-          setClientEmail('')
-          setChoosedName('')
-          setChoosedEmail('')
-          setAgeRestriction(false)
-          Swal.fire({
-            position: 'top-end',
-            toast: true,
-            icon: 'success',
-            title: 'Commande(s) validée(s)',
-            text: `${numOrder}`,
-            showConfirmButton: false,
-            timer: 7000,
-            timerProgressBar: true,
-          })
-        })
-        .catch((error) => {
-          console.log(getError(error))
-          console.log(error.message)
-          console.log(error)
-          logCatcher(error.response.statusText)
-          setMsgError(getError(error))
-          popUpError(error.response.status, error.response.statusText)
-          setIsOrderCreate(false)
-          setQty('')
+    //   Promise.all(promises)
+    //     .then((responses) => {
+    //       const numOrder = responses?.map((num: any) => num?.data?.barcode)
+    //       newOrderDelete()
+    //       setQty('')
+    //       getallOrders(dataStore.token)
+    //       getBookingAllSlot(dataStore.token)
+    //       setIsOrderCreate(false)
+    //       setClientName('')
+    //       setClientEmail('')
+    //       setChoosedName('')
+    //       setChoosedEmail('')
+    //       setAgeRestriction(false)
+    //       Swal.fire({
+    //         position: 'top-end',
+    //         toast: true,
+    //         icon: 'success',
+    //         title: 'Commande(s) validée(s)',
+    //         text: `${numOrder}`,
+    //         showConfirmButton: false,
+    //         timer: 7000,
+    //         timerProgressBar: true,
+    //       })
+    //     })
+    //     .catch((error) => {
+    //       console.log(getError(error))
+    //       console.log(error.message)
+    //       console.log(error)
+    //       logCatcher(error.response.statusText)
+    //       setMsgError(getError(error))
+    //       popUpError(error.response.status, error.response.statusText)
+    //       setIsOrderCreate(false)
+    //       setQty('')
 
-          setClientName('')
-          setClientEmail('')
-          setChoosedName('')
-          setChoosedEmail('')
-          setAgeRestriction(false)
-          if (logs.logApp) {
-            logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
-          } else {
-            logCatcher('date :' + now + '-' + error.response.statusText)
-          }
-        })
-    }
+    //       setClientName('')
+    //       setClientEmail('')
+    //       setChoosedName('')
+    //       setChoosedEmail('')
+    //       setAgeRestriction(false)
+    //       if (logs.logApp) {
+    //         logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
+    //       } else {
+    //         logCatcher('date :' + now + '-' + error.response.statusText)
+    //       }
+    //     })
+    // }
     console.log(dataOrder)
   }
 
@@ -388,7 +390,7 @@ console.log(selectedItem)
       title: 'Voulez-vous valider la commande ?',
       inputValue: 1,
       showCancelButton: true,
-      confirmButtonText: 'Continue',
+      confirmButtonText: 'Continuer',
       confirmButtonColor: '#54AB57',
       cancelButtonText: 'Annuler',
       cancelButtonColor: '#eb5959',
@@ -625,7 +627,13 @@ console.log(selectedItem)
         </Container>
       ) : (
         <Container className='pb-5 mb-5'>
-          {orderStore.lockerId === null &&
+          {allSlot && allSlot['hydra:member']?.length < 0 ? (
+            <div className=' text-center mt-5 pt-5'>
+              <img className='' alt='no slot' src={images} style={{ height: '256px' }} />
+              <div className='user-name fs-3 fw-bold text-secondary'>Aucune réservation</div>
+            </div>
+          ) : (
+            orderStore.lockerId === null && allSlot['hydra:member']?.length > 0 &&
             allSlot['hydra:member']?.map((locker: any, indx: any) =>
               locker?.active === true ? (
                 <Container
@@ -700,7 +708,8 @@ console.log(selectedItem)
                   </div>
                 )
               )
-            )}
+            )
+          )}
           {orderStore?.slotSize !== null && (
             <Container>
               <div className='mb-3 mt-4 text-secondary '></div>

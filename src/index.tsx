@@ -45,7 +45,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'orders-delivered',
+        path: 'deposees',
         element: (
           <React.Fragment>
             <HeaderDesign title='Livraisons déposées' />

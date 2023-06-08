@@ -1,12 +1,13 @@
 import moment from "moment";
 import { Button, Col, Row } from "react-bootstrap";
+import { _getStatus } from "../../utils/functions";
 
 const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
 
   const tempZone = (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FRESH" || liv?.bookingSlot.slot.temperatureZone?.myKey === "C" ) ? "organic-food" : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FREEZE" || liv?.bookingSlot.slot.temperatureZone?.myKey === "F") ? "winter"  : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "NORMAL" || liv?.bookingSlot.slot.temperatureZone?.myKey === "CA") ? "dry" : ""
 
   return (
-    <div className='mb- ps-2 pe-3  bg-white rounded'  >
+    <div className='list-item  ps-2 pe-3  bg-white rounded mb-3'  >
       <Row  onClick={() => {
         //  if (trigger === "history") {
           setSearchOrder('');
@@ -16,7 +17,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
       //   }
       
       }}>
-        <Col xs={2} md={1} className='m-auto'>
+        <Col xs={2} md={1} className='m-auto py-0 '>
           <span key={Math.random()}>
             <img
               alt='Temp icon'
@@ -25,9 +26,14 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
             />{' '}
           </span>
         </Col>
-        <Col className='text-secondary text-start align-bottom m-auto py-0 pt-3'>
-          <small className="ff-agency font-75 text-dar">{liv?.barcode} -  {liv?.client.email}</small>
-          <p className="font-75">{liv?.bookingSlot.slot.temperatureZone.locker.location} {trigger === "history" && ( <span >  -  <span className="text-info fw-bold">{liv?.status}</span></span>)}
+        <Col className='text-secondary text-start align-bottom m-auto py-0 my-0'>
+          <small className="ff-agency font-75 ">{liv?.barcode} 
+          {/* -  {liv?.client.email} */}
+          </small>
+          <p className="font-75 mb-0">
+            {/* {liv?.bookingSlot.slot.temperatureZone.locker.location} */}
+            {liv?.client.email}
+             {trigger === "history" && ( <span >  -  <span className="text-info fw-bold">{_getStatus(liv?.status)}</span></span>)}
           </p>
         </Col>
         {trigger !== "history" ? (

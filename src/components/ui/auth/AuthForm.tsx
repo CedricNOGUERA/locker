@@ -18,7 +18,7 @@ const AuthForm= ({ formProps }: any) => {
   } = formProps
 
   return (
-    <Form onSubmit={handleSubmit(signUp)}>
+    <Form className='auth-form' onSubmit={handleSubmit(signUp)}>
       <Form.Group className='mb-3' controlId='formBasicEmail'>
         <Form.Label className='d-none'>Identifiant</Form.Label>
         <InputGroup className='mb-3'>

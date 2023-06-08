@@ -59,6 +59,7 @@ const InProgress: React.FC = () => {
   // UseEffect
   /////////////////////////
   React.useEffect(() => {
+    setIsLoading(true)
     setSelectedItem('progress')
   }, [])
   React.useEffect(() => {
@@ -69,7 +70,7 @@ const InProgress: React.FC = () => {
         setIsError(true)
         setIsLoading(false)
       }
-      setIsLoading(true)
+      setIsLoading(false)
     }
   }, [orderData])
 
@@ -91,12 +92,12 @@ const InProgress: React.FC = () => {
   }
 
   const orderListProps = {
-    orderData,
+    
     filteredOrder,
     setSelectedOrder,
     searchOrder,
     setSearchOrder,
-    allSlot,
+ 
     orderByStatus,
   }
 

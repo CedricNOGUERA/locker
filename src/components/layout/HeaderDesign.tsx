@@ -52,20 +52,20 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       <UserQrcode show={show} handleClose={handleClose} />
       <Container
         fluid={'lg'}
-        className='top-nav-design sticky-top py-2 text-info shadow opacity-75'
+        className='top-nav-design sticky-top pb-2 text-info shadow opacity-75'
       >
-        <Row className='align-middle pe-0'>
-          <Col className='ff-agency m-auto pb-4 '>
+        <Row className=' pe-0'>
+          <Col className='ff-agency m-auto pb-2 '>
             <i className={`ri-arrow-left-s-line fs-1 align-bottom`}
             onClick={() => rtn()}
             ></i>
           </Col>
-          <Col xs={6} sm={8} className='ff-agency m-auto text-center pb-4 '>
+          <Col xs={6} sm={8} className='ff-agency m-auto text-center pb-2 '>
             <div className='font-75 text-light'>{dataStore.company_name} </div>
             <div className=''>{title}</div>
           </Col>
-          <Col className='company-name align-bottom  text-end align-middle animate__animated animate__bounceIn top-menu fw-bold'>
-            <Button variant='' className='' onClick={handleShowOffcanvas}>
+          <Col className='pb-2 company-name align-bottom  text-end align-middle animate__animated animate__bounceIn top-menu fw-bold'>
+            <Button variant='' onClick={handleShowOffcanvas}>
               <i className='ri-more-2-fill text-info fs-4'></i>
             </Button>
           </Col>
@@ -131,21 +131,21 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </Link>
           </Container>
-          {/* <Container className='mb-3'>
+          <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'
-              to='/map'
+              to='/deposees'
               onClick={handleCloseOffcanvas}
             >
               <Row className='menu-link'>
                 <Col xs={2}>
                   {' '}
-                  <i className='ri-map-pin-line fs-5'></i>
+                  <i className='ri-check-line fs-5'></i>
                 </Col>{' '}
-                <Col className='m-auto user-name'>Map</Col>
+                <Col className='m-auto user-name'>déposées</Col>
               </Row>
             </Link>
-          </Container> */}
+          </Container>
           <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'

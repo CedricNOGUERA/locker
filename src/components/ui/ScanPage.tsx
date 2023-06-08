@@ -52,7 +52,7 @@ const ScanPage = ({ scanPageProps }: any) => {
         console.log(error)
       })
   }
-
+console.log(selectedOrder)
   return (
     <Container fluid className='pb-5'>
       <Container className='my-2 px-0'>
@@ -76,7 +76,11 @@ const ScanPage = ({ scanPageProps }: any) => {
         }}
       >
         <Col xs={12} sm={5} md={7} lg={3} className='m-auto'>
+          {newStatus === "receive" ? 
+          <QrCode data={`${selectedOrder?.receiveCode}`} />
+          :
           <QrCode data={`${selectedOrder?.barcode}`} />
+        }
         </Col>
       </Container>
       <Container className='text-center text-secondary font-85'>

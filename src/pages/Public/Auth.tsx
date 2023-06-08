@@ -3,13 +3,12 @@ import {
   Form,
   Container,
   Alert,
-  Spinner,
   InputGroup,
   Modal,
   Button,
 } from 'react-bootstrap'
 import axios from 'axios'
-import { Link, Navigate } from 'react-router-dom'
+import {  Navigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import userDataStore from '../../store/userDataStore'
 import { useEffect, useRef, useState } from 'react'
@@ -18,7 +17,6 @@ import '../../App.css'
 import AuthService from '../../service/Auth/AuthService'
 import UserService from '../../service/UserService'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
-import AlertIsError from '../../components/ui/warning/AlertIsError'
 import imag from '../../styles/logo512.png'
 import Swal from 'sweetalert2'
 import emailjs from '@emailjs/browser'
@@ -99,7 +97,10 @@ const Auth = () => {
         myData?.memberOf ? myData?.memberOf[0]?.id : null,
         myData?.memberOf ? myData?.memberOf[0]?.cleveronCompanyId : null,
         myData?.memberOf ? myData?.memberOf[0]?.name : null,
-        token
+        token,
+        null,
+        null,
+
       )
     }
   }, [authLogin, myData, token])
@@ -110,7 +111,7 @@ const Auth = () => {
     }
   }, [myEmail])
 
-
+console.log(myData)
 
    ////////////////////
   //events
@@ -171,8 +172,6 @@ const Auth = () => {
           setForgotToken(response.data.token)
           authLogin(false, null, null, null, null, null, null, response.data.token)
 
-
-
           Swal.fire({
             position: 'top-end',
             toast: true,
@@ -218,18 +217,21 @@ const Auth = () => {
   const formProps = {handleSubmit, register, errors, signUp, isView, setIsView, handleShow, isError, codeError, msgError, isLoadingAuth}
 
   return (
-    <Container fluid className='auth-cont col-12 col-lg-4 px-0 bg-secondary'>
+    <Container fluid className='auth-cont-sup col-12 px-0 py-0 bg-'>
+   
+   <Container fluid className='auth-cont col-12 col-md-12 col-lg-6 px-0 bg-secondary'>
       {dataStore.token && dataStore.company_name && <Navigate to='/dashboard' />}
       {isLoading ? (
         <Loading variant='info' />
       ) : (
         <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
-          <Card.Body>
+          <Card.Body className=''>
             <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
-              <img alt='Conteneur' src={imag} width={120} height={120} />
+              {/* <img alt='Conteneur' src={imag} width={80} height={80} /> */}
             </div>
             <div className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
-              Locker
+              DRIVE BOX
+              {/* LOCKERY */}
             </div>
             <AuthForm formProps={formProps} />
           </Card.Body>
@@ -288,6 +290,7 @@ const Auth = () => {
           </Modal.Footer>
         </Form>
       </Modal>
+    </Container>
     </Container>
   )
 }
