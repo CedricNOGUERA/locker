@@ -34,7 +34,7 @@ const UserQrcode = ({show, handleClose, setSelectedOrder}: any) => {
           </Container>
           <Container className='bg-light p-2    animate__animated animate__fadeInDown'>
             <Col xs={12} sm={5} md={7} lg={5} className='m-auto'>
-              <QrCode data={`${dataStore.id}`} />
+              <QrCode data={`${dataStore.apm_access_code}`} />
             </Col>
           </Container>
           <Container className='text-center text-warning font-85'>

@@ -42,21 +42,21 @@
 
 .auth-cont-sup {
   background-color: #202121;
-  /* height: 200vh; */
-  /* background-color: #2a1531; */
-  /* background-color: #adadad; */
 }
 
 .auth-form {
   padding-top: 10%;
   overflow-y: hidden;
+  margin-bottom: 10%;
 
 }
+/* .card-body{
+  height: 150vh;
+  margin-bottom: 10%;
+} */
 
 @media (max-height: 515px) {
   .logo-app {
-    /* margin-bottom: 10%; */
-    /* align-items: middle; */
     margin-left: 0%;
     float: left;
     width: 80px;
@@ -498,9 +498,19 @@ ul.tl li .timestamp-current {
 }
 
 @media (max-width: 767px) {
-
   input::placeholder {
     font-size: 0.85rem;
-
   }
+}
+
+.badges{
+  margin-left: -55%;
+}
+
+.badges2{
+  margin-left: -65%;
+}
+
+.fusion{
+  margin-left: -199%;
 }

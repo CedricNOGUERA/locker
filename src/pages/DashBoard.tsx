@@ -57,7 +57,7 @@ const DashBoard = () => {
  
 
   return (
-    <Container className='text-center mt-2'>
+    <Container className='cde App text-center mt-2'>
       {(!isLogged || !dataStore.token || !dataStore.company_name) && (
         <Navigate to='/connexion' />
       )}

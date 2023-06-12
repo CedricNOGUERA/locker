@@ -37,7 +37,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
   const handleShowOffcanvas = () => setShowOffcanvas(true)
 
 
-    /////////////////////////
+  /////////////////////////
   //Fonction de retour en arrière
   ////////////////////////
   const rtn = () => {

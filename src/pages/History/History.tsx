@@ -64,12 +64,11 @@ const History = () => {
 
   React.useEffect(() => {
     _searchWithRegex(searchOrder, orderData['hydra:member'], setFilteredOrder)
-  }, [orderData])
+    console.log(filteredOrder?.length)
+  }, [orderData,searchOrder])
 
 console.log(orderData['hydra:member']?.length)
-console.log(filteredOrder?.length)
 
-        
   return (
     <Container className='order-list pb-5 mb-5'>
       {!isLoading && (
@@ -165,11 +164,12 @@ console.log(filteredOrder?.length)
           </ul>
         </div>
       )}
+      
       {isLoading ? (
         <Container className='text-center mt-2'>
           <PlaceHolder paddingYFirst='3' />
         </Container>
-      ) : !selectedOrder && filteredOrder && filteredOrder.length > 0 ? (
+      ) : !selectedOrder && filteredOrder && filteredOrder.length > 0 && searchOrder?.length > 2 ? (
         filteredOrder.map((liv: any, indx: any) => (
           <Container key={Math.random()} className='px-0 animate__animated animate__backInLef'>
             <ItemList
@@ -181,7 +181,7 @@ console.log(filteredOrder?.length)
             />
           </Container>
         ))
-      ) : !selectedOrder && orderData && orderData['hydra:member']?.length > 0 ? (
+      ) : !selectedOrder && searchOrder?.length < 2  && orderData && orderData['hydra:member']?.length > 0 ? (
         orderData['hydra:member']?.map((liv: any, indx: any) => (
           <Container
             key={Math.random()}
@@ -199,17 +199,22 @@ console.log(filteredOrder?.length)
           </Container>
         ))
       ) : 
-        !selectedOrder &&
+        (
+      
+          searchOrder &&
         filteredOrder &&
-        filteredOrder.length === 0 &&
-        orderData &&
-        orderData['hydra:member']?.length === 0 && (
+        filteredOrder.length === 0 ) ||
+        (orderData &&
+        orderData['hydra:member']?.length === 0) ?
+        (
+
+
           <div className=' text-center mt-5 pt-5'>
             <img className='' alt='no order' src={images} style={{ height: '256px' }} />
             <div className='user-name fs-3 fw-bold text-secondary'>Aucune commande</div>
           </div>
         
-      )}
+      ) : null}
     </Container>
   )
 }

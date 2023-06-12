@@ -61,9 +61,11 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
             <i className='ri-history-line fs-3'></i>
           </Link>
         </Nav.Item>
+      
         <Nav.Item
           className='nav-item text-center '
           style={{ position: 'absolute', bottom: '43px' }}
+          onClick={() => handleSelect('order')}
         >
           <div className='text-center '></div>
           <Link
@@ -84,7 +86,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
             className={`nav-link px-0 text-${
               selectedItem === 'progress' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
-            to='in-progress'
+            to='/in-progress'
           >
             <i className='ri-truck-line fs-3 '></i>
             {progress?.length > 0 && (
@@ -100,7 +102,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
             className={`nav-link px-0  text-${
               selectedItem === 'retrieve' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
-            to='orders-to-retrieve'
+            to='/orders-to-retrieve'
           >
             <i className='ri-inbox-unarchive-line fs-3 text-center'></i>
             {retrieve?.length > 0 && (

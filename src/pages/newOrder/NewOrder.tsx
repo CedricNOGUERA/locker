@@ -25,14 +25,12 @@ import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
 import { getError } from '../../utils/errors/GetError'
-import PlaceHolder from '../../components/ui/loading/PlaceHolder'
 import images from '../../styles/no-order-min.png'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
 import { useForm } from 'react-hook-form'
 import BackButton from '../../components/ui/BackButton'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
-import { Divider } from 'antd'
 
 type Inputs = {
   qty: any
@@ -42,7 +40,7 @@ type Inputs = {
   chooseEmail: any
 }
 
-const NewOrder = () => {
+const NewOrder: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isOrderCreate, setIsOrderCreate] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
@@ -74,7 +72,6 @@ const NewOrder = () => {
     setSelectedItem,
   ] = useOutletContext<any>()
 
-  // const [bookingSlot, setBookingSlot] = React.useState<any>('')
   const [qty, setQty] = React.useState<any>(undefined)
   const [clientEmail, setClientEmail] = React.useState<any>('')
   const [clientName, setClientName] = React.useState<any>('')
@@ -83,7 +80,16 @@ const NewOrder = () => {
   const [autoCompletTab, setAutoCompletTab] = React.useState<any>([])
   const [choosedName, setChoosedName] = React.useState<any>('')
   const [choosedEmail, setChoosedEmail] = React.useState<any>('')
+  const [uniqueTab, setUniqueTab] = React.useState<any>([])
+  const [chosenLocker, setChosenLocker] = React.useState<any>([])
+  const [availableSlot2, setAvailableSlot2] = React.useState<any>([])
+  const [globalDispo, setGlobalDispo] = React.useState<any>(null)
 
+  const [bookingSlotIds, setBookingSlotIds] = React.useState<any>([]);
+  const [tempZones, setTempZones] = React.useState<any>([]);
+  const [slotSizes, setSlotSizes] = React.useState<any>([]);
+  const [products, setProducts] = React.useState<string>("");
+  
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
 
   const [availableSlot, setAvailableSlot] = React.useState<any>()
@@ -92,24 +98,39 @@ const NewOrder = () => {
 
   const [allSlot, setAllSlot] = React.useState<any>([])
 
-  // const isSlotAvailable = availableSlot >= parseInt(qty)
 
   const {
-    register,
-    handleSubmit,
+    
     formState: { errors },
   } = useForm<Inputs>()
 
-
-
-  React.useEffect(() => {
-    setSelectedItem('order')
-  }, [])
 console.log(selectedItem)
+
   React.useEffect(() => {
-    getBookingAllSlot(dataStore.token)
+    // setSelectedItem('order')
+    getallOrders(dataStore.token)
     getClients(dataStore.token)
-  }, [dataStore.token])
+    getBookingAllSlot(dataStore.token)
+  }, [])
+
+  React.useEffect(() => {
+    const bookingLocker: any = allSlot?.['hydra:member']?.map(
+      (locker: any) => locker?.slot?.temperatureZone?.locker
+    )
+ 
+    const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker.location))]
+    setUniqueTab(deduplicate)
+
+
+  }, [allSlot])
+
+
+ 
+
+  React.useEffect(() => {
+    // getBookingAllSlot(dataStore.token)
+    // getallOrders(dataStore.token)
+  }, [])
 
   React.useEffect(() => {
     _searchWithRegex(clientName, autoCompletTab['hydra:member'], setFilteredName)
@@ -118,6 +139,10 @@ console.log(selectedItem)
   React.useEffect(() => {
     _searchWithRegex2(clientEmail, autoCompletTab['hydra:member'], setFilteredEmail)
   }, [clientEmail])
+
+  console.log(uniqueTab)
+
+
 
   const getClients = (token: any) => {
     ClientService.allClients(token)
@@ -159,7 +184,7 @@ console.log(selectedItem)
         setCodeError(error.response.data.code)
       })
   }
-
+console.log(orderData)
   const popUpError = (code: any, text: any) => {
     Swal.fire({
       position: 'top-end',
@@ -172,8 +197,13 @@ console.log(selectedItem)
       timer: 4000,
     })
     newOrderDelete()
-  }
+  setTempZones([])
+  setSlotSizes([])
+  setBookingSlotIds([])
 
+  }
+  console.log(chosenLocker)
+  // console.log(chosenLocker[0].company.cleveronCompanyId)
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
       return Math.floor(Math.random() * (max - min + 1)) + min
@@ -189,21 +219,20 @@ console.log(selectedItem)
       parseInt(qty) <= 1
         ? {
             service: 'B2C',
-            
-            ageRestriction: orderStore.ageRestriction !== false &&  18,
-            barcode: randomCode,
-            // barcode: orderStore.companyName.toUpperCase() + '-' + randomCode,
+
+            ageRestriction: orderStore.ageRestriction !== false && 18,
+            barcode:
+              chosenLocker &&
+              chosenLocker[0]?.company?.cleveronCompanyId.toUpperCase() + '-' + randomCode,
+            bookingSlot: bookingSlotIds[0],
             destination: {
               apm: orderStore?.lockerId,
             },
-
+            slotSize: slotSizes[0],
             receiveCode: `${receiveCode}`,
-            keyTemp: orderStore.keyTemp,
-            temperatureZonePredefined: orderStore?.tempZone,
+            temperatureZonePredefined: tempZones[0],
 
-            // extras: {companyId : orderStore.companyId},
             changesTimestamp: new Date(Date.now()).toISOString(),
-            bookingSlot: orderStore.bookingSlotId,
             clientEmail: choosedEmail
               ? choosedEmail
               : clientEmail?.email
@@ -214,19 +243,24 @@ console.log(selectedItem)
               : clientName?.name
               ? clientName?.name
               : clientName,
-
+            shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty),
-            products: ['p1'],
+            products: products?.split(','),
           }
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
             ageRestriction: orderStore.ageRestriction,
             barcode:
-              // orderStore.companyName.toUpperCase() + '-' + randomCodeMultiOrder + (indx + 1),
-              randomCodeMultiOrder + (indx + 1),
+            chosenLocker &&
+              chosenLocker[0]?.company?.cleveronCompanyId.toUpperCase() +
+              '-' +
+              randomCodeMultiOrder +
+              (indx + 1),
+
             destination: {
               apm: orderStore?.lockerId,
             },
+            slotSize: slotSizes[indx],
             receiveCode: `${receiveCode}`,
 
             multiOrder: {
@@ -242,9 +276,9 @@ console.log(selectedItem)
               type: 'SEND',
             },
             changesTimestamp: new Date(Date.now()).toISOString(),
-            bookingSlot: orderStore.bookingSlotId,
-            keyTemp: orderStore.keyTemp,
-            temperatureZonePredefined: orderStore?.tempZone,
+            bookingSlot: bookingSlotIds[indx],
+            // keyTemp: orderStore.keyTemp,
+            temperatureZonePredefined: tempZones[indx],
             clientEmail: choosedEmail
               ? choosedEmail
               : clientEmail?.email
@@ -255,130 +289,146 @@ console.log(selectedItem)
               : clientName?.name
               ? clientName?.name
               : clientName,
-
-            totalSlot: parseInt(qty),
-            products: ['p1', 'p2'],
+            shippedBy: 'api/users/' + dataStore.id,
+            totalSlot: 1,
+            products: products?.split(','),
           }))
 
-    // if (parseInt(qty) === 1) {
-    //   let config = {
-    //     method: 'post',
-    //     url: process.env.REACT_APP_END_POINT + 'orders',
-    //     headers: {
-    //       Authorization: 'Bearer ' + dataStore.token,
-    //       'Content-Type': 'application/json',
-    //     },
-    //     data: dataOrder,
-    //   }
+    if (parseInt(qty) === 1) {
+      let config = {
+        method: 'post',
+        url: process.env.REACT_APP_END_POINT + 'orders',
+        headers: {
+          Authorization: 'Bearer ' + dataStore.token,
+          'Content-Type': 'application/json',
+        },
+        data: dataOrder,
+      }
 
-    //   axios
-    //     .request(config)
-    //     .then((response) => {
-    //       newOrderDelete()
-    //       setQty('')
-    //       getallOrders(dataStore.token)
-    //       getBookingAllSlot(dataStore.token)
-    //       setIsOrderCreate(false)
-    //       setIsValid(false)
-    //       setClientName('')
-    //       setClientEmail('')
-    //       setChoosedName('')
-    //       setChoosedEmail('')
-    //       setAgeRestriction(false)
-    //       Swal.fire({
-    //         position: 'top-end',
-    //         toast: true,
-    //         icon: 'success',
-    //         title: 'Commande validée',
-    //         text: orderStore.companyName.toUpperCase() + '-' + randomCode,
-    //         showConfirmButton: false,
-    //         timer: 7000,
-    //         timerProgressBar: true,
-    //       })
-    //     })
-    //     .catch((error) => {
-    //       console.log(getError(error))
-    //       console.log(error.message)
-    //       setMsgError(getError(error))
-    //       setIsValid(false)
-    //       setQty('')
-    //       setIsOrderCreate(false)
-    //       setIsValid(false)
-    //       setClientName('')
-    //       setClientEmail('')
-    //       setChoosedName('')
-    //       setChoosedEmail('')
-    //       setAgeRestriction(false)
-    //       if (logs.logApp) {
-    //         logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
-    //       } else {
-    //         logCatcher('date :' + now + '-' + error.response.statusText)
-    //       }
-    //       popUpError(error.response.status, error.response.statusText)
-    //     })
-    // } else {
-    //   let config: any = {
-    //     method: 'post',
-    //     url: process.env.REACT_APP_END_POINT + 'orders',
-    //     headers: {
-    //       Authorization: 'Bearer ' + dataStore.token,
-    //       'Content-Type': 'application/json',
-    //     },
-    //   }
+      axios
+        .request(config)
+        .then((response) => {
+          newOrderDelete()
+          setTempZones([])
+          setSlotSizes([])
+          setBookingSlotIds([])
+        
+          setQty('')
+          getallOrders(dataStore.token)
+          getBookingAllSlot(dataStore.token)
+          setIsOrderCreate(false)
+          setIsValid(false)
+          setTrigger(false)
+          setChosenLocker([])
 
-    //   let promises = []
+          setClientName('')
+          setClientEmail('')
+          setChoosedName('')
+          setChoosedEmail('')
+          setAgeRestriction(false)
+          Swal.fire({
+            position: 'top-end',
+            toast: true,
+            icon: 'success',
+            title: 'Commande validée',
+            text: orderStore.companyName.toUpperCase() + '-' + randomCode,
+            showConfirmButton: false,
+            timer: 7000,
+            timerProgressBar: true,
+          })
+        })
+        .catch((error) => {
+          console.log(getError(error))
+          console.log(error.message)
+          setMsgError(getError(error))
+          setIsValid(false)
+          setQty('')
+          setTrigger(false)
+          setChosenLocker([])
+          setIsOrderCreate(false)
+          setIsValid(false)
+          setClientName('')
+          setClientEmail('')
+          setChoosedName('')
+          setChoosedEmail('')
+          setAgeRestriction(false)
+          if (logs.logApp) {
+            logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
+          } else {
+            logCatcher('date :' + now + '-' + error.response.statusText)
+          }
+          popUpError(error.response.status, error.response.statusText)
+        })
+    } else {
+      let config: any = {
+        method: 'post',
+        url: process.env.REACT_APP_END_POINT + 'orders',
+        headers: {
+          Authorization: 'Bearer ' + dataStore.token,
+          'Content-Type': 'application/json',
+        },
+      }
 
-    //   for (let i = 0; i < dataOrder?.length; i++) {
-    //     config.data = dataOrder[i]
-    //     promises.push(axios.request(config))
-    //   }
+      let promises = []
 
-    //   Promise.all(promises)
-    //     .then((responses) => {
-    //       const numOrder = responses?.map((num: any) => num?.data?.barcode)
-    //       newOrderDelete()
-    //       setQty('')
-    //       getallOrders(dataStore.token)
-    //       getBookingAllSlot(dataStore.token)
-    //       setIsOrderCreate(false)
-    //       setClientName('')
-    //       setClientEmail('')
-    //       setChoosedName('')
-    //       setChoosedEmail('')
-    //       setAgeRestriction(false)
-    //       Swal.fire({
-    //         position: 'top-end',
-    //         toast: true,
-    //         icon: 'success',
-    //         title: 'Commande(s) validée(s)',
-    //         text: `${numOrder}`,
-    //         showConfirmButton: false,
-    //         timer: 7000,
-    //         timerProgressBar: true,
-    //       })
-    //     })
-    //     .catch((error) => {
-    //       console.log(getError(error))
-    //       console.log(error.message)
-    //       console.log(error)
-    //       logCatcher(error.response.statusText)
-    //       setMsgError(getError(error))
-    //       popUpError(error.response.status, error.response.statusText)
-    //       setIsOrderCreate(false)
-    //       setQty('')
+      for (let i = 0; i < dataOrder?.length; i++) {
+        config.data = dataOrder[i]
+        promises.push(axios.request(config))
+      }
 
-    //       setClientName('')
-    //       setClientEmail('')
-    //       setChoosedName('')
-    //       setChoosedEmail('')
-    //       setAgeRestriction(false)
-    //       if (logs.logApp) {
-    //         logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
-    //       } else {
-    //         logCatcher('date :' + now + '-' + error.response.statusText)
-    //       }
-    //     })
-    // }
+      Promise.all(promises)
+        .then((responses) => {
+          const numOrder = responses?.map((num: any) => num?.data?.barcode)
+          newOrderDelete()
+          setTempZones([])
+          setSlotSizes([])
+          setBookingSlotIds([])
+        
+          setQty('')
+          getallOrders(dataStore.token)
+          getBookingAllSlot(dataStore.token)
+          setIsOrderCreate(false)
+          setClientName('')
+          setClientEmail('')
+          setChoosedName('')
+          setChoosedEmail('')
+          setAgeRestriction(false)
+          setTrigger(false)
+          setChosenLocker([])
+          Swal.fire({
+            position: 'top-end',
+            toast: true,
+            icon: 'success',
+            title: 'Commande(s) validée(s)',
+            text: `${numOrder}`,
+            showConfirmButton: false,
+            timer: 7000,
+            timerProgressBar: true,
+          })
+        })
+        .catch((error) => {
+          console.log(getError(error))
+          console.log(error.message)
+          console.log(error)
+          logCatcher(error.response.statusText)
+          setMsgError(getError(error))
+          popUpError(error.response.status, error.response.statusText)
+          setIsOrderCreate(false)
+          setQty('')
+          setTrigger(false)
+          setChosenLocker([])
+          setClientName('')
+          setClientEmail('')
+          setChoosedName('')
+          setChoosedEmail('')
+          setAgeRestriction(false)
+          if (logs.logApp) {
+            logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
+          } else {
+            logCatcher('date :' + now + '-' + error.response.statusText)
+          }
+        })
+    }
     console.log(dataOrder)
   }
 
@@ -409,7 +459,18 @@ console.log(selectedItem)
         // timerProgressBar: true,
       })
       newOrderDelete()
+      setTempZones([])
+      setSlotSizes([])
+      setBookingSlotIds([])
+    
       setQty('')
+      setTrigger(false)
+      setProducts("")
+      setClientName('')
+      setClientEmail('')
+      setChoosedName('')
+      setChoosedEmail('')
+      setChosenLocker([])
       setAgeRestriction(false)
       setIsValid(false)
       if (logs.logApp) {
@@ -510,19 +571,74 @@ console.log(selectedItem)
       newOrderRegister(
         orderStore.lockerId,
         orderStore.location,
-        orderStore.bookingSlot,
+        null,
+        // orderStore.bookingSlot,
         orderStore.companyId,
         orderStore.companyName,
         orderStore.lockerType,
         orderStore.delivererId,
-        orderStore.tempZone,
+        tempZones,
+        null,
+        // orderStore.tempZone,
         orderStore.keyTemp,
-        orderStore.slotSize,
+        null,
+        // orderStore.slotSize,
+        slotSizes,
         parseInt(qty),
         ageRestriction === true ? 18 : 0
       )
     }
   }
+
+  const filteredLocker = (locker:any) => {
+    setChosenLocker(allSlot["hydra:member"].filter((slots: any) => slots.slot.temperatureZone.locker.location === locker))
+  }
+
+  const handleChangeSelect = (e: any, indx: any) => {
+
+    const zone = JSON.parse(e.currentTarget.value)
+  //  if(zone.available > parseInt(qty)){ 
+
+     const newTab: any = [...tempZones]
+     newTab[indx] = zone.slot?.temperatureZone?.myKey
+    setTempZones(newTab)
+    console.log(zone)
+
+    const newTabSize: any = [...slotSizes]
+    newTabSize[indx] = zone.slot?.size
+    setSlotSizes(newTabSize)
+
+    const newTabBooking: any = [...bookingSlotIds]
+    newTabBooking[indx] = zone["@id"]
+    setBookingSlotIds(newTabBooking)
+  // }else{
+  //   noDispoModal()
+  // }
+  newOrderRegister(
+    zone.slot.temperatureZone.locker["@id"],
+    zone.slot.temperatureZone.locker.location,
+    bookingSlotIds,
+    zone.company["@id"],
+    zone.company.name,
+    zone.slot.temperatureZone.locker.type,
+    dataStore.id,
+    tempZones,
+    zone.slot?.temperatureZone?.myKey,
+    slotSizes,
+    parseInt(qty),
+    ageRestriction === true ? 18 : 0
+  )
+  }
+
+console.log(tempZones)
+console.log(slotSizes)
+console.log(bookingSlotIds)
+const [trigger, setTrigger] = React.useState<any>(false);
+
+const imgFilter = (data: any) => {
+ const imge =  data === "FRESH" ? "organic-food" : data === "FREEZE"  ? "winter"  : data === "NORMAL"  ? "dry" : "nada" 
+return imge
+}
 
   return (
     <div>
@@ -530,13 +646,16 @@ console.log(selectedItem)
       <Container className='my-2'>
         <Container className='px-3 py-0 bg-secondary rounded-pill shadow my-auto '>
           <Row>
-            {orderStore.lockerId === null ? (
+            {chosenLocker?.length === 0 ? (
               <>
                 <Col xs={2} md={5} lg={5} className='py-0'>
                   <Link
                     to='/in-progress'
                     className='text-decoration-none'
-                    onClick={() => newOrderDelete()}
+                    onClick={() => {newOrderDelete()
+                      setTempZones([])
+                      setSlotSizes([])
+                      setBookingSlotIds([])}}
                   >
                     <BackButton />
                   </Link>
@@ -546,7 +665,8 @@ console.log(selectedItem)
                   <span className='fw-bold'>sélectionnez un locker</span>
                 </Col>
               </>
-            ) : (
+            ) :  trigger ? 
+            (
               <>
                 <Col
                   xs={2}
@@ -554,11 +674,30 @@ console.log(selectedItem)
                   lg={5}
                   className='py-0'
                   onClick={() => {
-                    setClientName('')
-                    setClientEmail('')
-                    setChoosedName('')
-                    setChoosedEmail('')
-                    setQty('')
+                    
+                    setTrigger(false)
+                    setQty(undefined)
+                  }}
+
+                >
+                  <BackButton />
+                </Col>
+                <Col className='m-auto text-light text-start pe-2 py-0'>
+                  <i className='ri-temp-cold-line align-bottom me-2'></i>{' '}
+                  <span className='fw-bold'>Température & info client</span>
+                </Col>
+              </>
+            ) :
+            (
+              <>
+                <Col
+                  xs={2}
+                  md={5}
+                  lg={5}
+                  className='py-0'
+                  onClick={() => {
+                    setChosenLocker([])
+                    setProducts("")
                     newOrderRegister(
                       null,
                       orderStore.location,
@@ -582,10 +721,11 @@ console.log(selectedItem)
                   <span className='fw-bold'>Nombre de panier nécessaire</span>
                 </Col>
               </>
-            )}
+            )
+            }
           </Row>
         </Container>
-        {orderStore.lockerId === null ? (
+        {chosenLocker?.length === 0 ? (
           <Container>
             <Row>
               <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
@@ -593,7 +733,7 @@ console.log(selectedItem)
               <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
             </Row>
           </Container>
-        ) : !isValid ? (
+        ) : !trigger ? (
           <Container>
             <Row>
               <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
@@ -602,7 +742,7 @@ console.log(selectedItem)
             </Row>
           </Container>
         ) : (
-          isValid && (
+          trigger && (
             <Container>
               <Row>
                 <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
@@ -632,85 +772,328 @@ console.log(selectedItem)
               <img className='' alt='no slot' src={images} style={{ height: '256px' }} />
               <div className='user-name fs-3 fw-bold text-secondary'>Aucune réservation</div>
             </div>
-          ) : (
-            orderStore.lockerId === null && allSlot['hydra:member']?.length > 0 &&
-            allSlot['hydra:member']?.map((locker: any, indx: any) =>
-              locker?.active === true ? (
+          ) : chosenLocker?.length === 0 ? (
+            <div>
+              {uniqueTab?.map((locker: any, indx: any) => (
                 <Container
                   key={Math.random()}
-                  className='my-3 px-2 py-2 bg-white rounded shadow w-100'
+                  className='text-light py-1 mb-3 border-0 rounded bg-secondary animate__animated'
                   onClick={() => {
+                    filteredLocker(locker)
                     setAvailableSlot(locker.available)
-                    locker?.available > 0
-                      ? newOrderRegister(
-                          locker?.slot.temperatureZone.locker.cleveronApmId,
-                          locker?.slot.temperatureZone.locker?.location,
-                          locker?.['@id'],
-                          dataStore.company_id,
-                          dataStore.company_name,
-                          locker?.slot.temperatureZone.locker.type,
-                          dataStore.id,
-                          locker?.slot.temperatureZone?.myKey,
-                          locker?.slot.temperatureZone?.keyTemp,
-                          locker?.slot?.size,
-                          0,
-                          0
-                        )
-                      : noDispoModal()
                   }}
                 >
-                  <Row className='py-2 justify-content-around text-secondary'>
-                    <Col className='m-auto  pe-0'>
-                      <img
-                        alt='zone'
-                        src={
-                          'https://img.icons8.com/color/512/' +
-                          (locker?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                          locker?.slot.temperatureZone?.myKey === 'C'
-                            ? 'organic-food'
-                            : locker?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                              locker?.slot.temperatureZone?.myKey === 'F'
-                            ? 'winter'
-                            : (locker?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                locker?.slot.temperatureZone?.myKey === 'CA') &&
-                              'dry') +
-                          '.png'
-                        }
-                        style={{ width: '40px' }}
-                      />{' '}
-                    </Col>
-                    <Col className='m-auto pe-0 fw-bold'>{locker?.slot?.size}</Col>
-                    <Col xs={7} className='px-0 m-auto text-center'>
-                      <span className='item-locker-lis'>
-                        {locker?.slot?.temperatureZone?.locker?.location?.toUpperCase()}
-                      </span>
-                    </Col>
-                    <Col xs={1} className='me-4 m-auto'>
-                      <span
-                        className={
-                          locker?.available > 0
-                            ? 'rounded-pill bg-warning item-locker-list badge'
-                            : 'rounded-pill bg-danger item-locker-list badge'
-                        }
-                      >
-                        {locker?.available}
-                      </span>
+                  <Row className='px-0'>
+                    <Col className='m-auto font-75 ps-1 px-0'>{locker}</Col>
+                    <Col xs={5}>
+                      <Row>
+                        {allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.map((slots: any) => (
+                            <>
+                              <Col xs={2} className='px-0 ms-2'>
+                                <img
+                                  alt='Temp icon'
+                                  src={
+                                    'https://img.icons8.com/color/512/' +
+                                    imgFilter(slots?.slot.temperatureZone?.keyTemp) +
+                                    '.png'
+                                  }
+                                  style={{ width: '22px' }}
+                                />
+                              </Col>
+                              <Col xs={1} className='px-0 font-85'>
+                                <span className='badge badges2 rounded-pill bg-info border-2 border-secondary'>
+                                  {slots.available}
+                                </span>
+                              </Col>
+                            </>
+                          ))}
+                      </Row>
                     </Col>
                   </Row>
                 </Container>
-              ) : (
-                indx === 0 && (
-                  <div className=' text-center mt-5 pt-5'>
-                    <img className='' alt='no slot' src={images} style={{ height: '256px' }} />
-                    <div className='user-name fs-3 fw-bold text-secondary'>
-                      Aucune réservation
-                    </div>
+              ))}
+            </div>
+          ) : !trigger ? (
+            <div>
+              <form onSubmit={(e) => {
+                e.preventDefault()
+                setTrigger(true)}}>
+
+              <InputGroup>
+                <InputGroup.Text className='border-end-0 bg-secondary-500'>
+                  <i className='ri-inbox-archive-line text-secondary'></i>
+                </InputGroup.Text>
+                <Form.Control
+                  as='textarea'
+                  aria-label='textarea'
+                  placeholder='Saisie des produits...'
+                  value={products}
+                  onChange={(e) => setProducts(e.currentTarget.value)}
+                  required
+                />
+              </InputGroup>
+              <div>
+                <InputGroup className='my-3'>
+                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-secondary-500'>
+                    <i className='ri-shopping-basket-2-line text-secondary'></i>
+                  </InputGroup.Text>
+                  <Form.Control
+                    aria-label='panier'
+                    aria-describedby='basic-addon1'
+                    className='border-start-0'
+                    type='number'
+                    min={1}
+                    placeholder='Nombre de panier*'
+                    value={qty}
+                    onChange={(e) => {
+                        setQty(e.currentTarget.value)
+                    }}
+                    required
+                  />
+                </InputGroup>
+                <Button  className="bg-info rounded-pill border-info text-light"
+                type='submit'
+                >
+                  valider</Button>
+
+              </div>{' '}
+              </form>
+            </div>
+          ) : (
+            <div>
+              {/* {globalDispo > qty ? ( */}
+                <form onSubmit={validOrder}>
+                  {Array.from({ length: parseInt(qty) }).map((_, indx) => (
+                    <Form.Select
+                      onChange={(e) => handleChangeSelect(e, indx)}
+                      aria-label='zone'
+                      className='my-2'
+                      required
+                      key={indx* 10}
+                    >
+                      <option>Panier n°{indx + 1}</option>
+                      {chosenLocker?.map((lockers: any, index: any) => (
+                        
+                        <option
+                         key={index + 1}
+                          value={JSON.stringify(lockers)}
+                          className={`${
+                            lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                            lockers?.slot.temperatureZone?.myKey === 'C'
+                              ? 'bg-success'
+                              : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                                lockers?.slot.temperatureZone?.myKey === 'F'
+                              ? 'bg-info'
+                              : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                  lockers?.slot.temperatureZone?.myKey === 'CA') &&
+                                'bg-warning'
+                          }`}
+                          disabled={lockers.available < 1 ? true : false}
+                        >
+                          
+                          {
+                          lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                          lockers?.slot.temperatureZone?.myKey === 'C'
+                            ? 'Zone Fraîche'
+                            : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                              lockers?.slot.temperatureZone?.myKey === 'F'
+                            ? 'Zone Congelée'
+                            : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                lockers?.slot.temperatureZone?.myKey === 'CA') &&
+                              'Zone Ambiante'}{' '}
+                          - {lockers?.slot.size}- {lockers?.available}{' '}
+                          {lockers.available > 1 ? 'casiers' : 'casier'}
+                          {/* {lockers.slot.temperatureZone.keyTemp} */}
+                          
+                          </option>
+                        
+                          ))}
+                          </Form.Select>
+                  ))}
+                  <InputGroup className='mb-3'>
+                    <InputGroup.Text
+                      id='basic-addon1'
+                      className='border-end-0 bg-secondary-500'
+                    >
+                      <i className='ri-user-line text-secondary'></i>
+                    </InputGroup.Text>
+                    <Form.Control
+                      aria-label='Text input with dropdown button'
+                      value={choosedName ? choosedName : clientName}
+                      onChange={(e: any) => {
+                        choosedName
+                          ? setChoosedName(e.currentTarget.value)
+                          : setClientName(e.currentTarget.value)
+                          newOrderRegister(
+                            orderStore.lockerId,
+                            orderStore.location,
+                            bookingSlotIds,
+                            orderStore.companyId,
+                            orderStore.companyName,
+                            orderStore.lockerType,
+                            dataStore.id,
+                            tempZones,
+                            orderStore.keyTemp,
+                            slotSizes,
+                            parseInt(qty),
+                            ageRestriction === true ? 18 : 0
+                           ,
+                           
+                          )
+                        
+                      }}
+                      placeholder='Nom du client*'
+                      required
+                      className='border-start-0'
+                    />
+                    {filteredName && filteredName?.length > 0 && (
+                      <DropdownButton
+                        variant='secondary'
+                        title=''
+                        className=''
+                        id='input-group-dropdown-2'
+                        align='end'
+                        show={true}
+                      >
+                        {filteredName?.map((user: any) => (
+                          <Dropdown.Item
+                            key={Math.random()*4}
+                            onClick={() => {
+                              setChoosedName(user.name)
+                              setChoosedEmail(user.email)
+                              setFilteredName([])
+                              setFilteredEmail([])
+                            }}
+                          >
+                            <i className='ri-user-line'></i> {user.name} - {user.email}
+                          </Dropdown.Item>
+                        ))}
+                      </DropdownButton>
+                    )}
+                  </InputGroup>
+                  {isMsgErrorName && (
+                    <Alert variant='danger' className='mt-2 py-0'>
+                      <InfoAlert
+                        icon='ri-error-warning-line'
+                        iconColor='danger'
+                        message={'Ce champ est obligatoire'}
+                        fontSize='font-75'
+                      />
+                    </Alert>
+                  )}
+                  <InputGroup className='mb-3'>
+                    <InputGroup.Text
+                      id='basic-addon1'
+                      className='border-end-0 bg-secondary-500'
+                    >
+                      <i className='ri-at-line text-secondary'></i>
+                    </InputGroup.Text>
+                    <Form.Control
+                      aria-label='Text input with dropdown button'
+                      value={choosedEmail ? choosedEmail : clientEmail}
+                      onChange={(e: any) => {
+                        choosedEmail
+                          ? setChoosedEmail(e.currentTarget.value)
+                          : setClientEmail(e.currentTarget.value)
+                      }}
+                      placeholder='Email du client*'
+                      required
+                      className='border-start-0'
+                    />
+                    {filteredEmail && filteredEmail?.length > 0 && (
+                      <DropdownButton
+                        variant=''
+                        title=''
+                        className=''
+                        id='input-group-dropdown-2'
+                        align='end'
+                        show={true}
+                      >
+                        {filteredEmail?.map((user: any) => (
+                          <Dropdown.Item
+                            key={Math.random()}
+                            onClick={() => {
+                              setChoosedEmail(user.email)
+                              setFilteredEmail([])
+                            }}
+                          >
+                            {user.email}
+                          </Dropdown.Item>
+                        ))}
+                      </DropdownButton>
+                    )}
+                  </InputGroup>
+                  {isMsgErrorEmail &&
+                    clientName &&
+                    clientName?.length < 1 &&
+                    choosedEmail &&
+                    choosedEmail?.length < 1 && (
+                      <Alert variant='danger' className='mt-2 py-0 '>
+                        <InfoAlert
+                          icon='ri-error-warning-line'
+                          iconColor='danger'
+                          message={'Ce champ est obligatoire'}
+                          fontSize='font-75'
+                        />
+                      </Alert>
+                    )}
+                  {availableSlot < parseInt(qty) && (
+                    <AlertIsError
+                      title={'Attention'}
+                      msg={
+                        "Vous n'avez pas assez de casiers disponibles dans la zone choisie. Réduisez le nombre de panier"
+                      }
+                      colorIcon='danger'
+                    />
+                  )}
+                  <FormGroup className='mb- text-muted w-auto' controlId='formBasicCheckbox'>
+                    <FormCheck
+                      type='checkbox'
+                      label="Restriction d'âge"
+                      checked={ageRestriction}
+                      onChange={() => setAgeRestriction(!ageRestriction)}
+                      
+                    />
+                  </FormGroup>
+                  <i
+                    className='ri-error-warning-line align-bottom text-warning'
+                    title='avez-vous 18 ans '
+                  ></i>{' '}
+                  <span className='font-75 text-muted'>
+                    Conchez la case, s'il y a des produits alcoolisés dans la commande.
+                  </span>
+                  <div className='w-100 text-end'>
+                    <Button
+                      type='submit'
+                      className={`bg-info rounded-pill border-info text-light 
+                    `}
+                    >
+                      {isOrderCreate && <Spinner size='sm' className='me-1' />}
+                      Valider
+                    </Button>
                   </div>
-                )
-              )
-            )
+                </form>
+              {/* ) : (
+                <Alert variant='danger'>
+                  <InfoAlert
+                    icon='ri-error-warning-line'
+                    iconColor='danger'
+                    message={
+                      'Vous ne pourrez pas finaliser votre commande, vos casiers disponibles ne sont pas suffisant'
+                    }
+                    fontSize='font-75'
+                  />
+                </Alert>
+              )} */}
+            </div>
           )}
-          {orderStore?.slotSize !== null && (
+
+          {/* {orderStore?.slotSize !== null && (
             <Container>
               <div className='mb-3 mt-4 text-secondary '></div>
               <form onSubmit={validOrder}>
@@ -858,27 +1241,7 @@ console.log(selectedItem)
                     colorIcon='danger'
                   />
                 )}
-                {/* <Divider></Divider>
-                Liste des produits
-                <InputGroup className='mb-3'>
-                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-secondary-500'>
-                    <i className='ri-at-line text-secondary'></i>
-                  </InputGroup.Text>
-                  <Form.Control
-                    aria-label='Text input with dropdown button'
-                    value={choosedEmail ? choosedEmail : clientEmail}
-                    onChange={(e: any) => {
-                      choosedEmail
-                        ? setChoosedEmail(e.currentTarget.value)
-                        : setClientEmail(e.currentTarget.value)
-                    }}
-                    placeholder='Produit'
-                    required
-                    className='border-start-0'
-                  />
-                 
-                 
-                </InputGroup> */}
+              
                 <FormGroup className='mb- text-muted w-auto' controlId='formBasicCheckbox'>
                   <FormCheck
                     type='checkbox'
@@ -906,7 +1269,7 @@ console.log(selectedItem)
                 </div>
               </form>
             </Container>
-          )}
+          )} */}
         </Container>
       )}
     </div>

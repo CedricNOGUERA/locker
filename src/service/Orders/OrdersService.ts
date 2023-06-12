@@ -4,7 +4,7 @@ const API_URL = process.env.REACT_APP_END_POINT
 
 class OrderService {
     allOrders(token: any) {
-        return axios.get(API_URL + "orders", {headers: {"Authorization": "Bearer " + token}})
+        return axios.get(API_URL + "orders" , {headers: {"Authorization": "Bearer " + token}})
     }
     create(token: any, data: any) {
         return axios.post(API_URL + "orders", {headers: {"Authorization": "Bearer " + token}, data: data})

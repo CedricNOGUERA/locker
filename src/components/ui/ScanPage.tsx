@@ -11,7 +11,7 @@ const ScanPage = ({ scanPageProps }: any) => {
   ///////////////////
   const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
 
-  const dataStore = userDataStore((states: any) => states)
+  const dataStore: any = userDataStore((states: any) => states)
 
   //////////////////////////
   // Events
@@ -90,7 +90,7 @@ console.log(selectedOrder)
       </Container>
       <Container className='text-center mt-4 px-0'>
         <Alert variant='secondary' className='border-2 border-secondary'>
-          Saisie manuelle :<p className='text-info fw-bold m-0'>{selectedOrder?.barcode}</p>
+          Saisie manuelle :<p className='text-info fw-bold m-0'>{newStatus === "receive" ? selectedOrder?.receiveCode : selectedOrder?.barcode}</p>
         </Alert>
       </Container>
     </Container>

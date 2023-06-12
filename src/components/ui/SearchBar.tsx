@@ -14,18 +14,38 @@ const SearchBar = ({ searchBarProps }: any) => {
 
   const [uniqueTab, setUniqueTab] = React.useState([])
   const [cityTab, setCityTab] = React.useState([])
+  const [bookingData, setBookingData] = React.useState([])
 
   React.useEffect(() => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
       (locker: any) => locker?.slot?.temperatureZone?.locker
     )
+      setBookingData(bookingLocker)
+    console.log(bookingLocker)
     const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker.location))]
     setUniqueTab(deduplicate)
 
-  
+    // const city = 
+    
+    
     const deduplicateCity: any = [...new Set(bookingLocker?.map((locker: any) => locker.city))]
     setCityTab(deduplicateCity)
   }, [allSlot])
+  console.log(uniqueTab)
+  console.log(bookingData)
+
+
+  const filteredCity = (place: any) => {
+    const city: any = allSlot?.['hydra:member']?.map(
+      (locker: any) => locker?.slot?.temperatureZone?.locker
+    ).filter((lockerCity: any) => lockerCity.location === place)
+    console.log(city[0].city)
+    return city && city[0].city
+
+  }
+
+console.log(selectedOrderCity)
+console.log(selectedStore)
 
   return (
     <Container className='my-2 text-center'>
@@ -76,7 +96,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                 key={Math.random()}
                 title={locker}
                 onClick={() => {
-                  setSelectedOrderCity(cityTab[indx])
+                  setSelectedOrderCity(filteredCity(locker))
                   setSelectedStore(locker)
                 }}
               >
@@ -94,7 +114,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                     {' '}
                   </Col>{' '}
                   <Col xs={10} className='font-75 font-weight-300 m-auto ps-3 py-0'>
-                    {cityTab[indx]}
+                    {filteredCity(locker)}
                   </Col>
                 </Row>
               </Dropdown.Item>
