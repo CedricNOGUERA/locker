@@ -91,6 +91,7 @@ const NewOrder: React.FC = () => {
 
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
   const [restrictionAge, setRestrictionAge] = React.useState<any>(null)
+  const [availableSelect, setAvailableSelect] = React.useState<any>([])
 
   const [availableSlot, setAvailableSlot] = React.useState<any>()
   const [msgError, setMsgError] = React.useState<any>()
@@ -108,6 +109,19 @@ const NewOrder: React.FC = () => {
     getClients(dataStore.token)
     getBookingAllSlot(dataStore.token)
   }, [])
+
+  React.useEffect(() => {
+   
+    if(chosenLocker){
+      chosenLocker?.map((locker: any) => 
+      availableSelect?.push(locker.available)
+      )
+    }
+
+
+  }, [chosenLocker])
+
+  console.log(availableSelect)
 
   React.useEffect(() => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
@@ -194,9 +208,11 @@ const NewOrder: React.FC = () => {
     const randomCodeMultiOrder = _strRandom('popopop').toLocaleUpperCase()
     const receiveCode = entierAleatoire(10000000, 99999999)
     const initialCompany =
-      chosenLocker &&
-      chosenLocker[0]?.company.name.split(' ')[0][0] +
-        chosenLocker[0]?.company.name.split(' ')[1][0]
+      chosenLocker && chosenLocker[0]?.company.name.split(' ').length > 1
+        ? chosenLocker[0]?.company.name.split(' ')[0][0] +
+          chosenLocker[0]?.company.name.split(' ')[1][0]
+        : chosenLocker[0]?.company.name.split(' ')[0][0] +
+          chosenLocker[0]?.company.name.split(' ')[0][1]
 
     setIsOrderCreate(true)
     let dataOrder: any =
@@ -264,16 +280,14 @@ const NewOrder: React.FC = () => {
               ? clientName?.name
               : clientName,
             shippedBy: 'api/users/' + dataStore.id,
-            totalSlot: 1,
+            totalSlot: parseInt(qty)/parseInt(qty),
             products: products?.split(','),
           }))
 
      if(ageRestriction === true){
       if(parseInt(qty) === 1){
-
         dataOrder.ageRestriction = 18
       }else{
-        // const newTab = [...dataOrder]
         Array.from({ length: parseInt(qty) }).map((_, indx)=> 
         dataOrder[indx].ageRestriction = 18
         )
@@ -317,8 +331,7 @@ const NewOrder: React.FC = () => {
             icon: 'success',
             title: 'Commande validée',
             text:
-              chosenLocker[0]?.company.name.split(' ')[0][0] +
-              chosenLocker[0]?.company.name.split(' ')[1][0] +
+            initialCompany +
               '-' +
               randomCode,
             showConfirmButton: false,
@@ -629,7 +642,7 @@ const NewOrder: React.FC = () => {
         : 'nada'
     return imge
   }
-
+console.log(chosenLocker)
   return (
     <div>
       {(!isLogged || !dataStore.token) && <Navigate to='/connexion' />}

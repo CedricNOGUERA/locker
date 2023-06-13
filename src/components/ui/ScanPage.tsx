@@ -56,7 +56,7 @@ console.log(selectedOrder)
   return (
     <Container fluid className='pb-5'>
       <Container className='my-2 px-0'>
-        <BackBar setSelectedOrder={setSelectedOrder} />
+        <BackBar setSelectedOrder={setSelectedOrder} selectedOrder={selectedOrder} />
       </Container>
       <Container className='text-center text-danger py-0  m-auto opacity-75'>
         <span className='align-middle'>
@@ -76,21 +76,28 @@ console.log(selectedOrder)
         }}
       >
         <Col xs={12} sm={5} md={7} lg={3} className='m-auto'>
-          {newStatus === "overtime" ? 
-          <QrCode data={`${selectedOrder?.receiveCode}`} />
-          :
-          <QrCode data={`${selectedOrder?.barcode}`} />
-        }
+          {selectedOrder.multiOrderCode ? (
+            <QrCode data={`${selectedOrder?.multiOrderCode}`} />
+          ) : newStatus === 'overtime' ? (
+            <QrCode data={`${selectedOrder?.receiveCode}`} />
+          ) : (
+            <QrCode data={`${selectedOrder?.barcode}`} />
+          )}
         </Col>
       </Container>
       <Container className='text-center text-dark font-85'>
-        <small>
-          Respectez le sens du qrcode lors du scan
-        </small>
+        <small>Respectez le sens du qrcode lors du scan</small>
       </Container>
       <Container className='text-center mt-4 px-0'>
         <Alert variant='secondary' className='border-2 border-secondary'>
-          Saisie manuelle :<p className='text-info fw-bold m-0'>{newStatus === "overtime" ? selectedOrder?.receiveCode : selectedOrder?.barcode}</p>
+          Saisie manuelle :
+          <p className='text-info fw-bold m-0'>
+            {selectedOrder.multiOrderCode
+              ? selectedOrder?.multiOrderCode
+              : newStatus === 'overtime'
+              ? selectedOrder?.receiveCode
+              : selectedOrder?.barcode}
+          </p>
         </Alert>
       </Container>
     </Container>
