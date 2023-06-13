@@ -42,13 +42,14 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
       <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>
         <Nav.Item className='nav-item text-center pt-2' onClick={() => handleSelect('home')}>
           <Link
-            
             to='/dashboard'
             className={`nav-link  text-${
               selectedItem === 'home' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
           >
             <i className='ri-home-2-line fs-3 '></i>
+
+            <p>Accueil</p>
           </Link>
         </Nav.Item>
         <Nav.Item className='nav-item text-center pt-2' onClick={() => handleSelect('user')}>
@@ -59,9 +60,11 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
             } py-1 pb-2 text-decoration-none`}
           >
             <i className='ri-history-line fs-3'></i>
+            <p>Historique</p>
+
           </Link>
         </Nav.Item>
-      
+
         <Nav.Item
           className='nav-item text-center '
           style={{ position: 'absolute', bottom: '43px' }}
@@ -92,6 +95,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
             {progress?.length > 0 && (
               <span className='badge rounded-pill bg-info'>{progress?.length}</span>
             )}
+            <p>Livraisons</p>
           </Link>
         </Nav.Item>
         <Nav.Item
@@ -108,6 +112,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
             {retrieve?.length > 0 && (
               <span className='badge rounded-pill bg-info'>{retrieve?.length}</span>
             )}
+            <p>Retraits</p>
           </Link>
         </Nav.Item>
       </Nav>

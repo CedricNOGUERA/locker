@@ -75,11 +75,14 @@ const NewOrder: React.FC = () => {
   const [qty, setQty] = React.useState<any>(undefined)
   const [clientEmail, setClientEmail] = React.useState<any>('')
   const [clientName, setClientName] = React.useState<any>('')
+  const [clientPhone, setClientPhone] = React.useState<any>('')
   const [filteredEmail, setFilteredEmail] = React.useState<any>([])
   const [filteredName, setFilteredName] = React.useState<any>([])
+  const [filteredPhone, setFilteredPhone] = React.useState<any>([])
   const [autoCompletTab, setAutoCompletTab] = React.useState<any>([])
   const [choosedName, setChoosedName] = React.useState<any>('')
   const [choosedEmail, setChoosedEmail] = React.useState<any>('')
+  const [choosedPhone, setChoosedPhone] = React.useState<any>('')
   const [uniqueTab, setUniqueTab] = React.useState<any>([])
   const [chosenLocker, setChosenLocker] = React.useState<any>([])
   const [globalDispo, setGlobalDispo] = React.useState<any>(null)
@@ -203,23 +206,19 @@ const NewOrder: React.FC = () => {
       return Math.floor(Math.random() * (max - min + 1)) + min
     }
     const multiOrderCode = _strRandom('popopopp').toLocaleUpperCase()
-    const receiveCodeAlt = entierAleatoire(10000000, 99999999)
+    // const receiveCodeAlt = entierAleatoire(10000000, 99999999)
     const randomCode = _strRandom('popopop').toLocaleUpperCase() + entierAleatoire(1, 9)
     const randomCodeMultiOrder = _strRandom('popopop').toLocaleUpperCase()
     const receiveCode = entierAleatoire(10000000, 99999999)
-    const initialCompany =
-      chosenLocker && chosenLocker[0]?.company.name.split(' ').length > 1
-        ? chosenLocker[0]?.company.name.split(' ')[0][0] +
-          chosenLocker[0]?.company.name.split(' ')[1][0]
-        : chosenLocker[0]?.company.name.split(' ')[0][0] +
-          chosenLocker[0]?.company.name.split(' ')[0][1]
+ 
 
     setIsOrderCreate(true)
+
     let dataOrder: any =
       parseInt(qty) === 1
         ? {
             service: 'B2C',
-            barcode: initialCompany + '-' + randomCode,
+            barcode: dataStore.cleveronCompany_id + '-' + randomCode,
             bookingSlot: bookingSlotIds[0],
             destination: {
               apm: orderStore?.lockerId,
@@ -239,6 +238,11 @@ const NewOrder: React.FC = () => {
               : clientName?.name
               ? clientName?.name
               : clientName,
+              clientPhone: choosedPhone
+              ? choosedPhone
+              : clientPhone?.phone
+              ? clientPhone?.phone
+              : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty),
             products: products?.split(','),
@@ -246,29 +250,29 @@ const NewOrder: React.FC = () => {
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
             
-            barcode: initialCompany + '-' + randomCodeMultiOrder + (indx + 1),
+            barcode: dataStore.cleveronCompany_id + '-' + randomCodeMultiOrder + (indx + 1),
 
             destination: {
               apm: orderStore?.lockerId,
             },
-            slotSize: slotSizes[indx],
+            // slotSize: slotSizes[indx],
             receiveCode: `${receiveCode}`,
 
             multiOrder: {
               code: multiOrderCode,
               itemCount: parseInt(qty),
             },
-            extra: {
-              receiveCodeAlt: receiveCodeAlt,
-              companyId: orderStore.companyId,
-            },
-            dropOff: {
-              code: randomCodeMultiOrder + (indx + 1),
-              type: 'SEND',
-            },
+            // extra: {
+            //   receiveCodeAlt: receiveCodeAlt,
+            //   companyId: orderStore.companyId,
+            // },
+            // dropOff: {
+            //   code: randomCodeMultiOrder + (indx + 1),
+            //   type: 'SEND',
+            // },
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: bookingSlotIds[indx],
-            temperatureZonePredefined: tempZones[indx],
+            // temperatureZonePredefined: tempZones[indx],
             clientEmail: choosedEmail
               ? choosedEmail
               : clientEmail?.email
@@ -279,6 +283,11 @@ const NewOrder: React.FC = () => {
               : clientName?.name
               ? clientName?.name
               : clientName,
+            clientPhone: choosedPhone
+              ? choosedPhone
+              : clientPhone?.phone
+              ? clientPhone?.phone
+              : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty)/parseInt(qty),
             products: products?.split(','),
@@ -331,7 +340,7 @@ const NewOrder: React.FC = () => {
             icon: 'success',
             title: 'Commande validée',
             text:
-            initialCompany +
+            dataStore.cleveronCompany_id +
               '-' +
               randomCode,
             showConfirmButton: false,
@@ -909,6 +918,7 @@ console.log(chosenLocker)
                           : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
                               lockers?.slot.temperatureZone?.myKey === 'CA') &&
                             'Zone Ambiante'}{' '}
+                        {/* - {lockers?.slot.size}- {availableSelect[index]}{' '} */}
                         - {lockers?.slot.size}- {lockers?.available}{' '}
                         {lockers.available > 1 ? 'casiers' : 'casier'}
                       </option>
@@ -1024,6 +1034,60 @@ console.log(chosenLocker)
                   clientName?.length < 1 &&
                   choosedEmail &&
                   choosedEmail?.length < 1 && (
+                    <Alert variant='danger' className='mt-2 py-0 '>
+                      <InfoAlert
+                        icon='ri-error-warning-line'
+                        iconColor='danger'
+                        message={'Ce champ est obligatoire'}
+                        fontSize='font-75'
+                      />
+                    </Alert>
+                  )}
+                <InputGroup className='mb-3'>
+                  <InputGroup.Text id='basic-addon1' className='border-end-0 bg-secondary-500'>
+                    <i className='ri-phone-line text-secondary'></i>
+                  </InputGroup.Text>
+                  <Form.Control
+                    aria-label='Text input with dropdown button'
+                    value={choosedPhone ? choosedPhone : clientPhone}
+                    onChange={(e: any) => {
+                      choosedPhone
+                        ? setChoosedPhone(e.currentTarget.value)
+                        : setClientPhone(e.currentTarget.value)
+                    }}
+                    placeholder='Téléphone du client*'
+                    required
+                    className='border-start-0'
+                  />
+                  {filteredPhone && filteredPhone?.length > 0 && (
+                    <DropdownButton
+                      variant=''
+                      title=''
+                      className=''
+                      id='input-group-dropdown-2'
+                      align='end'
+                      show={true}
+                    >
+                      {filteredPhone?.map((user: any) => (
+                        <Dropdown.Item
+                          key={Math.random()}
+                          onClick={() => {
+                            setChoosedPhone(user.Phone)
+                            setFilteredPhone([])
+                          }}
+                        >
+                          {user.Phone}
+                        </Dropdown.Item>
+                      ))}
+                    </DropdownButton>
+                  )}
+                </InputGroup>
+                {
+                // isMsgErrorPhone &&
+                  clientName &&
+                  clientName?.length < 1 &&
+                  choosedPhone &&
+                  choosedPhone?.length < 1 && (
                     <Alert variant='danger' className='mt-2 py-0 '>
                       <InfoAlert
                         icon='ri-error-warning-line'

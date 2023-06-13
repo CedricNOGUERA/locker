@@ -53,6 +53,7 @@ const ScanPage = ({ scanPageProps }: any) => {
       })
   }
 console.log(selectedOrder)
+console.log(newStatus)
   return (
     <Container fluid className='pb-5'>
       <Container className='my-2 px-0'>
@@ -76,11 +77,14 @@ console.log(selectedOrder)
         }}
       >
         <Col xs={12} sm={5} md={7} lg={3} className='m-auto'>
-          {selectedOrder.multiOrderCode ? (
+          {
+          newStatus === 'overtime' && selectedOrder.multiOrderCode ? (
             <QrCode data={`${selectedOrder?.multiOrderCode}`} />
-          ) : newStatus === 'overtime' ? (
+          ) :
+           newStatus === 'overtime' && !selectedOrder.multiOrderCode ? (
             <QrCode data={`${selectedOrder?.receiveCode}`} />
-          ) : (
+          ) :  
+           (
             <QrCode data={`${selectedOrder?.barcode}`} />
           )}
         </Col>
@@ -92,11 +96,14 @@ console.log(selectedOrder)
         <Alert variant='secondary' className='border-2 border-secondary'>
           Saisie manuelle :
           <p className='text-info fw-bold m-0'>
-            {selectedOrder.multiOrderCode
+            {
+            newStatus === 'overtime' &&   selectedOrder.multiOrderCode
               ? selectedOrder?.multiOrderCode
-              : newStatus === 'overtime'
+              : newStatus === 'overtime' && !selectedOrder.multiOrderCode 
               ? selectedOrder?.receiveCode
-              : selectedOrder?.barcode}
+              :
+              
+              selectedOrder?.barcode}
           </p>
         </Alert>
       </Container>

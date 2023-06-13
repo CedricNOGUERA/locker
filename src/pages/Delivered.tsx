@@ -8,8 +8,10 @@ import { message } from "antd";
 import { _searchWithRegex } from "../utils/functions";
 import SearchBar from "../components/ui/SearchBar";
 import OrderList from "../components/ui/OrderList";
-import ScanPage from "../components/ui/ScanPage";
+// import ScanPage from "../components/ui/ScanPage";
 import { Container } from "react-bootstrap";
+import ScanPageDelivered from "../components/ui/ScanPageDelivered";
+import ScanPage from "../components/ui/ScanPage";
 
 const Delivered: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged);
