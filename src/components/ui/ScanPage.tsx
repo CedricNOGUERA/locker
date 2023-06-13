@@ -76,21 +76,21 @@ console.log(selectedOrder)
         }}
       >
         <Col xs={12} sm={5} md={7} lg={3} className='m-auto'>
-          {newStatus === "receive" ? 
+          {newStatus === "overtime" ? 
           <QrCode data={`${selectedOrder?.receiveCode}`} />
           :
           <QrCode data={`${selectedOrder?.barcode}`} />
         }
         </Col>
       </Container>
-      <Container className='text-center text-secondary font-85'>
+      <Container className='text-center text-dark font-85'>
         <small>
-          <>Respectez le sens du qrcode lors du scan</>
+          Respectez le sens du qrcode lors du scan
         </small>
       </Container>
       <Container className='text-center mt-4 px-0'>
         <Alert variant='secondary' className='border-2 border-secondary'>
-          Saisie manuelle :<p className='text-info fw-bold m-0'>{newStatus === "receive" ? selectedOrder?.receiveCode : selectedOrder?.barcode}</p>
+          Saisie manuelle :<p className='text-info fw-bold m-0'>{newStatus === "overtime" ? selectedOrder?.receiveCode : selectedOrder?.barcode}</p>
         </Alert>
       </Container>
     </Container>
