@@ -13,7 +13,9 @@ const DashBoard = () => {
   /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
-
+  const [chosenLocker, setChosenLocker] = React.useState<any>([])
+  const [uniqueTab, setUniqueTab] = React.useState<any>([])
+  
   //////////////////////////
   // Store & context state
   /////////////////////////
@@ -41,6 +43,25 @@ const DashBoard = () => {
   }, [])
 
   React.useEffect(() => {
+    // setChosenLocker(allSlot["hydra:member"].filter((slots: any) => slots.slot.temperatureZone.locker.location === locker))
+    const bookingLocker: any = orderData?.['hydra:member']?.map(
+      (locker: any) => locker
+    )
+    setChosenLocker(bookingLocker)
+    console.log(bookingLocker)
+    console.log(bookingLocker?.filter((locker: any) => 
+      locker.status === 'created' && locker.bookingSlot.slot.temperatureZone.locker.location === "Entrée parking - Carrefour Punaauia"
+    ))
+    console.log(bookingLocker?.filter((locker: any) => 
+      locker.status === 'overtime' && locker.bookingSlot.slot.temperatureZone.locker.location === "Entrée parking - Carrefour Punaauia"
+    ))
+    
+    const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker?.bookingSlot?.slot?.temperatureZone?.locker.location))]
+    setUniqueTab(deduplicate)
+    console.log(deduplicate)
+
+
+    
     if (allSlot && allSlot['hydra:member']?.length > 0) {
       setIsLoading(false)
     } else {
@@ -123,6 +144,11 @@ const DashBoard = () => {
                         {' '}
                         A livrer :{' '}
                         {
+                        //   orderData?.['hydra:member']?.filter((locker: any) => 
+                        //   locker.status === 'created' && locker.bookingSlot.slot.temperatureZone.locker.location === slot?.slot?.temperatureZone?.locker?.location
+                        // ).length
+
+
                           orderData['hydra:member']?.filter(
                             (order: any) =>
                               order.status === 'created' &&
@@ -147,7 +173,11 @@ const DashBoard = () => {
                                 slot?.slot?.temperatureZone.locker.location &&
                               order.bookingSlot.slot?.temperatureZone.keyTemp ===
                                 slot?.slot?.temperatureZone?.keyTemp
-                          )?.length
+                          )
+                        //   orderData?.['hydra:member']?.filter((locker: any) => 
+                        //   locker.status === 'overtime' && locker.bookingSlot.slot.temperatureZone.locker.location === slot?.slot?.temperatureZone?.locker?.location
+                        // )
+                          ?.length
                         }
                       </span>
                     </Col>

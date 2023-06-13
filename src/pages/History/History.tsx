@@ -122,17 +122,21 @@ console.log(orderData['hydra:member']?.length)
                   className='tl-item'
                   ng-repeat='item in retailer_history'
                 >
-                  {order.status === 'created' ? (
+                  {
+                  order.status === 'created' ? (
                     <div className='timestamp'>
                       {moment(selectedOrder.createdAt).format('DD/MM/YY')}
                       <br /> {moment(selectedOrder.createdAt).format('HH:mm:ss')}
                     </div>
-                  ) : (
+                  ) 
+                  : (
                     <div className='timestamp'>
-                      {moment(order.updatedAt).format('DD/MM/YY')}
-                      <br /> {moment(order.updatedAt).format('HH:mm:ss')}
+                      {moment(order.createdAt).format('DD/MM/YY')}
+                      <br /> {moment(order.createdAt).format('HH:mm:ss')}
                     </div>
-                  )}
+                   
+                  )
+                  }
                   <div className='item-title'>{_getStatus(order.status)}</div>
                   <div className='item-detail'> {_getStatusMsg(order.status)}</div>
                 </li>
@@ -143,13 +147,14 @@ console.log(orderData['hydra:member']?.length)
                 <div className='timestamp-current fw-bold'>
                   {selectedOrder?.history?.length > 0
                     ? moment(
-                        selectedOrder?.history[selectedOrder?.history?.length - 1]?.updatedAt
+                        selectedOrder?.history[selectedOrder?.history?.length ]?.updatedAt
                       ).format('DD/MM/YY')
                     : moment(selectedOrder?.createdAt).format('DD/MM/YY')}
                   <br />{' '}
                   {selectedOrder?.history?.length > 0
                     ? moment(
-                        selectedOrder?.history[selectedOrder?.history?.length - 1]?.updatedAt
+                        // selectedOrder?.history[selectedOrder?.history?.length]?.updatedAt
+                        selectedOrder?.updatedAt
                       ).format('HH:mm:ss')
                     : moment(selectedOrder?.createdAt).format('HH:mm:ss')}
                 </div>

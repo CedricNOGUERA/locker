@@ -202,7 +202,7 @@ console.log(orderData)
   setBookingSlotIds([])
 
   }
-  console.log(chosenLocker)
+  console.log(`${chosenLocker[0]?.company.name.split(' ')[0][0]}${chosenLocker[0]?.company.name.split(' ')[1][0]}`)
   // console.log(chosenLocker[0].company.cleveronCompanyId)
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
@@ -213,17 +213,18 @@ console.log(orderData)
     const randomCode = _strRandom('popopop').toLocaleUpperCase() + entierAleatoire(1, 9)
     const randomCodeMultiOrder = _strRandom('popopop').toLocaleUpperCase()
     const receiveCode = entierAleatoire(10000000, 99999999)
+    const initialCompany = chosenLocker && chosenLocker[0]?.company.name.split(' ')[0][0] + chosenLocker[0]?.company.name.split(' ')[1][0]
+
 
     setIsOrderCreate(true)
     let dataOrder: any =
-      parseInt(qty) <= 1
+      parseInt(qty) === 1
         ? {
             service: 'B2C',
 
             ageRestriction: orderStore.ageRestriction !== false && 18,
-            barcode:
-              chosenLocker &&
-              chosenLocker[0]?.company?.cleveronCompanyId.toUpperCase() + '-' + randomCode,
+            barcode: initialCompany + '-' + randomCode,
+            // chosenLocker[0]?.company?.cleveronCompanyId.toUpperCase() + '-' + randomCode,
             bookingSlot: bookingSlotIds[0],
             destination: {
               apm: orderStore?.lockerId,
@@ -250,12 +251,7 @@ console.log(orderData)
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
             ageRestriction: orderStore.ageRestriction,
-            barcode:
-            chosenLocker &&
-              chosenLocker[0]?.company?.cleveronCompanyId.toUpperCase() +
-              '-' +
-              randomCodeMultiOrder +
-              (indx + 1),
+            barcode: initialCompany + '-' + randomCodeMultiOrder + (indx + 1),
 
             destination: {
               apm: orderStore?.lockerId,
@@ -331,7 +327,8 @@ console.log(orderData)
             toast: true,
             icon: 'success',
             title: 'Commande validée',
-            text: orderStore.companyName.toUpperCase() + '-' + randomCode,
+            text : chosenLocker[0]?.company.name.split(' ')[0][0] + chosenLocker[0]?.company.name.split(' ')[1][0]+ '-' + randomCode,
+            // text: orderStore.companyName.toUpperCase() + '-' + randomCode,
             showConfirmButton: false,
             timer: 7000,
             timerProgressBar: true,

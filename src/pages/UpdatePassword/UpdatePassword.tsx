@@ -27,7 +27,6 @@ const UpdatePassword = () => {
   // states
   /////////////////////////
 
-  const token = 'myLongToken'
 
   const [pass, setPass] = React.useState('')
   const [pass1, setPass1] = React.useState('')
@@ -121,7 +120,7 @@ const UpdatePassword = () => {
     <Container fluid className='cde App px-0'>
       <Card className='auth-for bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
         <Card.Body>
-          <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
+          <div className='logo-ap text-center text-light animate__animated animate__rotateIn'>
             <img
               src='https://img.icons8.com/?size=512&amp;id=Bw1qS7FPUzIJ&amp;format=png'
               alt='Cadenas icon'
@@ -134,11 +133,11 @@ const UpdatePassword = () => {
             />
           </div>
           <div className=' text-center my-5 text-light animate__animated animate__fadeInUp'>
-            <h3>Réinitialisé votre mot de passe</h3>
+            <h3>Modifiez votre mot de passe</h3>
           </div>
           <Form onSubmit={changePassword}>
             <Form.Group className='mb-5' controlId='formBasicEmail'>
-              <Form.Label className='d-none'>nouveau password</Form.Label>
+              <Form.Label className='d-none'>actuel password</Form.Label>
               <InputGroup className='mb-3'>
                 <InputGroup.Text id='basic-addon1' className='rounded-0 border-0'>
                   <i className='ri-lock-fill text-muted'></i>
@@ -252,7 +251,7 @@ const UpdatePassword = () => {
               className='button-auth rounded  w-100 py-2 mt-4 text-light shadow'
               disabled={pass1 && pass2 && pass1 !== pass2 ? true : false}
             >
-              {isLoadingPass ? <Spinner variant='light' size='sm' /> : <>Réinitialiser</>}
+              {isLoadingPass && <Spinner variant='light' size='sm' /> } Modifier
             </button>
           </Form>
         </Card.Body>
