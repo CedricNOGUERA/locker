@@ -20,34 +20,32 @@ const SearchBar = ({ searchBarProps }: any) => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
       (locker: any) => locker?.slot?.temperatureZone?.locker
     )
-      setBookingData(bookingLocker)
-    console.log(bookingLocker)
-    const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker.location))]
-    const deduplicate2: any = [...new Set(allSlot?.['hydra:member']?.filter((locker: any) => locker.slot?.temperatureZone?.locker?.location === "Entrée parking - Carrefour Punaauia"))]
-    
-    console.log(deduplicate2)
-    setUniqueTab(deduplicate)
+    setBookingData(bookingLocker)
+    const unique: any = [...new Set(bookingLocker?.map((locker: any) => locker.location))]
+    const deduplicate2: any = [
+      ...new Set(
+        allSlot?.['hydra:member']?.filter(
+          (locker: any) =>
+            locker.slot?.temperatureZone?.locker?.location ===
+            'Entrée parking - Carrefour Punaauia'
+        )
+      ),
+    ]
+    setUniqueTab(unique)
 
-    
-    
-    const deduplicateCity: any = [...new Set(bookingLocker?.map((locker: any) => locker?.city))]
+    const deduplicateCity: any = [
+      ...new Set(bookingLocker?.map((locker: any) => locker?.city)),
+    ]
     setCityTab(deduplicateCity)
   }, [allSlot])
-  console.log(uniqueTab)
-  console.log(bookingData)
-
 
   const filteredCity = (place: any) => {
-    const city: any = allSlot?.['hydra:member']?.map(
-      (locker: any) => locker?.slot?.temperatureZone?.locker
-    ).filter((lockerCity: any) => lockerCity.location === place)
+    const city: any = allSlot?.['hydra:member']
+      ?.map((locker: any) => locker?.slot?.temperatureZone?.locker)
+      .filter((lockerCity: any) => lockerCity.location === place)
     console.log(city[0]?.city)
     return city && city[0].city
-
   }
-
-console.log(selectedOrderCity)
-console.log(selectedStore)
 
   return (
     <Container className='my-2 text-center'>

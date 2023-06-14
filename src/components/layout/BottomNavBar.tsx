@@ -20,13 +20,13 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
   ///////////////////////
   const retrieve = orderData['hydra:member']?.filter(
     (order: any) =>
-      order.status === 'overtime' &&
-      order.bookingSlot.slot?.temperatureZone.locker.location === selectedStore
+      order?.status === 'overtime' &&
+      order?.bookingSlot.slot?.temperatureZone.locker.location === selectedStore
   )
   const progress = orderData['hydra:member']?.filter(
     (order: any) =>
-      order.status === 'created' &&
-      order.bookingSlot.slot?.temperatureZone.locker.location === selectedStore
+      order?.status === 'created' &&
+      order?.bookingSlot.slot?.temperatureZone.locker.location === selectedStore
   )
 
   /////////////////////
@@ -40,7 +40,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
     <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
       <UserQrcode show={show} handleClose={handleClose} />
       <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>
-        <Nav.Item className='nav-item text-center pt-2' onClick={() => handleSelect('home')}>
+        <Nav.Item className='nav-item text-center ' onClick={() => handleSelect('home')}>
           <Link
             to='/dashboard'
             className={`nav-link  text-${
@@ -52,7 +52,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
             <p>Accueil</p>
           </Link>
         </Nav.Item>
-        <Nav.Item className='nav-item text-center pt-2' onClick={() => handleSelect('user')}>
+        <Nav.Item className='nav-item text-center' onClick={() => handleSelect('user')}>
           <Link
             to='/historique'
             className={`nav-link  text-${
@@ -82,7 +82,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
           <div className='text-center '></div>
         </Nav.Item>
         <Nav.Item
-          className='nav-item text-center pt-2'
+          className='nav-item text-center'
           onClick={() => handleSelect('progress')}
         >
           <Link
@@ -99,7 +99,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
           </Link>
         </Nav.Item>
         <Nav.Item
-          className='nav-item text-center pt-2'
+          className='nav-item text-center'
           onClick={() => handleSelect('retrieve')}
         >
           <Link

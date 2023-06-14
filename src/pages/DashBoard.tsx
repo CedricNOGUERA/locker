@@ -5,6 +5,9 @@ import { useOutletContext, Link, Navigate } from 'react-router-dom'
 import DashBoardLoader from '../components/ui/loading/DashBoardLoader'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 import images from '../styles/no-order-min.png'
+import LockerService from '../service/Lockers/LockerService'
+
+
 
 
 const DashBoard = () => {
@@ -15,6 +18,7 @@ const DashBoard = () => {
   const [isError, setIsError] = React.useState<boolean>(false)
   const [chosenLocker, setChosenLocker] = React.useState<any>([])
   const [uniqueTab, setUniqueTab] = React.useState<any>([])
+  const [lockers, setLockers] = React.useState<any>("")
   
   //////////////////////////
   // Store & context state
@@ -40,7 +44,10 @@ const DashBoard = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('home')
-  }, [])
+    getallLockers(dataStore.token)
+  }, [dataStore.token])
+
+  // console.log(lockers["hydra:member"][0].imageUrl)
 
   React.useEffect(() => {
     // setChosenLocker(allSlot["hydra:member"].filter((slots: any) => slots.slot.temperatureZone.locker.location === locker))
@@ -50,15 +57,14 @@ const DashBoard = () => {
     setChosenLocker(bookingLocker)
     console.log(bookingLocker)
     console.log(bookingLocker?.filter((locker: any) => 
-      locker.status === 'created' && locker.bookingSlot.slot.temperatureZone.locker.location === "Entrée parking - Carrefour Punaauia"
+      locker?.status === 'created' && locker.bookingSlot.slot.temperatureZone.locker.location === "Entrée parking - Carrefour Punaauia"
     ))
     console.log(bookingLocker?.filter((locker: any) => 
-      locker.status === 'overtime' && locker.bookingSlot.slot.temperatureZone.locker.location === "Entrée parking - Carrefour Punaauia"
+      locker?.status === 'overtime' && locker.bookingSlot.slot.temperatureZone.locker.location === "Entrée parking - Carrefour Punaauia"
     ))
     
-    const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker?.bookingSlot?.slot?.temperatureZone?.locker.location))]
-    setUniqueTab(deduplicate)
-    console.log(deduplicate)
+    const unique: any = [...new Set(bookingLocker?.map((locker: any) => locker?.bookingSlot?.slot?.temperatureZone?.locker.location))]
+    setUniqueTab(unique)
 
 
     
@@ -68,14 +74,21 @@ const DashBoard = () => {
       if (allSlot && allSlot['hydra:member']?.length < 0) {
         setIsError(true)
         setIsLoading(false)
-      }else{
-        
-        // setIsLoading(true)
       }
     }
   }, [allSlot])
  
- 
+
+
+  const getallLockers = (token: any) => {
+    LockerService.allLockers(token).then((response: any) => {
+      setIsLoading(false)
+      setLockers(response.data)
+    }).catch((error: any) => {
+      setIsLoading(false)
+      
+    })
+  }
 
   return (
     <Container className='cde App text-center mt-2'>
@@ -99,7 +112,7 @@ const DashBoard = () => {
       ) : isLoading ? (
         <DashBoardLoader />
       ) : allSlot?.['hydra:member']?.length > 0 ? (
-        allSlot?.['hydra:member']?.map((slot: any) => (
+        allSlot?.['hydra:member']?.map((slot: any, indx: any) => (
           <Card
             key={Math.random()}
             className='py-0 mb-3 border-0 rounded bg-secondary animate__animated'
@@ -108,8 +121,10 @@ const DashBoard = () => {
               setSelectedOrderCity(slot?.slot?.temperatureZone?.locker?.city)
               setSelectedItem('progress')            }}
           >
+              {/* <img src={lockers["hydra:member"] && `http://192.168.1.250:8000/${lockers["hydra:member"][0].imageUrl}`} alt='logo'/> */}
             <Link to='/in-progress' className=' text-decoration-none'>
               {' '}
+
               <Row className='pe-0 ps-1 w-100'>
                 <Col xs={1}  className='m-auto ms-0 me-2 text-start'>
                   <img
@@ -132,7 +147,7 @@ const DashBoard = () => {
                 </Col>
                 <Col xs={7} className='m-auto mx-1 text-light text-start '>
                   <span className='dash-location font-7'>
-                    {slot?.slot?.temperatureZone.locker.location}{' '}
+                    {slot?.slot?.temperatureZone?.locker?.location}{' '}
                   </span>{' '}
                   - <span className='dash-city font-65'>{slot?.slot?.temperatureZone.locker.city} </span>
                 </Col>
@@ -151,10 +166,10 @@ const DashBoard = () => {
 
                           orderData['hydra:member']?.filter(
                             (order: any) =>
-                              order.status === 'created' &&
-                              order.bookingSlot.slot?.temperatureZone.locker.location ===
+                              order?.status === 'created' &&
+                              order?.bookingSlot.slot?.temperatureZone.locker.location ===
                                 slot?.slot?.temperatureZone.locker.location &&
-                              order.bookingSlot.slot?.temperatureZone.keyTemp ===
+                              order?.bookingSlot.slot?.temperatureZone.keyTemp ===
                                 slot?.slot?.temperatureZone?.keyTemp
                           )?.length
                         }
@@ -168,10 +183,10 @@ const DashBoard = () => {
                         {
                           orderData['hydra:member']?.filter(
                             (order: any) =>
-                              order.status === 'overtime' &&
-                              order.bookingSlot.slot?.temperatureZone.locker.location ===
+                              order?.status === 'overtime' &&
+                              order?.bookingSlot.slot?.temperatureZone.locker.location ===
                                 slot?.slot?.temperatureZone.locker.location &&
-                              order.bookingSlot.slot?.temperatureZone.keyTemp ===
+                              order?.bookingSlot.slot?.temperatureZone.keyTemp ===
                                 slot?.slot?.temperatureZone?.keyTemp
                           )
                         //   orderData?.['hydra:member']?.filter((locker: any) => 

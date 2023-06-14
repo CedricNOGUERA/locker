@@ -85,7 +85,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
             </b>
           </Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body className='text-light'>
+        <Offcanvas.Body className='text-light pe-0'>
           <Container className='mb-3'>
             <Row
               className=' menu-link'
@@ -101,7 +101,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
-          <Container className='mb-3'>
+          {/* <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'
               to='/nouvelle-commande'
@@ -130,7 +130,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
                 <Col className='m-auto user-name'>Historique</Col>
               </Row>
             </Link>
-          </Container>
+          </Container> */}
           <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'
@@ -171,7 +171,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
                   {' '}
                   <i className='ri-restart-line fs-5'></i>
                 </Col>{' '}
-                <Col className='m-auto user-name'>Actualiser l'application</Col>
+                <Col className='m-auto user-name'>Rafraichir l'application</Col>
               </Row>
             </span>
           </Container>

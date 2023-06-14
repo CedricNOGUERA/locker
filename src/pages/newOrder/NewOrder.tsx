@@ -72,7 +72,7 @@ const NewOrder: React.FC = () => {
     setSelectedItem,
   ] = useOutletContext<any>()
 
-  const [qty, setQty] = React.useState<any>(undefined)
+  const [qty, setQty] = React.useState<any>("")
   const [clientEmail, setClientEmail] = React.useState<any>('')
   const [clientName, setClientName] = React.useState<any>('')
   const [clientPhone, setClientPhone] = React.useState<any>('')
@@ -116,13 +116,18 @@ const NewOrder: React.FC = () => {
   React.useEffect(() => {
    
     if(chosenLocker){
-      chosenLocker?.map((locker: any) => 
-      availableSelect?.push(locker.available)
-      )
+       if(chosenLocker?.length > availableSelect?.length) {
+        chosenLocker?.map((locker: any) => 
+         availableSelect?.push(locker.available)
+        )
+       }
     }
+   if(qty === 0 || qty === null || qty === undefined || qty === ""){
+     setAvailableSelect([])
+   }
 
 
-  }, [chosenLocker])
+  }, [qty])
 
   console.log(availableSelect)
 
@@ -142,6 +147,9 @@ const NewOrder: React.FC = () => {
   React.useEffect(() => {
     _searchWithRegex2(clientEmail, autoCompletTab['hydra:member'], setFilteredEmail)
   }, [clientEmail])
+  React.useEffect(() => {
+    _searchWithRegex2(clientPhone, autoCompletTab['hydra:member'], setFilteredPhone)
+  }, [clientPhone])
 
   const getClients = (token: any) => {
     ClientService.allClients(token)
@@ -555,6 +563,22 @@ const NewOrder: React.FC = () => {
       })
     )
   }
+  const _searchWithRegex3 = (searchOrder: any, orderByStatus: any, setFilteredOrder: any) => {
+    function escapeRegExp(str: string) {
+      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    }
+
+    const escapedSearchOrder = escapeRegExp(searchOrder)
+
+    setFilteredOrder(
+      orderByStatus?.filter((order: any) => {
+        if (escapedSearchOrder?.length > 2) {
+          return order?.phone?.match(new RegExp(escapedSearchOrder, 'i'))
+        }
+        return undefined
+      })
+    )
+  }
 
   const validOrder = (e: any) => {
     e.preventDefault()
@@ -609,18 +633,28 @@ const NewOrder: React.FC = () => {
     )
   }
 
+  const changeAvailable = (index: any, zone: any, indx: any) => {
+
+     console.log(zone)
+    const newData: any = [...availableSelect]
+    newData[index] = zone - 1
+    setAvailableSelect(newData)
+    
+  }
+  console.log(availableSelect)
+
   const handleChangeSelect = (e: any, indx: any) => {
     const zone = JSON.parse(e.currentTarget.value)
-
+    
     const newTab: any = [...tempZones]
-    newTab[indx] = zone.slot?.temperatureZone?.myKey
+    newTab[indx] = zone?.slot?.temperatureZone?.myKey
     setTempZones(newTab)
-    console.log(zone)
-
+    
+    
     const newTabSize: any = [...slotSizes]
     newTabSize[indx] = zone.slot?.size
     setSlotSizes(newTabSize)
-
+    
     const newTabBooking: any = [...bookingSlotIds]
     newTabBooking[indx] = zone['@id']
     setBookingSlotIds(newTabBooking)
@@ -637,9 +671,8 @@ const NewOrder: React.FC = () => {
       slotSizes,
       parseInt(qty),
       ageRestriction === true ? 18 : 0
-    )
-  }
-
+      )
+    }
   const imgFilter = (data: any) => {
     const imge =
       data === 'FRESH'
@@ -874,7 +907,7 @@ console.log(chosenLocker)
                     className='bg-info rounded-pill border-info text-light'
                     type='submit'
                   >
-                    valider
+                    Valider
                   </Button>
                 </div>{' '}
               </form>
@@ -885,7 +918,9 @@ console.log(chosenLocker)
               <form onSubmit={validOrder}>
                 {Array.from({ length: parseInt(qty) }).map((_, indx) => (
                   <Form.Select
-                    onChange={(e) => handleChangeSelect(e, indx)}
+                    onChange={(e) => {
+                      handleChangeSelect(e, indx)
+                    }}
                     aria-label='zone'
                     className='my-2'
                     required
@@ -894,7 +929,7 @@ console.log(chosenLocker)
                     <option>Panier n°{indx + 1}</option>
                     {chosenLocker?.map((lockers: any, index: any) => (
                       <option
-                        key={index + 1}
+                        key={index}
                         value={JSON.stringify(lockers)}
                         className={`${
                           lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
@@ -970,11 +1005,14 @@ console.log(chosenLocker)
                           onClick={() => {
                             setChoosedName(user.name)
                             setChoosedEmail(user.email)
+                            setChoosedPhone(user.phone)
                             setFilteredName([])
                             setFilteredEmail([])
+                            setFilteredPhone([])
                           }}
                         >
-                          <i className='ri-user-line'></i> {user.name} - {user.email}
+                          <i className='ri-user-line'></i> {user.name} - {user.email} -{' '}
+                          {user?.phone}
                         </Dropdown.Item>
                       ))}
                     </DropdownButton>
@@ -1083,20 +1121,21 @@ console.log(chosenLocker)
                   )}
                 </InputGroup>
                 {
-                // isMsgErrorPhone &&
+                  // isMsgErrorPhone &&
                   clientName &&
-                  clientName?.length < 1 &&
-                  choosedPhone &&
-                  choosedPhone?.length < 1 && (
-                    <Alert variant='danger' className='mt-2 py-0 '>
-                      <InfoAlert
-                        icon='ri-error-warning-line'
-                        iconColor='danger'
-                        message={'Ce champ est obligatoire'}
-                        fontSize='font-75'
-                      />
-                    </Alert>
-                  )}
+                    clientName?.length < 1 &&
+                    choosedPhone &&
+                    choosedPhone?.length < 1 && (
+                      <Alert variant='danger' className='mt-2 py-0 '>
+                        <InfoAlert
+                          icon='ri-error-warning-line'
+                          iconColor='danger'
+                          message={'Ce champ est obligatoire'}
+                          fontSize='font-75'
+                        />
+                      </Alert>
+                    )
+                }
                 {availableSlot < parseInt(qty) && (
                   <AlertIsError
                     title={'Attention'}
