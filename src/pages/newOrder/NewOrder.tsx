@@ -118,7 +118,10 @@ const NewOrder: React.FC = () => {
     if(chosenLocker){
        if(chosenLocker?.length > availableSelect?.length) {
         chosenLocker?.map((locker: any) => 
+        <span key={Math.random()}>
+
          availableSelect?.push(locker.available)
+        </span>
         )
        }
     }
@@ -129,14 +132,13 @@ const NewOrder: React.FC = () => {
 
   }, [qty])
 
-  console.log(availableSelect)
 
   React.useEffect(() => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
       (locker: any) => locker?.slot?.temperatureZone?.locker
     )
 
-    const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker.location))]
+    const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker?.location))]
     setUniqueTab(deduplicate)
   }, [allSlot])
 
@@ -635,13 +637,11 @@ const NewOrder: React.FC = () => {
 
   const changeAvailable = (index: any, zone: any, indx: any) => {
 
-     console.log(zone)
     const newData: any = [...availableSelect]
     newData[index] = zone - 1
     setAvailableSelect(newData)
     
   }
-  console.log(availableSelect)
 
   const handleChangeSelect = (e: any, indx: any) => {
     const zone = JSON.parse(e.currentTarget.value)
@@ -682,9 +682,16 @@ const NewOrder: React.FC = () => {
         : data === 'NORMAL'
         ? 'dry'
         : 'nada'
+    // const imge =
+    //   data === 'FRESH'
+    //     ? 'organic-food'
+    //     : data === 'FREEZE'
+    //     ? 'winter'
+    //     : data === 'NORMAL'
+    //     ? 'dry'
+    //     : 'nada'
     return imge
   }
-console.log(chosenLocker)
   return (
     <div>
       {(!isLogged || !dataStore.token) && <Navigate to='/connexion' />}
@@ -818,7 +825,7 @@ console.log(chosenLocker)
             <div>
               {uniqueTab?.map((locker: any, indx: any) => (
                 <Container
-                  key={Math.random()}
+                  key={indx * Math.random()}
                   className='text-light py-1 mb-3 border-0 rounded bg-secondary animate__animated'
                   onClick={() => {
                     filteredLocker(locker)
@@ -834,8 +841,8 @@ console.log(chosenLocker)
                             (lockers: any) =>
                               lockers?.slot?.temperatureZone?.locker?.location === locker
                           )
-                          ?.map((slots: any) => (
-                            <>
+                          ?.map((slots: any, indx: any) => (
+                            <React.Fragment key={indx}>
                               <Col xs={2} className='px-0 ms-2'>
                                 <img
                                   alt='Temp icon'
@@ -852,7 +859,7 @@ console.log(chosenLocker)
                                   {slots.available}
                                 </span>
                               </Col>
-                            </>
+                            </React.Fragment>
                           ))}
                       </Row>
                     </Col>
@@ -953,8 +960,8 @@ console.log(chosenLocker)
                           : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
                               lockers?.slot.temperatureZone?.myKey === 'CA') &&
                             'Zone Ambiante'}{' '}
-                        {/* - {lockers?.slot.size}- {availableSelect[index]}{' '} */}
-                        - {lockers?.slot.size}- {lockers?.available}{' '}
+                        {/* - {lockers?.slot.size}- {availableSelect[index]}{' '} */}-{' '}
+                        {lockers?.slot.size}- {lockers?.available}{' '}
                         {lockers.available > 1 ? 'casiers' : 'casier'}
                       </option>
                     ))}

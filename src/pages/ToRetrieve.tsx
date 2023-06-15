@@ -11,6 +11,7 @@ import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
+import OrdersService from '../service/Orders/OrdersService'
 
 const ToRetrieve: React.FC = () => {
   //////////////////////////
@@ -83,6 +84,17 @@ const ToRetrieve: React.FC = () => {
   }, [searchOrder])
 
 
+  
+  const getOrderByPage = (token: any, page: any) => {
+    OrdersService.ordersByPage(token, page).then((response: any) => {
+      setIsLoading(false)
+      setOrderData(response.data)
+    }).catch((error: any) => {
+      setIsLoading(false)
+      
+    })
+  }
+
 
 
   //////////////////////////
@@ -104,6 +116,8 @@ const ToRetrieve: React.FC = () => {
     searchOrder,
     setSearchOrder,
     orderByStatus,
+    orderData,
+    getOrderByPage,
   }
 
   const scanPageProps = {

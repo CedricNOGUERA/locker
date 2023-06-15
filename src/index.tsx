@@ -20,6 +20,7 @@ import Forgot from './pages/Public/Forgot'
 import UpdatePassword from './pages/UpdatePassword/UpdatePassword'
 import History from './pages/History/History'
 import HistoryClient from './pages/Public/HistoryClient'
+import Test from './pages/Public/Test'
 
 const router = createBrowserRouter([
   {
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
   {
     path: '/commande/:id',
     element: <HistoryClient />,
+  },
+  {
+    path: '/test',
+    element: <Test />,
   },
   // 
 ])

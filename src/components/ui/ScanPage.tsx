@@ -7,7 +7,7 @@ import BackBar from './BackBar'
 
 const ScanPage = ({ scanPageProps }: any) => {
   ////////////////////
-  //Props
+  //Props & store
   ///////////////////
   const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
 
@@ -52,8 +52,7 @@ const ScanPage = ({ scanPageProps }: any) => {
         console.log(error)
       })
   }
-console.log(selectedOrder)
-console.log(newStatus)
+
   return (
     <Container fluid className='pb-5'>
       <Container className='my-2 px-0'>
@@ -102,7 +101,6 @@ console.log(newStatus)
               : newStatus === 'overtime' && !selectedOrder.multiOrderCode 
               ? selectedOrder?.receiveCode
               :
-              
               selectedOrder?.barcode}
           </p>
         </Alert>

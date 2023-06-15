@@ -12,6 +12,7 @@ import OrderList from "../components/ui/OrderList";
 import { Container } from "react-bootstrap";
 import ScanPageDelivered from "../components/ui/ScanPageDelivered";
 import ScanPage from "../components/ui/ScanPage";
+import OrdersService from "../service/Orders/OrdersService";
 
 const Delivered: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged);
@@ -48,6 +49,21 @@ const Delivered: React.FC = () => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder);
   }, [searchOrder]);
 
+
+  
+  const getOrderByPage = (token: any, page: any) => {
+    OrdersService.ordersByPage(token, page).then((response: any) => {
+      setIsLoading(false)
+      setOrderData(response.data)
+    }).catch((error: any) => {
+      setIsLoading(false)
+      
+    })
+  }
+
+
+
+
   const searchBarProps = {
     searchOrder,
     setSearchOrder,
@@ -66,6 +82,8 @@ const Delivered: React.FC = () => {
     searchOrder,
     setSearchOrder,
     orderByStatus,
+    orderData,
+    getOrderByPage,
   };
   
   const scanPageProps = {

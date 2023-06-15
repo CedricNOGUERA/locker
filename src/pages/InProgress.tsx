@@ -11,6 +11,7 @@ import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
+import OrdersService from '../service/Orders/OrdersService'
 
 const InProgress: React.FC = () => {
   //////////////////////////
@@ -62,6 +63,7 @@ const InProgress: React.FC = () => {
     setIsLoading(true)
     setSelectedItem('progress')
   }, [])
+
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
       setIsLoading(false)
@@ -72,11 +74,32 @@ const InProgress: React.FC = () => {
       }
       setIsLoading(false)
     }
+
+    // if(orderData['hydra:member']?.length > 30){
+    //   getOrderByPage()
+    // }
+
+
+
   }, [orderData])
 
   React.useEffect(() => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
   }, [searchOrder])
+
+
+  const getOrderByPage = (token: any, page: any) => {
+    OrdersService.ordersByPage(token, page).then((response: any) => {
+      setIsLoading(false)
+      setOrderData(response.data)
+    }).catch((error: any) => {
+      setIsLoading(false)
+      
+    })
+  }
+
+
+
 
   //////////////////////////
   // Component Props
@@ -92,14 +115,15 @@ const InProgress: React.FC = () => {
   }
 
   const orderListProps = {
-    
     filteredOrder,
     setSelectedOrder,
     searchOrder,
     setSearchOrder,
- 
     orderByStatus,
+    orderData,
+    getOrderByPage,
   }
+  
 
   const scanPageProps = {
     selectedOrder,

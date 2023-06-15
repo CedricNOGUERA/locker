@@ -76,7 +76,9 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
 
   }
-
+/////////////////////////////////
+// traduit le status en français
+/////////////////////////////////
 
   export const _getStatus = (status: any) => {
     if (status === 'created') {
@@ -103,7 +105,9 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
 
 
-
+/////////////////////////////////
+// Message en fonction du status
+/////////////////////////////////
 
   export const _getStatusMsg = (status: any) => {
     if (status === 'created') {
@@ -165,6 +169,21 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
 
 
+
+ /********************************
+   * filtre image en fonction de la zone de température
+   *******************************/
+ export const _imgFilter = (data: any) => {
+  const imge =
+    data === 'FRESH'
+      ? 'organic-food'
+      : data === 'FREEZE'
+      ? 'winter'
+      : data === 'NORMAL'
+      ? 'dry'
+      : 'nada'
+  return imge
+}
 
   
 

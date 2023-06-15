@@ -43,7 +43,6 @@ const SearchBar = ({ searchBarProps }: any) => {
     const city: any = allSlot?.['hydra:member']
       ?.map((locker: any) => locker?.slot?.temperatureZone?.locker)
       .filter((lockerCity: any) => lockerCity.location === place)
-    console.log(city[0]?.city)
     return city && city[0].city
   }
 
