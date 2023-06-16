@@ -25,6 +25,8 @@ const ScanPage = ({ scanPageProps }: any) => {
   const changeStatus = () => {
     let data = {
       status: newStatus,
+      shippedBy: 'api/users/' + dataStore.id,
+
     }
 
     let config = {
@@ -42,7 +44,7 @@ const ScanPage = ({ scanPageProps }: any) => {
       .request(config)
       .then((response: any) => {
         if(newStatus === 'operin'){
-          console.log(selectedOrder?.client.email)
+          console.log(selectedOrder?.client?.email)
         }
         console.log(response.data)
         getallOrders(dataStore.token)

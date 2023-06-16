@@ -1,7 +1,25 @@
-/* #root{
+
+.text-inf{
+  color: #11ffd4 !important;
+}
+.bg-secondary{
+  background-color: #0a5a64 !important;
+}
+
+.bg-succes{
+  background-color: #1a800c !important;
+}
+.bg-inf{
+  background-color: #119797 !important;
+}
+.bg-warnin{
+  background-color: #cfa417 !important;
+}
+
+.dropButt{
   width: 100%;
-  overflow-y: hidden;
-} */
+}
+
 
 .main {
   overflow: hidden;
@@ -17,17 +35,19 @@
   background-size: 160px;
 }
 
-.top-nav {
-  height: 60px;
+.top-nav-design,
+.bottom-navbar {
+  height: 70px;
 }
 
 .top-nav-design,
-.bottom-navbar {
+.bottom-navbar
+ {
   background-color: #2e3338;
-  /* background-color: #343a40; */
-  height: 70px;
+  /* background-color: #074953 !important; */
   width: 100% !important;
 }
+
 
 .button-auth {
   background-color: rgb(61, 165, 184) !important;
@@ -514,4 +534,18 @@ ul.tl li .timestamp-current {
 
 .fusion{
   margin-left: -199%;
+}
+
+.badge-hoster{
+  position: relative;
+  width: auto;
+}
+
+
+.my-badge{
+  position: absolute;
+  left: 25px;
+  top: -5px;
+
+
 }

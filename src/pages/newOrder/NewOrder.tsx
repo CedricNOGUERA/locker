@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import {
+  Accordion,
   Alert,
+  
   Button,
+  Card,
   Col,
   Container,
   Dropdown,
@@ -13,6 +16,7 @@ import {
   Row,
   Spinner,
 } from 'react-bootstrap'
+import Badge from 'react-bootstrap/Badge';
 import { Link, Navigate, useOutletContext } from 'react-router-dom'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 import newOrderDataStore from '../../store/newOrderDataStore'
@@ -40,7 +44,7 @@ type Inputs = {
   chooseEmail: any
 }
 
-const NewOrder: React.FC = () => {
+const NewOrder = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isOrderCreate, setIsOrderCreate] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
@@ -91,9 +95,9 @@ const NewOrder: React.FC = () => {
   const [tempZones, setTempZones] = React.useState<any>([])
   const [slotSizes, setSlotSizes] = React.useState<any>([])
   const [products, setProducts] = React.useState<string>('')
+  const [productDetail, setProductDetail] = React.useState<any>([])
 
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
-  const [restrictionAge, setRestrictionAge] = React.useState<any>(null)
   const [availableSelect, setAvailableSelect] = React.useState<any>([])
 
   const [availableSlot, setAvailableSlot] = React.useState<any>()
@@ -102,6 +106,7 @@ const NewOrder: React.FC = () => {
 
   const [allSlot, setAllSlot] = React.useState<any>([])
   const [trigger, setTrigger] = React.useState<any>(false)
+  const [trigger2, setTrigger2] = React.useState<any>(false)
 
   const {
     formState: { errors },
@@ -140,6 +145,9 @@ const NewOrder: React.FC = () => {
 
     const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker?.location))]
     setUniqueTab(deduplicate)
+
+
+
   }, [allSlot])
 
   React.useEffect(() => {
@@ -150,7 +158,7 @@ const NewOrder: React.FC = () => {
     _searchWithRegex2(clientEmail, autoCompletTab['hydra:member'], setFilteredEmail)
   }, [clientEmail])
   React.useEffect(() => {
-    _searchWithRegex2(clientPhone, autoCompletTab['hydra:member'], setFilteredPhone)
+    _searchWithRegex3(clientPhone, autoCompletTab['hydra:member'], setFilteredPhone)
   }, [clientPhone])
 
   const getClients = (token: any) => {
@@ -255,7 +263,7 @@ const NewOrder: React.FC = () => {
               : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty),
-            products: products?.split(','),
+            products: [productDetail],
           }
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
@@ -300,7 +308,8 @@ const NewOrder: React.FC = () => {
               : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty)/parseInt(qty),
-            products: products?.split(','),
+            products: [productDetail[indx]],
+            // products: products?.split(','),
           }))
 
      if(ageRestriction === true){
@@ -452,7 +461,6 @@ const NewOrder: React.FC = () => {
     }
     console.log(dataOrder)
   }
-
   const newOrderModal = async (e: any) => {
     e.preventDefault()
 
@@ -469,6 +477,7 @@ const NewOrder: React.FC = () => {
 
     if (accept) {
       createNewOrder()
+      setTrigger2(false)
     } else {
       Swal.fire({
         position: 'top-end',
@@ -477,7 +486,6 @@ const NewOrder: React.FC = () => {
         title: 'Commande non finalisée',
         showConfirmButton: false,
         timer: 3000,
-        // timerProgressBar: true,
       })
       newOrderDelete()
       setTempZones([])
@@ -585,18 +593,18 @@ const NewOrder: React.FC = () => {
   const validOrder = (e: any) => {
     e.preventDefault()
 
-    if (!clientName) {
-      setIsMsgErrorName(true)
-      console.log('object')
-    }
-    if (!clientEmail) {
-      setIsMsgErrorEmail(true)
-    }
+    // if (!clientName) {
+    //   setIsMsgErrorName(true)
+    //   console.log('object')
+    // }
+    // if (!clientEmail) {
+    //   setIsMsgErrorEmail(true)
+    // }
     if (!qty) {
       setIsMsgErrorQty(true)
     }
 
-    if ((clientName || choosedName) && (clientEmail || choosedEmail) && qty) {
+    if ( qty) {
       setIsError(false)
       setIsMsgErrorQty(false)
       setIsMsgErrorName(false)
@@ -604,7 +612,6 @@ const NewOrder: React.FC = () => {
 
       setIsValid(true)
 
-      newOrderModal(e)
       newOrderRegister(
         orderStore.lockerId,
         orderStore.location,
@@ -624,6 +631,7 @@ const NewOrder: React.FC = () => {
         parseInt(qty),
         ageRestriction === true ? 18 : 0
       )
+      setTrigger2(true)
     }
   }
 
@@ -681,17 +689,72 @@ const NewOrder: React.FC = () => {
         ? 'winter'
         : data === 'NORMAL'
         ? 'dry'
-        : 'nada'
-    // const imge =
-    //   data === 'FRESH'
-    //     ? 'organic-food'
-    //     : data === 'FREEZE'
-    //     ? 'winter'
-    //     : data === 'NORMAL'
-    //     ? 'dry'
-    //     : 'nada'
+        : ''
+   
     return imge
   }
+ 
+
+  const handleAddCart = (qty: any) => {
+
+    const newTab = Array.from({ length: parseInt(qty) }).map((_, indx) => ({
+      "panier": indx + 1,
+      "detail": '',
+      // "tempZone": '',
+      // "size": '',
+      // "amount": 0,
+    }));
+    setProductDetail((prevProductDetail: any) => [...prevProductDetail, ...newTab]);
+  }
+
+  const _handleChangeProduct = (e: any, indx: any, key: any, productDetail: any, setProductDetail: any) => {
+    const newProduits: any = [...productDetail]
+    newProduits[indx][key] = key === 'qty' ? parseInt(e.target?.value) : e.target?.value
+    setProductDetail(newProduits)
+  }
+  const handleSelectBooking = (data: any, indx: any, key: any, productDetail: any, setProductDetail: any) => {
+    const newProduits: any = [...productDetail]
+    newProduits[indx][key] = data
+    setProductDetail(newProduits)
+  }
+
+  const borderClasses = ['border-info', 'border-warning', 'border-secondary'];
+
+
+  
+    let rowClasses: any = [];
+    
+    if (chosenLocker?.length === 0) {
+      rowClasses = [borderClasses[1], borderClasses[2], borderClasses[2], borderClasses[2]];
+    } else if (!trigger) {
+      rowClasses = [borderClasses[0], borderClasses[1], borderClasses[2], borderClasses[2]];
+   
+    } else if (!trigger2) {
+      rowClasses = [borderClasses[0], borderClasses[0], borderClasses[1], borderClasses[2]];
+    } else {
+      rowClasses = [borderClasses[0], borderClasses[0], borderClasses[0], borderClasses[1]];
+    }
+
+
+   
+    const slotLocationTab = (location: any) => {
+
+      const filteredData = allSlot?.['hydra:member']
+      ?.filter(
+        (lockers: any) =>
+          lockers?.slot?.temperatureZone?.locker?.location === location
+      )
+      return filteredData
+    } 
+    
+   
+
+const uniqueTempTab = (locker: any) => {
+  const newTab = [...new Set(slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.keyTemp))]
+return newTab
+}
+
+
   return (
     <div>
       {(!isLogged || !dataStore.token) && <Navigate to='/connexion' />}
@@ -719,30 +782,11 @@ const NewOrder: React.FC = () => {
                   <span className='fw-bold'>sélectionnez un locker</span>
                 </Col>
               </>
-            ) : trigger ? (
+            ) : !trigger ? (
               <>
                 <Col
                   xs={2}
-                  md={5}
-                  lg={5}
-                  className='py-0'
-                  onClick={() => {
-                    setTrigger(false)
-                    setQty(undefined)
-                  }}
-                >
-                  <BackButton />
-                </Col>
-                <Col className='m-auto text-light text-start pe-2 py-0'>
-                  <i className='ri-temp-cold-line align-bottom me-2'></i>{' '}
-                  <span className='fw-bold'>Température & info client</span>
-                </Col>
-              </>
-            ) : (
-              <>
-                <Col
-                  xs={2}
-                  md={5}
+                  md={4}
                   lg={5}
                   className='py-0'
                   onClick={() => {
@@ -771,36 +815,54 @@ const NewOrder: React.FC = () => {
                   <span className='fw-bold'>Nombre de panier nécessaire</span>
                 </Col>
               </>
+            ) : !trigger2 ? (
+              <>
+                <Col
+                  xs={2}
+                  md={4}
+                  lg={5}
+                  className='py-0'
+                  onClick={() => {
+                    setTrigger(false)
+                    setQty(undefined)
+                    setProductDetail([])
+                  }}
+                >
+                  <BackButton />
+                </Col>
+                <Col className='m-auto text-light text-start pe-2 py-0'>
+                  <i className='ri-temp-cold-line align-bottom me-2'></i>{' '}
+                  <span className='fw-bold'>Température & Taille</span>
+                </Col>
+              </>
+            ) : (
+              <>
+                <Col
+                  xs={2}
+                  md={4}
+                  lg={5}
+                  className='py-0'
+                  onClick={() => {
+                    setTrigger2(false)
+                  }}
+                >
+                  <BackButton />
+                </Col>
+                <Col className='m-auto text-light text-start pe-2 py-0'>
+                  <i className='ri-user-line align-bottom me-2'></i>{' '}
+                  <span className='fw-bold'>Informations client</span>
+                </Col>
+              </>
             )}
           </Row>
         </Container>
-        {chosenLocker?.length === 0 ? (
-          <Container>
-            <Row>
-              <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
-              <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
-              <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
-            </Row>
-          </Container>
-        ) : !trigger ? (
-          <Container>
-            <Row>
-              <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
-              <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
-              <Col className='border-bottom-3 border-secondary px-3 mx-3'></Col>
-            </Row>
-          </Container>
-        ) : (
-          trigger && (
-            <Container>
-              <Row>
-                <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
-                <Col className='border-bottom-3 border-info px-3 mx-3'></Col>
-                <Col className='border-bottom-3 border-warning px-3 mx-3'></Col>
-              </Row>
-            </Container>
-          )
-        )}
+        <Container>
+          <Row>
+            {rowClasses.map((borderClass: any, index: any) => (
+              <Col key={index} className={`border-bottom-3 ${borderClass} px-3 mx-2`}></Col>
+            ))}
+          </Row>
+        </Container>
       </Container>
       {isError ? (
         <Container className='text-center mt-3'>
@@ -822,7 +884,7 @@ const NewOrder: React.FC = () => {
               <div className='user-name fs-3 fw-bold text-secondary'>Aucune réservation</div>
             </div>
           ) : chosenLocker?.length === 0 ? (
-            <div>
+            <div className='mt-4'>
               {uniqueTab?.map((locker: any, indx: any) => (
                 <Container
                   key={indx * Math.random()}
@@ -833,61 +895,104 @@ const NewOrder: React.FC = () => {
                   }}
                 >
                   <Row className='px-0'>
-                    <Col className='m-auto font-75 ps-1 px-0'>{locker}</Col>
-                    <Col xs={5}>
-                      <Row>
-                        {allSlot?.['hydra:member']
-                          ?.filter(
-                            (lockers: any) =>
-                              lockers?.slot?.temperatureZone?.locker?.location === locker
-                          )
-                          ?.map((slots: any, indx: any) => (
-                            <React.Fragment key={indx}>
-                              <Col xs={2} className='px-0 ms-2'>
-                                <img
-                                  alt='Temp icon'
-                                  src={
-                                    'https://img.icons8.com/color/512/' +
-                                    imgFilter(slots?.slot.temperatureZone?.keyTemp) +
-                                    '.png'
-                                  }
-                                  style={{ width: '22px' }}
-                                />
-                              </Col>
-                              <Col xs={1} className='px-0 font-85'>
-                                <span className='badge badges2 rounded-pill bg-info border-2 border-secondary'>
-                                  {slots.available}
-                                </span>
-                              </Col>
-                            </React.Fragment>
-                          ))}
-                      </Row>
+                    <Col xs={5} className='m-auto font-75 ps-1 px-0'>
+                      {locker}
+                    </Col>
+                    <Col xs={
+                      allSlot?.['hydra:member']
+                      ?.filter(
+                        (lockers: any) =>
+                          lockers?.slot?.temperatureZone?.locker?.location === locker
+                      )
+                      ?.filter(
+                        (lock: any) =>
+                          lock?.slot?.temperatureZone?.keyTemp ===
+                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                      )?.length === 1 ?
+                      4 :   slotLocationTab(locker)
+                      ?.filter(
+                        (lock: any) =>
+                          lock?.slot?.temperatureZone?.keyTemp ===
+                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                      )?.length === 2 ?
+                      5 : 
+                      7}>
+                      {/* <Row> */}
+                      {
+                        // allSlot?.['hydra:member']
+                        //   ?.filter(
+                        //     (lockers: any) =>
+                        //       lockers?.slot?.temperatureZone?.locker?.location === locker
+                        //   )
+                        uniqueTempTab(locker)?.map((slots: any, indx: any) => (
+                          // <React.Fragment key={indx}>
+                          //   <Col xs={2} className='px-0 ms-2'>
+                          //     <img
+                          //       alt='Temp icon'
+                          //       src={
+                          //         'https://img.icons8.com/color/512/' +
+                          //         imgFilter(slots?.slot.temperatureZone?.keyTemp) +
+                          //         '.png'
+                          //       }
+                          //       style={{ width: '22px' }}
+                          //     />
+                          //     <p className='font-65 ms-2 mb-0'>{slots?.slot.size}</p>
+                          //   </Col>
+                          //   <Col xs={1} className='px-0 font-75 pb-0'>
+                          //     <span className='badge badges2 rounded-pill bg-info border-2 border-secondary'>
+                          //       {slots.available}
+                          //     </span>
+                          //   </Col>
+                          // </React.Fragment>
+                          <div className='' style={{ display: 'flex', flexDirection: 'row', marginBottom: '10px' }}>
+                            <img
+                              alt='Temp icon'
+                              src={
+                                'https://img.icons8.com/color/512/' +
+                                imgFilter(
+                                  slotLocationTab(locker)[indx].slot?.temperatureZone?.keyTemp
+                                ) +
+                                '.png'
+                              }
+                              style={{ width: '22px' }}
+                            /><span className='font-65 pt-1 ms-1' ><i className="ri-arrow-right-line"></i></span>
+
+                            {slotLocationTab(locker)
+                              ?.filter(
+                                (lock: any) =>
+                                  lock?.slot?.temperatureZone?.keyTemp ===
+                                  slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                              )
+                              ?.map((temp: any) => (
+                                <div className='badge-hoster px-0 ms-2'>
+                                  <span className='font-85 fw-bold ms-2 mb-0 bg-warning rounded-pill  px-2'>
+                                    {temp?.slot?.size}
+                                  </span>
+                                  <div className='my-badge px-0 font-75 pb-0'>
+                                    <Badge className=' rounded-pill bg-info border-2 border-secondary'>
+                                      {temp?.available}
+                                    </Badge>
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        ))
+                      }
+                      {/* </Row> */}
                     </Col>
                   </Row>
                 </Container>
               ))}
             </div>
           ) : !trigger ? (
-            <div>
+            <div className='mt-4'>
               <form
                 onSubmit={(e) => {
                   e.preventDefault()
                   setTrigger(true)
+                  handleAddCart(qty)
                 }}
               >
-                <InputGroup>
-                  <InputGroup.Text className='border-end-0 bg-secondary-500'>
-                    <i className='ri-inbox-archive-line text-secondary'></i>
-                  </InputGroup.Text>
-                  <Form.Control
-                    as='textarea'
-                    aria-label='textarea'
-                    placeholder='Saisie des produits...'
-                    value={products}
-                    onChange={(e) => setProducts(e.currentTarget.value)}
-                    required
-                  />
-                </InputGroup>
                 <div>
                   <InputGroup className='my-3'>
                     <InputGroup.Text
@@ -919,55 +1024,162 @@ const NewOrder: React.FC = () => {
                 </div>{' '}
               </form>
             </div>
-          ) : (
-            <div>
-              {/* {globalDispo > qty ? ( */}
+          ) : !trigger2 ? (
+            <div className='mt-4'>
               <form onSubmit={validOrder}>
-                {Array.from({ length: parseInt(qty) }).map((_, indx) => (
-                  <Form.Select
-                    onChange={(e) => {
-                      handleChangeSelect(e, indx)
-                    }}
-                    aria-label='zone'
-                    className='my-2'
-                    required
-                    key={indx * 10}
-                  >
-                    <option>Panier n°{indx + 1}</option>
-                    {chosenLocker?.map((lockers: any, index: any) => (
-                      <option
-                        key={index}
-                        value={JSON.stringify(lockers)}
-                        className={`${
-                          lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                <Accordion defaultActiveKey='0'>
+                  {Array.from({ length: parseInt(qty) }).map((_, indx) => (
+                    <React.Fragment key={indx * 10}>
+                      <Accordion.Item eventKey={`${indx}`}>
+                        <Accordion.Header>Choix n°{indx + 1}</Accordion.Header>
+                        <Accordion.Body>
+                          <Form.Select
+                            onChange={(e) => {
+                              handleChangeSelect(e, indx)
+                            }}
+                            aria-label='zone'
+                            className='my-2'
+                            required
+                          >
+                            <option className=''>Panier n°{indx + 1}</option>
+                            {chosenLocker?.map((lockers: any, index: any) => (
+                              <option
+                                key={index}
+                                value={JSON.stringify(lockers)}
+                                className={`text-light ${
+                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                                  lockers?.slot.temperatureZone?.myKey === 'C'
+                                    ? 'bg-succes'
+                                    : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                                      lockers?.slot.temperatureZone?.myKey === 'F'
+                                    ? 'bg-inf'
+                                    : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                        lockers?.slot.temperatureZone?.myKey === 'CA') &&
+                                      'bg-warnin'
+                                }`}
+                                disabled={lockers.available < 1 ? true : false}
+                              >
+                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                                lockers?.slot.temperatureZone?.myKey === 'C'
+                                  ? 'Zone Fraîche'
+                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                                    lockers?.slot.temperatureZone?.myKey === 'F'
+                                  ? 'Zone Congelée'
+                                  : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                      lockers?.slot.temperatureZone?.myKey === 'CA') &&
+                                    'Zone Ambiante'}{' '}
+                                {lockers?.slot.size}- {lockers?.available}{' '}
+                                {lockers.available > 1 ? 'casiers' : 'casier'}
+                              </option>
+                            ))}
+                          </Form.Select>
+
+                          <InputGroup className='mb-4'>
+                            <InputGroup.Text className='border-end-0 bg-secondary-500'>
+                              <i className='ri-inbox-archive-line text-secondary'></i>
+                            </InputGroup.Text>
+                            <Form.Control
+                              as='textarea'
+                              aria-label='textarea'
+                              placeholder={`Produits du panier n° ${indx + 1}`}
+                              value={productDetail[indx]?.detail}
+                              onChange={(e) =>
+                                _handleChangeProduct(
+                                  e,
+                                  indx,
+                                  'detail',
+                                  productDetail,
+                                  setProductDetail
+                                )
+                              }
+                              required
+                            />
+                          </InputGroup>
+                        </Accordion.Body>
+                      </Accordion.Item>
+
+                      {/* <Form.Select
+                      onChange={(e) => {
+                        handleChangeSelect(e, indx)
+                      }}
+                      aria-label='zone'
+                      className='my-2'
+                      required
+                    >
+                      <option className=''>Panier n°{indx + 1}</option>
+                      {chosenLocker?.map((lockers: any, index: any) => (
+                        <option
+                          key={index}
+                          value={JSON.stringify(lockers)}
+                          className={`text-light ${
+                            lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                            lockers?.slot.temperatureZone?.myKey === 'C'
+                              ? 'bg-succes'
+                              : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                                lockers?.slot.temperatureZone?.myKey === 'F'
+                              ? 'bg-inf'
+                              : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                  lockers?.slot.temperatureZone?.myKey === 'CA') &&
+                                'bg-warnin'
+                          }`}
+                          disabled={lockers.available < 1 ? true : false}
+                        >
+                          {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
                           lockers?.slot.temperatureZone?.myKey === 'C'
-                            ? 'bg-success'
+                            ? 'Zone Fraîche'
                             : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
                               lockers?.slot.temperatureZone?.myKey === 'F'
-                            ? 'bg-info'
+                            ? 'Zone Congelée'
                             : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
                                 lockers?.slot.temperatureZone?.myKey === 'CA') &&
-                              'bg-warning'
-                        }`}
-                        disabled={lockers.available < 1 ? true : false}
-                      >
-                        {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                        lockers?.slot.temperatureZone?.myKey === 'C'
-                          ? 'Zone Fraîche'
-                          : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                            lockers?.slot.temperatureZone?.myKey === 'F'
-                          ? 'Zone Congelée'
-                          : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                              lockers?.slot.temperatureZone?.myKey === 'CA') &&
-                            'Zone Ambiante'}{' '}
-                        {/* - {lockers?.slot.size}- {availableSelect[index]}{' '} */}-{' '}
-                        {lockers?.slot.size}- {lockers?.available}{' '}
-                        {lockers.available > 1 ? 'casiers' : 'casier'}
-                      </option>
-                    ))}
-                  </Form.Select>
-                ))}
-                <InputGroup className='mb-3'>
+                              'Zone Ambiante'}{' '}
+                          {lockers?.slot.size}- {lockers?.available}{' '}
+                          {lockers.available > 1 ? 'casiers' : 'casier'}
+                        </option>
+                      ))}
+                    </Form.Select>
+
+                    <InputGroup className='mb-4'>
+                      <InputGroup.Text className='border-end-0 bg-secondary-500'>
+                        <i className='ri-inbox-archive-line text-secondary'></i>
+                      </InputGroup.Text>
+                      <Form.Control
+                        as='textarea'
+                        aria-label='textarea'
+                        placeholder={`Produits du panier n° ${indx + 1}`}
+                        value={productDetail[indx]?.detail}
+                        onChange={(e) =>
+                          _handleChangeProduct(
+                            e,
+                            indx,
+                            'detail',
+                            productDetail,
+                            setProductDetail
+                          )
+                        }
+                        required
+                      />
+                    </InputGroup> */}
+                    </React.Fragment>
+                  ))}
+                </Accordion>
+
+                <div className='w-100 text-end mt-3'>
+                  <Button
+                    type='submit'
+                    className={`bg-info rounded-pill border-info text-light 
+                    `}
+                  >
+                    {isOrderCreate && <Spinner size='sm' className='me-1' />}
+                    Valider
+                  </Button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            <div>
+              <form onSubmit={(e) => newOrderModal(e)}>
+                <InputGroup className='mb-3 mt-2'>
                   <InputGroup.Text id='basic-addon1' className='border-end-0 bg-secondary-500'>
                     <i className='ri-user-line text-secondary'></i>
                   </InputGroup.Text>
@@ -1002,7 +1214,7 @@ const NewOrder: React.FC = () => {
                       variant='secondary'
                       title=''
                       className=''
-                      id='input-group-dropdown-2'
+                      id='input-group-dropdown-3'
                       align='end'
                       show={true}
                     >
@@ -1056,7 +1268,7 @@ const NewOrder: React.FC = () => {
                       variant=''
                       title=''
                       className=''
-                      id='input-group-dropdown-2'
+                      id='input-group-dropdown-1'
                       align='end'
                       show={true}
                     >
@@ -1165,7 +1377,7 @@ const NewOrder: React.FC = () => {
                   title='avez-vous 18 ans '
                 ></i>{' '}
                 <span className='font-75 text-muted'>
-                  Conchez la case, s'il y a des produits alcoolisés dans la commande.
+                  Cochez la case, s'il y a des produits alcoolisés dans la commande.
                 </span>
                 <div className='w-100 text-end'>
                   <Button
@@ -1178,18 +1390,6 @@ const NewOrder: React.FC = () => {
                   </Button>
                 </div>
               </form>
-              {/* ) : (
-                <Alert variant='danger'>
-                  <InfoAlert
-                    icon='ri-error-warning-line'
-                    iconColor='danger'
-                    message={
-                      'Vous ne pourrez pas finaliser votre commande, vos casiers disponibles ne sont pas suffisant'
-                    }
-                    fontSize='font-75'
-                  />
-                </Alert>
-              )} */}
             </div>
           )}
         </Container>

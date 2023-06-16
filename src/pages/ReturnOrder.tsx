@@ -13,7 +13,7 @@ import '../App.css'
 import 'animate.css'
 import OrdersService from '../service/Orders/OrdersService'
 
-const InProgress: React.FC = () => {
+const ReturnOrder: React.FC = () => {
   //////////////////////////
   // booleans States
   /////////////////////////
@@ -49,11 +49,11 @@ const InProgress: React.FC = () => {
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
 
-  const newStatus = 'operin'
+  const newStatus = 'left_for_customer_service'
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
-      order.status === 'created' &&
+      order.status === 'operout' &&
       order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
   )
   //////////////////////////
@@ -166,4 +166,4 @@ const InProgress: React.FC = () => {
   )
 }
 
-export default InProgress
+export default ReturnOrder

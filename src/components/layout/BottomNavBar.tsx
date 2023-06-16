@@ -4,10 +4,8 @@ import { Link } from 'react-router-dom'
 import imag from '../../../src/styles/g5635.png'
 import UserQrcode from '../ui/modals/UserQrcode'
 
-const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }: any) => {
-
- 
-//  const [selectedItem, setSelectedItem] = React.useState<string>('home')
+const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem }: any) => {
+  //  const [selectedItem, setSelectedItem] = React.useState<string>('home')
   //////////////////////
   //Auth deliverer modal
   //////////////////////
@@ -61,7 +59,6 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
           >
             <i className='ri-history-line fs-3'></i>
             <p>Historique</p>
-
           </Link>
         </Nav.Item>
 
@@ -81,10 +78,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
         <Nav.Item className='nav-item text-center'>
           <div className='text-center '></div>
         </Nav.Item>
-        <Nav.Item
-          className='nav-item text-center'
-          onClick={() => handleSelect('progress')}
-        >
+        <Nav.Item className='nav-item text-center' onClick={() => handleSelect('progress')}>
           <Link
             className={`nav-link px-0 text-${
               selectedItem === 'progress' ? 'light' : 'info'
@@ -98,10 +92,7 @@ const BottomNavBar = ({ orderData, selectedStore,selectedItem, setSelectedItem }
             <p>Livraisons</p>
           </Link>
         </Nav.Item>
-        <Nav.Item
-          className='nav-item text-center'
-          onClick={() => handleSelect('retrieve')}
-        >
+        <Nav.Item className='nav-item text-center' onClick={() => handleSelect('retrieve')}>
           <Link
             className={`nav-link px-0  text-${
               selectedItem === 'retrieve' ? 'light' : 'info'

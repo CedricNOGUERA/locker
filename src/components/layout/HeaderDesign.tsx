@@ -101,22 +101,8 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
+         
           {/* <Container className='mb-3'>
-            <Link
-              className='text-decoration-none text-light'
-              to='/nouvelle-commande'
-              onClick={handleCloseOffcanvas}
-            >
-              <Row className=' menu-link'>
-                <Col xs={2}>
-                  {' '}
-                  <i className='ri-file-add-line fs-5'></i>
-                </Col>{' '}
-                <Col className='m-auto user-name'>Nouvelle commande</Col>
-              </Row>
-            </Link>
-          </Container>
-          <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'
               to='/historique'
@@ -143,6 +129,21 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
                   <i className='ri-check-line fs-5'></i>
                 </Col>{' '}
                 <Col className='m-auto user-name'>déposées</Col>
+              </Row>
+            </Link>
+          </Container>
+          <Container className='mb-3'>
+            <Link
+              className='text-decoration-none text-light'
+              to='/retour'
+              onClick={handleCloseOffcanvas}
+            >
+              <Row className=' menu-link'>
+                <Col xs={2}>
+                  {' '}
+                  <i className='ri-arrow-go-back-line fs-5'></i>
+                </Col>{' '}
+                <Col className='m-auto user-name'>Commande à retourner</Col>
               </Row>
             </Link>
           </Container>

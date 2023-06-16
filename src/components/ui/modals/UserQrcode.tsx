@@ -12,9 +12,9 @@ const UserQrcode = ({show, handleClose, setSelectedOrder}: any) => {
          Livreur : {dataStore.firstname}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Container fluid className='pb-1'>
-          <Container className='text-center mt-4 px-0'>
+      <Modal.Body className='py-0'>
+        <Container fluid>
+          <Container className='text-center mt-2 px-0'>
             <Alert variant='secondary' className='border-2 border-secondary py-1'>
               <span className='font-85 text-secondary mb-0'>
                 Présentez le qrcode au locker pour vous identifier
@@ -39,11 +39,14 @@ const UserQrcode = ({show, handleClose, setSelectedOrder}: any) => {
           </Container>
           <Container className='text-center text-warning font-85'>
             <small>Respectez le sens du qrcode lors du scan</small>
+            
+            <Alert variant='info' className='border-2 border-info py-1'>
+              APM acces code : {dataStore?.apm_access_code}</Alert>
           </Container>
         </Container>
       </Modal.Body>
       <Container className='text-end'>
-        <Button variant='info' className='text-light w-25 m-3' onClick={handleClose}>
+        <Button variant='info' className='text-light w-25 m-3 mt-1' onClick={handleClose}>
           Fermer
         </Button>
       </Container>

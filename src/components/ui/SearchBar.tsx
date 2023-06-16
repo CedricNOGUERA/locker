@@ -45,6 +45,7 @@ const SearchBar = ({ searchBarProps }: any) => {
       .filter((lockerCity: any) => lockerCity.location === place)
     return city && city[0].city
   }
+  console.log(selectedOrderCity)
 
   return (
     <Container className='my-2 text-center'>
