@@ -2,9 +2,9 @@ export const getError = (error: any) => {
     // if (isNetworkError(error)) {
     //   return handleNetworkError(error);
     // }
-    if (isBadRequestError(error)) {
-      return handleBadRequestError(error);
-    }
+    // if (isBadRequestError(error)) {
+    //   return handleBadRequestError(error);
+    // }
     if (isUnauthorizedError(error)) {
       return handleUnauthorizedError(error);
     }
@@ -43,9 +43,9 @@ export const getError = (error: any) => {
 //   };
   
   // Bad Request errors (400)
-  const isBadRequestError = (error: any) => {
-    return error.code === "ERR_BAD_REQUEST";
-  };
+  // const isBadRequestError = (error: any) => {
+  //   return error.code === "ERR_BAD_REQUEST";
+  // };
   
   const handleBadRequestError = (error: any) => {
     // if (error.response.statusText === "Unauthorized") {

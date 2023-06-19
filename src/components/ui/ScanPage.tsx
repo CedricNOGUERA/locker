@@ -72,12 +72,12 @@ const ScanPage = ({ scanPageProps }: any) => {
         </div>
       </Container>
       <Container
-        className='bg-light p-3 w-75 border  animate__animated animate__fadeInDown'
+        className='bg-light p-2 w-75  border  animate__animated animate__fadeInDown'
         onClick={() => {
           changeStatus()
         }}
       >
-        <Col xs={12} sm={5} md={7} lg={3} className='m-auto'>
+        <div  className='m-auto'>
           {
           newStatus === 'overtime' && selectedOrder.multiOrderCode ? (
             <QrCode data={`${selectedOrder?.multiOrderCode}`} />
@@ -88,7 +88,7 @@ const ScanPage = ({ scanPageProps }: any) => {
            (
             <QrCode data={`${selectedOrder?.barcode}`} />
           )}
-        </Col>
+        </div>
       </Container>
       <Container className='text-center text-dark font-85'>
         <small>Respectez le sens du qrcode lors du scan</small>

@@ -35,7 +35,7 @@ import { useForm } from 'react-hook-form'
 import BackButton from '../../components/ui/BackButton'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
-
+{/* <div class="swal2-html-container" id="swal2-html-container" style="display: block;">Unprocessable Content</div> */}
 type Inputs = {
   qty: any
   clientName: any
@@ -217,8 +217,17 @@ const NewOrder = () => {
     setTempZones([])
     setSlotSizes([])
     setBookingSlotIds([])
+    setQty('')
+    setTrigger(false)
+    setChosenLocker([])
+    setClientName('')
+    setClientEmail('')
+    setChoosedName('')
+    setChoosedEmail('')
+    setClientPhone('')
+    setAgeRestriction(false)
   }
-
+  
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
       return Math.floor(Math.random() * (max - min + 1)) + min
@@ -387,7 +396,10 @@ const NewOrder = () => {
           } else {
             logCatcher('date :' + now + '-' + error.response.statusText)
           }
-          popUpError(error.response.status, error.response.statusText)
+
+          
+
+          popUpError(error.response.status, error.response.data["hydra:description"])
         })
     } else {
       let config: any = {
@@ -442,7 +454,7 @@ const NewOrder = () => {
           console.log(error)
           logCatcher(error.response.statusText)
           setMsgError(getError(error))
-          popUpError(error.response.status, error.response.statusText)
+          popUpError(error.response.status, error.response.data["hydra:description"])
           setIsOrderCreate(false)
           setQty('')
           setTrigger(false)
@@ -652,7 +664,9 @@ const NewOrder = () => {
   }
 
   const handleChangeSelect = (e: any, indx: any) => {
-    const zone = JSON.parse(e.currentTarget.value)
+    const zone: any = JSON.parse(e.currentTarget.value)
+
+
     
     const newTab: any = [...tempZones]
     newTab[indx] = zone?.slot?.temperatureZone?.myKey
@@ -917,34 +931,9 @@ return newTab
                       )?.length === 2 ?
                       5 : 
                       7}>
-                      {/* <Row> */}
-                      {
-                        // allSlot?.['hydra:member']
-                        //   ?.filter(
-                        //     (lockers: any) =>
-                        //       lockers?.slot?.temperatureZone?.locker?.location === locker
-                        //   )
-                        uniqueTempTab(locker)?.map((slots: any, indx: any) => (
-                          // <React.Fragment key={indx}>
-                          //   <Col xs={2} className='px-0 ms-2'>
-                          //     <img
-                          //       alt='Temp icon'
-                          //       src={
-                          //         'https://img.icons8.com/color/512/' +
-                          //         imgFilter(slots?.slot.temperatureZone?.keyTemp) +
-                          //         '.png'
-                          //       }
-                          //       style={{ width: '22px' }}
-                          //     />
-                          //     <p className='font-65 ms-2 mb-0'>{slots?.slot.size}</p>
-                          //   </Col>
-                          //   <Col xs={1} className='px-0 font-75 pb-0'>
-                          //     <span className='badge badges2 rounded-pill bg-info border-2 border-secondary'>
-                          //       {slots.available}
-                          //     </span>
-                          //   </Col>
-                          // </React.Fragment>
-                          <div className='' style={{ display: 'flex', flexDirection: 'row', marginBottom: '10px' }}>
+                      {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
+                        
+                          <div key={indx} className='' style={{ display: 'flex', flexDirection: 'row', marginBottom: '10px' }}>
                             <img
                               alt='Temp icon'
                               src={
@@ -954,8 +943,10 @@ return newTab
                                 ) +
                                 '.png'
                               }
-                              style={{ width: '22px' }}
-                            /><span className='font-65 pt-1 ms-1' ><i className="ri-arrow-right-line"></i></span>
+                              style={{ width: '32px' }}
+                              
+                            />
+                            <span className='font-65 pt-2 ms-1 ' ><i className="ri-arrow-right-line"></i></span>
 
                             {slotLocationTab(locker)
                               ?.filter(
@@ -964,8 +955,8 @@ return newTab
                                   slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
                               )
                               ?.map((temp: any) => (
-                                <div className='badge-hoster px-0 ms-2'>
-                                  <span className='font-85 fw-bold ms-2 mb-0 bg-warning rounded-pill  px-2'>
+                                <div key={Math.random()} className='badge-hoster px-0 ms-1 pt-1'>
+                                  <span className='font-75 fw-bold ms-2 mb-0 bg-warning rounded-pill  px-2'>
                                     {temp?.slot?.size}
                                   </span>
                                   <div className='my-badge px-0 font-75 pb-0'>
@@ -978,14 +969,13 @@ return newTab
                           </div>
                         ))
                       }
-                      {/* </Row> */}
                     </Col>
                   </Row>
                 </Container>
               ))}
             </div>
           ) : !trigger ? (
-            <div className='mt-4'>
+            <div className='mt-5'>
               <form
                 onSubmit={(e) => {
                   e.preventDefault()
@@ -1041,7 +1031,7 @@ return newTab
                             className='my-2'
                             required
                           >
-                            <option className=''>Panier n°{indx + 1}</option>
+                            <option value=''>Panier n°{indx + 1}</option>
                             {chosenLocker?.map((lockers: any, index: any) => (
                               <option
                                 key={index}
@@ -1073,6 +1063,7 @@ return newTab
                               </option>
                             ))}
                           </Form.Select>
+                          
 
                           <InputGroup className='mb-4'>
                             <InputGroup.Text className='border-end-0 bg-secondary-500'>
@@ -1097,73 +1088,10 @@ return newTab
                           </InputGroup>
                         </Accordion.Body>
                       </Accordion.Item>
-
-                      {/* <Form.Select
-                      onChange={(e) => {
-                        handleChangeSelect(e, indx)
-                      }}
-                      aria-label='zone'
-                      className='my-2'
-                      required
-                    >
-                      <option className=''>Panier n°{indx + 1}</option>
-                      {chosenLocker?.map((lockers: any, index: any) => (
-                        <option
-                          key={index}
-                          value={JSON.stringify(lockers)}
-                          className={`text-light ${
-                            lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                            lockers?.slot.temperatureZone?.myKey === 'C'
-                              ? 'bg-succes'
-                              : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                lockers?.slot.temperatureZone?.myKey === 'F'
-                              ? 'bg-inf'
-                              : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                  lockers?.slot.temperatureZone?.myKey === 'CA') &&
-                                'bg-warnin'
-                          }`}
-                          disabled={lockers.available < 1 ? true : false}
-                        >
-                          {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                          lockers?.slot.temperatureZone?.myKey === 'C'
-                            ? 'Zone Fraîche'
-                            : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                              lockers?.slot.temperatureZone?.myKey === 'F'
-                            ? 'Zone Congelée'
-                            : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                lockers?.slot.temperatureZone?.myKey === 'CA') &&
-                              'Zone Ambiante'}{' '}
-                          {lockers?.slot.size}- {lockers?.available}{' '}
-                          {lockers.available > 1 ? 'casiers' : 'casier'}
-                        </option>
-                      ))}
-                    </Form.Select>
-
-                    <InputGroup className='mb-4'>
-                      <InputGroup.Text className='border-end-0 bg-secondary-500'>
-                        <i className='ri-inbox-archive-line text-secondary'></i>
-                      </InputGroup.Text>
-                      <Form.Control
-                        as='textarea'
-                        aria-label='textarea'
-                        placeholder={`Produits du panier n° ${indx + 1}`}
-                        value={productDetail[indx]?.detail}
-                        onChange={(e) =>
-                          _handleChangeProduct(
-                            e,
-                            indx,
-                            'detail',
-                            productDetail,
-                            setProductDetail
-                          )
-                        }
-                        required
-                      />
-                    </InputGroup> */}
                     </React.Fragment>
                   ))}
                 </Accordion>
-
+              
                 <div className='w-100 text-end mt-3'>
                   <Button
                     type='submit'

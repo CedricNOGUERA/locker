@@ -32,10 +32,10 @@ const UserQrcode = ({show, handleClose, setSelectedOrder}: any) => {
               <i className='ri-arrow-up-fill '></i>
             </div>
           </Container>
-          <Container className='bg-light p-2    animate__animated animate__fadeInDown'>
-            <Col xs={12} sm={5} md={7} lg={5} className='m-auto'>
+          <Container className='m-auto bg-light p-2    animate__animated animate__fadeInDown'>
+            <div  className=' text-cente'>
               <QrCode data={`${dataStore.apm_access_code}`} />
-            </Col>
+            </div>
           </Container>
           <Container className='text-center text-warning font-85'>
             <small>Respectez le sens du qrcode lors du scan</small>
