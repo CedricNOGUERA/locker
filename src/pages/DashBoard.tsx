@@ -146,7 +146,7 @@ const DashBoard = () => {
                   <img
                     alt='zone'
                     src={
-                      'https://img.icons8.com/color/512/' +
+                      'https://img.icons8.com/color/52/' +
                       (slot?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
                       slot?.slot?.temperatureZone?.myKey === 'C'
                         ? 'organic-food'
@@ -158,15 +158,16 @@ const DashBoard = () => {
                           'dry') +
                       '.png'
                     }
-                    style={{ width: '40px' }}
+                    style={{ width: '40px', height: '40px' }}
                   />
+                  <div className='size-indicator font-65 fw-bold text-light'>{slot?.slot?.size}</div>
                 </Col>
-                <Col xs={7} className='m-auto mx-1 text-light text-start '>
+                <Col xs={7} className='m-auto ms-3 text-light text-start'>
                   <span className='dash-location font-7'>
                     {slot?.slot?.temperatureZone?.locker?.location}{' '}
                   </span>{' '}
                   - <span className='dash-city font-65'>{slot?.slot?.temperatureZone.locker.city} </span>
-                  - <span className='font-65 fw-bold'>{slot?.slot?.size} </span>
+                  {/* - <span className='font-65 fw-bold'>{slot?.slot?.size} </span> */}
                 </Col>
                 <Col xs={3} className=' text-start ps-0 pe-0'>
                   <Row>

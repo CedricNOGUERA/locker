@@ -902,17 +902,17 @@ return newTab
               {uniqueTab?.map((locker: any, indx: any) => (
                 <Container
                   key={indx * Math.random()}
-                  className='text-light py-1 mb-3 border-0 rounded bg-secondary animate__animated'
+                  className='text-light pt-1 pe-4 pe-sm-2 pe-md-2 mb-3 border-0 rounded bg-secondary animate__animated'
                   onClick={() => {
                     filteredLocker(locker)
                     setAvailableSlot(locker.available)
                   }}
                 >
-                  <Row className='px-0'>
-                    <Col xs={5} className='m-auto font-75 ps-1 px-0'>
+                  <Row className='px-0 pt-'>
+                    <Col xs={5} className='m-auto ms-md-3 font-75 ps-1 px-0'>
                       {locker}
                     </Col>
-                    <Col xs={
+                    <Col className='' xs={
                       allSlot?.['hydra:member']
                       ?.filter(
                         (lockers: any) =>
@@ -930,10 +930,48 @@ return newTab
                           slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
                       )?.length === 2 ?
                       5 : 
-                      7}>
+                      7}
+
+                      sm={ allSlot?.['hydra:member']
+                      ?.filter(
+                        (lockers: any) =>
+                          lockers?.slot?.temperatureZone?.locker?.location === locker
+                      )
+                      ?.filter(
+                        (lock: any) =>
+                          lock?.slot?.temperatureZone?.keyTemp ===
+                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                      )?.length === 1 ?
+                      3 :   slotLocationTab(locker)
+                      ?.filter(
+                        (lock: any) =>
+                          lock?.slot?.temperatureZone?.keyTemp ===
+                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                      )?.length === 2 ?
+                      4 : 
+                      5}
+
+                      md={ allSlot?.['hydra:member']
+                      ?.filter(
+                        (lockers: any) =>
+                          lockers?.slot?.temperatureZone?.locker?.location === locker
+                      )
+                      ?.filter(
+                        (lock: any) =>
+                          lock?.slot?.temperatureZone?.keyTemp ===
+                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                      )?.length === 1 ?
+                      2 :   slotLocationTab(locker)
+                      ?.filter(
+                        (lock: any) =>
+                          lock?.slot?.temperatureZone?.keyTemp ===
+                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                      )?.length === 2 ?
+                      2 : 
+                      3}>
                       {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
                         
-                          <div key={indx} className='' style={{ display: 'flex', flexDirection: 'row', marginBottom: '10px' }}>
+                          <div key={indx} className='mb-1' style={{ display: 'flex', flexDirection: 'row' }}>
                             <img
                               alt='Temp icon'
                               src={

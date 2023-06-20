@@ -549,3 +549,13 @@ ul.tl li .timestamp-current {
 
 
 }
+
+.size-indicator{
+  position: absolute;
+  margin-left: 25px;
+  margin-top: -20px;
+  background-color: #ffcc00;
+  border: 3px solid #777;
+  border-radius: 20px;
+padding: 0 5px 0 5px;
+}

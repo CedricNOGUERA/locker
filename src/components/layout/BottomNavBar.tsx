@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import imag from '../../../src/styles/g5635.png'
+import imag from '../../../src/styles/imagePlus4.png'
 import UserQrcode from '../ui/modals/UserQrcode'
 
 const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem }: any) => {
@@ -64,7 +64,7 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
 
         <Nav.Item
           className='nav-item text-center '
-          style={{ position: 'absolute', bottom: '43px' }}
+          style={{ position: 'absolute', bottom: '45px' }}
           onClick={() => handleSelect('order')}
         >
           <div className='text-center '></div>
@@ -72,7 +72,8 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             to='/nouvelle-commande'
             className='text-info py-1 pb-5 mb-5 text-decoration-none'
           >
-            <img alt='Plus icon' src={imag} width={52} />
+            <img alt='Plus icon' src={imag} width={52} height={52} />
+            {/* < i className="ri-add-circle-fill fs-1"></i> */}
           </Link>
         </Nav.Item>
         <Nav.Item className='nav-item text-center'>

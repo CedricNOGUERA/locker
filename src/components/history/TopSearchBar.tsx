@@ -41,11 +41,11 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
               <img
                 alt='Temp icon'
                 src={
-                  'https://img.icons8.com/color/512/' +
+                  'https://img.icons8.com/color/42/' +
                   _imgFilter(selectedOrder?.bookingSlot?.slot.temperatureZone?.keyTemp) +
                   '.png'
                 }
-                style={{ width: '30px' }}
+                style={{ width: '30px', height: '30px' }}
                 className='align-middle me-2'
               />
               {selectedOrder?.barcode} - {selectedOrder?.client?.email}

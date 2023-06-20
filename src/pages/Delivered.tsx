@@ -27,7 +27,7 @@ const Delivered: React.FC = () => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const  newStatus ="overtime"
+  const  newStatus ="receive"
 
   const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore );
 

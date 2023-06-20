@@ -22,13 +22,13 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
           <span key={Math.random()}>
             <img
               alt='Temp icon'
-              src={'https://img.icons8.com/color/512/' + tempZone + '.png'}
-              style={{ width: '40px' }}
+              src={'https://img.icons8.com/color/52/' + tempZone + '.png'}
+              style={{ width: '40px', height: '40px' }}
             />{' '}
           </span>
         </Col>
         <Col className='text-secondary text-start align-bottom m-auto py-0 my-0'>
-          <small className='ff-agency font-75 '>{liv?.barcode}</small>
+          <small className='ff-agency font-75 '>{trigger === 'history' && liv?.bookingSlot?.slot?.temperatureZone.locker.location}  {liv?.barcode}</small>
           <p className='font-75 mb-0'>
             {liv?.client?.email}
             {trigger === 'history' && (

@@ -28,7 +28,7 @@ const ScanPage = ({ scanPageProps }: any) => {
       shippedBy: 'api/users/' + dataStore.id,
 
     }
-
+console.log(data)
     let config = {
       method: 'patch',
       maxBodyLength: Infinity,
