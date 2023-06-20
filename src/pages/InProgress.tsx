@@ -54,7 +54,7 @@ const InProgress: React.FC = () => {
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
       order.status === 'created' &&
-      order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
+      order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore
   )
   //////////////////////////
   // UseEffect
@@ -132,7 +132,6 @@ const InProgress: React.FC = () => {
     setSelectedOrder,
     newStatus,
   }
- console.log(orderData)
   return (
     <Container fluid className='cde App px-0'>
       {contextHolder}

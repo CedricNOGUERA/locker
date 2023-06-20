@@ -5,7 +5,6 @@ import imag from '../../../src/styles/imagePlus4.png'
 import UserQrcode from '../ui/modals/UserQrcode'
 
 const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem }: any) => {
-  //  const [selectedItem, setSelectedItem] = React.useState<string>('home')
   //////////////////////
   //Auth deliverer modal
   //////////////////////
@@ -19,12 +18,12 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
   const retrieve = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'overtime' &&
-      order?.bookingSlot.slot?.temperatureZone.locker.location === selectedStore
+      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
   )
   const progress = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'created' &&
-      order?.bookingSlot.slot?.temperatureZone.locker.location === selectedStore
+      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
   )
 
   /////////////////////
@@ -46,7 +45,6 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             } py-1 pb-2 text-decoration-none`}
           >
             <i className='ri-home-2-line fs-3 '></i>
-
             <p>Accueil</p>
           </Link>
         </Nav.Item>
@@ -61,7 +59,6 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             <p>Historique</p>
           </Link>
         </Nav.Item>
-
         <Nav.Item
           className='nav-item text-center '
           style={{ position: 'absolute', bottom: '45px' }}
@@ -73,7 +70,6 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             className='text-info py-1 pb-5 mb-5 text-decoration-none'
           >
             <img alt='Plus icon' src={imag} width={52} height={52} />
-            {/* < i className="ri-add-circle-fill fs-1"></i> */}
           </Link>
         </Nav.Item>
         <Nav.Item className='nav-item text-center'>

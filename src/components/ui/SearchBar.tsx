@@ -13,6 +13,7 @@ const SearchBar = ({ searchBarProps }: any) => {
   } = searchBarProps
 
   const [uniqueTab, setUniqueTab] = React.useState([])
+  const [uniqueTabLocker, setUniqueTabLocker] = React.useState([])
   const [cityTab, setCityTab] = React.useState([])
   const [bookingData, setBookingData] = React.useState([])
 
@@ -21,6 +22,7 @@ const SearchBar = ({ searchBarProps }: any) => {
       (locker: any) => locker?.slot?.temperatureZone?.locker
     )
     setBookingData(bookingLocker)
+    const unique2: any = [...new Set(bookingLocker?.map((locker: any) => locker["@id"]))]
     const unique: any = [...new Set(bookingLocker?.map((locker: any) => locker.location))]
     const deduplicate2: any = [
       ...new Set(
@@ -32,6 +34,7 @@ const SearchBar = ({ searchBarProps }: any) => {
       ),
     ]
     setUniqueTab(unique)
+    setUniqueTabLocker(unique2)
 
     const deduplicateCity: any = [
       ...new Set(bookingLocker?.map((locker: any) => locker?.city)),
@@ -42,10 +45,9 @@ const SearchBar = ({ searchBarProps }: any) => {
   const filteredCity = (place: any) => {
     const city: any = allSlot?.['hydra:member']
       ?.map((locker: any) => locker?.slot?.temperatureZone?.locker)
-      .filter((lockerCity: any) => lockerCity.location === place)
-    return city && city[0].city
+      .filter((lockerCity: any) => lockerCity?.location === place)
+    return city && city[0]?.city
   }
-  console.log(selectedOrderCity)
 
   return (
     <Container className='my-2 text-center'>
@@ -97,7 +99,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                 title={locker}
                 onClick={() => {
                   setSelectedOrderCity(filteredCity(locker))
-                  setSelectedStore(locker)
+                  setSelectedStore(uniqueTabLocker[indx])
                 }}
               >
                 <Row className='item-menu text-secondary align-middle'>

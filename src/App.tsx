@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import './App.css'
 import userDataStore from './store/userDataStore'
@@ -41,7 +41,7 @@ function App() {
     )
     setSelectedStore(
       allSlot?.['hydra:member']
-        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker.location
+        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker["@id"]
         : ''
     )
   }, [allSlot])
@@ -58,7 +58,6 @@ function App() {
       setOrderData(response.data)
     }).catch((error: any) => {
       setIsLoading(false)
-      
     })
   }
 

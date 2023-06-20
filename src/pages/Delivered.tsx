@@ -13,12 +13,15 @@ import { Container } from "react-bootstrap";
 import ScanPageDelivered from "../components/ui/ScanPageDelivered";
 import ScanPage from "../components/ui/ScanPage";
 import OrdersService from "../service/Orders/OrdersService";
+import PlaceHolder from "../components/ui/loading/PlaceHolder";
+import AlertIsError from "../components/ui/warning/AlertIsError";
 
 const Delivered: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged);
   const [selectedStore, setSelectedStore, orderData, setOrderData, selectedOrderCity, setSelectedOrderCity,  allSlot, setAllSlot] = useOutletContext<any>()
 
 
+  const [isError, setIsError] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>("");
@@ -29,7 +32,7 @@ const Delivered: React.FC = () => {
 
   const  newStatus ="receive"
 
-  const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker.location === selectedStore );
+  const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore );
 
 
   React.useEffect(() => {
@@ -38,7 +41,10 @@ const Delivered: React.FC = () => {
       setIsLoading(false)
     }
     else{
-      // setIsError(true)
+      if (orderData && orderData['hydra:member']?.length < 0) {
+        setIsError(true)
+        setIsLoading(false)
+      }
       setIsLoading(true)
     }
       
@@ -99,9 +105,17 @@ const Delivered: React.FC = () => {
     <Container fluid className="cde App px-0">
       {contextHolder}
       {!isLogged && <Navigate to="/connexion" />}
-      {isLoading ? (
-        <Container className="text-center mt-5">
-          <Loading />
+      {isError ? (
+        <Container className='text-center mt-5'>
+          <AlertIsError
+            title="Une erreur s'est produite"
+            msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
+            colorIcon='danger'
+          />
+        </Container>
+      ) : isLoading ? (
+        <Container className="text-center mt-2">
+          <PlaceHolder paddingYFirst='3' />
         </Container>
       ) : (
         <>

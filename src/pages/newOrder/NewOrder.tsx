@@ -2,7 +2,6 @@ import React, { Fragment } from 'react'
 import {
   Accordion,
   Alert,
-  
   Button,
   Card,
   Col,
@@ -16,7 +15,7 @@ import {
   Row,
   Spinner,
 } from 'react-bootstrap'
-import Badge from 'react-bootstrap/Badge';
+import Badge from 'react-bootstrap/Badge'
 import { Link, Navigate, useOutletContext } from 'react-router-dom'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 import newOrderDataStore from '../../store/newOrderDataStore'
@@ -35,7 +34,9 @@ import { useForm } from 'react-hook-form'
 import BackButton from '../../components/ui/BackButton'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
-{/* <div class="swal2-html-container" id="swal2-html-container" style="display: block;">Unprocessable Content</div> */}
+{
+  /* <div class="swal2-html-container" id="swal2-html-container" style="display: block;">Unprocessable Content</div> */
+}
 type Inputs = {
   qty: any
   clientName: any
@@ -76,7 +77,7 @@ const NewOrder = () => {
     setSelectedItem,
   ] = useOutletContext<any>()
 
-  const [qty, setQty] = React.useState<any>("")
+  const [qty, setQty] = React.useState<any>('')
   const [clientEmail, setClientEmail] = React.useState<any>('')
   const [clientName, setClientName] = React.useState<any>('')
   const [clientPhone, setClientPhone] = React.useState<any>('')
@@ -107,6 +108,11 @@ const NewOrder = () => {
   const [allSlot, setAllSlot] = React.useState<any>([])
   const [trigger, setTrigger] = React.useState<any>(false)
   const [trigger2, setTrigger2] = React.useState<any>(false)
+  const [isValidPhone, setIsValidPhone] = React.useState<boolean>(true)
+
+  const regex = /^(87|89)\d{6,6}$/;
+
+// const isValide = regex.test(choosedPhone ? choosedPhone : clientPhone);
 
   const {
     formState: { errors },
@@ -117,37 +123,33 @@ const NewOrder = () => {
     getClients(dataStore.token)
     getBookingAllSlot(dataStore.token)
   }, [])
+  
+  React.useEffect(() => {
+   setIsValidPhone(regex.test(choosedPhone ? choosedPhone : clientPhone))
+  }, [choosedPhone, clientPhone])
 
   React.useEffect(() => {
-   
-    if(chosenLocker){
-       if(chosenLocker?.length > availableSelect?.length) {
-        chosenLocker?.map((locker: any) => 
-        <span key={Math.random()}>
-
-         availableSelect?.push(locker.available)
-        </span>
-        )
-       }
+    if (chosenLocker) {
+      if (chosenLocker?.length > availableSelect?.length) {
+        chosenLocker?.map((locker: any) => (
+          <span key={Math.random()}>availableSelect?.push(locker.available)</span>
+        ))
+      }
     }
-   if(qty === 0 || qty === null || qty === undefined || qty === ""){
-     setAvailableSelect([])
-   }
-
-
+    if (qty === 0 || qty === null || qty === undefined || qty === '') {
+      setAvailableSelect([])
+    }
   }, [qty])
-
 
   React.useEffect(() => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
       (locker: any) => locker?.slot?.temperatureZone?.locker
     )
 
-    const deduplicate: any = [...new Set(bookingLocker?.map((locker: any) => locker?.location))]
+    const deduplicate: any = [
+      ...new Set(bookingLocker?.map((locker: any) => locker?.location)),
+    ]
     setUniqueTab(deduplicate)
-
-
-
   }, [allSlot])
 
   React.useEffect(() => {
@@ -169,7 +171,8 @@ const NewOrder = () => {
       .catch((error) => {
         setIsError(true)
         setMsgError(getError(error))
-        setCodeError(error.response.data.code)
+        setCodeError(error.status)
+        // console.log(error)
       })
   }
 
@@ -184,7 +187,8 @@ const NewOrder = () => {
       .catch((error) => {
         setIsError(true)
         setMsgError(getError(error))
-        setCodeError(error.response.data.code)
+        setCodeError(error.status)
+        // setCodeError(error.response.data.code)
       })
   }
 
@@ -198,7 +202,9 @@ const NewOrder = () => {
       .catch((error) => {
         setIsError(true)
         setMsgError(getError(error))
-        setCodeError(error.response.data.code)
+        setCodeError(error.status)
+
+        // setCodeError(error.response.data.code)
       })
   }
 
@@ -227,7 +233,7 @@ const NewOrder = () => {
     setClientPhone('')
     setAgeRestriction(false)
   }
-  
+
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
       return Math.floor(Math.random() * (max - min + 1)) + min
@@ -237,7 +243,6 @@ const NewOrder = () => {
     const randomCode = _strRandom('popopop').toLocaleUpperCase() + entierAleatoire(1, 9)
     const randomCodeMultiOrder = _strRandom('popopop').toLocaleUpperCase()
     const receiveCode = entierAleatoire(10000000, 99999999)
- 
 
     setIsOrderCreate(true)
 
@@ -265,7 +270,7 @@ const NewOrder = () => {
               : clientName?.name
               ? clientName?.name
               : clientName,
-              clientPhone: choosedPhone
+            clientPhone: choosedPhone
               ? choosedPhone
               : clientPhone?.phone
               ? clientPhone?.phone
@@ -276,7 +281,7 @@ const NewOrder = () => {
           }
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
-            
+
             barcode: dataStore.cleveronCompany_id + '-' + randomCodeMultiOrder + (indx + 1),
 
             destination: {
@@ -316,21 +321,20 @@ const NewOrder = () => {
               ? clientPhone?.phone
               : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
-            totalSlot: parseInt(qty)/parseInt(qty),
+            totalSlot: parseInt(qty) / parseInt(qty),
             products: [productDetail[indx]],
             // products: products?.split(','),
           }))
 
-     if(ageRestriction === true){
-      if(parseInt(qty) === 1){
+    if (ageRestriction === true) {
+      if (parseInt(qty) === 1) {
         dataOrder.ageRestriction = 18
-      }else{
-        Array.from({ length: parseInt(qty) }).map((_, indx)=> 
-        dataOrder[indx].ageRestriction = 18
+      } else {
+        Array.from({ length: parseInt(qty) }).map(
+          (_, indx) => (dataOrder[indx].ageRestriction = 18)
         )
-        
       }
-     }     
+    }
 
     if (parseInt(qty) === 1) {
       let config = {
@@ -367,18 +371,14 @@ const NewOrder = () => {
             toast: true,
             icon: 'success',
             title: 'Commande validée',
-            text:
-            dataStore.cleveronCompany_id +
-              '-' +
-              randomCode,
+            text: dataStore.cleveronCompany_id + '-' + randomCode,
             showConfirmButton: false,
             timer: 7000,
             timerProgressBar: true,
           })
         })
         .catch((error) => {
-          console.log(getError(error))
-          console.log(error.message)
+          // console.log(error.message)
           setMsgError(getError(error))
           setIsValid(false)
           setQty('')
@@ -397,9 +397,7 @@ const NewOrder = () => {
             logCatcher('date :' + now + '-' + error.response.statusText)
           }
 
-          
-
-          popUpError(error.response.status, error.response.data["hydra:description"])
+          popUpError(error.response.status, error.response.data['hydra:description'])
         })
     } else {
       let config: any = {
@@ -449,12 +447,10 @@ const NewOrder = () => {
           })
         })
         .catch((error) => {
-          console.log(getError(error))
-          console.log(error.message)
-          console.log(error)
+          // console.log(error)
           logCatcher(error.response.statusText)
           setMsgError(getError(error))
-          popUpError(error.response.status, error.response.data["hydra:description"])
+          popUpError(error.response.status, error.response.data['hydra:description'])
           setIsOrderCreate(false)
           setQty('')
           setTrigger(false)
@@ -471,7 +467,6 @@ const NewOrder = () => {
           }
         })
     }
-    console.log(dataOrder)
   }
   const newOrderModal = async (e: any) => {
     e.preventDefault()
@@ -607,7 +602,6 @@ const NewOrder = () => {
 
     // if (!clientName) {
     //   setIsMsgErrorName(true)
-    //   console.log('object')
     // }
     // if (!clientEmail) {
     //   setIsMsgErrorEmail(true)
@@ -616,7 +610,7 @@ const NewOrder = () => {
       setIsMsgErrorQty(true)
     }
 
-    if ( qty) {
+    if (qty) {
       setIsError(false)
       setIsMsgErrorQty(false)
       setIsMsgErrorName(false)
@@ -656,27 +650,22 @@ const NewOrder = () => {
   }
 
   const changeAvailable = (index: any, zone: any, indx: any) => {
-
     const newData: any = [...availableSelect]
     newData[index] = zone - 1
     setAvailableSelect(newData)
-    
   }
 
   const handleChangeSelect = (e: any, indx: any) => {
     const zone: any = JSON.parse(e.currentTarget.value)
 
-
-    
     const newTab: any = [...tempZones]
     newTab[indx] = zone?.slot?.temperatureZone?.myKey
     setTempZones(newTab)
-    
-    
+
     const newTabSize: any = [...slotSizes]
     newTabSize[indx] = zone.slot?.size
     setSlotSizes(newTabSize)
-    
+
     const newTabBooking: any = [...bookingSlotIds]
     newTabBooking[indx] = zone['@id']
     setBookingSlotIds(newTabBooking)
@@ -693,8 +682,8 @@ const NewOrder = () => {
       slotSizes,
       parseInt(qty),
       ageRestriction === true ? 18 : 0
-      )
-    }
+    )
+  }
   const imgFilter = (data: any) => {
     const imge =
       data === 'FRESH'
@@ -704,70 +693,73 @@ const NewOrder = () => {
         : data === 'NORMAL'
         ? 'dry'
         : ''
-   
+
     return imge
   }
- 
 
   const handleAddCart = (qty: any) => {
-
     const newTab = Array.from({ length: parseInt(qty) }).map((_, indx) => ({
-      "panier": indx + 1,
-      "detail": '',
+      panier: indx + 1,
+      detail: '',
       // "tempZone": '',
       // "size": '',
       // "amount": 0,
-    }));
-    setProductDetail((prevProductDetail: any) => [...prevProductDetail, ...newTab]);
+    }))
+    setProductDetail((prevProductDetail: any) => [...prevProductDetail, ...newTab])
   }
 
-  const _handleChangeProduct = (e: any, indx: any, key: any, productDetail: any, setProductDetail: any) => {
+  const _handleChangeProduct = (
+    e: any,
+    indx: any,
+    key: any,
+    productDetail: any,
+    setProductDetail: any
+  ) => {
     const newProduits: any = [...productDetail]
     newProduits[indx][key] = key === 'qty' ? parseInt(e.target?.value) : e.target?.value
     setProductDetail(newProduits)
   }
-  const handleSelectBooking = (data: any, indx: any, key: any, productDetail: any, setProductDetail: any) => {
+  const handleSelectBooking = (
+    data: any,
+    indx: any,
+    key: any,
+    productDetail: any,
+    setProductDetail: any
+  ) => {
     const newProduits: any = [...productDetail]
     newProduits[indx][key] = data
     setProductDetail(newProduits)
   }
 
-  const borderClasses = ['border-info', 'border-warning', 'border-secondary'];
+  const borderClasses = ['border-info', 'border-warning', 'border-secondary']
 
+  let rowClasses: any = []
 
-  
-    let rowClasses: any = [];
-    
-    if (chosenLocker?.length === 0) {
-      rowClasses = [borderClasses[1], borderClasses[2], borderClasses[2], borderClasses[2]];
-    } else if (!trigger) {
-      rowClasses = [borderClasses[0], borderClasses[1], borderClasses[2], borderClasses[2]];
-   
-    } else if (!trigger2) {
-      rowClasses = [borderClasses[0], borderClasses[0], borderClasses[1], borderClasses[2]];
-    } else {
-      rowClasses = [borderClasses[0], borderClasses[0], borderClasses[0], borderClasses[1]];
-    }
+  if (chosenLocker?.length === 0) {
+    rowClasses = [borderClasses[1], borderClasses[2], borderClasses[2], borderClasses[2]]
+  } else if (!trigger) {
+    rowClasses = [borderClasses[0], borderClasses[1], borderClasses[2], borderClasses[2]]
+  } else if (!trigger2) {
+    rowClasses = [borderClasses[0], borderClasses[0], borderClasses[1], borderClasses[2]]
+  } else {
+    rowClasses = [borderClasses[0], borderClasses[0], borderClasses[0], borderClasses[1]]
+  }
 
+  const slotLocationTab = (location: any) => {
+    const filteredData = allSlot?.['hydra:member']?.filter(
+      (lockers: any) => lockers?.slot?.temperatureZone?.locker?.location === location
+    )
+    return filteredData
+  }
 
-   
-    const slotLocationTab = (location: any) => {
-
-      const filteredData = allSlot?.['hydra:member']
-      ?.filter(
-        (lockers: any) =>
-          lockers?.slot?.temperatureZone?.locker?.location === location
-      )
-      return filteredData
-    } 
-    
-   
-
-const uniqueTempTab = (locker: any) => {
-  const newTab = [...new Set(slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.keyTemp))]
-return newTab
-}
-
+  const uniqueTempTab = (locker: any) => {
+    const newTab = [
+      ...new Set(
+        slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.keyTemp)
+      ),
+    ]
+    return newTab
+  }
 
   return (
     <div>
@@ -908,105 +900,136 @@ return newTab
                     setAvailableSlot(locker.available)
                   }}
                 >
-                  <Row className='px-0 pt-'>
-                    <Col xs={5} className='m-auto ms-md-3 font-75 ps-1 px-0'>
+                  <Row className='px-1 px-sm-3 pt-'>
+                    <Col
+                      xs={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 1
+                          ? 8
+                          : slotLocationTab(locker)?.filter(
+                              (lock: any) =>
+                                lock?.slot?.temperatureZone?.keyTemp ===
+                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                            )?.length === 2
+                          ? 7
+                          : 5
+                      }
+                      className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-center'
+                    >
                       {locker}
                     </Col>
-                    <Col className='' xs={
-                      allSlot?.['hydra:member']
-                      ?.filter(
-                        (lockers: any) =>
-                          lockers?.slot?.temperatureZone?.locker?.location === locker
-                      )
-                      ?.filter(
-                        (lock: any) =>
-                          lock?.slot?.temperatureZone?.keyTemp ===
-                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                      )?.length === 1 ?
-                      4 :   slotLocationTab(locker)
-                      ?.filter(
-                        (lock: any) =>
-                          lock?.slot?.temperatureZone?.keyTemp ===
-                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                      )?.length === 2 ?
-                      5 : 
-                      7}
-
-                      sm={ allSlot?.['hydra:member']
-                      ?.filter(
-                        (lockers: any) =>
-                          lockers?.slot?.temperatureZone?.locker?.location === locker
-                      )
-                      ?.filter(
-                        (lock: any) =>
-                          lock?.slot?.temperatureZone?.keyTemp ===
-                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                      )?.length === 1 ?
-                      3 :   slotLocationTab(locker)
-                      ?.filter(
-                        (lock: any) =>
-                          lock?.slot?.temperatureZone?.keyTemp ===
-                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                      )?.length === 2 ?
-                      4 : 
-                      5}
-
-                      md={ allSlot?.['hydra:member']
-                      ?.filter(
-                        (lockers: any) =>
-                          lockers?.slot?.temperatureZone?.locker?.location === locker
-                      )
-                      ?.filter(
-                        (lock: any) =>
-                          lock?.slot?.temperatureZone?.keyTemp ===
-                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                      )?.length === 1 ?
-                      2 :   slotLocationTab(locker)
-                      ?.filter(
-                        (lock: any) =>
-                          lock?.slot?.temperatureZone?.keyTemp ===
-                          slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                      )?.length === 2 ?
-                      2 : 
-                      3}>
-                      {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
-                        
-                          <div key={indx} className='mb-1' style={{ display: 'flex', flexDirection: 'row' }}>
-                            <img
-                              alt='Temp icon'
-                              src={
-                                'https://img.icons8.com/color/512/' +
-                                imgFilter(
-                                  slotLocationTab(locker)[indx].slot?.temperatureZone?.keyTemp
-                                ) +
-                                '.png'
-                              }
-                              style={{ width: '32px' }}
-                              
-                            />
-                            <span className='font-65 pt-2 ms-1 ' ><i className="ri-arrow-right-line"></i></span>
-
-                            {slotLocationTab(locker)
-                              ?.filter(
-                                (lock: any) =>
-                                  lock?.slot?.temperatureZone?.keyTemp ===
-                                  slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                              )
-                              ?.map((temp: any) => (
-                                <div key={Math.random()} className='badge-hoster px-0 ms-1 pt-1'>
-                                  <span className='font-75 fw-bold ms-2 mb-0 bg-warning rounded-pill  px-2'>
-                                    {temp?.slot?.size}
-                                  </span>
-                                  <div className='my-badge px-0 font-75 pb-0'>
-                                    <Badge className=' rounded-pill bg-info border-2 border-secondary'>
-                                      {temp?.available}
-                                    </Badge>
-                                  </div>
-                                </div>
-                              ))}
-                          </div>
-                        ))
+                    <Col
+                      className=''
+                      xs={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 1
+                          ? 4
+                          : slotLocationTab(locker)?.filter(
+                              (lock: any) =>
+                                lock?.slot?.temperatureZone?.keyTemp ===
+                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                            )?.length === 2
+                          ? 5
+                          : 7
                       }
+                      sm={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 1
+                          ? 3
+                          : slotLocationTab(locker)?.filter(
+                              (lock: any) =>
+                                lock?.slot?.temperatureZone?.keyTemp ===
+                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                            )?.length === 2
+                          ? 4
+                          : 5
+                      }
+                      md={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 1
+                          ? 2
+                          : slotLocationTab(locker)?.filter(
+                              (lock: any) =>
+                                lock?.slot?.temperatureZone?.keyTemp ===
+                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                            )?.length === 2
+                          ? 3
+                          : 3
+                      }
+                    >
+                      {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
+                        <div
+                          key={indx}
+                          className='pb-1'
+                          style={{ display: 'flex', flexDirection: 'row' }}
+                        >
+                          <img
+                            alt='Temp icon'
+                            src={
+                              'https://img.icons8.com/color/512/' +
+                              imgFilter(
+                                slotLocationTab(locker)[indx].slot?.temperatureZone?.keyTemp
+                              ) +
+                              '.png'
+                            }
+                            style={{ width: '32px' }}
+                          />
+                          <span className='font-65 pt-2 ms-1 '>
+                            <i className='ri-arrow-right-line'></i>
+                          </span>
+
+                          {slotLocationTab(locker)
+                            ?.filter(
+                              (lock: any) =>
+                                lock?.slot?.temperatureZone?.keyTemp ===
+                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                            )
+                            ?.map((temp: any) => (
+                              <div key={Math.random()} className='badge-hoster px-0 ms-1 pt-1'>
+                                <span className='font-75 fw-bold ms-2 mb-0 bg-warning rounded-pill  px-2'>
+                                  {temp?.slot?.size}
+                                </span>
+                                <div className='my-badge px-0 font-75 pb-0'>
+                                  <Badge className=' rounded-pill bg-info border-2 border-secondary'>
+                                    {temp?.available}
+                                  </Badge>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                      ))}
                     </Col>
                   </Row>
                 </Container>
@@ -1101,7 +1124,6 @@ return newTab
                               </option>
                             ))}
                           </Form.Select>
-                          
 
                           <InputGroup className='mb-4'>
                             <InputGroup.Text className='border-end-0 bg-secondary-500'>
@@ -1129,7 +1151,7 @@ return newTab
                     </React.Fragment>
                   ))}
                 </Accordion>
-              
+
                 <div className='w-100 text-end mt-3'>
                   <Button
                     type='submit'
@@ -1242,10 +1264,15 @@ return newTab
                         <Dropdown.Item
                           key={Math.random()}
                           onClick={() => {
+                            setChoosedName(user.name)
                             setChoosedEmail(user.email)
+                            setChoosedPhone(user.phone)
+                            setFilteredName([])
                             setFilteredEmail([])
+                            setFilteredPhone([])
                           }}
                         >
+                          <i className='ri-user-line'></i> {user.name} - {user.email} -{' '}
                           {user.email}
                         </Dropdown.Item>
                       ))}
@@ -1272,6 +1299,8 @@ return newTab
                   </InputGroup.Text>
                   <Form.Control
                     aria-label='Text input with dropdown button'
+                    type='number'
+                    
                     value={choosedPhone ? choosedPhone : clientPhone}
                     onChange={(e: any) => {
                       choosedPhone
@@ -1295,16 +1324,32 @@ return newTab
                         <Dropdown.Item
                           key={Math.random()}
                           onClick={() => {
-                            setChoosedPhone(user.Phone)
+                            setChoosedName(user.name)
+                            setChoosedEmail(user.email)
+                            setChoosedPhone(user.phone)
+                            setFilteredName([])
+                            setFilteredEmail([])
                             setFilteredPhone([])
                           }}
                         >
-                          {user.Phone}
+                          <i className='ri-user-line'></i> {user.name} - {user.email} -{' '}
+                          {user.phone}
                         </Dropdown.Item>
                       ))}
                     </DropdownButton>
                   )}
+
                 </InputGroup>
+                {!isValidPhone && (clientPhone?.length > 2 || choosedPhone?.length > 2) && 
+                  <Alert variant='danger' className='mt-2 py-0 '>
+                  <InfoAlert
+                    icon='ri-error-warning-line'
+                    iconColor='danger'
+                    message={'Ce champ doit commencer par "87" ou 89", être composé de 8 chiffres '}
+                    fontSize='font-75'
+                  />
+                </Alert>
+                }
                 {
                   // isMsgErrorPhone &&
                   clientName &&

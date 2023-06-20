@@ -10,12 +10,9 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
     <div className='list-item  ps-2 pe-3  bg-white rounded mb-3'>
       <Row
         onClick={() => {
-          //  if (trigger === "history") {
           setSearchOrder('')
           setSelectedOrder(liv)
-          //   } else {
-          // return undefined
-          //   }
+      
         }}
       >
         <Col xs={2} md={1} className='m-auto py-0 '>

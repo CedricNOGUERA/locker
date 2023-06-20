@@ -65,7 +65,9 @@ const   OrderList = ({ orderListProps }: any) => {
           <div className='user-name fs-3 fw-bold text-secondary'>Aucune commande</div>
         </div>
       )}
-      {/* <Container>{(orderData['hydra:member']?.length === 30 || pagination === false) && orderByStatus?.length > 0 ? (
+      {/* 
+      PAGINATION
+      <Container>{(orderData['hydra:member']?.length === 30 || pagination === false) && orderByStatus?.length > 0 ? (
         <Badge bg="warning" className='pb-2 cursor-pointer' onClick={() => {getOrderByPage(dataStore.token, 2)
         setPagination(true)
         }}>

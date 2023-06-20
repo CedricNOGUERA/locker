@@ -26,9 +26,7 @@ const ScanPage = ({ scanPageProps }: any) => {
     let data = {
       status: newStatus,
       shippedBy: 'api/users/' + dataStore.id,
-
     }
-console.log(data)
     let config = {
       method: 'patch',
       maxBodyLength: Infinity,
@@ -43,7 +41,7 @@ console.log(data)
     axios
       .request(config)
       .then((response: any) => {
-        if(newStatus === 'operin'){
+        if (newStatus === 'operin') {
           console.log(selectedOrder?.client?.email)
         }
         console.log(response.data)
@@ -77,15 +75,12 @@ console.log(data)
           changeStatus()
         }}
       >
-        <div  className='m-auto'>
-          {
-          newStatus === 'overtime' && selectedOrder.multiOrderCode ? (
+        <div className='m-auto'>
+          {newStatus === 'receive' && selectedOrder.multiOrderCode ? (
             <QrCode data={`${selectedOrder?.multiOrderCode}`} />
-          ) :
-           newStatus === 'overtime' && !selectedOrder.multiOrderCode ? (
+          ) : newStatus === 'receive' && !selectedOrder.multiOrderCode ? (
             <QrCode data={`${selectedOrder?.receiveCode}`} />
-          ) :  
-           (
+          ) : (
             <QrCode data={`${selectedOrder?.barcode}`} />
           )}
         </div>
@@ -97,13 +92,11 @@ console.log(data)
         <Alert variant='secondary' className='border-2 border-secondary'>
           Saisie manuelle :
           <p className='text-info fw-bold m-0'>
-            {
-            newStatus === 'overtime' &&   selectedOrder.multiOrderCode
+            {newStatus === 'receive' && selectedOrder.multiOrderCode
               ? selectedOrder?.multiOrderCode
-              : newStatus === 'overtime' && !selectedOrder.multiOrderCode 
+              : newStatus === 'receive' && !selectedOrder.multiOrderCode
               ? selectedOrder?.receiveCode
-              :
-              selectedOrder?.barcode}
+              : selectedOrder?.barcode}
           </p>
         </Alert>
       </Container>

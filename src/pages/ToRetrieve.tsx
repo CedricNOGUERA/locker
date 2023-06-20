@@ -39,8 +39,6 @@ const ToRetrieve: React.FC = () => {
   ] = useOutletContext<any>()
   const [messageApi, contextHolder] = message.useMessage()
 
-
-
   //////////////////////////
   // States
   /////////////////////////
@@ -53,10 +51,9 @@ const ToRetrieve: React.FC = () => {
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
       order.status === 'overtime' &&
-      order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
+      order.bookingSlot.slot.temperatureZone.locker['@id'] === selectedStore
   )
 
-  
   //////////////////////////
   // UseEffect
   /////////////////////////
@@ -65,7 +62,6 @@ const ToRetrieve: React.FC = () => {
     setIsLoading(true)
     setSelectedItem('retrieve')
   }, [])
-
 
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
@@ -83,19 +79,16 @@ const ToRetrieve: React.FC = () => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
   }, [searchOrder])
 
-
-  
   const getOrderByPage = (token: any, page: any) => {
-    OrdersService.ordersByPage(token, page).then((response: any) => {
-      setIsLoading(false)
-      setOrderData(response.data)
-    }).catch((error: any) => {
-      setIsLoading(false)
-      
-    })
+    OrdersService.ordersByPage(token, page)
+      .then((response: any) => {
+        setIsLoading(false)
+        setOrderData(response.data)
+      })
+      .catch((error: any) => {
+        setIsLoading(false)
+      })
   }
-
-
 
   //////////////////////////
   // Component Props
@@ -128,7 +121,6 @@ const ToRetrieve: React.FC = () => {
     setSelectedOrder,
     newStatus,
   }
-
 
   return (
     <Container fluid className='cde App px-0'>

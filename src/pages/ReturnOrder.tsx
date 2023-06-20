@@ -54,7 +54,7 @@ const ReturnOrder: React.FC = () => {
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
       order.status === 'operout' &&
-      order.bookingSlot.slot.temperatureZone.locker.location === selectedStore
+      order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore
   )
   //////////////////////////
   // UseEffect
