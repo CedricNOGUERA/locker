@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react'
 import { Col, Container, Form, Row, Table } from 'react-bootstrap';
+import BadgedIcon from '../../components/ui/BadgedIcon';
 
 const Test2 = () => {
 
@@ -79,6 +80,7 @@ const Test2 = () => {
 console.log(dataOrder)
   return (
     <Container>
+      <BadgedIcon slot={""}/>
     <Container
                   // key={indx * Math.random()}
                   className='text-light py-1 mb-3 border-0 rounded bg-secondary animate__animated'

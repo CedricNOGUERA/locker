@@ -1,6 +1,8 @@
 import moment from "moment";
 import { Button, Col, Row } from "react-bootstrap";
 import { _getStatus } from "../../utils/functions";
+import BadgedIcon from '../ui/BadgedIcon'
+
 
 const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
 
@@ -12,27 +14,32 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
         onClick={() => {
           setSearchOrder('')
           setSelectedOrder(liv)
-      
         }}
       >
         <Col xs={2} md={1} className='m-auto py-0 '>
           <span key={Math.random()}>
-            <img
-              alt='Temp icon'
-              src={'https://img.icons8.com/color/52/' + tempZone + '.png'}
-              style={{ width: '40px', height: '40px' }}
-            />{' '}
+            <BadgedIcon slot={liv?.bookingSlot} borderColor='light' imgSize='40px' />
           </span>
         </Col>
         <Col className='text-secondary text-start align-bottom m-auto py-0 my-0'>
-          <small className='ff-agency font-75 '>{trigger === 'history' && liv?.bookingSlot?.slot?.temperatureZone.locker.location}  {liv?.barcode}</small>
+          {trigger === 'history' && (
+            <small className='ff-agency font-75 '>
+              {' '}
+              {liv?.bookingSlot?.slot?.temperatureZone.locker.location}{' '}
+            </small>
+          )}{' '}
+          {trigger !== 'history' && (
+            <small className='ff-agency font-75 '>
+              {liv?.bookingSlot?.slot?.temperatureZone.locker.city} - {liv?.barcode}
+            </small>
+          )}
           <p className='font-75 mb-0'>
             {liv?.client?.email}
             {trigger === 'history' && (
-              <span>
+              <>
                 {' '}
                 - <span className='text-info fw-bold'>{_getStatus(liv?.status)}</span>
-              </span>
+              </>
             )}
           </p>
         </Col>

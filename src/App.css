@@ -555,7 +555,8 @@ ul.tl li .timestamp-current {
   margin-left: 25px;
   margin-top: -20px;
   background-color: #ffcc00;
-  border: 3px solid #777;
+  /* border: 3px solid #fefefe; */
+  border: 3px solid;
   border-radius: 20px;
 padding: 0 5px 0 5px;
 }

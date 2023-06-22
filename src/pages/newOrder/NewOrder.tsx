@@ -3,7 +3,6 @@ import {
   Accordion,
   Alert,
   Button,
-  Card,
   Col,
   Container,
   Dropdown,
@@ -23,29 +22,24 @@ import userDataStore from '../../store/userDataStore'
 import Swal from 'sweetalert2'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
-import { _strRandom } from '../../utils/functions'
+import { _searchAnythingWithRegex, _searchWithRegex, _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
 import { getError } from '../../utils/errors/GetError'
 import images from '../../styles/no-order-min.png'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
-import { useForm } from 'react-hook-form'
 import BackButton from '../../components/ui/BackButton'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
-{
-  /* <div class="swal2-html-container" id="swal2-html-container" style="display: block;">Unprocessable Content</div> */
-}
-type Inputs = {
-  qty: any
-  clientName: any
-  clientEmail: any
-  chooseName: any
-  chooseEmail: any
-}
+
+
 
 const NewOrder = () => {
+
+    //////////////////////////
+  // booleans States
+  /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isOrderCreate, setIsOrderCreate] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
@@ -53,7 +47,14 @@ const NewOrder = () => {
   const [isMsgErrorName, setIsMsgErrorName] = React.useState<boolean>(false)
   const [isMsgErrorEmail, setIsMsgErrorEmail] = React.useState<boolean>(false)
   const [isValid, setIsValid] = React.useState<boolean>(false)
+  const [trigger, setTrigger] = React.useState<boolean>(false)
+  const [trigger2, setTrigger2] = React.useState<boolean>(false)
+  const [isValidPhone, setIsValidPhone] = React.useState<boolean>(true)
+  const [isValidPhone2, setIsValidPhone2] = React.useState<boolean>(true)
 
+   //////////////////////////
+  // Store & context state
+  /////////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
   const newOrderRegister = newOrderDataStore((state: any) => state.newOrderRegister)
@@ -73,9 +74,15 @@ const NewOrder = () => {
     setOrderData,
     selectedOrderCity,
     setSelectedOrderCity,
+    allSlot,
+    setAllSlot,
     selectedItem,
     setSelectedItem,
   ] = useOutletContext<any>()
+
+   //////////////////////////
+  // States
+  /////////////////////////
 
   const [qty, setQty] = React.useState<any>('')
   const [clientEmail, setClientEmail] = React.useState<any>('')
@@ -90,7 +97,6 @@ const NewOrder = () => {
   const [choosedPhone, setChoosedPhone] = React.useState<any>('')
   const [uniqueTab, setUniqueTab] = React.useState<any>([])
   const [chosenLocker, setChosenLocker] = React.useState<any>([])
-  const [globalDispo, setGlobalDispo] = React.useState<any>(null)
 
   const [bookingSlotIds, setBookingSlotIds] = React.useState<any>([])
   const [tempZones, setTempZones] = React.useState<any>([])
@@ -105,29 +111,30 @@ const NewOrder = () => {
   const [msgError, setMsgError] = React.useState<any>()
   const [codeError, setCodeError] = React.useState<any>()
 
-  const [allSlot, setAllSlot] = React.useState<any>([])
-  const [trigger, setTrigger] = React.useState<any>(false)
-  const [trigger2, setTrigger2] = React.useState<any>(false)
-  const [isValidPhone, setIsValidPhone] = React.useState<boolean>(true)
+  
+  /////
+  //Regex pour vérifier que le numéro de téléphone du client commence par 87 89
+  ////
+  const regex = /^(87|89|88)\d+$/;
 
-  const regex = /^(87|89)\d{6,6}$/;
-
-// const isValide = regex.test(choosedPhone ? choosedPhone : clientPhone);
-
-  const {
-    formState: { errors },
-  } = useForm<Inputs>()
-
+  //////////////////////////
+  // UseEffect
+  /////////////////////////
   React.useEffect(() => {
-    getallOrders(dataStore.token)
     getClients(dataStore.token)
-    getBookingAllSlot(dataStore.token)
   }, [])
   
   React.useEffect(() => {
-   setIsValidPhone(regex.test(choosedPhone ? choosedPhone : clientPhone))
-  }, [choosedPhone, clientPhone])
+   setIsValidPhone(regex.test(choosedPhone? choosedPhone : clientPhone))
 
+   if(clientPhone === ""){
+    setIsValidPhone2(true)
+    setIsValidPhone(true)
+  }
+
+  }, [clientPhone])
+  
+ 
   React.useEffect(() => {
     if (chosenLocker) {
       if (chosenLocker?.length > availableSelect?.length) {
@@ -145,7 +152,6 @@ const NewOrder = () => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
       (locker: any) => locker?.slot?.temperatureZone?.locker
     )
-
     const deduplicate: any = [
       ...new Set(bookingLocker?.map((locker: any) => locker?.location)),
     ]
@@ -153,15 +159,20 @@ const NewOrder = () => {
   }, [allSlot])
 
   React.useEffect(() => {
-    _searchWithRegex(clientName, autoCompletTab['hydra:member'], setFilteredName)
+    _searchAnythingWithRegex(clientName, autoCompletTab['hydra:member'], setFilteredName, "name")
   }, [clientName])
-
   React.useEffect(() => {
-    _searchWithRegex2(clientEmail, autoCompletTab['hydra:member'], setFilteredEmail)
+    _searchAnythingWithRegex(clientEmail, autoCompletTab['hydra:member'], setFilteredEmail, "email")
   }, [clientEmail])
   React.useEffect(() => {
-    _searchWithRegex3(clientPhone, autoCompletTab['hydra:member'], setFilteredPhone)
+    _searchAnythingWithRegex(clientPhone, autoCompletTab['hydra:member'], setFilteredPhone, "phone")
   }, [clientPhone])
+
+
+  //////////////////////////
+  // Events
+  /////////////////////////
+
 
   const getClients = (token: any) => {
     ClientService.allClients(token)
@@ -172,7 +183,6 @@ const NewOrder = () => {
         setIsError(true)
         setMsgError(getError(error))
         setCodeError(error.status)
-        // console.log(error)
       })
   }
 
@@ -365,6 +375,9 @@ const NewOrder = () => {
           setClientEmail('')
           setChoosedName('')
           setChoosedEmail('')
+          setTrigger2(false)
+          setClientPhone('')
+          setChoosedPhone('')
           setAgeRestriction(false)
           Swal.fire({
             position: 'top-end',
@@ -390,6 +403,9 @@ const NewOrder = () => {
           setClientEmail('')
           setChoosedName('')
           setChoosedEmail('')
+          setTrigger2(false)
+          setClientPhone('')
+          setChoosedPhone('')
           setAgeRestriction(false)
           if (logs.logApp) {
             logCatcher(logs.logApp + ' / date :' + now + '-' + error.response.statusText)
@@ -484,7 +500,7 @@ const NewOrder = () => {
 
     if (accept) {
       createNewOrder()
-      setTrigger2(false)
+     
     } else {
       Swal.fire({
         position: 'top-end',
@@ -498,14 +514,17 @@ const NewOrder = () => {
       setTempZones([])
       setSlotSizes([])
       setBookingSlotIds([])
-
       setQty('')
       setTrigger(false)
+      setTrigger2(false)
+
       setProducts('')
       setClientName('')
       setClientEmail('')
       setChoosedName('')
       setChoosedEmail('')
+      setClientPhone('')
+      setChoosedPhone('')
       setChosenLocker([])
       setAgeRestriction(false)
       setIsValid(false)
@@ -547,65 +566,9 @@ const NewOrder = () => {
     }
   }
 
-  const _searchWithRegex = (search: any, orderByStatus: any, setFilteredOrder: any) => {
-    function escapeRegExp(str: string) {
-      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    }
-
-    const escapedSearchOrder = escapeRegExp(search)
-
-    setFilteredOrder(
-      orderByStatus?.filter((order: any) => {
-        if (escapedSearchOrder?.length > 2) {
-          return order?.name?.match(new RegExp(escapedSearchOrder, 'i'))
-        }
-        return undefined
-      })
-    )
-  }
-
-  const _searchWithRegex2 = (searchOrder: any, orderByStatus: any, setFilteredOrder: any) => {
-    function escapeRegExp(str: string) {
-      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    }
-
-    const escapedSearchOrder = escapeRegExp(searchOrder)
-
-    setFilteredOrder(
-      orderByStatus?.filter((order: any) => {
-        if (escapedSearchOrder?.length > 2) {
-          return order?.email?.match(new RegExp(escapedSearchOrder, 'i'))
-        }
-        return undefined
-      })
-    )
-  }
-  const _searchWithRegex3 = (searchOrder: any, orderByStatus: any, setFilteredOrder: any) => {
-    function escapeRegExp(str: string) {
-      return str?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    }
-
-    const escapedSearchOrder = escapeRegExp(searchOrder)
-
-    setFilteredOrder(
-      orderByStatus?.filter((order: any) => {
-        if (escapedSearchOrder?.length > 2) {
-          return order?.phone?.match(new RegExp(escapedSearchOrder, 'i'))
-        }
-        return undefined
-      })
-    )
-  }
-
   const validOrder = (e: any) => {
     e.preventDefault()
 
-    // if (!clientName) {
-    //   setIsMsgErrorName(true)
-    // }
-    // if (!clientEmail) {
-    //   setIsMsgErrorEmail(true)
-    // }
     if (!qty) {
       setIsMsgErrorQty(true)
     }
@@ -719,17 +682,7 @@ const NewOrder = () => {
     newProduits[indx][key] = key === 'qty' ? parseInt(e.target?.value) : e.target?.value
     setProductDetail(newProduits)
   }
-  const handleSelectBooking = (
-    data: any,
-    indx: any,
-    key: any,
-    productDetail: any,
-    setProductDetail: any
-  ) => {
-    const newProduits: any = [...productDetail]
-    newProduits[indx][key] = data
-    setProductDetail(newProduits)
-  }
+
 
   const borderClasses = ['border-info', 'border-warning', 'border-secondary']
 
@@ -761,6 +714,25 @@ const NewOrder = () => {
     return newTab
   }
 
+  const lockerAvailability = allSlot?.['hydra:member']?.filter(
+    (lockers: any) => lockers?.slot?.temperatureZone?.locker['@id'] === chosenLocker[0]?.slot?.temperatureZone?.locker['@id'])
+    ?.reduce((acc: any, current: any) => 
+    acc + current.available
+  ,0)
+
+
+  const slotAvailability = allSlot?.['hydra:member']?.filter(
+    (lockers: any) => lockers?.slot?.temperatureZone?.locker['@id'] === chosenLocker[0]?.slot?.temperatureZone?.locker['@id'])
+    ?.filter((slot: any) => (slot?.slot?.temperatureZone?.keyTemp === "FREEZE"))
+    ?.filter((slot: any) => (slot?.slot?.size === "S"))
+  
+    //   ?.reduce((acc: any, current: any) => 
+  //   acc + current.available
+  // ,0)
+
+  console.log(slotAvailability)
+ 
+ 
   return (
     <div>
       {(!isLogged || !dataStore.token) && <Navigate to='/connexion' />}
@@ -850,6 +822,9 @@ const NewOrder = () => {
                   className='py-0'
                   onClick={() => {
                     setTrigger2(false)
+                    setProductDetail([])
+                    setClientPhone("")
+                    setChoosedPhone("")
                   }}
                 >
                   <BackButton />
@@ -1057,7 +1032,19 @@ const NewOrder = () => {
                       aria-describedby='basic-addon1'
                       className='border-start-0'
                       type='number'
-                      min={1}
+                      // min={allSlot?.['hydra:member']?.filter(
+                      //   (lockers: any) => lockers?.slot?.temperatureZone?.locker['@id'] === chosenLocker && chosenLocker[0]?.slot?.temperatureZone?.locker['@id'])
+                      //   ?.reduce((acc: any, current: any) =>
+                      //   acc + current.available
+                      // ,0)}
+                      max={allSlot?.['hydra:member']
+                        ?.filter(
+                          (lockers: any) =>
+                            lockers?.slot?.temperatureZone?.locker['@id'] ===
+                            chosenLocker[0]?.slot?.temperatureZone?.locker['@id']
+                        )
+                        ?.reduce((acc: any, current: any) => acc + current.available, 0)}
+                      // max={4}
                       placeholder='Nombre de panier*'
                       value={qty}
                       onChange={(e) => {
@@ -1066,6 +1053,16 @@ const NewOrder = () => {
                       required
                     />
                   </InputGroup>
+                  {lockerAvailability < qty && (
+                    <Alert variant='danger' className='mt-2 py-0 text-cente'>
+                      <InfoAlert
+                        icon='ri-error-warning-line'
+                        iconColor='danger'
+                        message={`Vous disposé de ${lockerAvailability} paniers, vous ne pouvez pas en sélectionner plus`}
+                        fontSize='font-75'
+                      />
+                    </Alert>
+                  )}
                   <Button
                     className='bg-info rounded-pill border-info text-light'
                     type='submit'
@@ -1166,7 +1163,19 @@ const NewOrder = () => {
             </div>
           ) : (
             <div>
-              <form onSubmit={(e) => newOrderModal(e)}>
+              <form
+                onSubmit={(e) => {
+                  newOrderModal(e)
+                  if ((clientPhone?.length !== 8 && choosedPhone === "") || (choosedPhone?.length !== 8 && clientPhone === "")) {
+                    e.preventDefault()
+                    setIsValidPhone2(false)
+                  } else {
+                    newOrderModal(e)
+                    setIsValidPhone(true)
+                    setIsValidPhone2(true)
+                  }
+                }}
+              >
                 <InputGroup className='mb-3 mt-2'>
                   <InputGroup.Text id='basic-addon1' className='border-end-0 bg-secondary-500'>
                     <i className='ri-user-line text-secondary'></i>
@@ -1300,7 +1309,6 @@ const NewOrder = () => {
                   <Form.Control
                     aria-label='Text input with dropdown button'
                     type='number'
-                    
                     value={choosedPhone ? choosedPhone : clientPhone}
                     onChange={(e: any) => {
                       choosedPhone
@@ -1338,18 +1346,33 @@ const NewOrder = () => {
                       ))}
                     </DropdownButton>
                   )}
-
                 </InputGroup>
-                {!isValidPhone && (clientPhone?.length > 2 || choosedPhone?.length > 2) && 
-                  <Alert variant='danger' className='mt-2 py-0 '>
-                  <InfoAlert
-                    icon='ri-error-warning-line'
-                    iconColor='danger'
-                    message={'Ce champ doit commencer par "87" ou 89", être composé de 8 chiffres '}
-                    fontSize='font-75'
-                  />
-                </Alert>
-                }
+                {!isValidPhone &&
+                  ( clientPhone?.length > 2) && (
+                    <Alert variant='danger' className='mt-2 py-0 '>
+                      <InfoAlert
+                        icon='ri-error-warning-line'
+                        iconColor='danger'
+                        message={
+                          'Ce champ doit commencer par "87" ou "88" ou "89" '
+                        }
+                        fontSize='font-75'
+                      />
+                    </Alert>
+                  )}
+                {!isValidPhone2  && (
+                    <Alert variant='danger' className='mt-2 py-0 '>
+                      <InfoAlert
+                        icon='ri-error-warning-line'
+                        iconColor='danger'
+                        message={
+                          'Ce champ doit être composé de 8 chiffres"'
+                        }
+                        fontSize='font-75'
+                      />
+                    </Alert>
+                  )}
+             
                 {
                   // isMsgErrorPhone &&
                   clientName &&

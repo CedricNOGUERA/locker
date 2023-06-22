@@ -1,6 +1,7 @@
 import { Container, Row, Col } from 'react-bootstrap'
 import BackButton from '../ui/BackButton'
 import { _imgFilter } from '../../utils/functions'
+import BadgedIcon from '../ui/BadgedIcon'
 
 const TopSearchBar = ({ topSearchBarProps }: any) => {
   const { selectedOrder, setSelectedOrder, searchOrder, setSearchOrder } = topSearchBarProps
@@ -9,7 +10,7 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
     <Container fluid className='ps-2 py-0   bg-secondary rounded-pill  my-2 '>
       <Row>
         {selectedOrder ? (
-          <Col xs={2} md={2} lg={5} className='py-0' onClick={() => setSelectedOrder('')}>
+          <Col xs={2} md={4} lg={4} className='m-auto mx-0 py-0 px-0 ps-2' onClick={() => setSelectedOrder('')}>
             <BackButton />
           </Col>
         ) : (
@@ -35,24 +36,21 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
             </div>
           </Col>
         )}
-        <Col className='bar-tite m-auto text-light text-center ps-0 pe-2 py-0'>
           {selectedOrder && (
-            <span className='fw-bold font-75'>
-              <img
-                alt='Temp icon'
-                src={
-                  'https://img.icons8.com/color/42/' +
-                  _imgFilter(selectedOrder?.bookingSlot?.slot.temperatureZone?.keyTemp) +
-                  '.png'
-                }
-                style={{ width: '30px', height: '30px' }}
-                className='align-middle me-2'
-              />
+            <>
+        <Col xs={2} md={1} className='m-auto mx-0 py-0 px-0 ps-2'>
+            <BadgedIcon slot={selectedOrder?.bookingSlot} borderColor="secondary" imgSize="30px" />
+           
+        </Col>
+       
+        <Col xs={8} md={4} lg={5} className='bar-tite m-auto ms-md-2 text-light text-center text-md-start ps-0 pe-2 py-0'>
+              <span className='fw-bold font-75'>
               {selectedOrder?.barcode} - {selectedOrder?.client?.email}
             </span>
-          )}
         </Col>
-        {selectedOrder && <Col xs={2} md={2} lg={5} className='py-0'></Col>}
+            </>
+          )
+        }
       </Row>
     </Container>
   )

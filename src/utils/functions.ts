@@ -40,6 +40,26 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
     }))
   }
+  /********************************
+  * Search by regex 
+  *******************************/
+
+  export const _searchAnythingWithRegex = (searchValue: any, data: any, setFilteredOrder: any, searchField: any  ) => {
+    function escapeRegExp(str: string) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+  
+    const escapedSearchValue  = escapeRegExp(searchValue);
+    setFilteredOrder(data?.filter((order: any) => {
+      if (escapedSearchValue.length > 2) {
+
+        return order?.[searchField]?.match(new RegExp(escapedSearchValue , "i"));
+      }
+        return undefined;
+      
+
+    }))
+  }
 
 
    /********************************

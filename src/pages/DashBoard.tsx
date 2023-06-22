@@ -7,6 +7,7 @@ import AlertIsError from '../components/ui/warning/AlertIsError'
 import images from '../styles/no-order-min.png'
 import LockerService from '../service/Lockers/LockerService'
 import OrdersService from '../service/Orders/OrdersService'
+import BadgedIcon from '../components/ui/BadgedIcon'
 
 const DashBoard = () => {
   //////////////////////////
@@ -128,7 +129,7 @@ const DashBoard = () => {
         <DashBoardLoader />
       ) : allSlot?.['hydra:member']?.length > 0 ? (
         allSlot?.['hydra:member']?.map((slot: any, indx: any) => (
-          <Card
+          <Card 
             key={Math.random()}
             className='py-0 mb-3 border-0 rounded bg-secondary animate__animated'
             onClick={() => {
@@ -141,26 +142,7 @@ const DashBoard = () => {
               {' '}
               <Row className='pe-0 ps-1 w-100'>
                 <Col xs={1} className='m-auto ms-0 me-2 text-start'>
-                  <img
-                    alt='zone'
-                    src={
-                      'https://img.icons8.com/color/52/' +
-                      (slot?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                      slot?.slot?.temperatureZone?.myKey === 'C'
-                        ? 'organic-food'
-                        : slot?.slot?.temperatureZone?.keyTemp === 'FREEZE' ||
-                          slot?.slot?.temperatureZone?.myKey === 'F'
-                        ? 'winter'
-                        : (slot?.slot?.temperatureZone?.keyTemp === 'NORMAL' ||
-                            slot?.slot?.temperatureZone?.myKey === 'CA') &&
-                          'dry') +
-                      '.png'
-                    }
-                    style={{ width: '40px', height: '40px' }}
-                  />
-                  <div className='size-indicator font-65 fw-bold text-secondary'>
-                    {slot?.slot?.size}
-                  </div>
+                 <BadgedIcon slot={slot} borderColor="secondary" imgSize="40px" />
                 </Col>
                 <Col xs={7} className='m-auto ms-3 text-light text-start'>
                   <span className='dash-location font-7'>
