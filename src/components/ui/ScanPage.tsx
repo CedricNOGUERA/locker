@@ -1,4 +1,4 @@
-import { Container, Col, Alert } from 'react-bootstrap'
+import { Container, Alert } from 'react-bootstrap'
 import QrCode from '../QrCode'
 import userDataStore from '../../store/userDataStore'
 import axios from 'axios'

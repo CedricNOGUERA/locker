@@ -8,7 +8,7 @@ const BadgedIcon = ({ slot, borderColor, imgSize }: any) => {
         alt='zone'
         src={
           'https://img.icons8.com/color/52/' +
-          _imgFilter(slot?.slot.temperatureZone?.keyTemp) +
+          _imgFilter(slot?.slot?.temperatureZone?.keyTemp) +
           '.png'
         }
         style={{ width: `${imgSize}`, height: `${imgSize}` }}

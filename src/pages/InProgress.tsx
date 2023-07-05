@@ -53,8 +53,8 @@ const InProgress: React.FC = () => {
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
-      order.status === 'created' &&
-      order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore
+      order?.status === 'created' &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === selectedStore
   )
   //////////////////////////
   // UseEffect
@@ -74,10 +74,7 @@ const InProgress: React.FC = () => {
       }
       setIsLoading(false)
     }
-//  Pagination
-    // if(orderData['hydra:member']?.length > 30){
-    //   getOrderByPage()
-    // }
+
 
 
 
@@ -135,7 +132,7 @@ const InProgress: React.FC = () => {
   return (
     <Container fluid className='cde App px-0'>
       {contextHolder}
-      {(!isLogged || !userToken || !dataStore.company_name) && <Navigate to='/connexion' />}
+      {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/connexion' />}
 
       {isError ? (
         <Container className='text-center mt-5'>

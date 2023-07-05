@@ -133,7 +133,7 @@ const DashBoard = () => {
             key={Math.random()}
             className='py-0 mb-3 border-0 rounded bg-secondary animate__animated'
             onClick={() => {
-              setSelectedStore(slot?.slot?.temperatureZone?.locker?.location)
+              setSelectedStore(slot?.slot?.temperatureZone?.locker['@id'])
               setSelectedOrderCity(slot?.slot?.temperatureZone?.locker?.city)
               setSelectedItem('progress')
             }}

@@ -6,7 +6,6 @@ import BadgedIcon from '../ui/BadgedIcon'
 
 const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
 
-  const tempZone = (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FRESH" || liv?.bookingSlot.slot.temperatureZone?.myKey === "C" ) ? "organic-food" : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "FREEZE" || liv?.bookingSlot.slot.temperatureZone?.myKey === "F") ? "winter"  : (liv?.bookingSlot.slot.temperatureZone?.keyTemp === "NORMAL" || liv?.bookingSlot.slot.temperatureZone?.myKey === "CA") ? "dry" : ""
 
   return (
     <div className='list-item  ps-2 pe-3  bg-white rounded mb-3'>
@@ -25,12 +24,14 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
           {trigger === 'history' && (
             <small className='ff-agency font-75 '>
               {' '}
-              {liv?.bookingSlot?.slot?.temperatureZone.locker.location}{' '}
+              {/* {liv?.bookingSlot?.slot?.temperatureZone?.locker?.location}{' '} */}
+              {liv?.barcode}
             </small>
           )}{' '}
           {trigger !== 'history' && (
             <small className='ff-agency font-75 '>
-              {liv?.bookingSlot?.slot?.temperatureZone.locker.city} - {liv?.barcode}
+              {/* {liv?.bookingSlot?.slot?.temperatureZone?.locker?.city} - */}
+               {liv?.barcode}
             </small>
           )}
           <p className='font-75 mb-0'>

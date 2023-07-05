@@ -1,7 +1,6 @@
-import { Badge, Container } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import ItemList from './ItemList'
 import images from '../../styles/no-order-min.png'
-import userDataStore from '../../store/userDataStore'
 import React from 'react'
 
 const   OrderList = ({ orderListProps }: any) => {
@@ -18,8 +17,6 @@ const   OrderList = ({ orderListProps }: any) => {
     orderData,
     getOrderByPage,
   } = orderListProps
-  const dataStore = userDataStore((state: any) => state)
-  const [pagination, setPagination] = React.useState<boolean>(false);
 
  
 

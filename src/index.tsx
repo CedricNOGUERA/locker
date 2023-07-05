@@ -127,6 +127,10 @@ const router = createBrowserRouter([
     element: <HistoryClient />,
   },
   {
+    path: '/test',
+    element: <Test />,
+  },
+  {
     path: '/test2',
     element: <Test2 />,
   },

@@ -17,7 +17,6 @@ import '../../App.css'
 import AuthService from '../../service/Auth/AuthService'
 import UserService from '../../service/UserService'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
-import imag from '../../styles/logo512.png'
 import Swal from 'sweetalert2'
 import emailjs from '@emailjs/browser'
 import { _strRandom } from '../../utils/functions'
@@ -64,7 +63,6 @@ const Auth = () => {
   ///////////////////
   const [isNotEmail, setIsNotEmail] = useState<boolean>(false)
   const [myEmail, setMyEmail] = useState<any>('')
-  const [forgotToken, setForgotToken] = useState<any>('')
   
 
    ////////////////////
@@ -102,6 +100,7 @@ const Auth = () => {
         myData.apmAccessCode,
 
       )
+    
     // }
   }, [authLogin, myData, token])
 
@@ -169,7 +168,6 @@ console.log(myData)
         .request(config)
         .then((response: any) => {
           console.log((response.data.token))
-          setForgotToken(response.data.token)
           authLogin(false, null, null, null, null, null, null, response.data.token)
 
           Swal.fire({
@@ -189,29 +187,27 @@ console.log(myData)
         })
 
      
-      // sendEmail()
       handleClose()
       setMyEmail('')
-      // authLogin(false, null, null, null, null, null, null, myToken)
     }
   }
 
-  const sendEmail = () => {
-    console.log(form.current.email?.value)
+  // const sendEmail = () => {
+  //   console.log(form.current.email?.value)
 
-    emailjs
-      .sendForm('invoiceitl_service', 'template_pnr0mid', form?.current, 'GivYhKQYsq1vBus6G')
-      .then(
-        (result) => {
-          console.log(form?.current)
-          console.log(result)
-        },
-        (error) => {
-          console.log(error.text)
-          alert(error.text)
-        }
-      )
-  }
+  //   emailjs
+  //     .sendForm('invoiceitl_service', 'template_pnr0mid', form?.current, 'GivYhKQYsq1vBus6G')
+  //     .then(
+  //       (result) => {
+  //         console.log(form?.current)
+  //         console.log(result)
+  //       },
+  //       (error) => {
+  //         console.log(error.text)
+  //         alert(error.text)
+  //       }
+  //     )
+  // }
 
 
   const formProps = {handleSubmit, register, errors, signUp, isView, setIsView, handleShow, isError, codeError, msgError, isLoadingAuth}
@@ -227,10 +223,9 @@ console.log(myData)
         <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
           <Card.Body className=''>
             <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
-              {/* <img alt='Conteneur' src={imag} width={80} height={80} /> */}
             </div>
             <div className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
-              OVER BOX{/* DRIVE BOX */}
+              OVER BOX
             </div>
             <AuthForm formProps={formProps} />
           </Card.Body>

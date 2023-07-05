@@ -22,7 +22,7 @@ import userDataStore from '../../store/userDataStore'
 import Swal from 'sweetalert2'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
-import { _searchAnythingWithRegex, _searchWithRegex, _strRandom } from '../../utils/functions'
+import { _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
@@ -32,6 +32,7 @@ import InfoAlert from '../../components/ui/warning/InfoAlert'
 import BackButton from '../../components/ui/BackButton'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
+import imagLogo from '../../styles/carrefour-logo.png'
 
 
 
@@ -112,9 +113,9 @@ const NewOrder = () => {
   const [codeError, setCodeError] = React.useState<any>()
 
   
-  /////
-  //Regex pour vérifier que le numéro de téléphone du client commence par 87 89
-  ////
+  ////////////////////////
+  //Regex pour vérifier que le numéro de téléphone du client commence par 87 ou 88 ou 89
+  ///////////////////////
   const regex = /^(87|89|88)\d+$/;
 
   //////////////////////////
@@ -173,7 +174,6 @@ const NewOrder = () => {
   // Events
   /////////////////////////
 
-
   const getClients = (token: any) => {
     ClientService.allClients(token)
       .then((response: any) => {
@@ -198,7 +198,6 @@ const NewOrder = () => {
         setIsError(true)
         setMsgError(getError(error))
         setCodeError(error.status)
-        // setCodeError(error.response.data.code)
       })
   }
 
@@ -214,10 +213,9 @@ const NewOrder = () => {
         setMsgError(getError(error))
         setCodeError(error.status)
 
-        // setCodeError(error.response.data.code)
       })
   }
-
+  
   const popUpError = (code: any, text: any) => {
     Swal.fire({
       position: 'top-end',
@@ -297,21 +295,13 @@ const NewOrder = () => {
             destination: {
               apm: orderStore?.lockerId,
             },
-            // slotSize: slotSizes[indx],
             receiveCode: `${receiveCode}`,
 
             multiOrder: {
               code: multiOrderCode,
               itemCount: parseInt(qty),
             },
-            // extra: {
-            //   receiveCodeAlt: receiveCodeAlt,
-            //   companyId: orderStore.companyId,
-            // },
-            // dropOff: {
-            //   code: randomCodeMultiOrder + (indx + 1),
-            //   type: 'SEND',
-            // },
+            
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: bookingSlotIds[indx],
             // temperatureZonePredefined: tempZones[indx],
@@ -333,7 +323,6 @@ const NewOrder = () => {
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty) / parseInt(qty),
             products: [productDetail[indx]],
-            // products: products?.split(','),
           }))
 
     if (ageRestriction === true) {
@@ -345,7 +334,7 @@ const NewOrder = () => {
         )
       }
     }
-
+    
     if (parseInt(qty) === 1) {
       let config = {
         method: 'post',
@@ -360,6 +349,7 @@ const NewOrder = () => {
       axios
         .request(config)
         .then((response) => {
+          console.log(response)
           newOrderDelete()
           setTempZones([])
           setSlotSizes([])
@@ -391,7 +381,7 @@ const NewOrder = () => {
           })
         })
         .catch((error) => {
-          // console.log(error.message)
+          console.log(error)
           setMsgError(getError(error))
           setIsValid(false)
           setQty('')
@@ -484,6 +474,7 @@ const NewOrder = () => {
         })
     }
   }
+
   const newOrderModal = async (e: any) => {
     e.preventDefault()
 
@@ -607,7 +598,7 @@ const NewOrder = () => {
   const filteredLocker = (locker: any) => {
     setChosenLocker(
       allSlot['hydra:member'].filter(
-        (slots: any) => slots.slot.temperatureZone.locker.location === locker
+        (slots: any) => slots?.slot?.temperatureZone?.locker?.location === locker
       )
     )
   }
@@ -633,15 +624,15 @@ const NewOrder = () => {
     newTabBooking[indx] = zone['@id']
     setBookingSlotIds(newTabBooking)
     newOrderRegister(
-      zone.slot.temperatureZone.locker['@id'],
-      zone.slot.temperatureZone.locker.location,
+      zone?.slot?.temperatureZone?.locker['@id'],
+      zone?.slot?.temperatureZone?.locker?.location,
       bookingSlotIds,
-      zone.company['@id'],
-      zone.company.name,
-      zone.slot.temperatureZone.locker.type,
-      dataStore.id,
+      zone?.company['@id'],
+      zone?.company?.name,
+      zone?.slot?.temperatureZone?.locker?.type,
+      dataStore?.id,
       tempZones,
-      zone.slot?.temperatureZone?.myKey,
+      zone?.slot?.temperatureZone?.myKey,
       slotSizes,
       parseInt(qty),
       ageRestriction === true ? 18 : 0
@@ -724,14 +715,9 @@ const NewOrder = () => {
   const slotAvailability = allSlot?.['hydra:member']?.filter(
     (lockers: any) => lockers?.slot?.temperatureZone?.locker['@id'] === chosenLocker[0]?.slot?.temperatureZone?.locker['@id'])
     ?.filter((slot: any) => (slot?.slot?.temperatureZone?.keyTemp === "FREEZE"))
-    ?.filter((slot: any) => (slot?.slot?.size === "S"))
+    ?.filter((slot: any) => (slot?.slot?.size === "M"))
   
-    //   ?.reduce((acc: any, current: any) => 
-  //   acc + current.available
-  // ,0)
 
-  console.log(slotAvailability)
- 
  
   return (
     <div>
@@ -823,8 +809,8 @@ const NewOrder = () => {
                   onClick={() => {
                     setTrigger2(false)
                     setProductDetail([])
-                    setClientPhone("")
-                    setChoosedPhone("")
+                    setClientPhone('')
+                    setChoosedPhone('')
                   }}
                 >
                   <BackButton />
@@ -872,7 +858,7 @@ const NewOrder = () => {
                   className='text-light pt-1 pe-4 pe-sm-2 pe-md-2 mb-3 border-0 rounded bg-secondary animate__animated'
                   onClick={() => {
                     filteredLocker(locker)
-                    setAvailableSlot(locker.available)
+                    setAvailableSlot(locker?.available)
                   }}
                 >
                   <Row className='px-1 px-sm-3 pt-'>
@@ -887,82 +873,93 @@ const NewOrder = () => {
                             (lock: any) =>
                               lock?.slot?.temperatureZone?.keyTemp ===
                               slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                          )?.length === 1
-                          ? 8
-                          : slotLocationTab(locker)?.filter(
-                              (lock: any) =>
-                                lock?.slot?.temperatureZone?.keyTemp ===
-                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                            )?.length === 2
+                          )?.length === 3
+                          ? 5
+                          : allSlot?.['hydra:member']
+                              ?.filter(
+                                (lockers: any) =>
+                                  lockers?.slot?.temperatureZone?.locker?.location === locker
+                              )
+                              ?.filter(
+                                (lock: any) =>
+                                  lock?.slot?.temperatureZone?.keyTemp ===
+                                  slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                              )?.length === 2
                           ? 7
-                          : 5
+                          : 8
                       }
                       className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-center'
                     >
-                      {locker}
+                      <Row>
+                        <Col xs={2}>
+                          <div className=' m-auto'>
+                            <img src={imagLogo} alt='logo' width={30} />
+                            {/* {dataStore.company_name} */}
+                          </div>
+                        </Col>
+                        <Col>{locker}</Col>
+                      </Row>
                     </Col>
                     <Col
                       className=''
-                      xs={
-                        allSlot?.['hydra:member']
-                          ?.filter(
-                            (lockers: any) =>
-                              lockers?.slot?.temperatureZone?.locker?.location === locker
-                          )
-                          ?.filter(
-                            (lock: any) =>
-                              lock?.slot?.temperatureZone?.keyTemp ===
-                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                          )?.length === 1
-                          ? 4
-                          : slotLocationTab(locker)?.filter(
-                              (lock: any) =>
-                                lock?.slot?.temperatureZone?.keyTemp ===
-                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                            )?.length === 2
-                          ? 5
-                          : 7
-                      }
-                      sm={
-                        allSlot?.['hydra:member']
-                          ?.filter(
-                            (lockers: any) =>
-                              lockers?.slot?.temperatureZone?.locker?.location === locker
-                          )
-                          ?.filter(
-                            (lock: any) =>
-                              lock?.slot?.temperatureZone?.keyTemp ===
-                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                          )?.length === 1
-                          ? 3
-                          : slotLocationTab(locker)?.filter(
-                              (lock: any) =>
-                                lock?.slot?.temperatureZone?.keyTemp ===
-                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                            )?.length === 2
-                          ? 4
-                          : 5
-                      }
-                      md={
-                        allSlot?.['hydra:member']
-                          ?.filter(
-                            (lockers: any) =>
-                              lockers?.slot?.temperatureZone?.locker?.location === locker
-                          )
-                          ?.filter(
-                            (lock: any) =>
-                              lock?.slot?.temperatureZone?.keyTemp ===
-                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                          )?.length === 1
-                          ? 2
-                          : slotLocationTab(locker)?.filter(
-                              (lock: any) =>
-                                lock?.slot?.temperatureZone?.keyTemp ===
-                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                            )?.length === 2
-                          ? 3
-                          : 3
-                      }
+                      // xs={
+                      //   slotLocationTab(locker)
+                      //     ?.filter(
+                      //       (lock: any) =>
+                      //         lock?.slot?.temperatureZone?.keyTemp ===
+                      //         slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                      //     )
+                      //     ?.length === 1
+                      //     ? 4
+                      //     :
+                      //      slotLocationTab(locker)?.filter(
+                      //         (lock: any) =>
+                      //           lock?.slot?.temperatureZone?.keyTemp ===
+                      //           slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                      //       )?.length === 2
+                      //     ? 5
+                      //     : 7
+                      // }
+                      // sm={
+                      //   allSlot?.['hydra:member']
+                      //     ?.filter(
+                      //       (lockers: any) =>
+                      //         lockers?.slot?.temperatureZone?.locker?.location === locker
+                      //     )
+                      //     ?.filter(
+                      //       (lock: any) =>
+                      //         lock?.slot?.temperatureZone?.keyTemp ===
+                      //         slotLocationTab(locker[indx])?.slot?.temperatureZone?.keyTemp
+                      //     )?.length === 1
+                      //     ? 3
+                      //     : slotLocationTab(locker)?.filter(
+                      //         (lock: any) =>
+                      //           lock?.slot?.temperatureZone?.keyTemp ===
+                      //           slotLocationTab(locker[indx])?.slot?.temperatureZone?.keyTemp
+                      //       )?.length === 2
+                      //     ? 4
+                      //     : 5
+                      // }
+                      // md={
+                      //   allSlot?.['hydra:member']
+                      //     ?.filter(
+                      //       (lockers: any) =>
+                      //         lockers?.slot?.temperatureZone?.locker?.location === locker
+                      //     )
+                      //     ?.filter(
+                      //       (lock: any) =>
+                      //         lock?.slot?.temperatureZone?.keyTemp ===
+                      //         slotLocationTab(locker[indx])?.slot?.temperatureZone?.keyTemp
+                      //     )?.length === 1
+                      //     ? 2
+                      //     : slotLocationTab(locker)?.filter(
+                      //         (lock: any) =>
+                      //           lock?.slot?.temperatureZone?.keyTemp ===
+                      //           slotLocationTab(locker[indx])?.slot?.temperatureZone?.keyTemp
+                      //       )?.length === 2
+                      //     ? 3
+                      //     : 3
+                      // }
                     >
                       {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
                         <div
@@ -1043,7 +1040,7 @@ const NewOrder = () => {
                             lockers?.slot?.temperatureZone?.locker['@id'] ===
                             chosenLocker[0]?.slot?.temperatureZone?.locker['@id']
                         )
-                        ?.reduce((acc: any, current: any) => acc + current.available, 0)}
+                        ?.reduce((acc: any, current: any) => acc + current?.available, 0)}
                       // max={4}
                       placeholder='Nombre de panier*'
                       value={qty}
@@ -1096,28 +1093,28 @@ const NewOrder = () => {
                                 value={JSON.stringify(lockers)}
                                 className={`text-light ${
                                   lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                                  lockers?.slot.temperatureZone?.myKey === 'C'
+                                  lockers?.slot?.temperatureZone?.myKey === 'MT'
                                     ? 'bg-succes'
                                     : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                      lockers?.slot.temperatureZone?.myKey === 'F'
+                                      lockers?.slot?.temperatureZone?.myKey === 'LT'
                                     ? 'bg-inf'
                                     : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                        lockers?.slot.temperatureZone?.myKey === 'CA') &&
+                                        lockers?.slot?.temperatureZone?.myKey === 'CA') &&
                                       'bg-warnin'
                                 }`}
                                 disabled={lockers.available < 1 ? true : false}
                               >
                                 {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                                lockers?.slot.temperatureZone?.myKey === 'C'
+                                lockers?.slot?.temperatureZone?.myKey === 'MT'
                                   ? 'Zone Fraîche'
                                   : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                    lockers?.slot.temperatureZone?.myKey === 'F'
+                                    lockers?.slot?.temperatureZone?.myKey === 'LT'
                                   ? 'Zone Congelée'
                                   : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                      lockers?.slot.temperatureZone?.myKey === 'CA') &&
+                                      lockers?.slot?.temperatureZone?.myKey === 'CA') &&
                                     'Zone Ambiante'}{' '}
                                 {lockers?.slot.size}- {lockers?.available}{' '}
-                                {lockers.available > 1 ? 'casiers' : 'casier'}
+                                {lockers?.available > 1 ? 'casiers' : 'casier'}
                               </option>
                             ))}
                           </Form.Select>
@@ -1166,7 +1163,10 @@ const NewOrder = () => {
               <form
                 onSubmit={(e) => {
                   newOrderModal(e)
-                  if ((clientPhone?.length !== 8 && choosedPhone === "") || (choosedPhone?.length !== 8 && clientPhone === "")) {
+                  if (
+                    (clientPhone?.length !== 8 && choosedPhone === '') ||
+                    (choosedPhone?.length !== 8 && clientPhone === '')
+                  ) {
                     e.preventDefault()
                     setIsValidPhone2(false)
                   } else {
@@ -1347,32 +1347,26 @@ const NewOrder = () => {
                     </DropdownButton>
                   )}
                 </InputGroup>
-                {!isValidPhone &&
-                  ( clientPhone?.length > 2) && (
-                    <Alert variant='danger' className='mt-2 py-0 '>
-                      <InfoAlert
-                        icon='ri-error-warning-line'
-                        iconColor='danger'
-                        message={
-                          'Ce champ doit commencer par "87" ou "88" ou "89" '
-                        }
-                        fontSize='font-75'
-                      />
-                    </Alert>
-                  )}
-                {!isValidPhone2  && (
-                    <Alert variant='danger' className='mt-2 py-0 '>
-                      <InfoAlert
-                        icon='ri-error-warning-line'
-                        iconColor='danger'
-                        message={
-                          'Ce champ doit être composé de 8 chiffres"'
-                        }
-                        fontSize='font-75'
-                      />
-                    </Alert>
-                  )}
-             
+                {!isValidPhone && clientPhone?.length > 2 && (
+                  <Alert variant='danger' className='mt-2 py-0 '>
+                    <InfoAlert
+                      icon='ri-error-warning-line'
+                      iconColor='danger'
+                      message={'Ce champ doit commencer par "87" ou "88" ou "89" '}
+                      fontSize='font-75'
+                    />
+                  </Alert>
+                )}
+                {!isValidPhone2 && (
+                  <Alert variant='danger' className='mt-2 py-0 '>
+                    <InfoAlert
+                      icon='ri-error-warning-line'
+                      iconColor='danger'
+                      message={'Ce champ doit être composé de 8 chiffres"'}
+                      fontSize='font-75'
+                    />
+                  </Alert>
+                )}
                 {
                   // isMsgErrorPhone &&
                   clientName &&

@@ -9,6 +9,8 @@ import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
 import UserQrcode from '../ui/modals/UserQrcode'
 
+// import imagLogo from '../../styles/carrefour-logo.png'
+import imagLogo from '../../../src/styles/carrefour-logo.png'
 interface headerProps {
   title: string
 }
@@ -61,7 +63,10 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
             ></i>
           </Col>
           <Col xs={6} sm={8} className='ff-agency m-auto text-center pb-2 '>
-            <div className='font-75 text-light'>{dataStore.company_name} </div>
+            <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>
+              <img src={imagLogo} alt="logo" width={30}/>
+              {/* {dataStore.company_name} */}
+            </div>
             <div className=''>{title}</div>
           </Col>
           <Col className='pb-2 company-name align-bottom  text-end align-middle animate__animated animate__bounceIn top-menu fw-bold'>
@@ -101,22 +106,6 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
-         
-          {/* <Container className='mb-3'>
-            <Link
-              className='text-decoration-none text-light'
-              to='/historique'
-              onClick={handleCloseOffcanvas}
-            >
-              <Row className='menu-link'>
-                <Col xs={2}>
-                  {' '}
-                  <i className='ri-history-line fs-5'></i>
-                </Col>{' '}
-                <Col className='m-auto user-name'>Historique</Col>
-              </Row>
-            </Link>
-          </Container> */}
           <Container className='mb-3'>
             <Link
               className='text-decoration-none text-light'

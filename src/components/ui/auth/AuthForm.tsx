@@ -80,9 +80,9 @@ const AuthForm= ({ formProps }: any) => {
       {isError && (
         <AlertIsError title={`Erreur : ${codeError}`} msg={msgError} colorIcon='danger' />
       )}
-      {/* todo: mettre en place l'envoi d'email
+      {/* todo: mettre en place l'envoi d'email */}
       
-      <p className='text-light text-end font-75' onClick={handleShow}>
+      {/* <p className='text-light text-end font-75' onClick={handleShow}>
         <u>Mot de passe oublié ?</u>
       </p> */}
 
