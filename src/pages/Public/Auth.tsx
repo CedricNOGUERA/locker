@@ -11,7 +11,7 @@ import axios from 'axios'
 import {  Navigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import userDataStore from '../../store/userDataStore'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Loading from '../../components/ui/Loading'
 import '../../App.css'
 import AuthService from '../../service/Auth/AuthService'
@@ -20,6 +20,11 @@ import InfoAlert from '../../components/ui/warning/InfoAlert'
 import Swal from 'sweetalert2'
 import { _strRandom } from '../../utils/functions'
 import AuthForm from '../../components/ui/auth/AuthForm'
+import useWebInstallPrompt from '../../hooks/useWebInstallPrompt';
+import imagLogo from '../../styles/logo512.png'
+
+
+
 
 type Inputs = {
   userName: string
@@ -73,16 +78,50 @@ const Auth = () => {
   const myToken = _strRandom('popopopopop').toLocaleUpperCase()
 
 
+
+
+  const [showModal, setShowModal] = React.useState<boolean>(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+
+  const [deferredPrompt, setDeferredPrompt] = React.useState<any>();
+  
+  const isAndroid = /Android/i.test(navigator.userAgent);
+
+  const [webInstallPrompt, handleWebInstallDeclined, handleWebInstallAccepted] = useWebInstallPrompt();
    ////////////////////
   //UseEffect
   ///////////////////
-  useEffect(() => {
+
+  React.useEffect(() => {
+    const handleBeforeInstallPrompt: any = (event:any) => {
+      
+      event.preventDefault();
+      setDeferredPrompt(event)
+      if (event.displayMode !== 'browser') {
+
+        if (webInstallPrompt && isAndroid) {
+          handleShowModal()
+          // handleWebInstallAccepted()
+        }
+      }
+    };
+
+    console.log(deferredPrompt)
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+   useEffect(() => {
     if (token && token?.length > 0) {
       getMyData(token)
     }
   }, [token])
 
-  useEffect(() => {
+  React.useEffect(() => {
     // if (token && token?.length > 0) {
       authLogin(
         true,
@@ -191,6 +230,43 @@ const Auth = () => {
 
   return (
     <Container fluid className='auth-cont-sup col-12 px-0 py-0 bg-'>
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header className='text-center'>
+        <div
+          style={{
+            height: '60px',
+            width: '100%',
+            borderTopRightRadius: '50%',
+            borderTopLeftRadius: '50%',
+            marginTop: '-50px',
+          }}
+        >
+          <img
+            src={imagLogo}
+            alt='1euro = 10 points'
+            className='Fidelity-messageMacaroon'
+            width={80}
+            style={{
+              borderTopRightRadius: '50%',
+              borderTopLeftRadius: '50%',
+              borderColor: "#aaa",
+              backgroundColor: '#fff',
+            }}
+          />
+          </div>
+        </Modal.Header>
+        <Modal.Body>Installer l'application sur votre téléphone!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Fermer
+          </Button>
+          <Button variant="primary" onClick={() => {handleWebInstallAccepted()
+          handleCloseModal()
+          }}>
+            Installer
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Container fluid className='auth-cont col-12 col-md-12 col-lg-6 px-0 bg-secondary'>
         {dataStore.token && dataStore.company_name && <Navigate to='/dashboard' />}
         {isLoading ? (
@@ -199,12 +275,22 @@ const Auth = () => {
           <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
             <Card.Body className=''>
               <div className='logo-app text-center text-light animate__animated animate__rotateIn'></div>
-              <div className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
+              <div
+              onClick={handleShowModal} 
+               className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
                 OVER BOX
               </div>
               <AuthForm formProps={formProps} />
+              {isAndroid && 
+              // webInstallPrompt &&
+              <button 
+              onClick={handleWebInstallAccepted}
+              >Installez</button>
+            }
             </Card.Body>
+          
           </Card>
+          
         )}
         <Modal show={show} onHide={handleClose} centered className='rounded-0'>
           <Modal.Header className='border-bottom-0'>
@@ -257,7 +343,9 @@ const Auth = () => {
             </Modal.Footer>
           </Form>
         </Modal>
+        
       </Container>
+      
     </Container>
   )
 }
