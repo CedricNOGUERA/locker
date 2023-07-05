@@ -8,7 +8,7 @@ export const users = [
     },
     {
         "id": "123456789",
-        "username": "Fred",
+        "username": "Frédéric",
         "password": "pass@2024",
         "status": false,
         "company_id": "321321",

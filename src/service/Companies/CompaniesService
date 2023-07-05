@@ -1,0 +1,14 @@
+import axios from "axios";
+
+
+const API_URL = process.env.REACT_APP_END_POINT
+
+class CompaniesService {
+    companyBId(token: any, id: any) {
+        return axios.get(API_URL + "companies" + id, {headers: {"Authorization": "Bearer " + token}})
+    }
+      
+}
+
+
+export default new CompaniesService();

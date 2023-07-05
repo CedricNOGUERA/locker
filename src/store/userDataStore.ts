@@ -1,9 +1,9 @@
 
 
 import {create} from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
-const useDataStore = create(
+const userDataStore = create(
   persist(
     (set) => ({
       // initial state
@@ -11,6 +11,11 @@ const useDataStore = create(
       id: null,
       firstname: null,
       company_id: null,
+      cleveronCompany_id: null,
+      company_name: null,
+      token: null,
+      subToken: null,
+      apm_access_code: null,
 
 
       // methods for manipulating state
@@ -18,7 +23,12 @@ const useDataStore = create(
         isLogged: boolean,
         id: string,
         firstname: string,
-        company_id: string,
+        company_id: number,
+        cleveronCompany_id: string,
+        company_name: string,
+        token: any,
+        subToken: any,
+        apm_access_code: any,
         
       ) =>
         set((state: any) => ({
@@ -26,6 +36,11 @@ const useDataStore = create(
           id: id,
           firstname: firstname,
           company_id: company_id,
+          cleveronCompany_id: cleveronCompany_id,
+          company_name: company_name,
+          token: token,
+          subToken: subToken,
+          apm_access_code: apm_access_code,
 
         })),
       authLogout: () =>
@@ -34,13 +49,18 @@ const useDataStore = create(
           id: null,
           firstname: null,
           company_id: null,
+          cleveronCompany_id: null,
+          company_name: null,
+          token: null,
+          subToken: null,
+          apm_access_code: null,
         })),
     }),
     {
       name: "userLog", // unique name
-      getStorage: () => sessionStorage, // (optional) by default, 'localStorage sessionStorage' is used
+      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage sessionStorage' is used
     }
   )
 );
 
-export default useDataStore;
+export default userDataStore;

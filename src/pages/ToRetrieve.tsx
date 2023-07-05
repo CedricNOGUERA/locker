@@ -1,93 +1,160 @@
-import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
-import Loading from "../components/ui/Loading";
-import { commandes } from "../data/commandes";
-import userDataStore from "../store/userDataStore";
-import Orderslist from "../components/ui/Orderslist";
-import "../App.css";
-import "animate.css";
-import QrCode from "../components/QrCode";
+import React from 'react'
+import { Navigate, useOutletContext } from 'react-router-dom'
+import userDataStore from '../store/userDataStore'
+import { message } from 'antd'
+import { Container } from 'react-bootstrap'
+import { _searchWithRegex } from '../utils/functions'
+import SearchBar from '../components/ui/SearchBar'
+import OrderList from '../components/ui/OrderList'
+import ScanPage from '../components/ui/ScanPage'
+import AlertIsError from '../components/ui/warning/AlertIsError'
+import PlaceHolder from '../components/ui/loading/PlaceHolder'
+import '../App.css'
+import 'animate.css'
+import OrdersService from '../service/Orders/OrdersService'
 
-const ToRetrieve = () => {
-  const isLogged = userDataStore((state: any) => state.isLogged);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [orderData, setOrderData] = React.useState<any>([]);
-  const [selectedOrder, setSelectedOrder] = React.useState<any>("");
+const ToRetrieve: React.FC = () => {
+  //////////////////////////
+  // booleans States
+  /////////////////////////
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isError, setIsError] = React.useState<boolean>(false)
 
+  //////////////////////////
+  // Store & context state
+  /////////////////////////
+  const isLogged = userDataStore((state: any) => state.isLogged)
+  const dataStore = userDataStore((state: any) => state)
+  const [
+    selectedStore,
+    setSelectedStore,
+    orderData,
+    setOrderData,
+    selectedOrderCity,
+    setSelectedOrderCity,
+    allSlot,
+    setAllSlot,
+    selectedItem,
+    setSelectedItem,
+  ] = useOutletContext<any>()
+  const [messageApi, contextHolder] = message.useMessage()
+
+  //////////////////////////
+  // States
+  /////////////////////////
+  const [selectedOrder, setSelectedOrder] = React.useState<any>('')
+  const [searchOrder, setSearchOrder] = React.useState<any>('')
+  const [filteredOrder, setFilteredOrder] = React.useState<any>([])
+
+  const newStatus = 'operout'
+
+  const orderByStatus = orderData['hydra:member']?.filter(
+    (order: any) =>
+      order.status === 'overtime' &&
+      order.bookingSlot.slot.temperatureZone.locker['@id'] === selectedStore
+  )
+
+  //////////////////////////
+  // UseEffect
+  /////////////////////////
 
   React.useEffect(() => {
-    if (commandes) {
-      setIsLoading(false);
-      setOrderData(commandes);
-    }
-  }, []);
+    setIsLoading(true)
+    setSelectedItem('retrieve')
+  }, [])
 
+  React.useEffect(() => {
+    if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
+      setIsLoading(false)
+    } else {
+      if (orderData && orderData['hydra:member']?.length < 0) {
+        setIsError(true)
+        setIsLoading(false)
+      }
+      setIsLoading(false)
+    }
+  }, [orderData])
+
+  React.useEffect(() => {
+    _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
+  }, [searchOrder])
+
+  const getOrderByPage = (token: any, page: any) => {
+    OrdersService.ordersByPage(token, page)
+      .then((response: any) => {
+        setIsLoading(false)
+        setOrderData(response.data)
+      })
+      .catch((error: any) => {
+        setIsLoading(false)
+      })
+  }
+
+  //////////////////////////
+  // Component Props
+  /////////////////////////
+  const searchBarProps = {
+    searchOrder,
+    setSearchOrder,
+    selectedStore,
+    setSelectedStore,
+    selectedOrderCity,
+    setSelectedOrderCity,
+    allSlot,
+  }
+
+  const orderListProps = {
+    filteredOrder,
+    setSelectedOrder,
+    searchOrder,
+    setSearchOrder,
+    orderByStatus,
+    orderData,
+    getOrderByPage,
+  }
+
+  const scanPageProps = {
+    selectedOrder,
+    orderData,
+    setOrderData,
+    messageApi,
+    setSelectedOrder,
+    newStatus,
+  }
 
   return (
-    <div className="cde App">
-      {!isLogged && <Navigate to="/connexion" />}
-      {isLoading ? (
-        <Loading />
+    <Container fluid className='cde App px-0'>
+      {contextHolder}
+      {(!isLogged || !dataStore.token || !dataStore.company_name) && (
+        <Navigate to='/connexion' />
+      )}
+
+      {isError ? (
+        <Container className='text-center mt-5'>
+          <AlertIsError
+            title="Une erreur s'est produite"
+            msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
+            colorIcon='danger'
+          />
+        </Container>
+      ) : isLoading ? (
+        <Container className='text-center mt-2'>
+          <PlaceHolder paddingYFirst='3' />
+        </Container>
       ) : (
         <>
           {!selectedOrder ? (
-            <Container className="bg-info animate__animated animate__backInLeft  ">
-              <Row className="list-cde ps-3 pb-4">
-                {orderData &&
-                  orderData?.map((cde: any) => (
-                    <Orderslist key={cde?.id} cde={cde} 
-                    setSelectedOrder={setSelectedOrder}
-                    />
-                ))}
-            </Row>
-          </Container>
-          ) : (
             <>
-              <Container className="my-2">
-                <i
-                  className="ri-arrow-left-line text-light fs-4 bg-secondary rounded"
-                  onClick={() => setSelectedOrder("")}
-                ></i>
-              </Container>
-
-              <Container className="">
-                {/* Pour cette commande il y a: */}
-                <div className="bg-secondary text-center text-light rounded-pill shadow-lg py-1">
-                  <i className="ri-temp-cold-line fs-4 align-middle"></i> : <small className="align-middle">frais & ambiant</small>
-                  <br />
-                  <i className="ri-shopping-basket-2-line fs-4 align-middle"></i> : <small className="align-middle"> 1 frais et 1
-                  ambiant</small>
-                </div>
-                <div className="bg-light text-center"></div>
-              </Container>
-
-              <Container className="text-center py-0 ">
-                <small className="text-danger">haut du qrcode</small>{" "}
-                <div className="bounced-arrow justify-content-around">
-                  <i className="ri-arrow-up-fill "></i>
-                  <i className="ri-arrow-up-fill "></i>
-                  <i className="ri-arrow-up-fill "></i>
-                </div>
-              </Container>
-              <Container className="bg-light p-2 w-75 mt-2  animate__animated animate__fadeInDown">
-                <QrCode orderNum={selectedOrder} />
-              </Container>
-              <Container className="text-center text-danger">
-                <small>Respectez le sens du qrcode lors du scan</small>
-              </Container>
-              <Container className="px-2 text-center mt-4">
-                <div className="bg-secondary text-light rounded-pill shadow">
-                  Saisie manuelle :{" "}
-                  <p className="text-info fw-bold">{selectedOrder}</p>
-                </div>
-              </Container>
+              <SearchBar searchBarProps={searchBarProps} />
+              <OrderList orderListProps={orderListProps} />
             </>
+          ) : (
+            <ScanPage scanPageProps={scanPageProps} />
           )}
         </>
       )}
-    </div>
-  );
-};
+    </Container>
+  )
+}
 
-export default ToRetrieve;
+export default ToRetrieve

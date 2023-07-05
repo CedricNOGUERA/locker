@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Lockery",
+  "name": "Lockery",
+  "lang": "fr",
   "icons": [
     {
       "src": "favicon.ico",
@@ -24,6 +25,7 @@
       "purpose": "maskable"
     }
   ],
+  "id": "/?source=pwa",
   "start_url": "/?source=pwa",
   "display": "standalone",
   "theme_color": "#000000",

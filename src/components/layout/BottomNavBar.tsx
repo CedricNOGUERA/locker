@@ -1,47 +1,110 @@
-import { Container, Nav } from "react-bootstrap";
+import React from 'react'
+import { Container, Nav } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import imag from '../../../src/styles/imagePlus4.png'
+import UserQrcode from '../ui/modals/UserQrcode'
 
-const BottomNavBar = () => {
+const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem }: any) => {
+  //////////////////////
+  //Auth deliverer modal
+  //////////////////////
+  const [show, setShow] = React.useState(false)
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
+
+  ///////////////////////
+  //Filter by status
+  ///////////////////////
+  const retrieve = orderData['hydra:member']?.filter(
+    (order: any) =>
+      order?.status === 'overtime' &&
+      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
+  )
+  const progress = orderData['hydra:member']?.filter(
+    (order: any) =>
+      order?.status === 'created' &&
+      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
+  )
+
+  /////////////////////
+  //onSelect text become white
+  /////////////////////
+  const handleSelect = (item: any) => {
+    setSelectedItem(item)
+  }
+
   return (
-    <Container fluid className="bottom-navbar bg-secondary py-1">
-      <Nav className="justify-content-evenly" activeKey="/home">
-      <Nav.Item className="nav-item text-center">
-          <Nav.Link
-            href="orders-to-retrieve"
-            eventKey="link-2"
-            className="text-info py-1"
+    <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
+      <UserQrcode show={show} handleClose={handleClose} />
+      <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>
+        <Nav.Item className='nav-item text-center ' onClick={() => handleSelect('home')}>
+          <Link
+            to='/dashboard'
+            className={`nav-link  text-${
+              selectedItem === 'home' ? 'light' : 'info'
+            } py-1 pb-2 text-decoration-none`}
           >
-          <i className="ri-inbox-unarchive-line fs-4 text-center"></i>
-          <br/>
-            A récupérer
-          </Nav.Link>
+            <i className='ri-home-2-line fs-3 '></i>
+            <p>Accueil</p>
+          </Link>
         </Nav.Item>
-        <Nav.Item className="nav-item text-center">
-          <div className="text-center ">
-          </div>
-          <Nav.Link href="/in-progress" className="text-info py-1">
-            <i className="ri-file-list-line fs-4 "></i>
-            {/* <i className="ri-dropbox-line fs-4 "></i> */}
-            <br/>
-            En cours
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item className="nav-item text-center">
-     
-          <Nav.Link
-            href="/orders-delivered"
-            eventKey="link-1"
-            className="text-info py-1"
+        <Nav.Item className='nav-item text-center' onClick={() => handleSelect('user')}>
+          <Link
+            to='/historique'
+            className={`nav-link  text-${
+              selectedItem === 'user' ? 'light' : 'info'
+            } py-1 pb-2 text-decoration-none`}
           >
-            {/* <i className="ri-inbox-archive-fill me-2 fs-4"></i> */}
-            <i className="ri-inbox-archive-line fs-4"></i>
-            <br/>
-            Déposées
-          </Nav.Link>
+            <i className='ri-history-line fs-3'></i>
+            <p>Historique</p>
+          </Link>
         </Nav.Item>
-    
+        <Nav.Item
+          className='nav-item text-center '
+          style={{ position: 'absolute', bottom: '45px' }}
+          onClick={() => handleSelect('order')}
+        >
+          <div className='text-center '></div>
+          <Link
+            to='/nouvelle-commande'
+            className='text-info py-1 pb-5 mb-5 text-decoration-none'
+          >
+            <img alt='Plus icon' src={imag} width={52} height={52} />
+          </Link>
+        </Nav.Item>
+        <Nav.Item className='nav-item text-center'>
+          <div className='text-center '></div>
+        </Nav.Item>
+        <Nav.Item className='nav-item text-center' onClick={() => handleSelect('progress')}>
+          <Link
+            className={`nav-link px-0 text-${
+              selectedItem === 'progress' ? 'light' : 'info'
+            } py-1 pb-2 text-decoration-none`}
+            to='/in-progress'
+          >
+            <i className='ri-truck-line fs-3 '></i>
+            {progress?.length > 0 && (
+              <span className='badge rounded-pill bg-info'>{progress?.length}</span>
+            )}
+            <p>Livraisons</p>
+          </Link>
+        </Nav.Item>
+        <Nav.Item className='nav-item text-center' onClick={() => handleSelect('retrieve')}>
+          <Link
+            className={`nav-link px-0  text-${
+              selectedItem === 'retrieve' ? 'light' : 'info'
+            } py-1 pb-2 text-decoration-none`}
+            to='/orders-to-retrieve'
+          >
+            <i className='ri-inbox-unarchive-line fs-3 text-center'></i>
+            {retrieve?.length > 0 && (
+              <span className='badge rounded-pill bg-info'>{retrieve?.length}</span>
+            )}
+            <p>Retraits</p>
+          </Link>
+        </Nav.Item>
       </Nav>
     </Container>
-  );
-};
-
-export default BottomNavBar;
+  )
+}
+export default BottomNavBar
