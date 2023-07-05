@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Container, Col, Button, Alert } from 'react-bootstrap'
+import { Modal, Container, Button, Alert } from 'react-bootstrap'
 import QrCode from '../../QrCode'
 import userDataStore from '../../../store/userDataStore'
 

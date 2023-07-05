@@ -54,7 +54,7 @@ const InProgress: React.FC = () => {
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'created' &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === selectedStore
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
   //////////////////////////
   // UseEffect
@@ -74,29 +74,22 @@ const InProgress: React.FC = () => {
       }
       setIsLoading(false)
     }
-
-
-
-
   }, [orderData])
 
   React.useEffect(() => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
   }, [searchOrder])
 
-
   const getOrderByPage = (token: any, page: any) => {
-    OrdersService.ordersByPage(token, page).then((response: any) => {
-      setIsLoading(false)
-      setOrderData(response.data)
-    }).catch((error: any) => {
-      setIsLoading(false)
-      
-    })
+    OrdersService.ordersByPage(token, page)
+      .then((response: any) => {
+        setIsLoading(false)
+        setOrderData(response.data)
+      })
+      .catch((error: any) => {
+        setIsLoading(false)
+      })
   }
-
-
-
 
   //////////////////////////
   // Component Props
@@ -120,7 +113,6 @@ const InProgress: React.FC = () => {
     orderData,
     getOrderByPage,
   }
-  
 
   const scanPageProps = {
     selectedOrder,

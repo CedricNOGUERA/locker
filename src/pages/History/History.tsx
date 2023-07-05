@@ -3,7 +3,6 @@ import { useOutletContext } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 import ItemList from '../../components/ui/ItemList'
 import { _searchWithRegex } from '../../utils/functions'
-
 import images from '../../styles/no-order-min.png'
 import PlaceHolder from '../../components/ui/loading/PlaceHolder'
 import TopSearchBar from '../../components/history/TopSearchBar'

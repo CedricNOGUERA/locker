@@ -1,5 +1,8 @@
 {
-  "name": "lockery",
+  "name": "over-box",
+  "homepage": "/",
+  "author": "Cédric NOGUERA",
+  "description": "Application pour gérer les livraisons en locker",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

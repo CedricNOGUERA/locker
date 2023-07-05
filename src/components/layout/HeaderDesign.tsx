@@ -8,12 +8,12 @@ import newOrderDataStore from '../../store/newOrderDataStore'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
 import UserQrcode from '../ui/modals/UserQrcode'
-
-// import imagLogo from '../../styles/carrefour-logo.png'
 import imagLogo from '../../../src/styles/carrefour-logo.png'
+
 interface headerProps {
   title: string
 }
+
 const HeaderDesign: React.FC<headerProps> = ({ title }) => {
   //////////////////////////
   // Store states
@@ -38,7 +38,6 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
   const handleCloseOffcanvas = () => setShowOffcanvas(false)
   const handleShowOffcanvas = () => setShowOffcanvas(true)
 
-
   /////////////////////////
   //Fonction de retour en arrière
   ////////////////////////
@@ -46,7 +45,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
     window.history.back()
   }
   function refreshPage() {
-    window.location.reload();
+    window.location.reload()
   }
 
   return (
@@ -58,16 +57,13 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       >
         <Row className=' pe-0'>
           <Col className='ff-agency m-auto pb-2 '>
-            <i className={`ri-arrow-left-s-line fs-1 align-bottom`}
-            onClick={() => rtn()}
-            ></i>
+            <i className={`ri-arrow-left-s-line fs-1 align-bottom`} onClick={() => rtn()}></i>
           </Col>
-          <Col xs={6} sm={8} className='ff-agency m-auto text-center pb-2 '>
+          <Col xs={8} sm={8} className='ff-agency m-auto text-center pb-2 '>
             <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>
-              <img src={imagLogo} alt="logo" width={30}/>
-              {/* {dataStore.company_name} */}
+              <img src={imagLogo} alt='logo' width={35} />
             </div>
-            <div className=''>{title}</div>
+            <div>{title}</div>
           </Col>
           <Col className='pb-2 company-name align-bottom  text-end align-middle animate__animated animate__bounceIn top-menu fw-bold'>
             <Button variant='' onClick={handleShowOffcanvas}>
@@ -152,10 +148,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
             </Link>
           </Container>
           <Container className='mb-3'>
-            <span
-              className='text-decoration-none text-light'
-              onClick={refreshPage}
-            >
+            <span className='text-decoration-none text-light' onClick={refreshPage}>
               <Row className='menu-link'>
                 <Col xs={2}>
                   {' '}
