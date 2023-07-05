@@ -26,37 +26,9 @@ export const getError = (error: any) => {
     if (isGatewayTimeoutError(error)) {
       return handleGatewayTimeoutError(error);
     }
-    // add more error types as needed
   };
   
-  // Network errors
-//   const isNetworkError = (error: any) => {
-//     return (
-//       error.code === "ERR_NETWORK" &&
-//       (error.message === "Request failed with status code 500" ||
-//         error.message === "Network Error")
-//     );
-//   };
-  
-//   const handleNetworkError = (error: any) => {
-//     return "Error 500: Server error, contact your administrator";
-//   };
-  
-  // Bad Request errors (400)
-  // const isBadRequestError = (error: any) => {
-  //   return error.code === "ERR_BAD_REQUEST";
-  // };
-  
-  const handleBadRequestError = (error: any) => {
-    // if (error.response.statusText === "Unauthorized") {
-    //   return "Votre sesion a expirée, identifiez-vous à nouveau";
-    // }
-    if (error.response.data.message === "Invalid credentials.") {
-      return "Email ou mot de passe incorrect, réessayez";
-    }
-    // add more bad request error types as needed
-  };
-  
+
   // Unauthorized errors (401)
   const isUnauthorizedError = (error: any) => {
     return error.code === "ERR_UNAUTHORIZED";

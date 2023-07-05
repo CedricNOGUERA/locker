@@ -10,7 +10,6 @@ import { Container } from 'react-bootstrap'
 import BookingSlotservice from './service/BookingSlot/BookingSlotservice'
 
 function App() {
-
   /////////////////////
   //States
   ////////////////////
@@ -41,27 +40,25 @@ function App() {
     )
     setSelectedStore(
       allSlot?.['hydra:member']
-        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker["@id"]
+        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker['@id']
         : ''
     )
   }, [allSlot])
 
-
   /////////////////////
   //Events
   ////////////////////
- 
 
   const getallOrders = (token: any) => {
-    OrdersService.allOrders(token).then((response: any) => {
-      setIsLoading(false)
-      setOrderData(response.data)
-    }).catch((error: any) => {
-      setIsLoading(false)
-    })
+    OrdersService.allOrders(token)
+      .then((response: any) => {
+        setIsLoading(false)
+        setOrderData(response.data)
+      })
+      .catch((error: any) => {
+        setIsLoading(false)
+      })
   }
-
-
 
   const getBookingAllSlot = (token: any) => {
     BookingSlotservice.allSlot(token).then((response: any) => {
@@ -90,11 +87,15 @@ function App() {
             setAllSlot,
             selectedItem,
             setSelectedItem,
-             
           ]}
         />
       )}
-      <BottomNavBar orderData={orderData} selectedStore={selectedStore} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+      <BottomNavBar
+        orderData={orderData}
+        selectedStore={selectedStore}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+      />
     </div>
   )
 }

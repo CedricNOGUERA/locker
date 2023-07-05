@@ -1,6 +1,6 @@
 {
-  "short_name": "Lockery",
-  "name": "Lockery",
+  "short_name": "Over box",
+  "name": "Over Box",
   "lang": "fr",
   "icons": [
     {
@@ -25,8 +25,8 @@
       "purpose": "maskable"
     }
   ],
-  "id": "/?source=pwa",
-  "start_url": "/?source=pwa",
+  "id": "/",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

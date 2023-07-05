@@ -5,7 +5,6 @@ const SearchBar = ({ searchBarProps }: any) => {
   const {
     searchOrder,
     setSearchOrder,
-    selectedStore,
     setSelectedStore,
     selectedOrderCity,
     setSelectedOrderCity,
@@ -13,30 +12,16 @@ const SearchBar = ({ searchBarProps }: any) => {
   } = searchBarProps
 
   const [uniqueTab, setUniqueTab] = React.useState([])
-  const [cityTab, setCityTab] = React.useState([])
-  const [bookingData, setBookingData] = React.useState([])
 
   React.useEffect(() => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
       (locker: any) => locker?.slot?.temperatureZone?.locker
     )
-    setBookingData(bookingLocker)
     const unique: any = [...new Set(bookingLocker?.map((locker: any) => locker?.location))]
-    // const deduplicate2: any = [
-    //   ...new Set(
-    //     allSlot?.['hydra:member']?.filter(
-    //       (locker: any) =>
-    //         locker.slot?.temperatureZone?.locker?.location ===
-    //         'Entrée parking - Carrefour Punaauia'
-    //     )
-    //   ),
-    // ]
+
     setUniqueTab(unique)
 
-    const deduplicateCity: any = [
-      ...new Set(bookingLocker?.map((locker: any) => locker?.city)),
-    ]
-    setCityTab(deduplicateCity)
+   
   }, [allSlot])
 
   const filteredCity = (place: any) => {
@@ -102,9 +87,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                 title={locker}
                 onClick={() => {
                   setSelectedOrderCity(filteredCity(locker))
-                  // setSelectedStore(uniqueTabLocker[indx])
                   setSelectedStore(filteredStore(locker))
-
                 }}
               >
                 <Row className='item-menu text-secondary align-middle'>

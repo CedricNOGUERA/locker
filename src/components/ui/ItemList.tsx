@@ -24,23 +24,26 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
           {trigger === 'history' && (
             <small className='ff-agency font-75 '>
               {' '}
-              {/* {liv?.bookingSlot?.slot?.temperatureZone?.locker?.location}{' '} */}
               {liv?.barcode}
             </small>
           )}{' '}
           {trigger !== 'history' && (
             <small className='ff-agency font-75 '>
-              {/* {liv?.bookingSlot?.slot?.temperatureZone?.locker?.city} - */}
                {liv?.barcode}
             </small>
           )}
           <p className='font-75 mb-0'>
             {liv?.client?.email}
-            {trigger === 'history' && (
+            {trigger === 'history' ? (
               <>
                 {' '}
                 - <span className='text-info fw-bold'>{_getStatus(liv?.status)}</span>
               </>
+            ) : (
+              <>
+              {' '}
+              - <span className='text-info fw-bold'>{liv?.bookingSlot?.slot?.temperatureZone?.locker?.city}</span>
+            </>
             )}
           </p>
         </Col>

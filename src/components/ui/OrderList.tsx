@@ -1,9 +1,8 @@
 import { Container } from 'react-bootstrap'
 import ItemList from './ItemList'
 import images from '../../styles/no-order-min.png'
-import React from 'react'
 
-const   OrderList = ({ orderListProps }: any) => {
+const OrderList = ({ orderListProps }: any) => {
   //////////////////////////
   // Props
   /////////////////////////
@@ -14,11 +13,7 @@ const   OrderList = ({ orderListProps }: any) => {
     setSearchOrder,
     allSlot,
     orderByStatus,
-    orderData,
-    getOrderByPage,
   } = orderListProps
-
- 
 
   return (
     <Container className='px-0 animate__animated animate__backInLeft'>
@@ -41,8 +36,7 @@ const   OrderList = ({ orderListProps }: any) => {
             <img className='' alt='no order' src={images} style={{ height: '256px' }} />
           </div>
         ) : (
-        
-         orderByStatus?.map((liv: any, indx: any) => (
+          orderByStatus?.map((liv: any, indx: any) => (
             <ItemList
               key={Math.random()}
               liv={liv}
@@ -50,11 +44,9 @@ const   OrderList = ({ orderListProps }: any) => {
               setSelectedOrder={setSelectedOrder}
               setSearchOrder={setSearchOrder}
               allSlot={allSlot}
-              trigger="order"
-              />
-              
+              trigger='order'
+            />
           ))
-            
         )
       ) : (
         <div className=' text-center mt-5 pt-5'>
@@ -62,24 +54,6 @@ const   OrderList = ({ orderListProps }: any) => {
           <div className='user-name fs-3 fw-bold text-secondary'>Aucune commande</div>
         </div>
       )}
-      {/* 
-      PAGINATION
-      <Container>{(orderData['hydra:member']?.length === 30 || pagination === false) && orderByStatus?.length > 0 ? (
-        <Badge bg="warning" className='pb-2 cursor-pointer' onClick={() => {getOrderByPage(dataStore.token, 2)
-        setPagination(true)
-        }}>
-          page 2/2
-        </Badge>
-      )
-      : orderByStatus?.length > 0 && pagination === true && 
-      (
-        <Badge bg="warning" className='pb-2 cursor-pointer' onClick={() => {getOrderByPage(dataStore.token, 1)
-          setPagination(false)
-        }}>
-          ↩  retour
-        </Badge>
-      )
-      }</Container> */}
     </Container>
   )
 }

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import {
   Accordion,
   Alert,
@@ -34,11 +34,8 @@ import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import imagLogo from '../../styles/carrefour-logo.png'
 
-
-
 const NewOrder = () => {
-
-    //////////////////////////
+  //////////////////////////
   // booleans States
   /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
@@ -53,7 +50,7 @@ const NewOrder = () => {
   const [isValidPhone, setIsValidPhone] = React.useState<boolean>(true)
   const [isValidPhone2, setIsValidPhone2] = React.useState<boolean>(true)
 
-   //////////////////////////
+  //////////////////////////
   // Store & context state
   /////////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
@@ -81,7 +78,7 @@ const NewOrder = () => {
     setSelectedItem,
   ] = useOutletContext<any>()
 
-   //////////////////////////
+  //////////////////////////
   // States
   /////////////////////////
 
@@ -112,11 +109,10 @@ const NewOrder = () => {
   const [msgError, setMsgError] = React.useState<any>()
   const [codeError, setCodeError] = React.useState<any>()
 
-  
   ////////////////////////
   //Regex pour vérifier que le numéro de téléphone du client commence par 87 ou 88 ou 89
   ///////////////////////
-  const regex = /^(87|89|88)\d+$/;
+  const regex = /^(87|89|88)\d+$/
 
   //////////////////////////
   // UseEffect
@@ -124,18 +120,16 @@ const NewOrder = () => {
   React.useEffect(() => {
     getClients(dataStore.token)
   }, [])
-  
+
   React.useEffect(() => {
-   setIsValidPhone(regex.test(choosedPhone? choosedPhone : clientPhone))
+    setIsValidPhone(regex.test(choosedPhone ? choosedPhone : clientPhone))
 
-   if(clientPhone === ""){
-    setIsValidPhone2(true)
-    setIsValidPhone(true)
-  }
-
+    if (clientPhone === '') {
+      setIsValidPhone2(true)
+      setIsValidPhone(true)
+    }
   }, [clientPhone])
-  
- 
+
   React.useEffect(() => {
     if (chosenLocker) {
       if (chosenLocker?.length > availableSelect?.length) {
@@ -160,15 +154,29 @@ const NewOrder = () => {
   }, [allSlot])
 
   React.useEffect(() => {
-    _searchAnythingWithRegex(clientName, autoCompletTab['hydra:member'], setFilteredName, "name")
+    _searchAnythingWithRegex(
+      clientName,
+      autoCompletTab['hydra:member'],
+      setFilteredName,
+      'name'
+    )
   }, [clientName])
   React.useEffect(() => {
-    _searchAnythingWithRegex(clientEmail, autoCompletTab['hydra:member'], setFilteredEmail, "email")
+    _searchAnythingWithRegex(
+      clientEmail,
+      autoCompletTab['hydra:member'],
+      setFilteredEmail,
+      'email'
+    )
   }, [clientEmail])
   React.useEffect(() => {
-    _searchAnythingWithRegex(clientPhone, autoCompletTab['hydra:member'], setFilteredPhone, "phone")
+    _searchAnythingWithRegex(
+      clientPhone,
+      autoCompletTab['hydra:member'],
+      setFilteredPhone,
+      'phone'
+    )
   }, [clientPhone])
-
 
   //////////////////////////
   // Events
@@ -212,10 +220,9 @@ const NewOrder = () => {
         setIsError(true)
         setMsgError(getError(error))
         setCodeError(error.status)
-
       })
   }
-  
+
   const popUpError = (code: any, text: any) => {
     Swal.fire({
       position: 'top-end',
@@ -247,7 +254,6 @@ const NewOrder = () => {
       return Math.floor(Math.random() * (max - min + 1)) + min
     }
     const multiOrderCode = _strRandom('popopopp').toLocaleUpperCase()
-    // const receiveCodeAlt = entierAleatoire(10000000, 99999999)
     const randomCode = _strRandom('popopop').toLocaleUpperCase() + entierAleatoire(1, 9)
     const randomCodeMultiOrder = _strRandom('popopop').toLocaleUpperCase()
     const receiveCode = entierAleatoire(10000000, 99999999)
@@ -258,7 +264,7 @@ const NewOrder = () => {
       parseInt(qty) === 1
         ? {
             service: 'B2C',
-            barcode: dataStore.cleveronCompany_id + '-' + randomCode,
+            barcode: chosenLocker[0]?.company?.cleveronCompanyId + '-' + randomCode,
             bookingSlot: bookingSlotIds[0],
             destination: {
               apm: orderStore?.lockerId,
@@ -290,7 +296,11 @@ const NewOrder = () => {
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
 
-            barcode: dataStore.cleveronCompany_id + '-' + randomCodeMultiOrder + (indx + 1),
+            barcode:
+              chosenLocker[0]?.company?.cleveronCompanyId +
+              '-' +
+              randomCodeMultiOrder +
+              (indx + 1),
 
             destination: {
               apm: orderStore?.lockerId,
@@ -301,10 +311,9 @@ const NewOrder = () => {
               code: multiOrderCode,
               itemCount: parseInt(qty),
             },
-            
+
             changesTimestamp: new Date(Date.now()).toISOString(),
             bookingSlot: bookingSlotIds[indx],
-            // temperatureZonePredefined: tempZones[indx],
             clientEmail: choosedEmail
               ? choosedEmail
               : clientEmail?.email
@@ -334,7 +343,7 @@ const NewOrder = () => {
         )
       }
     }
-    
+
     if (parseInt(qty) === 1) {
       let config = {
         method: 'post',
@@ -374,7 +383,7 @@ const NewOrder = () => {
             toast: true,
             icon: 'success',
             title: 'Commande validée',
-            text: dataStore.cleveronCompany_id + '-' + randomCode,
+            text: chosenLocker[0]?.company?.cleveronCompanyId + '-' + randomCode,
             showConfirmButton: false,
             timer: 7000,
             timerProgressBar: true,
@@ -491,7 +500,6 @@ const NewOrder = () => {
 
     if (accept) {
       createNewOrder()
-     
     } else {
       Swal.fire({
         position: 'top-end',
@@ -527,36 +535,6 @@ const NewOrder = () => {
     }
   }
 
-  const noDispoModal = async () => {
-    const { value: accept } = await Swal.fire({
-      icon: 'warning',
-      title: 'Indisponible',
-      text: "Aucun casier n'est disponible",
-      inputValue: 1,
-      showConfirmButton: false,
-      showDenyButton: true,
-      // confirmButtonColor: "#54AB57",
-      denyButtonText:
-        '<span className=" m-auto"><i class="ri-arrow-left-circle-fill m-auto  fs-5"></i> Retour</span>',
-    })
-
-    if (!accept) {
-      // Swal.fire({
-      //   position: 'top-end',
-      //   toast: true,
-      //   icon: 'error',
-      //   title: 'Commande non finalisée',
-      //   showConfirmButton: false,
-      //   timer: 3000,
-      // })
-      if (logs.logApp) {
-        logCatcher(logs.logApp + ' / date :' + now + " - Aucun casier n'est disponible")
-      } else {
-        logCatcher('date :' + now + "- Aucun casier n'est disponible")
-      }
-    }
-  }
-
   const validOrder = (e: any) => {
     e.preventDefault()
 
@@ -576,17 +554,14 @@ const NewOrder = () => {
         orderStore.lockerId,
         orderStore.location,
         null,
-        // orderStore.bookingSlot,
         orderStore.companyId,
         orderStore.companyName,
         orderStore.lockerType,
         orderStore.delivererId,
         tempZones,
         null,
-        // orderStore.tempZone,
         orderStore.keyTemp,
         null,
-        // orderStore.slotSize,
         slotSizes,
         parseInt(qty),
         ageRestriction === true ? 18 : 0
@@ -603,11 +578,6 @@ const NewOrder = () => {
     )
   }
 
-  const changeAvailable = (index: any, zone: any, indx: any) => {
-    const newData: any = [...availableSelect]
-    newData[index] = zone - 1
-    setAvailableSelect(newData)
-  }
 
   const handleChangeSelect = (e: any, indx: any) => {
     const zone: any = JSON.parse(e.currentTarget.value)
@@ -674,7 +644,6 @@ const NewOrder = () => {
     setProductDetail(newProduits)
   }
 
-
   const borderClasses = ['border-info', 'border-warning', 'border-secondary']
 
   let rowClasses: any = []
@@ -705,20 +674,14 @@ const NewOrder = () => {
     return newTab
   }
 
-  const lockerAvailability = allSlot?.['hydra:member']?.filter(
-    (lockers: any) => lockers?.slot?.temperatureZone?.locker['@id'] === chosenLocker[0]?.slot?.temperatureZone?.locker['@id'])
-    ?.reduce((acc: any, current: any) => 
-    acc + current.available
-  ,0)
+  const lockerAvailability = allSlot?.['hydra:member']
+    ?.filter(
+      (lockers: any) =>
+        lockers?.slot?.temperatureZone?.locker['@id'] ===
+        chosenLocker[0]?.slot?.temperatureZone?.locker['@id']
+    )
+    ?.reduce((acc: any, current: any) => acc + current.available, 0)
 
-
-  const slotAvailability = allSlot?.['hydra:member']?.filter(
-    (lockers: any) => lockers?.slot?.temperatureZone?.locker['@id'] === chosenLocker[0]?.slot?.temperatureZone?.locker['@id'])
-    ?.filter((slot: any) => (slot?.slot?.temperatureZone?.keyTemp === "FREEZE"))
-    ?.filter((slot: any) => (slot?.slot?.size === "M"))
-  
-
- 
   return (
     <div>
       {(!isLogged || !dataStore.token) && <Navigate to='/connexion' />}
@@ -894,73 +857,12 @@ const NewOrder = () => {
                         <Col xs={2}>
                           <div className=' m-auto'>
                             <img src={imagLogo} alt='logo' width={30} />
-                            {/* {dataStore.company_name} */}
                           </div>
                         </Col>
                         <Col>{locker}</Col>
                       </Row>
                     </Col>
-                    <Col
-                      className=''
-                      // xs={
-                      //   slotLocationTab(locker)
-                      //     ?.filter(
-                      //       (lock: any) =>
-                      //         lock?.slot?.temperatureZone?.keyTemp ===
-                      //         slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                      //     )
-                      //     ?.length === 1
-                      //     ? 4
-                      //     :
-                      //      slotLocationTab(locker)?.filter(
-                      //         (lock: any) =>
-                      //           lock?.slot?.temperatureZone?.keyTemp ===
-                      //           slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
-                      //       )?.length === 2
-                      //     ? 5
-                      //     : 7
-                      // }
-                      // sm={
-                      //   allSlot?.['hydra:member']
-                      //     ?.filter(
-                      //       (lockers: any) =>
-                      //         lockers?.slot?.temperatureZone?.locker?.location === locker
-                      //     )
-                      //     ?.filter(
-                      //       (lock: any) =>
-                      //         lock?.slot?.temperatureZone?.keyTemp ===
-                      //         slotLocationTab(locker[indx])?.slot?.temperatureZone?.keyTemp
-                      //     )?.length === 1
-                      //     ? 3
-                      //     : slotLocationTab(locker)?.filter(
-                      //         (lock: any) =>
-                      //           lock?.slot?.temperatureZone?.keyTemp ===
-                      //           slotLocationTab(locker[indx])?.slot?.temperatureZone?.keyTemp
-                      //       )?.length === 2
-                      //     ? 4
-                      //     : 5
-                      // }
-                      // md={
-                      //   allSlot?.['hydra:member']
-                      //     ?.filter(
-                      //       (lockers: any) =>
-                      //         lockers?.slot?.temperatureZone?.locker?.location === locker
-                      //     )
-                      //     ?.filter(
-                      //       (lock: any) =>
-                      //         lock?.slot?.temperatureZone?.keyTemp ===
-                      //         slotLocationTab(locker[indx])?.slot?.temperatureZone?.keyTemp
-                      //     )?.length === 1
-                      //     ? 2
-                      //     : slotLocationTab(locker)?.filter(
-                      //         (lock: any) =>
-                      //           lock?.slot?.temperatureZone?.keyTemp ===
-                      //           slotLocationTab(locker[indx])?.slot?.temperatureZone?.keyTemp
-                      //       )?.length === 2
-                      //     ? 3
-                      //     : 3
-                      // }
-                    >
+                    <Col>
                       {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
                         <div
                           key={indx}
@@ -1029,11 +931,6 @@ const NewOrder = () => {
                       aria-describedby='basic-addon1'
                       className='border-start-0'
                       type='number'
-                      // min={allSlot?.['hydra:member']?.filter(
-                      //   (lockers: any) => lockers?.slot?.temperatureZone?.locker['@id'] === chosenLocker && chosenLocker[0]?.slot?.temperatureZone?.locker['@id'])
-                      //   ?.reduce((acc: any, current: any) =>
-                      //   acc + current.available
-                      // ,0)}
                       max={allSlot?.['hydra:member']
                         ?.filter(
                           (lockers: any) =>
@@ -1041,7 +938,6 @@ const NewOrder = () => {
                             chosenLocker[0]?.slot?.temperatureZone?.locker['@id']
                         )
                         ?.reduce((acc: any, current: any) => acc + current?.available, 0)}
-                      // max={4}
                       placeholder='Nombre de panier*'
                       value={qty}
                       onChange={(e) => {
@@ -1118,7 +1014,6 @@ const NewOrder = () => {
                               </option>
                             ))}
                           </Form.Select>
-
                           <InputGroup className='mb-4'>
                             <InputGroup.Text className='border-end-0 bg-secondary-500'>
                               <i className='ri-inbox-archive-line text-secondary'></i>
