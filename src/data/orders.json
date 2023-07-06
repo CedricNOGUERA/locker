@@ -1,0 +1,2707 @@
+{
+    "@context": "/api/contexts/Order",
+    "@id": "/api/orders",
+    "@type": "hydra:Collection",
+    "hydra:member": [
+        {
+            "@id": "/api/orders/95",
+            "@type": "Order",
+            "id": 95,
+            "barcode": "CP-CPNDVTA1",
+            "receiveCode": "60956824",
+            "status": "left_for_customer_service",
+            "totalSlot": 2,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T10:06:34-10:00",
+            "updatedAt": "2023-06-15T16:51:00-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/45",
+                    "@type": "OrderHistory",
+                    "status": "operout",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-15T16:50:49-10:00"
+                },
+                {
+                    "@id": "/api/order_histories/44",
+                    "@type": "OrderHistory",
+                    "status": "overtime",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-14T16:58:38-10:00"
+                },
+                {
+                    "@id": "/api/order_histories/41",
+                    "@type": "OrderHistory",
+                    "status": "operin",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-13T11:07:32-10:00"
+                },
+                {
+                    "@id": "/api/order_histories/33",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-13T10:06:34-10:00"
+                }
+            ],
+            "products": [
+                "Oeuf sur le plat"
+            ],
+            "multiOrderCode": "JHQEFONY"
+        },
+        {
+            "@id": "/api/orders/96",
+            "@type": "Order",
+            "id": 96,
+            "barcode": "CP-CPNDVTA2",
+            "receiveCode": "60956824",
+            "status": "return",
+            "totalSlot": 2,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T10:06:35-10:00",
+            "updatedAt": "2023-06-15T16:47:56-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/39",
+                    "@type": "OrderHistory",
+                    "status": "operin",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-13T11:07:29-10:00"
+                },
+                {
+                    "@id": "/api/order_histories/32",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-13T10:06:35-10:00"
+                },
+                {
+                    "@id": "/api/order_histories/42",
+                    "@type": "OrderHistory",
+                    "status": "overtime",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-14T16:53:45-10:00"
+                },
+                {
+                    "@id": "/api/order_histories/43",
+                    "@type": "OrderHistory",
+                    "status": "operout",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-15T16:47:29-10:00"
+                }
+            ],
+            "products": [
+                "Oeuf sur le plat"
+            ],
+            "multiOrderCode": "JHQEFONY"
+        },
+        {
+            "@id": "/api/orders/97",
+            "@type": "Order",
+            "id": 97,
+            "barcode": "CP-ASWTGCL3",
+            "receiveCode": "79642816",
+            "status": "operin",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T10:24:14-10:00",
+            "updatedAt": "2023-06-13T10:32:00-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/30",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "updatedBy": {
+                        "@id": "/api/users/1",
+                        "@type": "User",
+                        "username": "ffolituu",
+                        "roles": [
+                            "ROLE_SUPER_ADMIN",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Fabrice",
+                        "lastName": "Folituu"
+                    },
+                    "createdAt": "2023-06-13T10:24:14-10:00"
+                }
+            ],
+            "products": [
+                "poulet"
+            ]
+        },
+        {
+            "@id": "/api/orders/98",
+            "@type": "Order",
+            "id": 98,
+            "barcode": "CP-VJPJSIF8",
+            "receiveCode": "564125",
+            "status": "operin",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T10:39:12-10:00",
+            "updatedAt": "2023-06-13T10:39:31-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/31",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "createdAt": "2023-06-13T10:39:12-10:00"
+                }
+            ],
+            "products": [
+                "huitres"
+            ]
+        },
+        {
+            "@id": "/api/orders/99",
+            "@type": "Order",
+            "id": 99,
+            "barcode": "CP-ZRQSJAM5",
+            "receiveCode": "60083916",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/11",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/3",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/3",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/2",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Sortie parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:15:18-10:00",
+            "updatedAt": "2023-06-13T11:15:18-10:00",
+            "history": [],
+            "products": [
+                "pizza"
+            ]
+        },
+        {
+            "@id": "/api/orders/100",
+            "@type": "Order",
+            "id": 100,
+            "barcode": "CP-RAKZUFM1",
+            "receiveCode": "96840397",
+            "status": "operin",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:18:23-10:00",
+            "updatedAt": "2023-06-14T16:52:08-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/37",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-13T11:18:23-10:00"
+                }
+            ],
+            "products": [
+                "burger"
+            ],
+            "multiOrderCode": "LDFVDJQW"
+        },
+        {
+            "@id": "/api/orders/101",
+            "@type": "Order",
+            "id": 101,
+            "barcode": "CP-RAKZUFM2",
+            "receiveCode": "96840397",
+            "status": "operin",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:18:24-10:00",
+            "updatedAt": "2023-06-14T16:52:26-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/38",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-13T11:18:24-10:00"
+                }
+            ],
+            "products": [
+                "burger"
+            ],
+            "multiOrderCode": "LDFVDJQW"
+        },
+        {
+            "@id": "/api/orders/102",
+            "@type": "Order",
+            "id": 102,
+            "barcode": "CP-UCM7",
+            "receiveCode": "35184332",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/11",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/3",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/3",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/2",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Sortie parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/1",
+                "@type": "User",
+                "username": "ffolituu",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_USER"
+                ],
+                "firstName": "Fabrice",
+                "lastName": "Folituu"
+            },
+            "updatedBy": {
+                "@id": "/api/users/1",
+                "@type": "User",
+                "username": "ffolituu",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_USER"
+                ],
+                "firstName": "Fabrice",
+                "lastName": "Folituu"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:22:00-10:00",
+            "updatedAt": "2023-06-13T11:44:51-10:00",
+            "history": [],
+            "products": [
+                "1 Pack de limonade"
+            ]
+        },
+        {
+            "@id": "/api/orders/103",
+            "@type": "Order",
+            "id": 103,
+            "barcode": "CP-CICAXQS2",
+            "receiveCode": "63340233",
+            "status": "operin",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:27:29-10:00",
+            "updatedAt": "2023-06-15T16:51:33-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/46",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-13T11:27:29-10:00"
+                }
+            ],
+            "products": [
+                "petit prince"
+            ]
+        },
+        {
+            "@id": "/api/orders/104",
+            "@type": "Order",
+            "id": 104,
+            "barcode": "CP-MSDGOKT1",
+            "receiveCode": "71954340",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:43:42-10:00",
+            "updatedAt": "2023-06-13T11:43:42-10:00",
+            "history": [],
+            "products": [
+                "hydrogène"
+            ],
+            "multiOrderCode": "SDEJRKME"
+        },
+        {
+            "@id": "/api/orders/105",
+            "@type": "Order",
+            "id": 105,
+            "barcode": "CP-MSDGOKT2",
+            "receiveCode": "71954340",
+            "status": "operin",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:43:43-10:00",
+            "updatedAt": "2023-06-14T16:54:02-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/40",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-13T11:43:43-10:00"
+                }
+            ],
+            "products": [
+                "hydrogène"
+            ],
+            "multiOrderCode": "SDEJRKME"
+        },
+        {
+            "@id": "/api/orders/106",
+            "@type": "Order",
+            "id": 106,
+            "barcode": "CP-MSDGOKT3",
+            "receiveCode": "71954340",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:43:43-10:00",
+            "updatedAt": "2023-06-13T11:43:43-10:00",
+            "history": [],
+            "products": [
+                "hydrogène"
+            ],
+            "multiOrderCode": "SDEJRKME"
+        },
+        {
+            "@id": "/api/orders/107",
+            "@type": "Order",
+            "id": 107,
+            "barcode": "CP-EEPTUMF8",
+            "receiveCode": "25779551",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/11",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/3",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/3",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/2",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Sortie parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/1",
+                "@type": "User",
+                "username": "ffolituu",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_USER"
+                ],
+                "firstName": "Fabrice",
+                "lastName": "Folituu"
+            },
+            "updatedBy": {
+                "@id": "/api/users/1",
+                "@type": "User",
+                "username": "ffolituu",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_USER"
+                ],
+                "firstName": "Fabrice",
+                "lastName": "Folituu"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:44:51-10:00",
+            "updatedAt": "2023-06-13T11:44:51-10:00",
+            "history": [],
+            "products": [
+                "1 pack d'eau"
+            ]
+        },
+        {
+            "@id": "/api/orders/108",
+            "@type": "Order",
+            "id": 108,
+            "barcode": "CP-MQRZPRM3",
+            "receiveCode": "25672434",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/11",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/3",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/3",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/2",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Sortie parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/1",
+                "@type": "User",
+                "username": "ffolituu",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_USER"
+                ],
+                "firstName": "Fabrice",
+                "lastName": "Folituu"
+            },
+            "updatedBy": {
+                "@id": "/api/users/1",
+                "@type": "User",
+                "username": "ffolituu",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_USER"
+                ],
+                "firstName": "Fabrice",
+                "lastName": "Folituu"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:47:49-10:00",
+            "updatedAt": "2023-06-13T11:47:49-10:00",
+            "history": [],
+            "products": [
+                "sdfsqdf"
+            ]
+        },
+        {
+            "@id": "/api/orders/109",
+            "@type": "Order",
+            "id": 109,
+            "barcode": "CP-JIGXKRB3",
+            "receiveCode": "75030340",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T11:58:01-10:00",
+            "updatedAt": "2023-06-13T11:58:01-10:00",
+            "history": [],
+            "products": [
+                "tgbtbr"
+            ]
+        },
+        {
+            "@id": "/api/orders/110",
+            "@type": "Order",
+            "id": 110,
+            "client": {
+                "@id": "/api/clients/21",
+                "@type": "Client",
+                "name": "Mat",
+                "email": "math@miel.pf",
+                "phone": "89852963"
+            },
+            "barcode": "CP-YNFTXBO4",
+            "receiveCode": "69205184",
+            "status": "operin",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T12:46:33-10:00",
+            "updatedAt": "2023-06-14T11:48:35-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/36",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "updatedBy": {
+                        "@id": "/api/users/6",
+                        "@type": "User",
+                        "username": "cedric.noguera",
+                        "roles": [
+                            "ROLE_DELIVERER",
+                            "ROLE_USER"
+                        ],
+                        "firstName": "Cédric",
+                        "lastName": "Noguera"
+                    },
+                    "createdAt": "2023-06-13T12:46:33-10:00"
+                }
+            ],
+            "products": [
+                "crevettes"
+            ]
+        },
+        {
+            "@id": "/api/orders/111",
+            "@type": "Order",
+            "id": 111,
+            "client": {
+                "@id": "/api/clients/21",
+                "@type": "Client",
+                "name": "Mat",
+                "email": "math@miel.pf",
+                "phone": "89852963"
+            },
+            "barcode": "FR-TESTYUR1",
+            "receiveCode": "CODE",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/3",
+                "@type": "User",
+                "username": "kpeterano",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_MASTER_GOD",
+                    "ROLE_USER"
+                ],
+                "firstName": "Kiehiva",
+                "lastName": "PETERANO"
+            },
+            "updatedBy": {
+                "@id": "/api/users/3",
+                "@type": "User",
+                "username": "kpeterano",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_MASTER_GOD",
+                    "ROLE_USER"
+                ],
+                "firstName": "Kiehiva",
+                "lastName": "PETERANO"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T16:20:20-10:00",
+            "updatedAt": "2023-06-13T16:20:20-10:00",
+            "history": [],
+            "products": [
+                "Pain Raisin"
+            ]
+        },
+        {
+            "@id": "/api/orders/112",
+            "@type": "Order",
+            "id": 112,
+            "client": {
+                "@id": "/api/clients/21",
+                "@type": "Client",
+                "name": "Mat",
+                "email": "math@miel.pf",
+                "phone": "89852963"
+            },
+            "barcode": "FR-ANOTHER1",
+            "receiveCode": "ASKPSDFV",
+            "status": "receive",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/3",
+                "@type": "User",
+                "username": "kpeterano",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_MASTER_GOD",
+                    "ROLE_USER"
+                ],
+                "firstName": "Kiehiva",
+                "lastName": "PETERANO"
+            },
+            "updatedBy": {
+                "@id": "/api/users/3",
+                "@type": "User",
+                "username": "kpeterano",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_MASTER_GOD",
+                    "ROLE_USER"
+                ],
+                "firstName": "Kiehiva",
+                "lastName": "PETERANO"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T16:38:47-10:00",
+            "updatedAt": "2023-06-13T16:40:38-10:00",
+            "history": [
+                {
+                    "@id": "/api/order_histories/35",
+                    "@type": "OrderHistory",
+                    "status": "operin",
+                    "createdAt": "2023-06-13T16:40:20-10:00"
+                },
+                {
+                    "@id": "/api/order_histories/34",
+                    "@type": "OrderHistory",
+                    "status": "created",
+                    "createdAt": "2023-06-13T16:38:47-10:00"
+                }
+            ],
+            "products": [
+                "Pain Raisin"
+            ]
+        },
+        {
+            "@id": "/api/orders/113",
+            "@type": "Order",
+            "id": 113,
+            "client": {
+                "@id": "/api/clients/21",
+                "@type": "Client",
+                "name": "Mat",
+                "email": "math@miel.pf",
+                "phone": "89852963"
+            },
+            "barcode": "CP-KIOENTI1",
+            "receiveCode": "13475229",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T16:41:35-10:00",
+            "updatedAt": "2023-06-13T16:41:35-10:00",
+            "history": [],
+            "products": [
+                "hrtnrtnbhrh"
+            ],
+            "multiOrderCode": "RLFMTURN"
+        },
+        {
+            "@id": "/api/orders/114",
+            "@type": "Order",
+            "id": 114,
+            "client": {
+                "@id": "/api/clients/21",
+                "@type": "Client",
+                "name": "Mat",
+                "email": "math@miel.pf",
+                "phone": "89852963"
+            },
+            "barcode": "CP-KIOENTI2",
+            "receiveCode": "13475229",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T16:41:35-10:00",
+            "updatedAt": "2023-06-13T16:41:35-10:00",
+            "history": [],
+            "products": [
+                "hrtnrtnbhrh"
+            ],
+            "multiOrderCode": "RLFMTURN"
+        },
+        {
+            "@id": "/api/orders/115",
+            "@type": "Order",
+            "id": 115,
+            "client": {
+                "@id": "/api/clients/22",
+                "@type": "Client",
+                "name": "Willy",
+                "email": "william@mail.pf",
+                "phone": "87852741"
+            },
+            "barcode": "CP-RFRURKO5",
+            "receiveCode": "43556792",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-13T16:48:24-10:00",
+            "updatedAt": "2023-06-13T16:48:24-10:00",
+            "history": [],
+            "products": [
+                "cesium"
+            ]
+        },
+        {
+            "@id": "/api/orders/116",
+            "@type": "Order",
+            "id": 116,
+            "client": {
+                "@id": "/api/clients/21",
+                "@type": "Client",
+                "name": "Mat",
+                "email": "math@miel.pf",
+                "phone": "89852963"
+            },
+            "barcode": "FR-ANOTHER2",
+            "receiveCode": "ASKPSDFV",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/3",
+                "@type": "User",
+                "username": "kpeterano",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_MASTER_GOD",
+                    "ROLE_USER"
+                ],
+                "firstName": "Kiehiva",
+                "lastName": "PETERANO"
+            },
+            "updatedBy": {
+                "@id": "/api/users/3",
+                "@type": "User",
+                "username": "kpeterano",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_MASTER_GOD",
+                    "ROLE_USER"
+                ],
+                "firstName": "Kiehiva",
+                "lastName": "PETERANO"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-14T09:05:30-10:00",
+            "updatedAt": "2023-06-14T09:05:30-10:00",
+            "history": [],
+            "products": [
+                "Pain Raisin"
+            ]
+        },
+        {
+            "@id": "/api/orders/117",
+            "@type": "Order",
+            "id": 117,
+            "client": {
+                "@id": "/api/clients/22",
+                "@type": "Client",
+                "name": "Willy",
+                "email": "william@mail.pf",
+                "phone": "87852741"
+            },
+            "barcode": "CP-IFMXYQZ1",
+            "receiveCode": "88255878",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-14T09:06:46-10:00",
+            "updatedAt": "2023-06-14T09:06:46-10:00",
+            "history": [],
+            "products": [
+                "Gaufres",
+                " framboises",
+                " açai"
+            ],
+            "multiOrderCode": "SSMNKXGY"
+        },
+        {
+            "@id": "/api/orders/118",
+            "@type": "Order",
+            "id": 118,
+            "client": {
+                "@id": "/api/clients/22",
+                "@type": "Client",
+                "name": "Willy",
+                "email": "william@mail.pf",
+                "phone": "87852741"
+            },
+            "barcode": "CP-IFMXYQZ2",
+            "receiveCode": "88255878",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-14T09:06:47-10:00",
+            "updatedAt": "2023-06-14T09:06:47-10:00",
+            "history": [],
+            "products": [
+                "Gaufres",
+                " framboises",
+                " açai"
+            ],
+            "multiOrderCode": "SSMNKXGY"
+        },
+        {
+            "@id": "/api/orders/119",
+            "@type": "Order",
+            "id": 119,
+            "client": {
+                "@id": "/api/clients/21",
+                "@type": "Client",
+                "name": "Mat",
+                "email": "math@miel.pf",
+                "phone": "89852963"
+            },
+            "barcode": "CP-ZZQIMKE7",
+            "receiveCode": "84604373",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/10",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/2",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/2",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-14T09:12:31-10:00",
+            "updatedAt": "2023-06-14T09:12:31-10:00",
+            "history": [],
+            "products": [
+                "poire",
+                " pommes",
+                " tomate"
+            ]
+        },
+        {
+            "@id": "/api/orders/120",
+            "@type": "Order",
+            "id": 120,
+            "client": {
+                "@id": "/api/clients/23",
+                "@type": "Client",
+                "name": "mathieu",
+                "email": "math.youstone@mail.cn",
+                "phone": "87123456"
+            },
+            "barcode": "CP-AKYPHDW1",
+            "receiveCode": "15011608",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/11",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/3",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/3",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/2",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Sortie parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-14T09:15:08-10:00",
+            "updatedAt": "2023-06-14T09:15:08-10:00",
+            "history": [],
+            "products": [
+                "rheheh"
+            ],
+            "multiOrderCode": "CQVMFJHT"
+        },
+        {
+            "@id": "/api/orders/121",
+            "@type": "Order",
+            "id": 121,
+            "client": {
+                "@id": "/api/clients/23",
+                "@type": "Client",
+                "name": "mathieu",
+                "email": "math.youstone@mail.cn",
+                "phone": "87123456"
+            },
+            "barcode": "CP-AKYPHDW2",
+            "receiveCode": "15011608",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/12",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/4",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/4",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/2",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Sortie parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone réfrigérée",
+                        "keyTemp": "FRESH"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-14T09:15:09-10:00",
+            "updatedAt": "2023-06-14T09:15:09-10:00",
+            "history": [],
+            "products": [
+                "rheheh"
+            ],
+            "multiOrderCode": "CQVMFJHT"
+        },
+        {
+            "@id": "/api/orders/122",
+            "@type": "Order",
+            "id": 122,
+            "client": {
+                "@id": "/api/clients/21",
+                "@type": "Client",
+                "name": "Mat",
+                "email": "math@miel.pf",
+                "phone": "89852963"
+            },
+            "barcode": "FR-ANOTHER3",
+            "receiveCode": "FZEVJAZ",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/9",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/1",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/1",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/1",
+                            "@type": "Locker",
+                            "type": 501,
+                            "location": "Entrée parking - Carrefour Punaauia",
+                            "city": "Punaauia"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/1",
+                    "@type": "Company",
+                    "name": "Carrefour Punaauia"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/3",
+                "@type": "User",
+                "username": "kpeterano",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_MASTER_GOD",
+                    "ROLE_USER"
+                ],
+                "firstName": "Kiehiva",
+                "lastName": "PETERANO"
+            },
+            "updatedBy": {
+                "@id": "/api/users/3",
+                "@type": "User",
+                "username": "kpeterano",
+                "roles": [
+                    "ROLE_SUPER_ADMIN",
+                    "ROLE_MASTER_GOD",
+                    "ROLE_USER"
+                ],
+                "firstName": "Kiehiva",
+                "lastName": "PETERANO"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-14T10:51:49-10:00",
+            "updatedAt": "2023-06-14T10:51:49-10:00",
+            "history": [],
+            "products": [
+                "Pain Raisin"
+            ]
+        },
+        {
+            "@id": "/api/orders/123",
+            "@type": "Order",
+            "id": 123,
+            "client": {
+                "@id": "/api/clients/24",
+                "@type": "Client",
+                "name": "Willy",
+                "email": "william@mail.pf",
+                "phone": "87852741"
+            },
+            "barcode": "CP-HLJHCCP1",
+            "receiveCode": "40797111",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/13",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/8",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/7",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/3",
+                            "@type": "Locker",
+                            "type": 503,
+                            "location": "Galerie marchande Plaza",
+                            "city": "Faa'a"
+                        },
+                        "name": "Zone ambiante",
+                        "keyTemp": "NORMAL"
+                    },
+                    "size": "M"
+                },
+                "company": {
+                    "@id": "/api/companies/2",
+                    "@type": "Company",
+                    "name": "Carrefour Faa'a"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-14T11:04:58-10:00",
+            "updatedAt": "2023-06-14T11:04:58-10:00",
+            "history": [],
+            "products": [
+                "poire",
+                " pomme",
+                " kiwi",
+                " orange"
+            ],
+            "multiOrderCode": "GFLPKPPU"
+        },
+        {
+            "@id": "/api/orders/124",
+            "@type": "Order",
+            "id": 124,
+            "client": {
+                "@id": "/api/clients/24",
+                "@type": "Client",
+                "name": "Willy",
+                "email": "william@mail.pf",
+                "phone": "87852741"
+            },
+            "barcode": "CP-HLJHCCP2",
+            "receiveCode": "40797111",
+            "status": "created",
+            "totalSlot": 1,
+            "bookingSlot": {
+                "@id": "/api/booking_slots/14",
+                "@type": "BookingSlot",
+                "slot": {
+                    "@id": "/api/slots/5",
+                    "@type": "Slot",
+                    "temperatureZone": {
+                        "@id": "/api/temperature_zones/5",
+                        "@type": "TemperatureZone",
+                        "locker": {
+                            "@id": "/api/lockers/3",
+                            "@type": "Locker",
+                            "type": 503,
+                            "location": "Galerie marchande Plaza",
+                            "city": "Faa'a"
+                        },
+                        "name": "Zone de congélation",
+                        "keyTemp": "FREEZE"
+                    },
+                    "size": "S"
+                },
+                "company": {
+                    "@id": "/api/companies/2",
+                    "@type": "Company",
+                    "name": "Carrefour Faa'a"
+                }
+            },
+            "createdBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "updatedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "shippedBy": {
+                "@id": "/api/users/6",
+                "@type": "User",
+                "username": "cedric.noguera",
+                "roles": [
+                    "ROLE_DELIVERER",
+                    "ROLE_USER"
+                ],
+                "firstName": "Cédric",
+                "lastName": "Noguera"
+            },
+            "createdAt": "2023-06-14T11:04:58-10:00",
+            "updatedAt": "2023-06-14T11:04:58-10:00",
+            "history": [],
+            "products": [
+                "poire",
+                " pomme",
+                " kiwi",
+                " orange"
+            ],
+            "multiOrderCode": "GFLPKPPU"
+        }
+    ],
+    "hydra:totalItems": 30,
+    "hydra:search": {
+        "@type": "hydra:IriTemplate",
+        "hydra:template": "/api/orders{?status,status[],bookingSlot.slot.temperatureZone.locker.location,bookingSlot.slot.temperatureZone.locker.location[],bookingSlot.company.cleveronCompanyId,bookingSlot.company.cleveronCompanyId[]}",
+        "hydra:variableRepresentation": "BasicRepresentation",
+        "hydra:mapping": [
+            {
+                "@type": "IriTemplateMapping",
+                "variable": "status",
+                "property": "status",
+                "required": false
+            },
+            {
+                "@type": "IriTemplateMapping",
+                "variable": "status[]",
+                "property": "status",
+                "required": false
+            },
+            {
+                "@type": "IriTemplateMapping",
+                "variable": "bookingSlot.slot.temperatureZone.locker.location",
+                "property": "bookingSlot.slot.temperatureZone.locker.location",
+                "required": false
+            },
+            {
+                "@type": "IriTemplateMapping",
+                "variable": "bookingSlot.slot.temperatureZone.locker.location[]",
+                "property": "bookingSlot.slot.temperatureZone.locker.location",
+                "required": false
+            },
+            {
+                "@type": "IriTemplateMapping",
+                "variable": "bookingSlot.company.cleveronCompanyId",
+                "property": "bookingSlot.company.cleveronCompanyId",
+                "required": false
+            },
+            {
+                "@type": "IriTemplateMapping",
+                "variable": "bookingSlot.company.cleveronCompanyId[]",
+                "property": "bookingSlot.company.cleveronCompanyId",
+                "required": false
+            }
+        ]
+    }
+}
