@@ -515,7 +515,7 @@ ul.tl li .timestamp-current {
   position: absolute;
   right: 3%;
   top: 5%;
-  z-index: 10000;
+  z-index: 100;
 }
 
 @media (max-width: 767px) {

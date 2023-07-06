@@ -8,6 +8,7 @@ import PlaceHolder from '../../components/ui/loading/PlaceHolder'
 import TopSearchBar from '../../components/history/TopSearchBar'
 import DetailHistory from '../../components/history/DetailHistory'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
+import OrderList from '../../components/ui/OrderList'
 
 const History = () => {
   //////////////////////////
@@ -38,10 +39,14 @@ const History = () => {
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
+  const [orderByStatus, setOrderByStatus] = React.useState<any>([])
+
+  const trigger ="history"
 
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('user')
+    setOrderByStatus(orderData['hydra:member'])
   }, [])
 
   React.useEffect(() => {
@@ -66,7 +71,20 @@ const History = () => {
     _searchWithRegex(searchOrder, orderData['hydra:member'], setFilteredOrder)
   }, [orderData, searchOrder])
 
+  //////////////////////////
+  // Components props
+  /////////////////////////
+
   const topSearchBarProps = { selectedOrder, setSelectedOrder, searchOrder, setSearchOrder }
+  const orderListProps = {
+    filteredOrder,
+    setSelectedOrder,
+    searchOrder,
+    setSearchOrder,
+    orderByStatus,
+    orderData,
+    trigger
+  }
 
   return (
     <Container className='order-list pb-5 mb-5'>
@@ -84,47 +102,8 @@ const History = () => {
         <Container className='text-center mt-2'>
           <PlaceHolder paddingYFirst='3' />
         </Container>
-      ) : !selectedOrder &&
-        filteredOrder &&
-        filteredOrder.length > 0 &&
-        searchOrder?.length > 2 ? (
-        filteredOrder.map((liv: any, indx: any) => (
-          <Container key={Math.random()} className='px-0 animate__animated animate__backInLef'>
-            <ItemList
-              liv={liv}
-              indx={indx}
-              setSelectedOrder={setSelectedOrder}
-              setSearchOrder={setSearchOrder}
-              trigger='history'
-            />
-          </Container>
-        ))
-      ) : !selectedOrder &&
-        searchOrder?.length < 2 &&
-        orderData &&
-        orderData['hydra:member']?.length > 0 ? (
-        orderData['hydra:member']?.map((liv: any, indx: any) => (
-          <Container
-            key={Math.random()}
-            className='px-0 animate__animated animate__backInLeft'
-          >
-            <ItemList
-              key={Math.random()}
-              liv={liv}
-              indx={indx}
-              setSelectedOrder={setSelectedOrder}
-              setSearchOrder={setSearchOrder}
-              allSlot={allSlot}
-              trigger='history'
-            />
-          </Container>
-        ))
-      ) : ((searchOrder?.length > 2 && filteredOrder && filteredOrder.length === 0) ||
-        (orderData && orderData['hydra:member']?.length === 0)) && (
-        <div className=' text-center mt-5 pt-5'>
-          <img className='' alt='no order' src={images} style={{ height: '256px' }} />
-          <div className='user-name fs-3 fw-bold text-secondary'>Aucune commande</div>
-        </div>
+      ) : (
+        !selectedOrder && <OrderList orderListProps={orderListProps} />
       )}
     </Container>
   )

@@ -14,31 +14,25 @@ const OrderList = ({ orderListProps }: any) => {
     setSearchOrder,
     allSlot,
     orderByStatus,
+    trigger
   } = orderListProps
 
+  const [orderList, setOrderList] = React.useState([])
+  const isFilteredOrders =
+    filteredOrder?.length === 0 && orderList?.length === 0 && searchOrder?.length > 2
 
-  
-  const [orderList, setOrderList] = React.useState([]);
-  const isFilteredOrders = filteredOrder?.length === 0 && orderList?.length === 0 && searchOrder?.length > 2;
+  React.useEffect(() => {
+    if (filteredOrder?.length > 0 && searchOrder?.length > 2) {
+      setOrderList(filteredOrder)
+    } else if (filteredOrder?.length === 0 && searchOrder?.length > 2) {
+      setOrderList([])
+    } else {
+      setOrderList(orderByStatus)
+    }
+  }, [orderByStatus, filteredOrder, searchOrder])
 
-
-  React.useEffect(()=> {
-
-  if(filteredOrder?.length > 0 && searchOrder?.length > 2){
-    setOrderList(filteredOrder)
-  }
-  else if(filteredOrder?.length === 0 && searchOrder?.length > 2){
-    setOrderList([])
-  }
-  else{
-    setOrderList(orderByStatus)
-  }
-
-}, [orderByStatus, filteredOrder, searchOrder])
-
-console.log(filteredOrder)
-console.log(orderList)
-
+  console.log(filteredOrder)
+  console.log(orderList)
 
   return (
     <Container className='px-0 animate__animated animate__backInLeft'>
@@ -51,6 +45,7 @@ console.log(orderList)
             indx={indx}
             setSelectedOrder={setSelectedOrder}
             setSearchOrder={setSearchOrder}
+            trigger={trigger}
           />
         ))
       ) : (
