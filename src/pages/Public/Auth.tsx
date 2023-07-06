@@ -22,6 +22,9 @@ import { _strRandom } from '../../utils/functions'
 import AuthForm from '../../components/ui/auth/AuthForm'
 import useWebInstallPrompt from '../../hooks/useWebInstallPrompt';
 import PwaInstallModal from '../../components/ui/modals/PwaInstallModal'
+// @ts-ignore
+import PWAPrompt from 'react-ios-pwa-prompt'
+
 
 
 
@@ -229,7 +232,12 @@ console.log(showModal)
   return (
     <Container fluid className='auth-cont-sup col-12 px-0 py-0 bg-'>
       <PwaInstallModal pwaInstallModalProps={pwaInstallModalProps} />
-    
+      <PWAPrompt
+        promptOnVisit={1}
+        timesToShow={3}
+        copyClosePrompt='Close'
+        permanentlyHideOnDismiss={false}
+      />
       <Container fluid className='auth-cont col-12 col-md-12 col-lg-6 px-0 bg-secondary'>
         {dataStore.token && dataStore.company_name && <Navigate to='/dashboard' />}
         {isLoading ? (
@@ -239,7 +247,7 @@ console.log(showModal)
             <Card.Body className=''>
               <div className='logo-app text-center text-light animate__animated animate__rotateIn'></div>
               <div
-              // onClick={handleShowModal} 
+              onClick={handleShowModal} 
                className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
                 OVER BOX
               </div>
