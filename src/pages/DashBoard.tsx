@@ -8,6 +8,7 @@ import images from '../styles/no-order-min.png'
 import LockerService from '../service/Lockers/LockerService'
 import OrdersService from '../service/Orders/OrdersService'
 import BadgedIcon from '../components/ui/BadgedIcon'
+import NoData from '../components/ui/warning/NoData'
 
 const DashBoard = () => {
   //////////////////////////
@@ -44,22 +45,12 @@ const DashBoard = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('home')
-    // getallLockers(dataStore.token)
-    // getPrestaOrder(5)
   }, [dataStore.token])
 
   React.useEffect(() => {
-    // setChosenLocker(allSlot["hydra:member"].filter((slots: any) => slots.slot.temperatureZone.locker.location === locker))
     const bookingLocker: any = orderData?.['hydra:member']?.map((locker: any) => locker)
     setChosenLocker(bookingLocker)
-
-    // console.log(bookingLocker?.filter((locker: any) =>
-    //   locker?.status === 'created' && locker.bookingSlot.slot.temperatureZone.locker.location === "Entrée parking - Carrefour Punaauia"
-    // )?.length)
-    // console.log(bookingLocker?.filter((locker: any) =>
-    //   locker?.status === 'overtime' && locker.bookingSlot.slot.temperatureZone.locker.location === "Entrée parking - Carrefour Punaauia"
-    // )?.length)
-
+    
     const unique: any = [
       ...new Set(
         bookingLocker?.map(
@@ -88,23 +79,9 @@ const DashBoard = () => {
     }
   }, [allSlot])
 
-  const getallLockers = (token: any) => {
-    LockerService.allLockers(token)
-      .then((response: any) => {
-        setIsLoading(false)
-        setLockers(response.data)
-      })
-      .catch((error: any) => {
-        setIsLoading(false)
-      })
-  }
 
-  // const getPrestaOrder = (id: any) => {
-  //   OrdersService.prestaOrders(id).then((response: any) => {
-  //     setLockers(response.data)
-  //   })
 
-  // }
+
 
   return (
     <Container className='cde App text-center mt-2'>
@@ -135,7 +112,6 @@ const DashBoard = () => {
             onClick={() => {
               setSelectedStore(slot?.slot?.temperatureZone?.locker['@id'])
               setSelectedOrderCity(slot?.slot?.temperatureZone?.locker?.city)
-              setSelectedItem('progress')
             }}
           >
             <Link to='/in-progress' className=' text-decoration-none'>
@@ -198,10 +174,7 @@ const DashBoard = () => {
           </Card>
         ))
       ) : (
-        <div className=' text-center mt-5 pt-5'>
-          <img className='' alt='no order' src={images} style={{ height: '256px' }} />
-          <div className='user-name fs-3 fw-bold text-secondary'>Aucune Réservation</div>
-        </div>
+        <NoData images={images} isFilteredOrders={false} msg="Aucune Réservation" msg2="" />
       )}
     </Container>
   )

@@ -22,7 +22,7 @@ import userDataStore from '../../store/userDataStore'
 import Swal from 'sweetalert2'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
-import { _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
+import { _imgFilter, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
@@ -33,6 +33,7 @@ import BackButton from '../../components/ui/BackButton'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import imagLogo from '../../styles/carrefour-logo.png'
+import InfoTopBar from './InfoTopBar'
 
 const NewOrder = () => {
   //////////////////////////
@@ -161,6 +162,7 @@ const NewOrder = () => {
       'name'
     )
   }, [clientName])
+
   React.useEffect(() => {
     _searchAnythingWithRegex(
       clientEmail,
@@ -169,6 +171,7 @@ const NewOrder = () => {
       'email'
     )
   }, [clientEmail])
+
   React.useEffect(() => {
     _searchAnythingWithRegex(
       clientPhone,
@@ -608,18 +611,7 @@ const NewOrder = () => {
       ageRestriction === true ? 18 : 0
     )
   }
-  const imgFilter = (data: any) => {
-    const imge =
-      data === 'FRESH'
-        ? 'organic-food'
-        : data === 'FREEZE'
-        ? 'winter'
-        : data === 'NORMAL'
-        ? 'dry'
-        : ''
-
-    return imge
-  }
+ 
 
   const handleAddCart = (qty: any) => {
     const newTab = Array.from({ length: parseInt(qty) }).map((_, indx) => ({
@@ -644,6 +636,7 @@ const NewOrder = () => {
     setProductDetail(newProduits)
   }
 
+
   const borderClasses = ['border-info', 'border-warning', 'border-secondary']
 
   let rowClasses: any = []
@@ -657,6 +650,42 @@ const NewOrder = () => {
   } else {
     rowClasses = [borderClasses[0], borderClasses[0], borderClasses[0], borderClasses[1]]
   }
+
+  const handleFirstStepClick = () => {
+    setChosenLocker([]);
+    setProducts('');
+    newOrderRegister(
+      null,
+      orderStore.location,
+      null,
+      orderStore.companyId,
+      orderStore.companyName,
+      orderStore.lockerType,
+      orderStore.delivererId,
+      null,
+      null,
+      null,
+      0,
+      0
+    );
+  };
+  
+  const handleSecondStepClick = () => {
+    
+    setTrigger(false);
+    setQty(undefined);
+    setProductDetail([]);
+  };
+  
+  const handleThirdStepClick = () => {
+    setTrigger2(false);
+    setProductDetail([]);
+    setClientPhone('');
+    setChoosedPhone('');
+
+  };
+
+
 
   const slotLocationTab = (location: any) => {
     const filteredData = allSlot?.['hydra:member']?.filter(
@@ -682,108 +711,16 @@ const NewOrder = () => {
     )
     ?.reduce((acc: any, current: any) => acc + current.available, 0)
 
+const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, handleSecondStepClick, handleThirdStepClick}
+
+
   return (
     <div>
       {(!isLogged || !dataStore.token) && <Navigate to='/connexion' />}
       <Container className='my-2'>
         <Container className='px-3 py-0 bg-secondary rounded-pill shadow my-auto '>
           <Row>
-            {chosenLocker?.length === 0 ? (
-              <>
-                <Col xs={2} md={5} lg={5} className='py-0'>
-                  <Link
-                    to='/in-progress'
-                    className='text-decoration-none'
-                    onClick={() => {
-                      newOrderDelete()
-                      setTempZones([])
-                      setSlotSizes([])
-                      setBookingSlotIds([])
-                    }}
-                  >
-                    <BackButton />
-                  </Link>
-                </Col>
-                <Col className='m-auto text-light text-start pe-4 py-0'>
-                  <i className='ri-inbox-fill align-bottom me-2'></i>{' '}
-                  <span className='fw-bold'>sélectionnez un locker</span>
-                </Col>
-              </>
-            ) : !trigger ? (
-              <>
-                <Col
-                  xs={2}
-                  md={4}
-                  lg={5}
-                  className='py-0'
-                  onClick={() => {
-                    setChosenLocker([])
-                    setProducts('')
-                    newOrderRegister(
-                      null,
-                      orderStore.location,
-                      null,
-                      orderStore.companyId,
-                      orderStore.companyName,
-                      orderStore.lockerType,
-                      orderStore.delivererId,
-                      null,
-                      null,
-                      null,
-                      0,
-                      0
-                    )
-                  }}
-                >
-                  <BackButton />
-                </Col>
-                <Col className='m-auto text-light text-start pe-2 py-0'>
-                  <i className='ri-shopping-basket-2-line align-bottom me-2'></i>{' '}
-                  <span className='fw-bold'>Nombre de panier nécessaire</span>
-                </Col>
-              </>
-            ) : !trigger2 ? (
-              <>
-                <Col
-                  xs={2}
-                  md={4}
-                  lg={5}
-                  className='py-0'
-                  onClick={() => {
-                    setTrigger(false)
-                    setQty(undefined)
-                    setProductDetail([])
-                  }}
-                >
-                  <BackButton />
-                </Col>
-                <Col className='m-auto text-light text-start pe-2 py-0'>
-                  <i className='ri-temp-cold-line align-bottom me-2'></i>{' '}
-                  <span className='fw-bold'>Température & Taille</span>
-                </Col>
-              </>
-            ) : (
-              <>
-                <Col
-                  xs={2}
-                  md={4}
-                  lg={5}
-                  className='py-0'
-                  onClick={() => {
-                    setTrigger2(false)
-                    setProductDetail([])
-                    setClientPhone('')
-                    setChoosedPhone('')
-                  }}
-                >
-                  <BackButton />
-                </Col>
-                <Col className='m-auto text-light text-start pe-2 py-0'>
-                  <i className='ri-user-line align-bottom me-2'></i>{' '}
-                  <span className='fw-bold'>Informations client</span>
-                </Col>
-              </>
-            )}
+            <InfoTopBar infoToBarProps={infoToBarProps} />
           </Row>
         </Container>
         <Container>
@@ -856,7 +793,7 @@ const NewOrder = () => {
                       <Row>
                         <Col xs={2}>
                           <div className=' m-auto'>
-                            <img src={imagLogo} alt='logo' width={30} />
+                            <img src={imagLogo} alt='logo' width={35} />
                           </div>
                         </Col>
                         <Col>{locker}</Col>
@@ -873,7 +810,7 @@ const NewOrder = () => {
                             alt='Temp icon'
                             src={
                               'https://img.icons8.com/color/512/' +
-                              imgFilter(
+                              _imgFilter(
                                 slotLocationTab(locker)[indx].slot?.temperatureZone?.keyTemp
                               ) +
                               '.png'

@@ -2,6 +2,7 @@ import { Container } from 'react-bootstrap'
 import ItemList from './ItemList'
 import images from '../../styles/no-order-min.png'
 import React from 'react'
+import NoData from './warning/NoData'
 
 const OrderList = ({ orderListProps }: any) => {
   //////////////////////////
@@ -31,8 +32,7 @@ const OrderList = ({ orderListProps }: any) => {
     }
   }, [orderByStatus, filteredOrder, searchOrder])
 
-  console.log(filteredOrder)
-  console.log(orderList)
+
 
   return (
     <Container className='px-0 animate__animated animate__backInLeft'>
@@ -49,16 +49,7 @@ const OrderList = ({ orderListProps }: any) => {
           />
         ))
       ) : (
-        <div className='text-center mt-5 pt-5'>
-          <img className='' alt='no order' src={images} style={{ height: '256px' }} />
-          {isFilteredOrders ? (
-            <div className='user-name fs-3 fw-bold text-secondary'>
-              <i className='ri-search-line me-1 align-bottom'></i> Aucune commande trouvée
-            </div>
-          ) : (
-            <div className='user-name fs-3 fw-bold text-secondary'>Aucune commande</div>
-          )}
-        </div>
+        <NoData images={images} isFilteredOrders={isFilteredOrders} msg="Aucune commande" msg2="Aucune commande trouvée" />
       )}
     </Container>
   )

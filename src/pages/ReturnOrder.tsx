@@ -74,13 +74,6 @@ const ReturnOrder: React.FC = () => {
       }
       setIsLoading(false)
     }
-
-    // if(orderData['hydra:member']?.length > 30){
-    //   getOrderByPage()
-    // }
-
-
-
   }, [orderData])
 
   React.useEffect(() => {
