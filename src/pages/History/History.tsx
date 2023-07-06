@@ -119,13 +119,13 @@ const History = () => {
             />
           </Container>
         ))
-      ) : (searchOrder && filteredOrder && filteredOrder.length === 0) ||
-        (orderData && orderData['hydra:member']?.length === 0) ? (
+      ) : ((searchOrder?.length > 2 && filteredOrder && filteredOrder.length === 0) ||
+        (orderData && orderData['hydra:member']?.length === 0)) && (
         <div className=' text-center mt-5 pt-5'>
           <img className='' alt='no order' src={images} style={{ height: '256px' }} />
           <div className='user-name fs-3 fw-bold text-secondary'>Aucune commande</div>
         </div>
-      ) : null}
+      )}
     </Container>
   )
 }
