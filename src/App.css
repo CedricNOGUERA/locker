@@ -560,3 +560,7 @@ ul.tl li .timestamp-current {
   border-radius: 20px;
 padding: 0 5px 0 5px;
 }
+
+.install{
+  display: none;
+}

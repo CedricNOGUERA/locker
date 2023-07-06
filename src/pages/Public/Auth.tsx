@@ -21,8 +21,7 @@ import Swal from 'sweetalert2'
 import { _strRandom } from '../../utils/functions'
 import AuthForm from '../../components/ui/auth/AuthForm'
 import useWebInstallPrompt from '../../hooks/useWebInstallPrompt';
-import imagLogo from '../../styles/logo512.png'
-
+import PwaInstallModal from '../../components/ui/modals/PwaInstallModal'
 
 
 
@@ -95,19 +94,14 @@ const Auth = () => {
 
   React.useEffect(() => {
     const handleBeforeInstallPrompt: any = (event:any) => {
-      
       event.preventDefault();
-      setDeferredPrompt(event)
-      if (event.displayMode !== 'browser') {
-
-        if (webInstallPrompt && isAndroid) {
-          handleShowModal()
-          // handleWebInstallAccepted()
+      if (event?.displayMode !== 'browser') {
+        if ( isAndroid) {
+        handleShowModal()
+          }
         }
-      }
-    };
+      };
 
-    console.log(deferredPrompt)
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     return () => {
@@ -145,6 +139,7 @@ const Auth = () => {
     }
   }, [myEmail])
 
+  
 
    ////////////////////
   //events
@@ -228,45 +223,13 @@ const Auth = () => {
 
   const formProps = {handleSubmit, register, errors, signUp, isView, setIsView, handleShow, isError, codeError, msgError, isLoadingAuth}
 
+  const pwaInstallModalProps = { showModal, handleCloseModal, webInstallPrompt, handleWebInstallDeclined, handleWebInstallAccepted}
+
+console.log(showModal)
   return (
     <Container fluid className='auth-cont-sup col-12 px-0 py-0 bg-'>
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header className='text-center'>
-        <div
-          style={{
-            height: '60px',
-            width: '100%',
-            borderTopRightRadius: '50%',
-            borderTopLeftRadius: '50%',
-            marginTop: '-50px',
-          }}
-        >
-          <img
-            src={imagLogo}
-            alt='1euro = 10 points'
-            className='Fidelity-messageMacaroon'
-            width={80}
-            style={{
-              borderTopRightRadius: '50%',
-              borderTopLeftRadius: '50%',
-              borderColor: "#aaa",
-              backgroundColor: '#fff',
-            }}
-          />
-          </div>
-        </Modal.Header>
-        <Modal.Body>Installer l'application sur votre téléphone!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Fermer
-          </Button>
-          <Button variant="primary" onClick={() => {handleWebInstallAccepted()
-          handleCloseModal()
-          }}>
-            Installer
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <PwaInstallModal pwaInstallModalProps={pwaInstallModalProps} />
+    
       <Container fluid className='auth-cont col-12 col-md-12 col-lg-6 px-0 bg-secondary'>
         {dataStore.token && dataStore.company_name && <Navigate to='/dashboard' />}
         {isLoading ? (
@@ -276,17 +239,12 @@ const Auth = () => {
             <Card.Body className=''>
               <div className='logo-app text-center text-light animate__animated animate__rotateIn'></div>
               <div
-              onClick={handleShowModal} 
+              // onClick={handleShowModal} 
                className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
                 OVER BOX
               </div>
               <AuthForm formProps={formProps} />
-              {isAndroid && 
-              // webInstallPrompt &&
-              <button 
-              onClick={handleWebInstallAccepted}
-              >Installez</button>
-            }
+          
             </Card.Body>
           
           </Card>
