@@ -139,6 +139,7 @@ const Auth = () => {
   //events
   ///////////////////
 
+  
   if (dataStore.company_name === undefined) {
     setIsError(true)
     setMsgError("Vous n'êtes affilié à aucune companie, contacté votre adminitrateur")
