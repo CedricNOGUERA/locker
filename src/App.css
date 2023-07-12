@@ -61,7 +61,14 @@
 }
 
 .auth-cont-sup {
-  background-color: #202121;
+  background-color: #8b8c94 !important;
+  height: 100vh;
+}
+
+.auth-cont {
+  height: 100vh;
+  overflow-y: hidden;
+  
 }
 
 .auth-form {
@@ -70,10 +77,9 @@
   margin-bottom: 10%;
 
 }
-/* .card-body{
-  height: 150vh;
-  margin-bottom: 10%;
-} */
+.card-body{
+  overflow-y: hidden !important;
+}
 
 @media (max-height: 515px) {
   .logo-app {
@@ -92,6 +98,7 @@
 
   .auth-cont {
     width: 60% !important;
+    
   }
 
   .teko {
@@ -515,7 +522,7 @@ ul.tl li .timestamp-current {
   position: absolute;
   right: 3%;
   top: 5%;
-  z-index: 10000;
+  z-index: 100;
 }
 
 @media (max-width: 767px) {

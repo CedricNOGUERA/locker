@@ -88,10 +88,7 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
   export const _UpdateStatus = (id: any, token: any, data: any) => {
     OrdersService.update(id, token, data).then((response: any) => {
-
-    console.log('object')
-
-
+        console.log(response)
     })
 
 
@@ -112,9 +109,9 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
     } else if (status === 'overtime') {
       return "Expirée"
     } else if (status === 'operout') {
-      return "Récupérée par le coursier"
+      return "Sortie par le coursier"
     } else if (status === 'receive') {
-      return "Récupérée par le client"
+      return "Récupérée"
     } else if (status === 'left_for_customer_service') {
       return "Service client"
     } else if (status === 'return') {

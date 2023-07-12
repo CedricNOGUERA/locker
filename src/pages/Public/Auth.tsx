@@ -25,9 +25,6 @@ import PwaInstallModal from '../../components/ui/modals/PwaInstallModal'
 // @ts-ignore
 import PWAPrompt from 'react-ios-pwa-prompt'
 
-
-
-
 type Inputs = {
   userName: string
   pass: string
@@ -79,14 +76,10 @@ const Auth = () => {
 
   const myToken = _strRandom('popopopopop').toLocaleUpperCase()
 
-
-
-
   const [showModal, setShowModal] = React.useState<boolean>(false);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const [deferredPrompt, setDeferredPrompt] = React.useState<any>();
   
   const isAndroid = /Android/i.test(navigator.userAgent);
 
@@ -141,9 +134,7 @@ const Auth = () => {
       setIsNotEmail(false)
     }
   }, [myEmail])
-
   
-
    ////////////////////
   //events
   ///////////////////
@@ -218,7 +209,6 @@ const Auth = () => {
             console.log(error)
         })
 
-     
       handleClose()
       setMyEmail('')
     }
@@ -228,9 +218,8 @@ const Auth = () => {
 
   const pwaInstallModalProps = { showModal, handleCloseModal, webInstallPrompt, handleWebInstallDeclined, handleWebInstallAccepted}
 
-console.log(showModal)
   return (
-    <Container fluid className='auth-cont-sup col-12 px-0 py-0 bg-'>
+    <Container fluid className='auth-cont-sup px-0 py-0'>
       <PwaInstallModal pwaInstallModalProps={pwaInstallModalProps} />
       <PWAPrompt
         promptOnVisit={1}
@@ -252,11 +241,8 @@ console.log(showModal)
                 OVER BOX
               </div>
               <AuthForm formProps={formProps} />
-          
             </Card.Body>
-          
           </Card>
-          
         )}
         <Modal show={show} onHide={handleClose} centered className='rounded-0'>
           <Modal.Header className='border-bottom-0'>
@@ -309,9 +295,7 @@ console.log(showModal)
             </Modal.Footer>
           </Form>
         </Modal>
-        
       </Container>
-      
     </Container>
   )
 }
