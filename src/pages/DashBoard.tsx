@@ -79,7 +79,7 @@ const DashBoard = () => {
     }
   }, [allSlot])
 
-
+console.log(allSlot)
 
 
 

@@ -12,7 +12,7 @@ const InfoTopBar = ({ infoToBarProps }: any) => {
     handleSecondStepClick,
     handleThirdStepClick,
   } = infoToBarProps
-
+// console.log(chosenLocker[0].slot.temperatureZone.locker.location)
   return (
     <>
       <Col
@@ -45,12 +45,13 @@ const InfoTopBar = ({ infoToBarProps }: any) => {
         ) : !trigger ? (
           <>
             <i className='ri-shopping-basket-2-line align-bottom me-2'></i>
+            {/* <span className='fw-bold'>{chosenLocker && chosenLocker[0]?.slot?.temperatureZone?.locker?.city}</span> */}
             <span className='fw-bold'>Nombre de panier nécessaire</span>
           </>
         ) : !trigger2 ? (
           <>
             <i className='ri-temp-cold-line align-bottom me-2'></i>
-            <span className='fw-bold'>Température & Taille</span>
+            <span className='fw-bold'>Température & produits</span>
           </>
         ) : (
           <>

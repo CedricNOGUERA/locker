@@ -712,12 +712,16 @@ const NewOrder = () => {
     ?.reduce((acc: any, current: any) => acc + current.available, 0)
 
 const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, handleSecondStepClick, handleThirdStepClick}
-
+console.log(allSlot)
 
   return (
     <div>
       {(!isLogged || !dataStore.token) && <Navigate to='/connexion' />}
       <Container className='my-2'>
+        <div className='col-12 text-center font-75'>
+          {' '}
+          {chosenLocker[0]?.slot.temperatureZone.locker.location}
+        </div>
         <Container className='px-3 py-0 bg-secondary rounded-pill shadow my-auto '>
           <Row>
             <InfoTopBar infoToBarProps={infoToBarProps} />
@@ -1038,6 +1042,7 @@ const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, 
                     required
                     className='border-start-0'
                   />
+                
                   {filteredName && filteredName?.length > 0 && (
                     <DropdownButton
                       variant='secondary'
