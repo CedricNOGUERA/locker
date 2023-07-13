@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getError } from '../../utils/errors/GetError'
 
-const API_URL = process.env.REACT_APP_END_POINT
+const API_URL = 'https://backend-locker-itl.herokuapp.com/api/'
 
 class AuthService {
   login(
