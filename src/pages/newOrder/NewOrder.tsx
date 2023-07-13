@@ -29,7 +29,6 @@ import AlertIsError from '../../components/ui/warning/AlertIsError'
 import { getError } from '../../utils/errors/GetError'
 import images from '../../styles/no-order-min.png'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
-import BackButton from '../../components/ui/BackButton'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import imagLogo from '../../styles/carrefour-logo.png'
@@ -100,7 +99,6 @@ const NewOrder = () => {
   const [bookingSlotIds, setBookingSlotIds] = React.useState<any>([])
   const [tempZones, setTempZones] = React.useState<any>([])
   const [slotSizes, setSlotSizes] = React.useState<any>([])
-  const [products, setProducts] = React.useState<string>('')
   const [productDetail, setProductDetail] = React.useState<any>([])
 
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
@@ -519,8 +517,6 @@ const NewOrder = () => {
       setQty('')
       setTrigger(false)
       setTrigger2(false)
-
-      setProducts('')
       setClientName('')
       setClientEmail('')
       setChoosedName('')
@@ -653,7 +649,6 @@ const NewOrder = () => {
 
   const handleFirstStepClick = () => {
     setChosenLocker([]);
-    setProducts('');
     newOrderRegister(
       null,
       orderStore.location,
