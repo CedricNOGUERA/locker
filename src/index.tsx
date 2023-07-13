@@ -20,9 +20,7 @@ import Forgot from './pages/Public/Forgot'
 import UpdatePassword from './pages/UpdatePassword/UpdatePassword'
 import History from './pages/History/History'
 import HistoryClient from './pages/Public/HistoryClient'
-import Test from './pages/Public/Test'
 import ReturnOrder from './pages/ReturnOrder'
-import Test2 from './pages/Public/Test_copy'
 
 const router = createBrowserRouter([
   {
@@ -126,15 +124,7 @@ const router = createBrowserRouter([
     path: '/commande/:id',
     element: <HistoryClient />,
   },
-  {
-    path: '/test',
-    element: <Test />,
-  },
-  {
-    path: '/test2',
-    element: <Test2 />,
-  },
-  // 
+  
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
