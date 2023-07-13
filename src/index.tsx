@@ -125,6 +125,7 @@ const router = createBrowserRouter([
     element: <HistoryClient />,
   },
   
+  
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
