@@ -125,9 +125,17 @@ console.log(allSlot)
                     {slot?.slot?.temperatureZone?.locker?.location}{' '}
                   </span>{' '}
                   -{' '}
-                  <span className='dash-city font-65'>
-                    {slot?.slot?.temperatureZone.locker.city}{' '}
-                  </span>
+                  {/* <span className='dash-city text-info font-65'>
+                    {slot?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                                slot?.slot?.temperatureZone?.myKey === 'MT'
+                                  ? 'Zone Fraîche'
+                                  : slot?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                                    slot?.slot?.temperatureZone?.myKey === 'LT'
+                                  ? 'Zone Congelée'
+                                  : (slot?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                      slot?.slot?.temperatureZone?.myKey === 'CA') &&
+                                    'Zone Ambiante'}{' '}
+                  </span> */}
                 </Col>
                 <Col xs={3} className=' text-start ps-0 pe-0'>
                   <Row>

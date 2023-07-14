@@ -158,6 +158,17 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </span>
           </Container>
+          <Container className='mb-3'>
+            <span className='text-decoration-none text-light' onClick={refreshPage}>
+              <Row className='menu-link'>
+                <Col xs={2}>
+                  {' '}
+                  <i className='ri-questionnaire-line fs-5'></i>
+                </Col>{' '}
+                <Col className='m-auto user-name'>Aide</Col>
+              </Row>
+            </span>
+          </Container>
           <Divider className='log-out pb-5 me-3'></Divider>
           <Container className='log-out'>
             <Row

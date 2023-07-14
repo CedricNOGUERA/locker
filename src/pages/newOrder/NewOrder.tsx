@@ -790,14 +790,15 @@ console.log(allSlot)
                       }
                       className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-cente'
                     >
-                      <Row>
-                        <Col xs={2}>
+                      {/* <Row>
+                        <Col xs={3} className='ps-2 pe-1'>
                           <div className=' m-auto'>
                             <img src={imagLogo} alt='logo' width={35} />
                           </div>
                         </Col>
-                        <Col>{locker}</Col>
-                      </Row>
+                        <Col className='ps-0 pe-1'>{locker}</Col>
+                      </Row> */}
+                      {locker}
                     </Col>
                     <Col xs={
                         allSlot?.['hydra:member']
@@ -943,7 +944,7 @@ console.log(allSlot)
                             className='my-2'
                             required
                           >
-                            <option value=''>Panier n°{indx + 1}</option>
+                            <option value=''>Température du Panier n°{indx + 1}</option>
                             {chosenLocker?.map((lockers: any, index: any) => (
                               <option
                                 key={index}
