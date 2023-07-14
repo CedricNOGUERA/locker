@@ -33,6 +33,7 @@ import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import imagLogo from '../../styles/carrefour-logo.png'
 import InfoTopBar from './InfoTopBar'
+import BadgedIcon from '../../components/ui/BadgedIcon'
 
 const NewOrder = () => {
   //////////////////////////
@@ -117,7 +118,7 @@ const NewOrder = () => {
   // UseEffect
   /////////////////////////
   React.useEffect(() => {
-    getClients(dataStore.token)
+    // getClients(dataStore.token)
   }, [])
 
   React.useEffect(() => {
@@ -183,17 +184,17 @@ const NewOrder = () => {
   // Events
   /////////////////////////
 
-  const getClients = (token: any) => {
-    ClientService.allClients(token)
-      .then((response: any) => {
-        setAutoCompletTab(response.data)
-      })
-      .catch((error) => {
-        setIsError(true)
-        setMsgError(getError(error))
-        setCodeError(error.status)
-      })
-  }
+  // const getClients = (token: any) => {
+  //   ClientService.allClients(token)
+  //     .then((response: any) => {
+  //       setAutoCompletTab(response.data)
+  //     })
+  //     .catch((error) => {
+  //       setIsError(true)
+  //       setMsgError(getError(error))
+  //       setCodeError(error.status)
+  //     })
+  // }
 
   const getBookingAllSlot = (token: any) => {
     setIsLoading(true)
@@ -787,7 +788,7 @@ console.log(allSlot)
                           ? 7
                           : 8
                       }
-                      className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-center'
+                      className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-cente'
                     >
                       <Row>
                         <Col xs={2}>
@@ -798,7 +799,31 @@ console.log(allSlot)
                         <Col>{locker}</Col>
                       </Row>
                     </Col>
-                    <Col>
+                    <Col xs={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 3
+                          ? 7
+                          : allSlot?.['hydra:member']
+                              ?.filter(
+                                (lockers: any) =>
+                                  lockers?.slot?.temperatureZone?.locker?.location === locker
+                              )
+                              ?.filter(
+                                (lock: any) =>
+                                  lock?.slot?.temperatureZone?.keyTemp ===
+                                  slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                              )?.length === 2
+                          ? 5
+                          : 4
+                      } >
                       {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
                         <div
                           key={indx}
@@ -938,18 +963,53 @@ console.log(allSlot)
                               >
                                 {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
                                 lockers?.slot?.temperatureZone?.myKey === 'MT'
-                                  ? 'Zone Fraîche'
+                                  ? '🍃 Zone Fraîche'
                                   : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
                                     lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                  ? 'Zone Congelée'
+                                  ? '❄ Zone Congelée'
                                   : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
                                       lockers?.slot?.temperatureZone?.myKey === 'CA') &&
-                                    'Zone Ambiante'}{' '}
+                                    '☀️ Zone Ambiante'}{' '}
                                 {lockers?.slot.size}- {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
                               </option>
                             ))}
                           </Form.Select>
+
+                          {/* <Dropdown>
+                            <Dropdown.Toggle
+                              className='tempzone'
+                              variant='outline-secondary'
+                              id='dropdown-basic'
+                            >
+                              Dropdown Button
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu className='tempzone'>
+                              {chosenLocker?.map((lockers: any, index: any) => (
+                                <>
+                                  <Dropdown.Item className='border-bottom'>
+                                    <Row>
+                                      <Col>
+                                        <BadgedIcon
+                                          slot={lockers}
+                                          borderColor='light'
+                                          imgSize='40px'
+                                        />
+                                      </Col>
+                                      <Col>
+                                        <div>
+                                          {lockers?.available}{' '}
+                                          {lockers?.available > 1 ? 'casiers' : 'casier'}
+                                        </div>
+                                      </Col>
+                                    </Row>
+                                  </Dropdown.Item>
+                                </>
+                              ))}
+                            </Dropdown.Menu>
+                          </Dropdown> */}
+
                           <InputGroup className='mb-4'>
                             <InputGroup.Text className='border-end-0 bg-secondary-500'>
                               <i className='ri-inbox-archive-line text-secondary'></i>
@@ -1037,7 +1097,7 @@ console.log(allSlot)
                     required
                     className='border-start-0'
                   />
-                
+
                   {filteredName && filteredName?.length > 0 && (
                     <DropdownButton
                       variant='secondary'

@@ -45,6 +45,8 @@ const ToRetrieve: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
+  const [storeName, setStoreName] = React.useState<any>([])
+
 
   const newStatus = 'operout'
 
@@ -111,6 +113,7 @@ const ToRetrieve: React.FC = () => {
     orderByStatus,
     orderData,
     getOrderByPage,
+    storeName
   }
 
   const scanPageProps = {
@@ -145,6 +148,7 @@ const ToRetrieve: React.FC = () => {
         <>
           {!selectedOrder ? (
             <>
+            <div className='col-12 pb-0 text-center font-75'>{storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}</div>
               <SearchBar searchBarProps={searchBarProps} />
               <OrderList orderListProps={orderListProps} />
             </>

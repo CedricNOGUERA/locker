@@ -90,12 +90,12 @@ const SearchBar = ({ searchBarProps }: any) => {
                   setSelectedStore(filteredStore(locker))
                 }}
               >
-                <Row className='item-menu text-secondary align-middle'>
-                  <Col xs={1} className=''>
+                <Row className='item-menu text-secondary align-middle pe-3'>
+                  <Col xs={1} className='ms-0 ps-1'>
                     {' '}
                     <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '}
                   </Col>{' '}
-                  <Col xs={10} className='m-auto my-0 user-name ps-3 pb-0  text-dark'>
+                  <Col xs={10} className='m-auto my-0 user-name ps-0 pb-0 ms-1  text-dark'>
                     {locker}
                   </Col>
                 </Row>
@@ -103,7 +103,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   <Col xs={1} className=''>
                     {' '}
                   </Col>{' '}
-                  <Col xs={10} className='font-75 font-weight-300 m-auto ps-3 py-0'>
+                  <Col xs={10} className='font-75 font-weight-300 m-auto ps-0 py-0 ms-1'>
                     {filteredCity(locker)}
                   </Col>
                 </Row>
