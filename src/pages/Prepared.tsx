@@ -1,0 +1,186 @@
+import React from 'react'
+import { Navigate, useOutletContext } from 'react-router-dom'
+import userDataStore from '../store/userDataStore'
+import { message } from 'antd'
+import { Container, Row, Col } from 'react-bootstrap'
+import { _searchWithRegex } from '../utils/functions'
+import SearchBar from '../components/ui/SearchBar'
+import OrderList from '../components/ui/OrderList'
+import ScanPage from '../components/ui/ScanPage'
+import AlertIsError from '../components/ui/warning/AlertIsError'
+import PlaceHolder from '../components/ui/loading/PlaceHolder'
+import '../App.css'
+import 'animate.css'
+import OrdersService from '../service/Orders/OrdersService'
+import BackBar from '../components/ui/BackBar'
+import BackButton from '../components/ui/BackButton'
+import BadgedIcon from '../components/ui/BadgedIcon'
+import ScanBl from '../components/ui/ScanBl'
+
+
+const Prepared: React.FC = () => {
+  //////////////////////////
+  // booleans States
+  /////////////////////////
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isError, setIsError] = React.useState<boolean>(false)
+
+  //////////////////////////
+  // Store & context state
+  /////////////////////////
+  const isLogged = userDataStore((state: any) => state.isLogged)
+  const dataStore = userDataStore((state: any) => state)
+  const [
+    selectedStore,
+    setSelectedStore,
+    orderData,
+    setOrderData,
+    selectedOrderCity,
+    setSelectedOrderCity,
+    allSlot,
+    setAllSlot,
+    selectedItem,
+    setSelectedItem,
+  ] = useOutletContext<any>()
+  const userToken = localStorage.getItem('user')
+
+  //////////////////////////
+  // States
+  /////////////////////////
+
+  const [messageApi, contextHolder] = message.useMessage()
+
+  const [selectedOrder, setSelectedOrder] = React.useState<any>('')
+  const [searchOrder, setSearchOrder] = React.useState<any>('')
+  const [filteredOrder, setFilteredOrder] = React.useState<any>([])
+  const [storeName, setStoreName] = React.useState<any>([])
+  const trigger ="preparations"
+
+  const newStatus = 'picked_delivery'
+//   const newStatus = 'picked_delivery'
+
+  const orderByStatus = orderData['hydra:member']?.filter(
+    (order: any) =>
+      order?.status === 'created' &&
+    //   order?.status === 'ready_to_delivery' &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
+  )
+  //////////////////////////
+  // UseEffect
+  /////////////////////////
+  React.useEffect(() => {
+    setIsLoading(true)
+    setSelectedItem('preparations')
+  }, [])
+
+  React.useEffect(() => {
+    if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
+      setIsLoading(false)
+    } else {
+      if (orderData && orderData['hydra:member']?.length < 0) {
+        setIsError(true)
+        setIsLoading(false)
+      }
+      setIsLoading(false)
+    }
+  }, [orderData])
+
+  React.useEffect(() => {
+    _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
+  }, [searchOrder])
+
+
+  React.useEffect(() => {
+    setStoreName(
+      allSlot?.['hydra:member']
+        && allSlot?.['hydra:member']?.filter((locker: any)=> 
+        
+        locker?.slot?.temperatureZone?.locker['@id'] === selectedStore
+        )
+        
+    )
+  }, [selectedStore])
+
+  const getOrderByPage = (token: any, page: any) => {
+    OrdersService.ordersByPage(token, page)
+      .then((response: any) => {
+        setIsLoading(false)
+        setOrderData(response.data)
+      })
+      .catch((error: any) => {
+        setIsLoading(false)
+      })
+  }
+
+  //////////////////////////
+  // Component Props
+  /////////////////////////
+  const searchBarProps = {
+    searchOrder,
+    setSearchOrder,
+    selectedStore,
+    setSelectedStore,
+    selectedOrderCity,
+    setSelectedOrderCity,
+    allSlot,
+  }
+
+  const orderListProps = {
+    filteredOrder,
+    setSelectedOrder,
+    searchOrder,
+    setSearchOrder,
+    orderByStatus,
+    orderData,
+    getOrderByPage,
+    storeName,
+    trigger
+  }
+
+  const scanPageProps = {
+    selectedOrder,
+    setOrderData,
+    messageApi,
+    setSelectedOrder,
+    newStatus,
+  }
+
+console.log(selectedOrder)
+
+  return (
+    <Container fluid className='cde App px-0'>
+      {contextHolder}
+      {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/connexion' />}
+
+      {isError ? (
+        <Container className='text-center mt-5'>
+          <AlertIsError
+            title="Une erreur s'est produite"
+            msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
+            colorIcon='danger'
+          />
+        </Container>
+      ) : isLoading ? (
+        <Container className='text-center mt-2'>
+          <PlaceHolder paddingYFirst='3' />
+        </Container>
+      ) : (
+        <>
+          {!selectedOrder ? (
+            <>
+              <div className='col-12 pb-0 text-center font-75'>
+                {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+              </div>
+              <SearchBar searchBarProps={searchBarProps} />
+              <OrderList orderListProps={orderListProps} />
+            </>
+          ) : (
+            <ScanBl scanPageProps={ scanPageProps } />
+          )}
+        </>
+      )}
+    </Container>
+  )
+}
+
+export default Prepared

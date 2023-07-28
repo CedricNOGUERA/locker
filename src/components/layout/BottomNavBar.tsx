@@ -25,6 +25,11 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
       order?.status === 'created' &&
       order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
   )
+  const ready_to_delivery = orderData['hydra:member']?.filter(
+    (order: any) =>
+      order?.status === 'ready_to_delivery' &&
+      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
+  )
 
   /////////////////////
   //onSelect text become white
@@ -48,7 +53,21 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             <p>Accueil</p>
           </Link>
         </Nav.Item>
-        <Nav.Item className='nav-item text-center' onClick={() => handleSelect('user')}>
+        <Nav.Item className='nav-item text-center' onClick={() => handleSelect('preparations')}>
+          <Link
+            to='/preparations'
+            className={`nav-link  text-${
+              selectedItem === 'preparations' ? 'light' : 'info'
+            } py-1 pb-2 text-decoration-none`}
+          >
+            <i className='ri-checkbox-line fs-3'></i>
+            {ready_to_delivery?.length > 0 && (
+              <span className='badge rounded-pill bg-info'>{ready_to_delivery?.length}</span>
+            )}
+            <p>Prérations  </p>
+          </Link>
+        </Nav.Item>
+        {/* <Nav.Item className='nav-item text-center' onClick={() => handleSelect('user')}>
           <Link
             to='/historique'
             className={`nav-link  text-${
@@ -58,7 +77,7 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             <i className='ri-history-line fs-3'></i>
             <p>Historique</p>
           </Link>
-        </Nav.Item>
+        </Nav.Item> */}
         <Nav.Item
           className='nav-item text-center '
           style={{ position: 'absolute', bottom: '45px' }}

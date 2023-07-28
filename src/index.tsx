@@ -23,6 +23,7 @@ import HistoryClient from './pages/Public/HistoryClient'
 import Test from './pages/Public/Test'
 import ReturnOrder from './pages/ReturnOrder'
 import Test2 from './pages/Public/Test_copy'
+import Prepared from './pages/Prepared'
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,15 @@ const router = createBrowserRouter([
           <React.Fragment>
             <HeaderDesign title='Tableau de bord' />
             <DashBoard />
+          </React.Fragment>
+        ),
+      },
+      {
+        path: 'preparations',
+        element: (
+          <React.Fragment>
+            <HeaderDesign title='Préparations' />
+            <Prepared />
           </React.Fragment>
         ),
       },

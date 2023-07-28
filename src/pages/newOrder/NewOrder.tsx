@@ -204,7 +204,7 @@ const NewOrder = () => {
         setIsLoading(false)
         bookingSet(response.data)
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setIsError(true)
         setMsgError(getError(error))
         setCodeError(error.status)
@@ -218,7 +218,7 @@ const NewOrder = () => {
         setOrderData(response.data)
         setIsLoading(false)
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setIsError(true)
         setMsgError(getError(error))
         setCodeError(error.status)
@@ -359,7 +359,7 @@ const NewOrder = () => {
 
       axios
         .request(config)
-        .then((response) => {
+        .then((response: any) => {
           console.log(response)
           newOrderDelete()
           setTempZones([])
@@ -391,7 +391,7 @@ const NewOrder = () => {
             timerProgressBar: true,
           })
         })
-        .catch((error) => {
+        .catch((error: any) => {
           console.log(error)
           setMsgError(getError(error))
           setIsValid(false)

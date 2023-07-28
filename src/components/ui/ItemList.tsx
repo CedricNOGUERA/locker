@@ -27,7 +27,10 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
           </span>
         </Col>
         <Col className='text-secondary text-start align-bottom m-auto py-0 pe-0 ps-3 my-0'>
-          <small className='ff-agency font-75 '>{liv?.barcode}</small>
+          <small className='ff-agency font-75 '>{liv?.barcode}</small> 
+          {trigger !== 'history' && (
+          <small className='font-65'> -{' '}{formattedDate(liv?.createdAt)}</small>
+          )}
           <p className='font-75 mb-0'>
             {liv?.client?.email}
             {trigger === 'history' ? (
@@ -48,8 +51,18 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
         </Col>
         {trigger === 'history' ? (
           <Col xs={2} className='font-65 m-auto me-2 p-0 text-end text-secondary'>
-            {/* { moment(liv?.createdAt).format('D MMM')} */}
-            { formattedDate(liv?.createdAt)}
+            {formattedDate(liv?.createdAt)}
+          </Col>
+        ) : trigger === 'preparations' ? (
+          <Col
+            xs={1}
+            className='m-auto me-5 me-md-2 py-0 text-end'
+            onClick={() => {
+              setSearchOrder('')
+              setSelectedOrder(liv)
+            }}
+          >
+            <i className='ri-checkbox-line fs-2 text-secondary'></i>
           </Col>
         ) : (
           <Col xs={1} className='m-auto me-5 me-md-2 py-0 text-end'>

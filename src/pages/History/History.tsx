@@ -86,8 +86,16 @@ const History = () => {
     trigger
   }
 
+  console.log(selectedOrder)
   return (
     <Container className='order-list pb-5 mb-5'>
+      {selectedOrder && 
+         <div className='col-12 pb-0 text-center font-75'>
+        {' '}
+        {selectedOrder?.bookingSlot?.slot?.temperatureZone?.locker?.location}
+      </div>
+      
+      }
       {!isLoading && <TopSearchBar topSearchBarProps={topSearchBarProps} />}
       {selectedOrder && <DetailHistory selectedOrder={selectedOrder} />}
       {isError ? (
