@@ -38,6 +38,7 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
     setSelectedItem(item)
   }
 
+  
   return (
     <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
       <UserQrcode show={show} handleClose={handleClose} />
