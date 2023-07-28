@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Container, Row, Col, Button, Alert, Table } from 'react-bootstrap'
-import { QrReader } from 'react-qr-reader'
+// import { QrReader } from 'react-qr-reader'
 import BackButton from './BackButton'
 import BadgedIcon from './BadgedIcon'
 const ScanBl = ({ scanPageProps }: any) => {
@@ -50,7 +50,7 @@ const ScanBl = ({ scanPageProps }: any) => {
           <Container className='bg-light p-2 w-75  border'>
             {startScan && (
               <>
-                <QrReader
+                {/* <QrReader
                   onResult={(result: any, error: any) => {
                     if (result && result.text !== 'No result') {
                       let resultStr = result.text.toString()
@@ -64,7 +64,7 @@ const ScanBl = ({ scanPageProps }: any) => {
                     }
                   }}
                   constraints={{ facingMode: 'environment' }}
-                />
+                /> */}
               </>
             )}
           </Container>

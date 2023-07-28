@@ -25,12 +25,11 @@
     "log4js": "^6.9.1",
     "moment": "^2.29.4",
     "primereact": "^9.5.0",
-    "react": "^18.0.0",
+    "react": "^16.0.0 || ^17.0.0 || ^18.0.0",
     "react-bootstrap": "^2.7.1",
-    "react-dom": "^18.2.0",
+    "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0",
     "react-hook-form": "^7.43.1",
     "react-ios-pwa-prompt": "^1.8.4",
-    "react-qr-reader": "^3.0.0-beta-1",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
     "sweetalert2": "^11.7.3",
@@ -49,6 +48,10 @@
     "workbox-strategies": "^6.5.4",
     "workbox-streams": "^6.5.4",
     "zustand": "^4.3.3"
+  },
+  "peerDependencies": {
+    "react": "^16.0.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
