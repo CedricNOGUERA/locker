@@ -229,7 +229,7 @@ const Auth = () => {
         permanentlyHideOnDismiss={false}
       />
       <Container fluid className='auth-cont col-12 col-md-12 col-lg-6 px-0 bg-secondary'>
-        {dataStore.token && dataStore.company_name && <Navigate to='/dashboard' />}
+        {dataStore.token && dataStore.company_name && <Navigate to='/preparations' />}
         {isLoading ? (
           <Loading variant='info' />
         ) : (

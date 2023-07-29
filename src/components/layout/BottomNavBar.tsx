@@ -22,12 +22,13 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
   )
   const progress = orderData['hydra:member']?.filter(
     (order: any) =>
-      order?.status === 'created' &&
+      // order?.status === 'created' &&
+      order?.status === 'picked_up' &&
       order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
   )
-  const ready_to_delivery = orderData['hydra:member']?.filter(
+  const ready_for_delivery = orderData['hydra:member']?.filter(
     (order: any) =>
-      order?.status === 'ready_to_delivery' &&
+      order?.status === 'ready_for_delivery' &&
       order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
   )
 
@@ -43,18 +44,10 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
     <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
       <UserQrcode show={show} handleClose={handleClose} />
       <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>
-        <Nav.Item className='nav-item text-center ' onClick={() => handleSelect('home')}>
-          <Link
-            to='/dashboard'
-            className={`nav-link  text-${
-              selectedItem === 'home' ? 'light' : 'info'
-            } py-1 pb-2 text-decoration-none`}
-          >
-            <i className='ri-home-2-line fs-3 '></i>
-            <p>Accueil</p>
-          </Link>
-        </Nav.Item>
-        <Nav.Item className='nav-item text-center' onClick={() => handleSelect('preparations')}>
+        <Nav.Item
+          className='nav-item text-center'
+          onClick={() => handleSelect('preparations')}
+        >
           <Link
             to='/preparations'
             className={`nav-link  text-${
@@ -62,38 +55,11 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             } py-1 pb-2 text-decoration-none`}
           >
             <i className='ri-checkbox-line fs-3'></i>
-            {ready_to_delivery?.length > 0 && (
-              <span className='badge rounded-pill bg-info'>{ready_to_delivery?.length}</span>
+            {ready_for_delivery?.length > 0 && (
+              <span className='badge rounded-pill bg-info'>{ready_for_delivery?.length}</span>
             )}
-            <p>Prérations  </p>
+            <p>Prérations </p>
           </Link>
-        </Nav.Item>
-        {/* <Nav.Item className='nav-item text-center' onClick={() => handleSelect('user')}>
-          <Link
-            to='/historique'
-            className={`nav-link  text-${
-              selectedItem === 'user' ? 'light' : 'info'
-            } py-1 pb-2 text-decoration-none`}
-          >
-            <i className='ri-history-line fs-3'></i>
-            <p>Historique</p>
-          </Link>
-        </Nav.Item> */}
-        <Nav.Item
-          className='nav-item text-center '
-          style={{ position: 'absolute', bottom: '45px' }}
-          onClick={() => handleSelect('order')}
-        >
-          <div className='text-center '></div>
-          <Link
-            to='/nouvelle-commande'
-            className='text-info py-1 pb-5 mb-5 text-decoration-none'
-          >
-            <img alt='Plus icon' src={imag} width={52} height={52} />
-          </Link>
-        </Nav.Item>
-        <Nav.Item className='nav-item text-center'>
-          <div className='text-center '></div>
         </Nav.Item>
         <Nav.Item className='nav-item text-center' onClick={() => handleSelect('progress')}>
           <Link
@@ -109,6 +75,23 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             <p>Livraisons</p>
           </Link>
         </Nav.Item>
+        {/* <Nav.Item
+          className='nav-item text-center '
+          style={{ position: 'absolute', bottom: '45px' }}
+          onClick={() => handleSelect('order')}
+        >
+          <div className='text-center '></div>
+          <Link
+            to='/nouvelle-commande'
+            className='text-info py-1 pb-5 mb-5 text-decoration-none'
+          >
+            <img alt='Plus icon' src={imag} width={52} height={52} />
+          </Link>
+        </Nav.Item>
+        <Nav.Item className='nav-item text-center'>
+          <div className='text-center '></div>
+        </Nav.Item> */}
+
         <Nav.Item className='nav-item text-center' onClick={() => handleSelect('retrieve')}>
           <Link
             className={`nav-link px-0  text-${
@@ -121,6 +104,17 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
               <span className='badge rounded-pill bg-info'>{retrieve?.length}</span>
             )}
             <p>Retraits</p>
+          </Link>
+        </Nav.Item>
+        <Nav.Item className='nav-item text-center ' onClick={() => handleSelect('home')}>
+          <Link
+            to='/historique'
+            className={`nav-link  text-${
+              selectedItem === 'home' ? 'light' : 'info'
+            } py-1 pb-2 text-decoration-none`}
+          >
+            <i className='ri-history-line fs-3'></i>
+            <p>Historique</p>
           </Link>
         </Nav.Item>
       </Nav>

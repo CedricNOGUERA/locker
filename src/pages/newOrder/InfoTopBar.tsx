@@ -45,8 +45,7 @@ const InfoTopBar = ({ infoToBarProps }: any) => {
         ) : !trigger ? (
           <>
             <i className='ri-shopping-basket-2-line align-bottom me-2'></i>
-            {/* <span className='fw-bold'>{chosenLocker && chosenLocker[0]?.slot?.temperatureZone?.locker?.city}</span> */}
-            <span className='fw-bold'>Nombre de panier nécessaire</span>
+            <span className='fw-bold'>Paniers nécessaires </span>
           </>
         ) : !trigger2 ? (
           <>

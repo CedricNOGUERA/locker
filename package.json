@@ -27,10 +27,9 @@
     "primereact": "^9.5.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.1",
-   "react-dom": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.1",
     "react-ios-pwa-prompt": "^1.8.4",
-    "react-qr-reader": "^2.2.1",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
     "sweetalert2": "^11.7.3",
@@ -50,7 +49,6 @@
     "workbox-streams": "^6.5.4",
     "zustand": "^4.3.3"
   },
- 
   "scripts": {
     "start": "react-scripts start",
     "json-server": "json-server --watch src/data/db.json --host 127.0.0.1 --port 3003",

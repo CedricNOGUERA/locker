@@ -124,8 +124,8 @@ console.log(allSlot)
                   <span className='dash-location font-7'>
                     {slot?.slot?.temperatureZone?.locker?.location}{' '}
                   </span>{' '}
-                  -{' '}
-                  {/* <span className='dash-city text-info font-65'>
+                  {/* -{' '}
+                  <span className='dash-city text-info font-65'>
                     {slot?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
                                 slot?.slot?.temperatureZone?.myKey === 'MT'
                                   ? 'Zone Fraîche'

@@ -87,7 +87,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
           </Offcanvas.Title> */}
         </Offcanvas.Header>
         <Offcanvas.Body className='text-light pe-0'>
-          <Container className='mb-3'>
+          <Container className='mb-2'>
             <Row
               className=' menu-link'
               onClick={() => {
@@ -102,7 +102,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
-          <Container className='mb-3'>
+          <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
               to='/historique'
@@ -117,7 +117,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </Link>
           </Container>
-          <Container className='mb-3'>
+          <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
               to='/deposees'
@@ -132,7 +132,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </Link>
           </Container>
-          <Container className='mb-3'>
+          <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
               to='/retour'
@@ -147,7 +147,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </Link>
           </Container>
-          <Container className='mb-3'>
+          <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
               to='/update-password'
@@ -162,7 +162,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </Link>
           </Container>
-          <Container className='mb-3'>
+          <Container className='mb-2'>
             <span className='text-decoration-none text-light' onClick={refreshPage}>
               <Row className='menu-link'>
                 <Col xs={2}>
@@ -173,7 +173,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </span>
           </Container>
-          <Container className='mb-3'>
+          <Container className='mb-2'>
             <span className='text-decoration-none text-light' onClick={refreshPage}>
               <Row className='menu-link'>
                 <Col xs={2}>

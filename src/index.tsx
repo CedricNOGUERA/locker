@@ -31,20 +31,20 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: 'dashboard',
-        element: (
-          <React.Fragment>
-            <HeaderDesign title='Tableau de bord' />
-            <DashBoard />
-          </React.Fragment>
-        ),
-      },
-      {
         path: 'preparations',
         element: (
           <React.Fragment>
             <HeaderDesign title='Préparations' />
             <Prepared />
+          </React.Fragment>
+        ),
+      },
+      {
+        path: 'dashboard',
+        element: (
+          <React.Fragment>
+            <HeaderDesign title='Tableau de bord' />
+            <DashBoard />
           </React.Fragment>
         ),
       },

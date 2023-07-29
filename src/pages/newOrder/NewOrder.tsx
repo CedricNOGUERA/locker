@@ -15,7 +15,7 @@ import {
   Spinner,
 } from 'react-bootstrap'
 import Badge from 'react-bootstrap/Badge'
-import { Link, Navigate, useOutletContext } from 'react-router-dom'
+import {Navigate, useOutletContext } from 'react-router-dom'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 import newOrderDataStore from '../../store/newOrderDataStore'
 import userDataStore from '../../store/userDataStore'
@@ -31,9 +31,7 @@ import images from '../../styles/no-order-min.png'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
-import imagLogo from '../../styles/carrefour-logo.png'
 import InfoTopBar from './InfoTopBar'
-import BadgedIcon from '../../components/ui/BadgedIcon'
 
 const NewOrder = () => {
   //////////////////////////
@@ -250,6 +248,7 @@ const NewOrder = () => {
     setClientPhone('')
     setAgeRestriction(false)
   }
+  console.log(productDetail)
 
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
@@ -580,33 +579,42 @@ const NewOrder = () => {
 
 
   const handleChangeSelect = (e: any, indx: any) => {
-    const zone: any = JSON.parse(e.currentTarget.value)
-
-    const newTab: any = [...tempZones]
-    newTab[indx] = zone?.slot?.temperatureZone?.myKey
-    setTempZones(newTab)
-
-    const newTabSize: any = [...slotSizes]
-    newTabSize[indx] = zone.slot?.size
-    setSlotSizes(newTabSize)
-
-    const newTabBooking: any = [...bookingSlotIds]
-    newTabBooking[indx] = zone['@id']
-    setBookingSlotIds(newTabBooking)
-    newOrderRegister(
-      zone?.slot?.temperatureZone?.locker['@id'],
-      zone?.slot?.temperatureZone?.locker?.location,
-      bookingSlotIds,
-      zone?.company['@id'],
-      zone?.company?.name,
-      zone?.slot?.temperatureZone?.locker?.type,
-      dataStore?.id,
-      tempZones,
-      zone?.slot?.temperatureZone?.myKey,
-      slotSizes,
-      parseInt(qty),
-      ageRestriction === true ? 18 : 0
-    )
+    //conditions si "e.currentTarget.value" est vide
+    if (e.currentTarget.value.trim() !== '') {
+      try {
+        const zone: any = JSON.parse(e.currentTarget.value)
+        
+            const newTab: any = [...tempZones]
+            newTab[indx] = zone?.slot?.temperatureZone?.myKey
+            setTempZones(newTab)
+        
+            const newTabSize: any = [...slotSizes]
+            newTabSize[indx] = zone.slot?.size
+            setSlotSizes(newTabSize)
+        
+            const newTabBooking: any = [...bookingSlotIds]
+            newTabBooking[indx] = zone['@id']
+            setBookingSlotIds(newTabBooking)
+            newOrderRegister(
+              zone?.slot?.temperatureZone?.locker['@id'],
+              zone?.slot?.temperatureZone?.locker?.location,
+              bookingSlotIds,
+              zone?.company['@id'],
+              zone?.company?.name,
+              zone?.slot?.temperatureZone?.locker?.type,
+              dataStore?.id,
+              tempZones,
+              zone?.slot?.temperatureZone?.myKey,
+              slotSizes,
+              parseInt(qty),
+              ageRestriction === true ? 18 : 0
+            )
+      } catch (error) {
+        console.error('Erreur lors du traitement des données JSON :', error);
+      }
+    } else {
+      console.error('Les données JSON sont vides.');
+    }
   }
  
 
@@ -708,7 +716,6 @@ const NewOrder = () => {
     ?.reduce((acc: any, current: any) => acc + current.available, 0)
 
 const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, handleSecondStepClick, handleThirdStepClick}
-console.log(allSlot)
 
   return (
     <div>

@@ -56,13 +56,12 @@ const Prepared: React.FC = () => {
   const [storeName, setStoreName] = React.useState<any>([])
   const trigger ="preparations"
 
-  const newStatus = 'picked_delivery'
+  const newStatus = 'picked_up'
 //   const newStatus = 'picked_delivery'
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'created' &&
-    //   order?.status === 'ready_to_delivery' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
   //////////////////////////

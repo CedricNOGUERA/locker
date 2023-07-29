@@ -28,8 +28,10 @@ function App() {
   //UseEffect
   ////////////////////
   React.useEffect(() => {
-    getallOrders(token)
-    getBookingAllSlot(token)
+    if (token && token?.length > 0) {
+      getallOrders(token)
+      getBookingAllSlot(token)
+    }
   }, [token])
 
   React.useEffect(() => {
