@@ -173,10 +173,12 @@ const Prepared: React.FC = () => {
       const imageData = context.getImageData(0, 0, videoWidth, videoHeight);
   
       const qrCodeReader = new QrCodeReader();
-      qrCodeReader.decode(imageData)
+      if(qrCodeReader){
+
+        qrCodeReader?.decode(imageData)
         .then((result: any) => {
-          if (result && result.result) {
-            setScannedData(result.result);
+          if (result && result?.result) {
+            setScannedData(result?.result);
           } else {
             setScannedData("");
           }
@@ -185,6 +187,7 @@ const Prepared: React.FC = () => {
           console.error('Error detecting QR code: ', error);
           setScannedData("");
         });
+      }
     }
   };
 
