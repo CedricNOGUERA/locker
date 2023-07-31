@@ -41,7 +41,7 @@ const ScanPage = ({ scanPageProps }: any) => {
     axios
       .request(config)
       .then((response: any) => {
-        if (newStatus === 'operin') {
+        if (newStatus === 'ready_for_delivery') {
           console.log(selectedOrder?.client?.email)
         }
         console.log(response.data)

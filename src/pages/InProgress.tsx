@@ -55,7 +55,6 @@ const InProgress: React.FC = () => {
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'created' &&
       order?.status === 'picked_up' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )

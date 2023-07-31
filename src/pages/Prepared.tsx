@@ -1,21 +1,23 @@
-import React from 'react'
+import React, { useRef, useEffect, useState } from 'react';
 import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
-import OrderList from '../components/ui/OrderList'
-import ScanPage from '../components/ui/ScanPage'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
 import OrdersService from '../service/Orders/OrdersService'
-import BackBar from '../components/ui/BackBar'
-import BackButton from '../components/ui/BackButton'
-import BadgedIcon from '../components/ui/BadgedIcon'
 import ScanBl from '../components/ui/ScanBl'
+import OrderList from '../components/ui/OrderList';
+import OrderDetail from '../components/ui/OrderDetail';
+//@ts-ignore
+import QrCodeReader from 'qrcode-reader';
+type QRCodeType = "text" | "url" | "email" | "phone" | "contact" | "unknown";
+
+
 
 
 const Prepared: React.FC = () => {
@@ -54,19 +56,51 @@ const Prepared: React.FC = () => {
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
   const [storeName, setStoreName] = React.useState<any>([])
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [scannedData, setScannedData] = React.useState<string>("");
+  const [scannedType, setScannedType] = React.useState<QRCodeType>("unknown");
+  const [cameraStarted, setCameraStarted] = React.useState<boolean>(false);
+
+
   const trigger ="preparations"
 
-  const newStatus = 'picked_up'
-//   const newStatus = 'picked_delivery'
+  // const newStatus = ' '
+  const newStatus = 'picked_delivery'
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
-      order?.status === 'created' &&
+      // order?.status === 'created' &&
+      order?.status === 'ready_for_delivery' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
+
+
   )
+
+  console.log(orderByStatus)
+
+
+
+
   //////////////////////////
   // UseEffect
   /////////////////////////
+
+  useEffect(() => {
+    if (cameraStarted && videoRef.current) {
+      // const qrCodeDetector = new (window as any).QRCodeDetector();
+      const scanInterval = setInterval(() => {
+        scanQrCode();
+      }, 1000);
+
+      return () => {
+        clearInterval(scanInterval);
+      };
+    }
+  }, [cameraStarted]);
+
+
+
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('preparations')
@@ -111,6 +145,54 @@ const Prepared: React.FC = () => {
       })
   }
 
+  const startCamera = () => {
+    if (!cameraStarted && videoRef.current) {
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        .then(stream => {
+          videoRef.current!.srcObject = stream;
+          videoRef.current!.play();
+          setCameraStarted(true);
+        })
+        .catch(error => console.error('Error accessing camera: ', error));
+    }
+  };
+
+
+  const scanQrCode = () => {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+  
+    if (videoRef.current && context) {
+      const videoWidth = videoRef.current.videoWidth;
+      const videoHeight = videoRef.current.videoHeight;
+  
+      canvas.width = videoWidth;
+      canvas.height = videoHeight;
+      context.drawImage(videoRef.current, 0, 0, videoWidth, videoHeight);
+  
+      const imageData = context.getImageData(0, 0, videoWidth, videoHeight);
+  
+      const qrCodeReader = new QrCodeReader();
+      qrCodeReader.decode(imageData)
+        .then((result: any) => {
+          if (result && result.result) {
+            setScannedData(result.result);
+          } else {
+            setScannedData("");
+          }
+        })
+        .catch((error: any) => {
+          console.error('Error detecting QR code: ', error);
+          setScannedData("");
+        });
+    }
+  };
+
+
+
+
+
+
   //////////////////////////
   // Component Props
   /////////////////////////
@@ -144,7 +226,6 @@ const Prepared: React.FC = () => {
     newStatus,
   }
 
-console.log(selectedOrder)
 
   return (
     <Container fluid className='cde App px-0'>
@@ -172,10 +253,18 @@ console.log(selectedOrder)
               </div>
               <SearchBar searchBarProps={searchBarProps} />
               <OrderList orderListProps={orderListProps} />
+              <video ref={videoRef} style={{ width: "100%", maxWidth: 400 }} />
+      {!cameraStarted && <button onClick={startCamera}>Démarrer la caméra</button>}
+      {scannedData && <div>
+        <p>Type: {scannedType}</p>
+        <p>Data: {scannedData}</p>
+      </div>}
             </>
           ) : (
-            <ScanBl scanPageProps={ scanPageProps } />
+            <OrderDetail scanPageProps={scanPageProps} />
           )}
+
+
         </>
       )}
     </Container>

@@ -27,12 +27,14 @@ const Delivered: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = React.useState<any>("");
   const [searchOrder, setSearchOrder] = React.useState<any>("");
   const [filteredOrder, setFilteredOrder] = React.useState<any>([]);
+  const [storeName, setStoreName] = React.useState<any>([])
+  const trigger ="delivered"
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const  newStatus ="receive"
+  const  newStatus ="ready_for_delivery"
 
-  const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore );
+  const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "created" && order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore );
 
 
   React.useEffect(() => {
@@ -82,7 +84,6 @@ const Delivered: React.FC = () => {
   };
 
   const orderListProps = {
-    // orderTab,
     filteredOrder,
     setSelectedOrder,
     searchOrder,
@@ -90,6 +91,8 @@ const Delivered: React.FC = () => {
     orderByStatus,
     orderData,
     getOrderByPage,
+    storeName,
+    trigger
   };
   
   const scanPageProps = {
