@@ -13,18 +13,13 @@ import OrdersService from '../service/Orders/OrdersService'
 import OrderList from '../components/ui/OrderList';
 import OrderDetail from '../components/ui/OrderDetail';
 // import { QrReader } from 'react-qr-reader';
+import jsQR from 'jsqr';
 //@ts-ignore
 import QrCodeReader from 'qrcode-reader';
 type QRCodeType = "text" | "url" | "email" | "phone" | "contact" | "unknown";
 
 
-const isImageCaptureSupported = () => {
-  if ('mediaDevices' in navigator && 'getSupportedConstraints' in navigator.mediaDevices) {
-    const supportedConstraints: any = navigator.mediaDevices.getSupportedConstraints();
-    return supportedConstraints.advanced && supportedConstraints.advanced.includes('ImageCapture');
-  }
-  return false;
-};
+
 
 const Prepared: React.FC = () => {
   
@@ -67,11 +62,15 @@ const Prepared: React.FC = () => {
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
   const [storeName, setStoreName] = React.useState<any>([])
 
+  const [isScan, setIsScan] = React.useState<any>(false)
   const videoRef = useRef<HTMLVideoElement>(null);
   const qrCodeDetectorRef = useRef<any>(null);
   const [scannedData, setScannedData] = React.useState<string>("");
   const [scannedType, setScannedType] = React.useState<QRCodeType>("unknown");
   const [cameraStarted, setCameraStarted] = React.useState<boolean>(false);
+
+  let videoStream: MediaStream | null = null;
+
 
 
   const trigger ="preparations"
@@ -97,10 +96,10 @@ const Prepared: React.FC = () => {
   /////////////////////////
 
   useEffect(() => {
-    if (cameraStarted && videoRef.current) {
+    if (isScan && videoRef.current) {
       // const qrCodeDetector = new (window as any).QRCodeDetector();
       const scanInterval = setInterval(() => {
-        scanQrCode();
+        scanQRCode();
       }, 1000);
 
       return () => {
@@ -156,83 +155,67 @@ const Prepared: React.FC = () => {
   }
 
 
-  const handleScan = async () => {
-    if (!isImageCaptureSupported()) {
-      console.log('ImageCapture is not supported in this browser.');
-      return;
-    }
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-
-      // const track = stream.getVideoTracks()[0];
-      // qrCodeDetectorRef.current = new ImageCapture(track);
-
-      // const qrCodeCapabilities = await qrCodeDetectorRef.current.getPhotoCapabilities();
-      // console.log(qrCodeCapabilities); // QR code capabilities
-
-      // const qrCodeData = await qrCodeDetectorRef.current.grabFrame();
-      // console.log(qrCodeData); // QR code data (ImageBitmap)
-
-      // Here you can process the QR code data or display it on canvas, etc.
-    } catch (error) {
-      console.error('Error accessing camera:', error);
-    }
-  };
-
-
-
-
-  const startCamera = () => {
-    if (!cameraStarted && videoRef?.current) {
-      navigator?.mediaDevices?.getUserMedia({ video: { facingMode: "environment" } })
-        .then((stream: any) => {
+  const handleScan = () => {
+    setIsScan(true)
+    if (videoRef.current) {
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+        .then((stream) => {
+          videoStream = stream;
           videoRef.current!.srcObject = stream;
           videoRef.current!.play();
-          setCameraStarted(true);
+          requestAnimationFrame(scanQRCode);
         })
-        .catch(error => console.error('Error accessing camera: ', error));
+        .catch((error) => console.error('Error accessing camera:', error));
+    }
+  };
+
+  const stopScan = () => {
+    if (videoStream) {
+      videoStream.getTracks().forEach((track) => track.stop());
+      videoStream = null;
+   
+
     }
   };
 
 
-  const scanQrCode = async () => {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-  
-    if (videoRef.current && context) {
-      const videoWidth = videoRef.current.videoWidth;
-      const videoHeight = videoRef.current.videoHeight;
-  
-      canvas.width = videoWidth;
-      canvas.height = videoHeight;
-      context.drawImage(videoRef.current, 0, 0, videoWidth, videoHeight);
-  
-      const imageData = context.getImageData(0, 0, videoWidth, videoHeight);
-  console.log(imageData)
-      const qrCodeReader = new QrCodeReader();
-      if(imageData){
+  const scanQRCode = () => {
+    if (videoRef.current && videoStream 
+      && videoRef.current.videoWidth && videoRef.current.videoHeight
+      ) {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
 
-       await qrCodeReader?.decode(imageData)
-        .then((result: any) => {
-          if (result && result?.result) {
-            setScannedData(result?.result);
-            console.log(result?.result)
-          } else {
-            setScannedData("");
-            console.log('no good')
-          }
-        })
-        .catch((error: any) => {
-          console.error('Error detecting QR code: ', error);
-          setScannedData("");
-        });
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      context?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+
+      const imageData = context?.getImageData(0, 0, canvas.width, canvas.height);
+      if (imageData) {
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+        if (code) {
+          console.log('QR Code detected:', code.data);
+          setSelectedOrder(orderByStatus?.filter((locker: any)=> 
+        
+          locker?.barcode === code.data))
+          setIsScan(false)
+          stopScan();
+        }
       }
+
+      requestAnimationFrame(scanQRCode);
     }
   };
 
+
+
+
+
+
+
+  
+console.log(selectedOrder)
 
   const goScan = () => {
     setStartScan(!startScan)
@@ -301,28 +284,15 @@ const Prepared: React.FC = () => {
               </div>
               <SearchBar searchBarProps={searchBarProps} />
               <OrderList orderListProps={orderListProps} />
-              
-{/*              
-               <Button variant=''
-          className="text-center px-5 step-btn"
-          onClick={() => goScan()}
-        >
-          {startScan ? "Arrêter le scanner" : "Lancer le scanner"}
-        </Button> */}
-              <video ref={videoRef} style={{ width: "100%", maxWidth: 400 }} />
 
-      {/* {!cameraStarted && <button onClick={startCamera}>Démarrer la caméra</button>} */}
-      {!cameraStarted && <button onClick={handleScan}>Démarrer la caméra</button>}
-      {scannedData && <div>
-        <p>Type: {scannedType}</p>
-        <p>Data: {scannedData}</p>
-      </div>}
+              <button onClick={handleScan}>Scan QR Code</button>
+              {isScan && (
+                <video ref={videoRef} style={{ width: '100%', height: 'auto' }} />
+              )}
             </>
           ) : (
             <OrderDetail scanPageProps={scanPageProps} />
           )}
-
-
         </>
       )}
     </Container>
