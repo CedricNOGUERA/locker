@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
-import { Container } from 'react-bootstrap'
+import { Button, Container } from 'react-bootstrap'
 import { _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import AlertIsError from '../components/ui/warning/AlertIsError'
@@ -10,22 +10,32 @@ import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
 import OrdersService from '../service/Orders/OrdersService'
-import ScanBl from '../components/ui/ScanBl'
 import OrderList from '../components/ui/OrderList';
 import OrderDetail from '../components/ui/OrderDetail';
+// import { QrReader } from 'react-qr-reader';
 //@ts-ignore
 import QrCodeReader from 'qrcode-reader';
 type QRCodeType = "text" | "url" | "email" | "phone" | "contact" | "unknown";
 
 
-
+const isImageCaptureSupported = () => {
+  if ('mediaDevices' in navigator && 'getSupportedConstraints' in navigator.mediaDevices) {
+    const supportedConstraints: any = navigator.mediaDevices.getSupportedConstraints();
+    return supportedConstraints.advanced && supportedConstraints.advanced.includes('ImageCapture');
+  }
+  return false;
+};
 
 const Prepared: React.FC = () => {
+  
+  const [data, setData] = useState('No result');
+
   //////////////////////////
   // booleans States
   /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
+  const [startScan, setStartScan] = React.useState<boolean>(false)
 
   //////////////////////////
   // Store & context state
@@ -58,6 +68,7 @@ const Prepared: React.FC = () => {
   const [storeName, setStoreName] = React.useState<any>([])
 
   const videoRef = useRef<HTMLVideoElement>(null);
+  const qrCodeDetectorRef = useRef<any>(null);
   const [scannedData, setScannedData] = React.useState<string>("");
   const [scannedType, setScannedType] = React.useState<QRCodeType>("unknown");
   const [cameraStarted, setCameraStarted] = React.useState<boolean>(false);
@@ -77,7 +88,6 @@ const Prepared: React.FC = () => {
 
   )
 
-  console.log(orderByStatus)
 
 
 
@@ -145,10 +155,40 @@ const Prepared: React.FC = () => {
       })
   }
 
+
+  const handleScan = async () => {
+    if (!isImageCaptureSupported()) {
+      console.log('ImageCapture is not supported in this browser.');
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+
+      // const track = stream.getVideoTracks()[0];
+      // qrCodeDetectorRef.current = new ImageCapture(track);
+
+      // const qrCodeCapabilities = await qrCodeDetectorRef.current.getPhotoCapabilities();
+      // console.log(qrCodeCapabilities); // QR code capabilities
+
+      // const qrCodeData = await qrCodeDetectorRef.current.grabFrame();
+      // console.log(qrCodeData); // QR code data (ImageBitmap)
+
+      // Here you can process the QR code data or display it on canvas, etc.
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+    }
+  };
+
+
+
+
   const startCamera = () => {
-    if (!cameraStarted && videoRef.current) {
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-        .then(stream => {
+    if (!cameraStarted && videoRef?.current) {
+      navigator?.mediaDevices?.getUserMedia({ video: { facingMode: "environment" } })
+        .then((stream: any) => {
           videoRef.current!.srcObject = stream;
           videoRef.current!.play();
           setCameraStarted(true);
@@ -158,7 +198,7 @@ const Prepared: React.FC = () => {
   };
 
 
-  const scanQrCode = () => {
+  const scanQrCode = async () => {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
   
@@ -171,17 +211,18 @@ const Prepared: React.FC = () => {
       context.drawImage(videoRef.current, 0, 0, videoWidth, videoHeight);
   
       const imageData = context.getImageData(0, 0, videoWidth, videoHeight);
-  
+  console.log(imageData)
       const qrCodeReader = new QrCodeReader();
-      if(qrCodeReader){
+      if(imageData){
 
-        qrCodeReader?.decode(imageData)
-        ?.then((result: any) => {
+       await qrCodeReader?.decode(imageData)
+        .then((result: any) => {
           if (result && result?.result) {
             setScannedData(result?.result);
             console.log(result?.result)
           } else {
             setScannedData("");
+            console.log('no good')
           }
         })
         .catch((error: any) => {
@@ -193,7 +234,10 @@ const Prepared: React.FC = () => {
   };
 
 
-
+  const goScan = () => {
+    setStartScan(!startScan)
+    // setTimeout(() => setLoadingScan(false), 200)
+  }
 
 
 
@@ -257,8 +301,18 @@ const Prepared: React.FC = () => {
               </div>
               <SearchBar searchBarProps={searchBarProps} />
               <OrderList orderListProps={orderListProps} />
+              
+{/*              
+               <Button variant=''
+          className="text-center px-5 step-btn"
+          onClick={() => goScan()}
+        >
+          {startScan ? "Arrêter le scanner" : "Lancer le scanner"}
+        </Button> */}
               <video ref={videoRef} style={{ width: "100%", maxWidth: 400 }} />
-      {!cameraStarted && <button onClick={startCamera}>Démarrer la caméra</button>}
+
+      {/* {!cameraStarted && <button onClick={startCamera}>Démarrer la caméra</button>} */}
+      {!cameraStarted && <button onClick={handleScan}>Démarrer la caméra</button>}
       {scannedData && <div>
         <p>Type: {scannedType}</p>
         <p>Data: {scannedData}</p>
