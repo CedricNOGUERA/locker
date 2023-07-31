@@ -176,9 +176,10 @@ const Prepared: React.FC = () => {
       if(qrCodeReader){
 
         qrCodeReader?.decode(imageData)
-        .then((result: any) => {
+        ?.then((result: any) => {
           if (result && result?.result) {
             setScannedData(result?.result);
+            console.log(result?.result)
           } else {
             setScannedData("");
           }
