@@ -1,7 +1,5 @@
 import React from 'react'
-
-import { Container, Row, Col, Button, Alert, Table } from 'react-bootstrap'
-// import { QrReader } from 'react-qr-reader'
+import { Container, Row, Col, Button, Alert, Table, Modal, Spinner } from 'react-bootstrap'
 import BackButton from './BackButton'
 import BadgedIcon from './BadgedIcon'
 import userDataStore from '../../store/userDataStore'
@@ -17,8 +15,28 @@ const OrderDetail = ({ scanPageProps }: any) => {
 
   const [startScan, setStartScan] = React.useState(false)
   const [isDetail, setIsDetail] = React.useState(false)
+  const [isErrorValid, setIsErrorValid] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [isGood, setIsGood] = React.useState(false)
 
-  
+  const [show, setShow] = React.useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+ 
+ 
+  const [showUpdateStatus, setShowUpdateStatus] = React.useState(false);
+
+  const handleCloseUpdateStatus = () => setShowUpdateStatus(false);
+  const handleShowUpdateStatus = () => {
+    setShowUpdateStatus(true)
+    handleClose()
+    setTimeout(() => {
+      setSelectedOrder(null)
+      handleCloseUpdateStatus()
+    }, 2000)
+  }
+
 
  const myOrder =  {
 
@@ -190,7 +208,6 @@ const OrderDetail = ({ scanPageProps }: any) => {
 
   const goScan = () => {
     setStartScan(!startScan)
-    // setTimeout(() => setLoadingScan(false), 200)
   }
 
 
@@ -202,7 +219,9 @@ const OrderDetail = ({ scanPageProps }: any) => {
 
 
 
+ 
   const changeStatus = () => {
+    setIsLoading(true)
     let data = {
       status: newStatus,
       shippedBy: 'api/users/' + dataStore.id,
@@ -221,15 +240,17 @@ const OrderDetail = ({ scanPageProps }: any) => {
     axios
       .request(config)
       .then((response: any) => {
-        if (newStatus === 'operin') {
-          console.log(selectedOrder?.client?.email)
-        }
+    
         console.log(response.data)
         getallOrders(dataStore.token)
-        setSelectedOrder(null)
+        
+        setIsLoading(false)
+        handleShowUpdateStatus()
       })
       .catch((error: any) => {
         console.log(error)
+        setIsErrorValid(true)
+        setIsLoading(false)
       })
   }
 
@@ -237,76 +258,8 @@ const OrderDetail = ({ scanPageProps }: any) => {
 
   return (
     <Container fluid className='pb-5'>
-      {/* {!isDetail ? ( */}
       {selectedOrder?.length === 0 ? (
-        <>
-          <Container className='my-2 px-0'>
-            <Container className='px- py-0 bg-secondary rounded-pill shadow my-auto '>
-              <Row>
-                <Col
-                  xs={2}
-                  md={5}
-                  lg={5}
-                  className='m-auto py-0'
-                  onClick={() => setSelectedOrder('')}
-                >
-                  <BackButton />
-                </Col>
-                <Col xs={2} className='m-auto text-light text-start ps-1 pe-2 py-0'>
-                  <BadgedIcon
-                    slot={selectedOrder?.bookingSlot}
-                    borderColor='secondary'
-                    imgSize='30px'
-                  />
-                </Col>
-                <Col className='m-auto text-light text-start ps-1 pe-2 py-0'>
-                  <span className='fw-bold font-85'>Scannez le qrcode</span>
-                </Col>
-              </Row>
-            </Container>
-          </Container>
-          <Container className='bg-light p-2 w-75  border'>
-            {startScan && (
-              <>
-                {/* <QrReader
-                  onResult={(result: any, error: any) => {
-                    if (result && result.text !== 'No result') {
-                      let resultStr = result.text.toString()
-                      if (selectedOrder?.barcode === resultStr) {
-                        setStartScan(false)
-                        setIsDetail(true)
-                      } else {
-                        alert('no good')
-                      }
-                      // redirectionOnScan(resultStr)
-                    }
-                  }}
-                  constraints={{ facingMode: 'environment' }}
-                /> */}
-              </>
-            )}
-          </Container>
-          <Container className='text-center'>
-            <div>
-              <Button variant='outline-secondary' className='px-1' onClick={() => goScan()}>
-                {startScan ? 'Arrêter le scanner' : 'Lancer le scanner'}
-              </Button>
-            </div>
-          </Container>
-
-          <Container className='text-center mt-4 px-0'>
-            <Alert variant='secondary' className='border-2 border-secondary'>
-              Saisie manuelle :
-              <p className='text-info fw-bold m-0'>
-                {newStatus === 'receive' && selectedOrder.multiOrderCode
-                  ? selectedOrder?.multiOrderCode
-                  : newStatus === 'receive' && !selectedOrder.multiOrderCode
-                  ? selectedOrder?.receiveCode
-                  : selectedOrder?.barcode}
-              </p>
-            </Alert>
-          </Container>
-        </>
+        <></>
       ) : (
         <div className='text-center'>
           <p className='col-12 pb-0 text-center font-75'>Détails de la commande</p>
@@ -346,49 +299,130 @@ const OrderDetail = ({ scanPageProps }: any) => {
                 <tr key={index}>
                   <td className='text-center font-85'>{prod?.product_quantity}</td>
                   <td className='text-start font-85'>{prod?.product_name}</td>
-                  <td className='text-end font-85'>{(parseFloat(prod?.product_price) * parseInt(prod?.product_quantity)).toFixed(2)}</td>
+                  <td className='text-end font-85'>
+                    {(
+                      parseFloat(prod?.product_price) * parseInt(prod?.product_quantity)
+                    ).toFixed(2)}
+                  </td>
                 </tr>
               ))}
               <tr>
-                <td colSpan={2} className='text-end font-85'>Total HT</td>
-                <td className='text-end font-85'>{parseInt(myOrder.order.total_products).toFixed(2)}</td>
+                <td colSpan={2} className='text-end font-85'>
+                  Total HT
+                </td>
+                <td className='text-end font-85'>
+                  {parseInt(myOrder.order.total_products).toFixed(2)}
+                </td>
               </tr>
               <tr>
-                <td colSpan={2} className='text-end font-85'>Montant TVA</td>
-                <td className='text-end font-85'>{(parseInt(myOrder.order.total_products_wt) - parseInt(myOrder.order.total_products)).toFixed(2)}</td>
+                <td colSpan={2} className='text-end font-85'>
+                  Montant TVA
+                </td>
+                <td className='text-end font-85'>
+                  {(
+                    parseInt(myOrder.order.total_products_wt) -
+                    parseInt(myOrder.order.total_products)
+                  ).toFixed(2)}
+                </td>
               </tr>
               <tr>
-                <td colSpan={2} className='text-end font-85'>Total TTC</td>
-                <td className='text-end font-85'><b>{parseInt(myOrder.order.total_products_wt).toFixed(2)}</b></td>
+                <td colSpan={2} className='text-end font-85'>
+                  Total TTC
+                </td>
+                <td className='text-end font-85'>
+                  <b>{parseInt(myOrder.order.total_products_wt).toFixed(2)}</b>
+                </td>
               </tr>
             </tbody>
           </Table>
 
           <Container className='text-end mt-4'>
-            <p className='text-start font-85'>Voulez-vous prendre en charge cette commande?</p>
-            <Button
-              className='bg-warning rounded-pill border-warning text-light ms-3'
-              type='submit'
-              variant='danger'
-              onClick={() => {
-                setIsDetail(false)
-
-                setSelectedOrder('')
-              }}
-            >
-              Annuler
-            </Button>
-
             <Button
               className='bg-info rounded-pill border-info text-light ms-3'
               type='submit'
-              onClick={() => changeStatus()}
+              onClick={handleShowUpdateStatus}
+            >
+              Ouvrir
+            </Button>
+          </Container>
+          <Container className='text-end mt-4'>
+            <Button
+              className='bg-info rounded-pill border-info text-light ms-3'
+              type='submit'
+              onClick={handleShow}
             >
               Valider
             </Button>
           </Container>
         </div>
       )}
+
+      <Modal show={showUpdateStatus} onHide={handleCloseUpdateStatus}  >
+        <Modal.Body className='bg-dark rounded text-light'> {''}<Row className='m-auto'>
+          <Col xs={2} >
+          <i className="ri-checkbox-circle-line text-success fs-1 me-2 animate__animated animate__fadeInDown"></i>
+          </Col>
+          <Col className='m-auto'>
+          Commande prise en charge
+          </Col>
+          </Row></Modal.Body>
+        
+      </Modal>
+
+      <Modal show={show} onHide={handleClose}>
+        {isErrorValid ? (
+          <>
+            <Modal.Header closeButton>
+              <Modal.Title>OUPS</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Une anomalie est survenue...</Modal.Body>
+            <Modal.Footer>
+              <Button
+                size='lg'
+                className=' rounded-pill border-warning text-light ms-3 px-4'
+                variant='warning'
+                onClick={() => {
+                  setIsDetail(false)
+                  setSelectedOrder('')
+                  handleClose()
+                  setIsErrorValid(false)
+                }}
+              >
+                Réessayez
+              </Button>
+            </Modal.Footer>
+          </>
+        ) : (
+          <>
+            <Modal.Header closeButton>
+              <Modal.Title>Préparation</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Voulez-vous prendre en charge cette commande ?</Modal.Body>
+            <Modal.Footer>
+              <Button
+                size='lg'
+                className=' rounded-pill border-warning text-light ms-3 px-4'
+                variant='warning'
+                onClick={() => {
+                  setIsDetail(false)
+                  setSelectedOrder('')
+                  handleClose()
+                }}
+              >
+                Non
+              </Button>
+              <Button
+                size='lg'
+                type='submit'
+                className='bg-info rounded-pill border-info text-light ms-3 px-4 '
+                onClick={changeStatus}
+              >
+                {isLoading ? <Spinner size='sm' as='span' /> : 'Oui'}
+              </Button>
+            </Modal.Footer>
+          </>
+        )}
+      </Modal>
     </Container>
   )
 }

@@ -43,7 +43,6 @@ const InProgress: React.FC = () => {
   //////////////////////////
   // States
   /////////////////////////
-
   const [messageApi, contextHolder] = message.useMessage()
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
@@ -58,6 +57,7 @@ const InProgress: React.FC = () => {
       order?.status === 'picked_up' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
+
   //////////////////////////
   // UseEffect
   /////////////////////////

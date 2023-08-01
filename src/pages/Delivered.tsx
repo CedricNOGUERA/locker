@@ -71,7 +71,7 @@ const Delivered: React.FC = () => {
 
 
 
-
+console.log(selectedOrder)
   const searchBarProps = {
     searchOrder,
     setSearchOrder,

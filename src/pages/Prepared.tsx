@@ -72,12 +72,8 @@ const Prepared: React.FC = () => {
 
   let videoStream: MediaStream | null = null;
 
-
-
   const trigger ="preparations"
-
-  // const newStatus = ' '
-  const newStatus = 'picked_delivery'
+  const newStatus = 'picked_up'
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
@@ -100,7 +96,7 @@ const Prepared: React.FC = () => {
     if (isScan) {
       const scanInterval = setInterval(() => {
         scanQRCode();
-      }, 1000);
+      }, 1500);
 
       return () => {
         clearInterval(scanInterval);
@@ -158,8 +154,11 @@ const Prepared: React.FC = () => {
   const handleScan = () => {
     setIsAnomalie(false)
     setIsScan(true)
+    //  setTimeout(() => setIsScan(true), 200)
+    
+
     if (videoRef.current) {
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+      navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
         .then((stream) => {
           videoStream = stream;
           videoRef.current!.srcObject = stream;
@@ -198,15 +197,21 @@ const Prepared: React.FC = () => {
 
         if (code) {
           console.log('QR Code detected:', code.data);
-          const myScan = orderData["hydra:member"]?.filter((locker: any) => locker?.barcode === code.data)
-          if(myScan.length === 0){
-            setIsAnomalie(true)
-          }else{
+          if(code.data === ''){
+            setIsAnomalie(false)
+            setIsScan(false)
+          }else {
 
-            console.log(myScan)
-            setSelectedOrder(
-              myScan[0]
-              )
+            const myScan = orderData["hydra:member"]?.filter((locker: any) => locker?.barcode === code.data)
+            if(myScan.length === 0){
+              setIsAnomalie(true)
+            }else{
+              setIsAnomalie(false)
+              console.log(myScan)
+              setSelectedOrder(
+                myScan[0]
+                )
+              }
             }
             stopScan();
         }
@@ -217,22 +222,13 @@ const Prepared: React.FC = () => {
   };
 
 
-
-
-
-
-
-  
-console.log(orderData)
-console.log(selectedOrder?.length)
-
   const goScan = () => {
     setStartScan(!startScan)
     // setTimeout(() => setLoadingScan(false), 200)
   }
 
 
-
+console.log(selectedOrder)
   //////////////////////////
   // Component Props
   /////////////////////////
@@ -316,12 +312,11 @@ console.log(selectedOrder?.length)
                   <Container className='text-center'>
                     <p>Une anomalie est survenue...</p>
 
-                    <img src={noOrder} alt='no-order' style={{ height: '256px' }}/>
-                     <p className='mt-3'>
-
-                     Cette commande n'est pas dans la liste, réessayez le scan ou recherchez d'où vient l'anomalie
-                     </p>
-
+                    <img src={noOrder} alt='no-order' style={{ height: '256px' }} />
+                    <p className='mt-3'>
+                      Cette commande n'est pas dans la liste, réessayez le scan ou recherchez
+                      d'où vient l'anomalie
+                    </p>
                   </Container>
                 </Container>
               </Container>
@@ -340,18 +335,34 @@ console.log(selectedOrder?.length)
         )}
       </Container>
       {isScan && (
-        <video
-          ref={videoRef}
+        <div
           style={{
             width: '100%',
             height: 'auto',
-            position: 'absolute',
-            bottom: '50px',
-            right: '0px',
+            position: 'fixed',
+            bottom: '65px',
+            right: '30%',
+            zIndex: 200,
           }}
-        />
+        >
+          <video ref={videoRef} />
+        </div>
       )}
-      {!selectedOrder && !videoStream && (
+      <div className='fab2'>
+        {isScan && (
+          <Button
+            size='sm'
+            className='rounded-pill border-0 bg-warning'
+            onClick={() => {
+              stopScan()
+              console.log('object')
+            }}
+          >
+            Stop
+          </Button>
+        )}
+      </div>
+      {(!selectedOrder ) && (
         <Button
           className='fab rounded-circle bg-info border-0'
           onClick={handleScan}
@@ -360,17 +371,6 @@ console.log(selectedOrder?.length)
           <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
         </Button>
       )}
-      <div className='fab2'>
-        {isScan && videoRef.current && (
-          <Button
-            onClick={() => {
-              stopScan()
-            }}
-          >
-            Stop
-          </Button>
-        )}
-      </div>
     </>
   )
 }

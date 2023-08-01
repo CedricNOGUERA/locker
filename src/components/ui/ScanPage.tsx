@@ -52,6 +52,7 @@ const ScanPage = ({ scanPageProps }: any) => {
         console.log(error)
       })
   }
+  
 
   return (
     <Container fluid className='pb-5'>
