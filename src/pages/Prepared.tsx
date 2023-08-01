@@ -96,8 +96,7 @@ const Prepared: React.FC = () => {
   /////////////////////////
 
   useEffect(() => {
-    if (isScan && videoRef.current) {
-      // const qrCodeDetector = new (window as any).QRCodeDetector();
+    if (isScan) {
       const scanInterval = setInterval(() => {
         scanQRCode();
       }, 1000);
@@ -106,7 +105,7 @@ const Prepared: React.FC = () => {
         clearInterval(scanInterval);
       };
     }
-  }, [cameraStarted]);
+  }, [isScan]);
 
 
 
@@ -162,7 +161,7 @@ const Prepared: React.FC = () => {
         .then((stream) => {
           videoStream = stream;
           videoRef.current!.srcObject = stream;
-          videoRef.current!.play();
+          videoRef?.current!.play();
           requestAnimationFrame(scanQRCode);
         })
         .catch((error) => console.error('Error accessing camera:', error));
@@ -173,6 +172,7 @@ const Prepared: React.FC = () => {
     if (videoStream) {
       videoStream.getTracks().forEach((track) => track.stop());
       videoStream = null;
+      setIsScan(false)
    
 
     }
@@ -196,14 +196,14 @@ const Prepared: React.FC = () => {
 
         if (code) {
           console.log('QR Code detected:', code.data);
-          setSelectedOrder(orderByStatus?.filter((locker: any)=> 
-        
-          locker?.barcode === code.data))
-          setIsScan(false)
+          const myScan = orderData["hydra:member"]?.filter((locker: any) => locker?.barcode === code.data)
+          setSelectedOrder(
+            myScan[0]
+          )
           stopScan();
         }
       }
-
+      
       requestAnimationFrame(scanQRCode);
     }
   };
@@ -215,6 +215,7 @@ const Prepared: React.FC = () => {
 
 
   
+console.log(orderData)
 console.log(selectedOrder)
 
   const goScan = () => {
@@ -259,43 +260,71 @@ console.log(selectedOrder)
 
 
   return (
-    <Container fluid className='cde App px-0'>
-      {contextHolder}
-      {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/connexion' />}
+    <>
+      <Container fluid className='cde App px-0'>
+        {contextHolder}
+        {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/connexion' />}
 
-      {isError ? (
-        <Container className='text-center mt-5'>
-          <AlertIsError
-            title="Une erreur s'est produite"
-            msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
-            colorIcon='danger'
-          />
-        </Container>
-      ) : isLoading ? (
-        <Container className='text-center mt-2'>
-          <PlaceHolder paddingYFirst='3' />
-        </Container>
-      ) : (
-        <>
-          {!selectedOrder ? (
-            <>
-              <div className='col-12 pb-0 text-center font-75'>
-                {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-              </div>
-              <SearchBar searchBarProps={searchBarProps} />
-              <OrderList orderListProps={orderListProps} />
-
-              <button onClick={handleScan}>Scan QR Code</button>
-              {isScan && (
-                <video ref={videoRef} style={{ width: '100%', height: 'auto' }} />
-              )}
-            </>
-          ) : (
-            <OrderDetail scanPageProps={scanPageProps} />
-          )}
-        </>
+        {isError ? (
+          <Container className='text-center mt-5'>
+            <AlertIsError
+              title="Une erreur s'est produite"
+              msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
+              colorIcon='danger'
+            />
+          </Container>
+        ) : isLoading ? (
+          <Container className='text-center mt-2'>
+            <PlaceHolder paddingYFirst='3' />
+          </Container>
+        ) : (
+          <>
+            {!selectedOrder ? (
+              <>
+                <div className='col-12 pb-0 text-center font-75'>
+                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+                </div>
+                <SearchBar searchBarProps={searchBarProps} />
+                <OrderList orderListProps={orderListProps} />
+              </>
+            ) : (
+              <OrderDetail scanPageProps={scanPageProps} />
+            )}
+          </>
+        )}
+      </Container>
+      {isScan && (
+        <video
+          ref={videoRef}
+          style={{
+            width: '100%',
+            height: 'auto',
+            position: 'absolute',
+            bottom: '50px',
+            right: '0px',
+          }}
+        />
       )}
-    </Container>
+      {!selectedOrder && (
+        !videoStream && (
+
+          <Button className='fab rounded-circle bg-info border-0' onClick={handleScan} style={{width: 55, height: 55}}>
+           <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
+        </Button>
+          ) 
+      )}
+      <div className='fab2'>
+        {isScan && videoRef.current && (
+          <Button
+            onClick={() => {
+              stopScan()
+            }}
+          >
+            Stop
+          </Button>
+        )}
+      </div>
+    </>
   )
 }
 

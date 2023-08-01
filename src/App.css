@@ -575,3 +575,17 @@ padding: 0 5px 0 5px;
 .tempzone{
   width: 100%;
 }
+
+
+.fab{
+  position: absolute;
+  bottom: 100px;
+  right: 20px;
+  z-index: 1000; 
+}
+.fab2{
+  position: absolute;
+  bottom: 100px;
+  right: 20px;
+  z-index: 995; 
+}
