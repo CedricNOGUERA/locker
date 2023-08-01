@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
-import { Button, Container } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import { _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import AlertIsError from '../components/ui/warning/AlertIsError'
@@ -14,9 +14,12 @@ import OrderList from '../components/ui/OrderList';
 import OrderDetail from '../components/ui/OrderDetail';
 // import { QrReader } from 'react-qr-reader';
 import jsQR from 'jsqr';
+import noOrder from '../styles/astro.png'
 //@ts-ignore
 import QrCodeReader from 'qrcode-reader';
+import BackButton from '../components/ui/BackButton';
 type QRCodeType = "text" | "url" | "email" | "phone" | "contact" | "unknown";
+// import noOrder from '../../../styles/astro.png'
 
 
 
@@ -64,10 +67,8 @@ const Prepared: React.FC = () => {
 
   const [isScan, setIsScan] = React.useState<any>(false)
   const videoRef = useRef<HTMLVideoElement>(null);
-  const qrCodeDetectorRef = useRef<any>(null);
-  const [scannedData, setScannedData] = React.useState<string>("");
-  const [scannedType, setScannedType] = React.useState<QRCodeType>("unknown");
-  const [cameraStarted, setCameraStarted] = React.useState<boolean>(false);
+
+  const [isAnomalie, setIsAnomalie] = React.useState<boolean>(false)
 
   let videoStream: MediaStream | null = null;
 
@@ -155,6 +156,7 @@ const Prepared: React.FC = () => {
 
 
   const handleScan = () => {
+    setIsAnomalie(false)
     setIsScan(true)
     if (videoRef.current) {
       navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
@@ -197,10 +199,16 @@ const Prepared: React.FC = () => {
         if (code) {
           console.log('QR Code detected:', code.data);
           const myScan = orderData["hydra:member"]?.filter((locker: any) => locker?.barcode === code.data)
-          setSelectedOrder(
-            myScan[0]
-          )
-          stopScan();
+          if(myScan.length === 0){
+            setIsAnomalie(true)
+          }else{
+
+            console.log(myScan)
+            setSelectedOrder(
+              myScan[0]
+              )
+            }
+            stopScan();
         }
       }
       
@@ -216,7 +224,7 @@ const Prepared: React.FC = () => {
 
   
 console.log(orderData)
-console.log(selectedOrder)
+console.log(selectedOrder?.length)
 
   const goScan = () => {
     setStartScan(!startScan)
@@ -279,7 +287,45 @@ console.log(selectedOrder)
           </Container>
         ) : (
           <>
-            {!selectedOrder ? (
+            {isAnomalie ? (
+              <Container fluid className='pb-5'>
+                <Container className='my-2 px-0'>
+                  <Container className='px- py-0 bg-secondary rounded-pill shadow my-auto '>
+                    <Row>
+                      <Col
+                        xs={2}
+                        md={5}
+                        lg={5}
+                        className='m-auto py-0'
+                        onClick={() => setSelectedOrder('')}
+                      >
+                        <BackButton />
+                      </Col>
+                      <Col xs={2} className='m-auto text-light text-start ps-1 pe-2 py-0'>
+                        {/* <BadgedIcon
+                    slot={selectedOrder?.bookingSlot}
+                    borderColor='secondary'
+                    imgSize='30px'
+                  /> */}
+                      </Col>
+                      <Col className='m-auto text-light text-start ps-1 pe-2 py-0'>
+                        <span className='fw-bold font-85'>Anomalie</span>
+                      </Col>
+                    </Row>
+                  </Container>
+                  <Container className='text-center'>
+                    <p>Une anomalie est survenue...</p>
+
+                    <img src={noOrder} alt='no-order' style={{ height: '256px' }}/>
+                     <p className='mt-3'>
+
+                     Cette commande n'est pas dans la liste, réessayez le scan ou recherchez d'où vient l'anomalie
+                     </p>
+
+                  </Container>
+                </Container>
+              </Container>
+            ) : !selectedOrder ? (
               <>
                 <div className='col-12 pb-0 text-center font-75'>
                   {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
@@ -305,13 +351,14 @@ console.log(selectedOrder)
           }}
         />
       )}
-      {!selectedOrder && (
-        !videoStream && (
-
-          <Button className='fab rounded-circle bg-info border-0' onClick={handleScan} style={{width: 55, height: 55}}>
-           <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
+      {!selectedOrder && !videoStream && (
+        <Button
+          className='fab rounded-circle bg-info border-0'
+          onClick={handleScan}
+          style={{ width: 55, height: 55 }}
+        >
+          <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
         </Button>
-          ) 
       )}
       <div className='fab2'>
         {isScan && videoRef.current && (

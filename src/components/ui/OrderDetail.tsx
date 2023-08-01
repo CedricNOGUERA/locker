@@ -238,7 +238,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
   return (
     <Container fluid className='pb-5'>
       {/* {!isDetail ? ( */}
-      {!selectedOrder ? (
+      {selectedOrder?.length === 0 ? (
         <>
           <Container className='my-2 px-0'>
             <Container className='px- py-0 bg-secondary rounded-pill shadow my-auto '>
