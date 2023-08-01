@@ -81,6 +81,17 @@ const ToRetrieve: React.FC = () => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
   }, [searchOrder])
 
+   React.useEffect(() => {
+    setStoreName(
+      allSlot?.['hydra:member']
+        && allSlot?.['hydra:member']?.filter((locker: any)=> 
+        
+        locker?.slot?.temperatureZone?.locker['@id'] === selectedStore
+        )
+        
+    )
+  }, [selectedStore])
+
   const getOrderByPage = (token: any, page: any) => {
     OrdersService.ordersByPage(token, page)
       .then((response: any) => {
