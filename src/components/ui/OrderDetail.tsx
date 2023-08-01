@@ -206,9 +206,6 @@ const OrderDetail = ({ scanPageProps }: any) => {
 
 }
 
-  const goScan = () => {
-    setStartScan(!startScan)
-  }
 
 
   const getallOrders = (token: any) => {
@@ -335,16 +332,6 @@ const OrderDetail = ({ scanPageProps }: any) => {
               </tr>
             </tbody>
           </Table>
-
-          <Container className='text-end mt-4'>
-            <Button
-              className='bg-info rounded-pill border-info text-light ms-3'
-              type='submit'
-              onClick={handleShowUpdateStatus}
-            >
-              Ouvrir
-            </Button>
-          </Container>
           <Container className='text-end mt-4'>
             <Button
               className='bg-info rounded-pill border-info text-light ms-3'

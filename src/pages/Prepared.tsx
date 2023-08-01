@@ -154,8 +154,6 @@ const Prepared: React.FC = () => {
   const handleScan = () => {
     setIsAnomalie(false)
     setIsScan(true)
-    //  setTimeout(() => setIsScan(true), 200)
-    
 
     if (videoRef.current) {
       navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
@@ -174,8 +172,6 @@ const Prepared: React.FC = () => {
       videoStream.getTracks().forEach((track) => track.stop());
       videoStream = null;
       setIsScan(false)
-   
-
     }
   };
 
@@ -216,19 +212,13 @@ const Prepared: React.FC = () => {
             stopScan();
         }
       }
-      
       requestAnimationFrame(scanQRCode);
     }
   };
 
 
-  const goScan = () => {
-    setStartScan(!startScan)
-    // setTimeout(() => setLoadingScan(false), 200)
-  }
 
 
-console.log(selectedOrder)
   //////////////////////////
   // Component Props
   /////////////////////////
@@ -311,7 +301,6 @@ console.log(selectedOrder)
                   </Container>
                   <Container className='text-center'>
                     <p>Une anomalie est survenue...</p>
-
                     <img src={noOrder} alt='no-order' style={{ height: '256px' }} />
                     <p className='mt-3'>
                       Cette commande n'est pas dans la liste, réessayez le scan ou recherchez
@@ -340,9 +329,8 @@ console.log(selectedOrder)
             width: '100%',
             height: 'auto',
             position: 'fixed',
-            bottom: '65px',
-            right: '30%',
-            zIndex: 200,
+            bottom: '125px',
+            zIndex: 1200,
           }}
         >
           <video ref={videoRef} />
