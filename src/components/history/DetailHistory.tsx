@@ -22,6 +22,7 @@ const DetailHistory = ({ selectedOrder }: any) => {
               )}
               <div className='item-title'>{_getStatus(order.status)}</div>
               <div className='item-detail'> {_getStatusMsg(order.status)}</div>
+              
             </li>
           ))}
 
@@ -36,7 +37,6 @@ const DetailHistory = ({ selectedOrder }: any) => {
               <br />{' '}
               {selectedOrder?.history?.length > 0
                 ? moment(
-                    // selectedOrder?.history[selectedOrder?.history?.length]?.updatedAt
                     selectedOrder?.updatedAt
                   ).format('HH:mm:ss')
                 : moment(selectedOrder?.createdAt).format('HH:mm:ss')}
@@ -47,6 +47,9 @@ const DetailHistory = ({ selectedOrder }: any) => {
               {' '}
               {_getStatusMsg(selectedOrder.status)}
             </div>
+            {selectedOrder.status === 'picked_up' && 
+            <div className='item-detail'>Livreur : {selectedOrder?.shippedBy?.firstName} {selectedOrder?.shippedBy?.lastName}</div>
+            }
           </li>
         )}
       </ul>

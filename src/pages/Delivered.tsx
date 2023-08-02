@@ -1,6 +1,5 @@
 import React from "react";
 import { Navigate, useOutletContext } from "react-router-dom";
-import Loading from "../components/ui/Loading";
 import userDataStore from "../store/userDataStore";
 import "../App.css";
 import "animate.css";
@@ -10,7 +9,6 @@ import SearchBar from "../components/ui/SearchBar";
 import OrderList from "../components/ui/OrderList";
 // import ScanPage from "../components/ui/ScanPage";
 import { Container } from "react-bootstrap";
-import ScanPageDelivered from "../components/ui/ScanPageDelivered";
 import ScanPage from "../components/ui/ScanPage";
 import OrdersService from "../service/Orders/OrdersService";
 import PlaceHolder from "../components/ui/loading/PlaceHolder";
@@ -27,12 +25,14 @@ const Delivered: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = React.useState<any>("");
   const [searchOrder, setSearchOrder] = React.useState<any>("");
   const [filteredOrder, setFilteredOrder] = React.useState<any>([]);
+  const [storeName, setStoreName] = React.useState<any>([])
+  const trigger ="delivered"
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const  newStatus ="receive"
+  const  newStatus ="ready_for_delivery"
 
-  const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "operin" && order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore );
+  const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "created" && order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore );
 
 
   React.useEffect(() => {
@@ -69,7 +69,7 @@ const Delivered: React.FC = () => {
 
 
 
-
+console.log(selectedOrder)
   const searchBarProps = {
     searchOrder,
     setSearchOrder,
@@ -82,7 +82,6 @@ const Delivered: React.FC = () => {
   };
 
   const orderListProps = {
-    // orderTab,
     filteredOrder,
     setSelectedOrder,
     searchOrder,
@@ -90,6 +89,8 @@ const Delivered: React.FC = () => {
     orderByStatus,
     orderData,
     getOrderByPage,
+    storeName,
+    trigger
   };
   
   const scanPageProps = {

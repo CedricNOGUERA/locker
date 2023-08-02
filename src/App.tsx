@@ -6,7 +6,7 @@ import 'animate.css'
 import BottomNavBar from './components/layout/BottomNavBar'
 import OrdersService from './service/Orders/OrdersService'
 import Loading from './components/ui/Loading'
-import { Container } from 'react-bootstrap'
+import { Button, Container } from 'react-bootstrap'
 import BookingSlotservice from './service/BookingSlot/BookingSlotservice'
 
 function App() {
@@ -28,8 +28,10 @@ function App() {
   //UseEffect
   ////////////////////
   React.useEffect(() => {
-    getallOrders(token)
-    getBookingAllSlot(token)
+    if (token && token?.length > 0) {
+      getallOrders(token)
+      getBookingAllSlot(token)
+    }
   }, [token])
 
   React.useEffect(() => {
@@ -90,6 +92,7 @@ function App() {
           ]}
         />
       )}
+   
       <BottomNavBar
         orderData={orderData}
         selectedStore={selectedStore}

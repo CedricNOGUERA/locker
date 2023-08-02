@@ -15,7 +15,7 @@ import {
   Spinner,
 } from 'react-bootstrap'
 import Badge from 'react-bootstrap/Badge'
-import { Link, Navigate, useOutletContext } from 'react-router-dom'
+import {Navigate, useOutletContext } from 'react-router-dom'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 import newOrderDataStore from '../../store/newOrderDataStore'
 import userDataStore from '../../store/userDataStore'
@@ -31,7 +31,6 @@ import images from '../../styles/no-order-min.png'
 import InfoAlert from '../../components/ui/warning/InfoAlert'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
-import imagLogo from '../../styles/carrefour-logo.png'
 import InfoTopBar from './InfoTopBar'
 
 const NewOrder = () => {
@@ -117,7 +116,7 @@ const NewOrder = () => {
   // UseEffect
   /////////////////////////
   React.useEffect(() => {
-    getClients(dataStore.token)
+    // getClients(dataStore.token)
   }, [])
 
   React.useEffect(() => {
@@ -183,17 +182,17 @@ const NewOrder = () => {
   // Events
   /////////////////////////
 
-  const getClients = (token: any) => {
-    ClientService.allClients(token)
-      .then((response: any) => {
-        setAutoCompletTab(response.data)
-      })
-      .catch((error) => {
-        setIsError(true)
-        setMsgError(getError(error))
-        setCodeError(error.status)
-      })
-  }
+  // const getClients = (token: any) => {
+  //   ClientService.allClients(token)
+  //     .then((response: any) => {
+  //       setAutoCompletTab(response.data)
+  //     })
+  //     .catch((error) => {
+  //       setIsError(true)
+  //       setMsgError(getError(error))
+  //       setCodeError(error.status)
+  //     })
+  // }
 
   const getBookingAllSlot = (token: any) => {
     setIsLoading(true)
@@ -203,7 +202,7 @@ const NewOrder = () => {
         setIsLoading(false)
         bookingSet(response.data)
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setIsError(true)
         setMsgError(getError(error))
         setCodeError(error.status)
@@ -217,7 +216,7 @@ const NewOrder = () => {
         setOrderData(response.data)
         setIsLoading(false)
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setIsError(true)
         setMsgError(getError(error))
         setCodeError(error.status)
@@ -249,6 +248,7 @@ const NewOrder = () => {
     setClientPhone('')
     setAgeRestriction(false)
   }
+  console.log(productDetail)
 
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
@@ -358,7 +358,7 @@ const NewOrder = () => {
 
       axios
         .request(config)
-        .then((response) => {
+        .then((response: any) => {
           console.log(response)
           newOrderDelete()
           setTempZones([])
@@ -390,7 +390,7 @@ const NewOrder = () => {
             timerProgressBar: true,
           })
         })
-        .catch((error) => {
+        .catch((error: any) => {
           console.log(error)
           setMsgError(getError(error))
           setIsValid(false)
@@ -579,33 +579,42 @@ const NewOrder = () => {
 
 
   const handleChangeSelect = (e: any, indx: any) => {
-    const zone: any = JSON.parse(e.currentTarget.value)
-
-    const newTab: any = [...tempZones]
-    newTab[indx] = zone?.slot?.temperatureZone?.myKey
-    setTempZones(newTab)
-
-    const newTabSize: any = [...slotSizes]
-    newTabSize[indx] = zone.slot?.size
-    setSlotSizes(newTabSize)
-
-    const newTabBooking: any = [...bookingSlotIds]
-    newTabBooking[indx] = zone['@id']
-    setBookingSlotIds(newTabBooking)
-    newOrderRegister(
-      zone?.slot?.temperatureZone?.locker['@id'],
-      zone?.slot?.temperatureZone?.locker?.location,
-      bookingSlotIds,
-      zone?.company['@id'],
-      zone?.company?.name,
-      zone?.slot?.temperatureZone?.locker?.type,
-      dataStore?.id,
-      tempZones,
-      zone?.slot?.temperatureZone?.myKey,
-      slotSizes,
-      parseInt(qty),
-      ageRestriction === true ? 18 : 0
-    )
+    //conditions si "e.currentTarget.value" est vide
+    if (e.currentTarget.value.trim() !== '') {
+      try {
+        const zone: any = JSON.parse(e.currentTarget.value)
+        
+            const newTab: any = [...tempZones]
+            newTab[indx] = zone?.slot?.temperatureZone?.myKey
+            setTempZones(newTab)
+        
+            const newTabSize: any = [...slotSizes]
+            newTabSize[indx] = zone.slot?.size
+            setSlotSizes(newTabSize)
+        
+            const newTabBooking: any = [...bookingSlotIds]
+            newTabBooking[indx] = zone['@id']
+            setBookingSlotIds(newTabBooking)
+            newOrderRegister(
+              zone?.slot?.temperatureZone?.locker['@id'],
+              zone?.slot?.temperatureZone?.locker?.location,
+              bookingSlotIds,
+              zone?.company['@id'],
+              zone?.company?.name,
+              zone?.slot?.temperatureZone?.locker?.type,
+              dataStore?.id,
+              tempZones,
+              zone?.slot?.temperatureZone?.myKey,
+              slotSizes,
+              parseInt(qty),
+              ageRestriction === true ? 18 : 0
+            )
+      } catch (error) {
+        console.error('Erreur lors du traitement des données JSON :', error);
+      }
+    } else {
+      console.error('Les données JSON sont vides.');
+    }
   }
  
 
@@ -707,7 +716,6 @@ const NewOrder = () => {
     ?.reduce((acc: any, current: any) => acc + current.available, 0)
 
 const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, handleSecondStepClick, handleThirdStepClick}
-console.log(allSlot)
 
   return (
     <div>
@@ -787,18 +795,43 @@ console.log(allSlot)
                           ? 7
                           : 8
                       }
-                      className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-center'
+                      className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-cente'
                     >
-                      <Row>
-                        <Col xs={2}>
+                      {/* <Row>
+                        <Col xs={3} className='ps-2 pe-1'>
                           <div className=' m-auto'>
                             <img src={imagLogo} alt='logo' width={35} />
                           </div>
                         </Col>
-                        <Col>{locker}</Col>
-                      </Row>
+                        <Col className='ps-0 pe-1'>{locker}</Col>
+                      </Row> */}
+                      {locker}
                     </Col>
-                    <Col>
+                    <Col xs={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 3
+                          ? 7
+                          : allSlot?.['hydra:member']
+                              ?.filter(
+                                (lockers: any) =>
+                                  lockers?.slot?.temperatureZone?.locker?.location === locker
+                              )
+                              ?.filter(
+                                (lock: any) =>
+                                  lock?.slot?.temperatureZone?.keyTemp ===
+                                  slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                              )?.length === 2
+                          ? 5
+                          : 4
+                      } >
                       {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
                         <div
                           key={indx}
@@ -918,7 +951,7 @@ console.log(allSlot)
                             className='my-2'
                             required
                           >
-                            <option value=''>Panier n°{indx + 1}</option>
+                            <option value=''>Température du Panier n°{indx + 1}</option>
                             {chosenLocker?.map((lockers: any, index: any) => (
                               <option
                                 key={index}
@@ -938,18 +971,53 @@ console.log(allSlot)
                               >
                                 {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
                                 lockers?.slot?.temperatureZone?.myKey === 'MT'
-                                  ? 'Zone Fraîche'
+                                  ? '🍃 Zone Fraîche'
                                   : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
                                     lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                  ? 'Zone Congelée'
+                                  ? '❄ Zone Congelée'
                                   : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
                                       lockers?.slot?.temperatureZone?.myKey === 'CA') &&
-                                    'Zone Ambiante'}{' '}
+                                    '☀️ Zone Ambiante'}{' '}
                                 {lockers?.slot.size}- {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
                               </option>
                             ))}
                           </Form.Select>
+
+                          {/* <Dropdown>
+                            <Dropdown.Toggle
+                              className='tempzone'
+                              variant='outline-secondary'
+                              id='dropdown-basic'
+                            >
+                              Dropdown Button
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu className='tempzone'>
+                              {chosenLocker?.map((lockers: any, index: any) => (
+                                <>
+                                  <Dropdown.Item className='border-bottom'>
+                                    <Row>
+                                      <Col>
+                                        <BadgedIcon
+                                          slot={lockers}
+                                          borderColor='light'
+                                          imgSize='40px'
+                                        />
+                                      </Col>
+                                      <Col>
+                                        <div>
+                                          {lockers?.available}{' '}
+                                          {lockers?.available > 1 ? 'casiers' : 'casier'}
+                                        </div>
+                                      </Col>
+                                    </Row>
+                                  </Dropdown.Item>
+                                </>
+                              ))}
+                            </Dropdown.Menu>
+                          </Dropdown> */}
+
                           <InputGroup className='mb-4'>
                             <InputGroup.Text className='border-end-0 bg-secondary-500'>
                               <i className='ri-inbox-archive-line text-secondary'></i>
@@ -1037,7 +1105,7 @@ console.log(allSlot)
                     required
                     className='border-start-0'
                   />
-                
+
                   {filteredName && filteredName?.length > 0 && (
                     <DropdownButton
                       variant='secondary'

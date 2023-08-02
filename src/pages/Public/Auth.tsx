@@ -112,7 +112,6 @@ const Auth = () => {
   }, [token])
 
   React.useEffect(() => {
-    // if (token && token?.length > 0) {
       authLogin(
         true,
         myData.id,
@@ -125,8 +124,8 @@ const Auth = () => {
         myData.apmAccessCode,
 
       )
+      handleClearCache()
     
-    // }
   }, [authLogin, myData, token])
 
   useEffect(() => {
@@ -138,6 +137,24 @@ const Auth = () => {
    ////////////////////
   //events
   ///////////////////
+
+      /////
+      //Fonction qui vide le cache
+      ////
+    const handleClearCache = () => {
+      if ('caches' in window) {
+        // Vider le cache du navigateur
+        caches.keys().then(cacheNames => {
+          cacheNames.forEach(cacheName => {
+            caches.delete(cacheName);
+          });
+          console.log('Le cache a été vidé avec succès.');
+        });
+      } else {
+        console.log('Impossible de vider le cache. Votre navigateur ne prend pas en charge cette fonctionnalité.');
+      }
+    };
+  
 
   
   if (dataStore.company_name === undefined) {
@@ -229,7 +246,7 @@ const Auth = () => {
         permanentlyHideOnDismiss={false}
       />
       <Container fluid className='auth-cont col-12 col-md-12 col-lg-6 px-0 bg-secondary'>
-        {dataStore.token && dataStore.company_name && <Navigate to='/dashboard' />}
+        {dataStore.token && dataStore.company_name && <Navigate to='/preparations' />}
         {isLoading ? (
           <Loading variant='info' />
         ) : (

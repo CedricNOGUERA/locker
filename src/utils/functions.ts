@@ -99,8 +99,12 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
   export const _getStatus = (status: any) => {
     if (status === 'created') {
-      return "Prête"
-    } else if (status === 'operin') {
+      return "Préparée"
+    }else if (status === 'ready_for_delivery') {
+      return "Prête à l'envoi"
+    }else if (status === 'picked_up') {
+      return "En livraison"
+    }else if (status === 'operin') {
       return "Déposée"
     } else if (status === 'reminder') {
       return "1er Rappel"
@@ -128,8 +132,12 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
   export const _getStatusMsg = (status: any) => {
     if (status === 'created') {
-      return "Commande préparée et prête à l'envoi"
-    } else if (status === 'operin') {
+      return "Commande préparée"
+    } else if (status === 'ready_for_delivery') {
+      return "Commande mise à disposition du coursier"
+    }  else if (status === 'picked_up') {
+      return "Commande en cours de livraison"
+    }  else if (status === 'operin') {
       return "Commande déposée par le coursier"
     } else if (status === 'reminder') {
       return "Rappel d'une commande non récupérée depuis un certain temps"

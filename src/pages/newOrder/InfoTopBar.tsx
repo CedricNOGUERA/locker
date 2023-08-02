@@ -1,4 +1,3 @@
-import React from 'react'
 import { Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import BackButton from '../../components/ui/BackButton'
@@ -12,7 +11,7 @@ const InfoTopBar = ({ infoToBarProps }: any) => {
     handleSecondStepClick,
     handleThirdStepClick,
   } = infoToBarProps
-// console.log(chosenLocker[0].slot.temperatureZone.locker.location)
+
   return (
     <>
       <Col
@@ -45,8 +44,7 @@ const InfoTopBar = ({ infoToBarProps }: any) => {
         ) : !trigger ? (
           <>
             <i className='ri-shopping-basket-2-line align-bottom me-2'></i>
-            {/* <span className='fw-bold'>{chosenLocker && chosenLocker[0]?.slot?.temperatureZone?.locker?.city}</span> */}
-            <span className='fw-bold'>Nombre de panier nécessaire</span>
+            <span className='fw-bold'>Paniers nécessaires </span>
           </>
         ) : !trigger2 ? (
           <>

@@ -1,14 +1,14 @@
 import React from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
-import ItemList from '../../components/ui/ItemList'
 import { _searchWithRegex } from '../../utils/functions'
-import images from '../../styles/no-order-min.png'
 import PlaceHolder from '../../components/ui/loading/PlaceHolder'
 import TopSearchBar from '../../components/history/TopSearchBar'
 import DetailHistory from '../../components/history/DetailHistory'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
 import OrderList from '../../components/ui/OrderList'
+import OrdersService from '../../service/Orders/OrdersService'
+import userDataStore from '../../store/userDataStore'
 
 const History = () => {
   //////////////////////////
@@ -33,20 +33,21 @@ const History = () => {
     setSelectedItem,
   ] = useOutletContext<any>()
 
+  const token = userDataStore((state: any) => state.token)
   //////////////////////////
   // States
   /////////////////////////
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
-  const [orderByStatus, setOrderByStatus] = React.useState<any>([])
+  // const [orderByStatus, setOrderByStatus] = React.useState<any>([])
 
   const trigger ="history"
-
+  const orderByStatus = orderData['hydra:member']
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('user')
-    setOrderByStatus(orderData['hydra:member'])
+    // setOrderByStatus(orderData['hydra:member'])
   }, [])
 
   React.useEffect(() => {
@@ -65,11 +66,29 @@ const History = () => {
       }
       setIsLoading(false)
     }
+    
   }, [orderData])
+  
+ 
+
 
   React.useEffect(() => {
     _searchWithRegex(searchOrder, orderData['hydra:member'], setFilteredOrder)
   }, [orderData, searchOrder])
+
+
+
+  const getallOrders = (token: any) => {
+    OrdersService.allOrders(token)
+      .then((response: any) => {
+        setIsLoading(false)
+        setOrderData(response.data)
+        console.log(response.data)
+      })
+      .catch((error: any) => {
+        setIsLoading(false)
+      })
+  }
 
   //////////////////////////
   // Components props
@@ -86,8 +105,16 @@ const History = () => {
     trigger
   }
 
+  console.log(selectedOrder)
   return (
     <Container className='order-list pb-5 mb-5'>
+      {selectedOrder && 
+         <div className='col-12 pb-0 text-center font-75'>
+        {' '}
+        {selectedOrder?.bookingSlot?.slot?.temperatureZone?.locker?.location}
+      </div>
+      
+      }
       {!isLoading && <TopSearchBar topSearchBarProps={topSearchBarProps} />}
       {selectedOrder && <DetailHistory selectedOrder={selectedOrder} />}
       {isError ? (

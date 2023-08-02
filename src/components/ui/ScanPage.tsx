@@ -27,6 +27,7 @@ const ScanPage = ({ scanPageProps }: any) => {
       status: newStatus,
       shippedBy: 'api/users/' + dataStore.id,
     }
+   
     let config = {
       method: 'patch',
       maxBodyLength: Infinity,
@@ -41,7 +42,7 @@ const ScanPage = ({ scanPageProps }: any) => {
     axios
       .request(config)
       .then((response: any) => {
-        if (newStatus === 'operin') {
+        if (newStatus === 'ready_for_delivery') {
           console.log(selectedOrder?.client?.email)
         }
         console.log(response.data)
@@ -51,7 +52,9 @@ const ScanPage = ({ scanPageProps }: any) => {
       .catch((error: any) => {
         console.log(error)
       })
+   
   }
+  
 
   return (
     <Container fluid className='pb-5'>

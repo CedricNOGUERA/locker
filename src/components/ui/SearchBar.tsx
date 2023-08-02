@@ -80,30 +80,31 @@ const SearchBar = ({ searchBarProps }: any) => {
               </Col>
             </Row>
           </Container>
-          <Dropdown.Menu className='shadow'>
+          <Dropdown.Menu  className='shadow ' style={{width:360}} >
             {uniqueTab?.map((locker: any, indx: any) => (
               <Dropdown.Item
                 key={Math.random()}
                 title={locker}
+                className='w-100'
                 onClick={() => {
                   setSelectedOrderCity(filteredCity(locker))
                   setSelectedStore(filteredStore(locker))
                 }}
               >
-                <Row className='item-menu text-secondary align-middle'>
-                  <Col xs={1} className=''>
+                <Row className='item-menu text-secondary align-middle pe-3 w-100'>
+                  <Col xs={2} className='ms-0 ps-1'>
                     {' '}
                     <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '}
                   </Col>{' '}
-                  <Col xs={10} className='m-auto my-0 user-name ps-3 pb-0  text-dark'>
+                  <Col xs={10} className='m-auto my-0 user-name ps-0 pb-0 ms- font-85  text-dark'>
                     {locker}
                   </Col>
                 </Row>
                 <Row className=' text-secondary '>
-                  <Col xs={1} className=''>
+                  <Col xs={2} className=''>
                     {' '}
                   </Col>{' '}
-                  <Col xs={10} className='font-75 font-weight-300 m-auto ps-3 py-0'>
+                  <Col xs={10} className='font-75 font-weight-300 m-auto ps-0 py-0 ms-'>
                     {filteredCity(locker)}
                   </Col>
                 </Row>

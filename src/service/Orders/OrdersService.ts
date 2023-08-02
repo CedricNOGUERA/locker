@@ -14,7 +14,7 @@ class OrderService {
         return axios.post(API_URL + "orders", {headers: {"Authorization": "Bearer " + token}, data: data})
     }
     update(id: any, token: any, data: any) {
-        return axios.patch(API_URL + "orders/" + id , {headers: {"Authorization": "Bearer " + token}, data: data})
+        return axios.patch(API_URL + "orders/" + id , data, {headers: {"Authorization": "Bearer " + token}})
     }
     order(id: any, token: any) {
         return axios.get(API_URL + "orders/" + id , {headers: {"Authorization": "Bearer " + token}})

@@ -12,7 +12,7 @@ const ScrollToTop = () => {
 
   React.useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 50) {
+      if (window.scrollY > 160) {
         setIsVisible(true)
       } else {
         setIsVisible(false)
@@ -25,9 +25,9 @@ const ScrollToTop = () => {
   }, [])
 
   return (
-    <div onClick={scrollToTop} className=' back-to-top animate__animated animate__bounce '>
+    <div onClick={scrollToTop} className=' back-to-top animate__animated animate__bounce  mb-2'>
       {isVisible && (
-        <i className='ri-arrow-up-circle-fill fs-1 text-info border-3 border-secondary rounded-circle '></i>
+        <i className='ri-arrow-up-s-line fs-1 text-info rounded-circle bg-light border-1 '></i>
       )}
     </div>
   )
