@@ -271,9 +271,7 @@
 
 .bounced-arrow {
   animation: bounce;
-  /* referring directly to the animation's @keyframe declaration */
   animation-duration: 2s;
-  /* don't forget to set a duration! */
   animation-delay: 0.4s;
 }
 
@@ -350,10 +348,9 @@
 .back-to-top {
   position: fixed;
   bottom: 65px;
-  right: 50%;
-  /* right: 10px; */
+  right: 46%;
   z-index: 9;
-  /* transition: all 0.3s; */
+  transition: all 0.3s;
 }
 
 
@@ -364,7 +361,6 @@
 .history-tl-container {
   font-family: "Roboto", sans-serif;
   margin: auto;
-  /* width:100%; */
 
   position: relative;
 }
@@ -372,7 +368,6 @@
 @media (min-width: 1410px) {
   .history-tl-container {
     width: 30% !important;
-    /* width:60% !important; */
   }
 
   .history-tl-container ul.tl {
@@ -449,7 +444,6 @@
   margin: auto;
   margin-left: 150px;
   min-height: 50px;
-  /* background: rgba(255,255,0,0.1); */
   border-left: 1px dashed #86D6FF;
   margin-bottom: 5px;
   padding: 0 0 50px 30px;
@@ -481,9 +475,6 @@
 
 ul.tl li .item-title-current {
   color: #e7bd33be;
-  /* color: #3396e7; */
-  /* color: #095ca0; */
-  /* color:rgba(59, 58, 58, 0.842); */
   font-weight: 600;
 }
 
@@ -562,7 +553,6 @@ ul.tl li .timestamp-current {
   margin-left: 25px;
   margin-top: -20px;
   background-color: #ffcc00;
-  /* border: 3px solid #fefefe; */
   border: 3px solid;
   border-radius: 20px;
 padding: 0 5px 0 5px;
@@ -581,11 +571,11 @@ padding: 0 5px 0 5px;
   position: fixed;
   bottom: 80px;
   right: 20px;
-  z-index: 10000; 
+  z-index: 500; 
 }
 .fab2{
   position: fixed;
   bottom: 150px;
   right: 25px;
-  z-index: 9950; 
+  z-index: 500; 
 }

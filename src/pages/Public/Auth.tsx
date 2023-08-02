@@ -124,6 +124,7 @@ const Auth = () => {
         myData.apmAccessCode,
 
       )
+      handleClearCache()
     
   }, [authLogin, myData, token])
 
@@ -136,6 +137,24 @@ const Auth = () => {
    ////////////////////
   //events
   ///////////////////
+
+      /////
+      //Fonction qui vide le cache
+      ////
+    const handleClearCache = () => {
+      if ('caches' in window) {
+        // Vider le cache du navigateur
+        caches.keys().then(cacheNames => {
+          cacheNames.forEach(cacheName => {
+            caches.delete(cacheName);
+          });
+          console.log('Le cache a été vidé avec succès.');
+        });
+      } else {
+        console.log('Impossible de vider le cache. Votre navigateur ne prend pas en charge cette fonctionnalité.');
+      }
+    };
+  
 
   
   if (dataStore.company_name === undefined) {

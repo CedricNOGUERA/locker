@@ -317,7 +317,7 @@ const Prepared: React.FC = () => {
             height: 'auto',
             position: 'fixed',
             bottom: '125px',
-            zIndex: 1200,
+            zIndex: 500,
           }}
         >
           <video ref={videoRef} />
