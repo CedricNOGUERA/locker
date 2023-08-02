@@ -94,7 +94,39 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
   }
 /////////////////////////////////
-// traduit le status en français
+// msg retour après un scan 
+/////////////////////////////////
+
+  export const _getScanMsg = (status: any, msg: any) => {
+    if (status === 'created') {
+      return "Cette commande est toujours en préparation"
+    }else if (status === 'picked_up') {
+      return "Cette commande est déjà prise en charge"
+    }else if (status === 'operin') {
+      return `Cette commande a déjà été déposée par ${msg}`
+    } else if (status === 'reminder') {
+      return "Cette commande en 1er Rappel"
+    } else if (status === 'overtimedue') {
+      return "Cette commande est en 2è Rappel"
+    } else if (status === 'overtime') {
+      return "Cette commande est expirée"
+    } else if (status === 'operout') {
+      return `Cette commande a été sortie par le coursier ${{msg}}`
+    } else if (status === 'receive') {
+      return "Cette commande a été récupérée le client"
+    } else if (status === 'left_for_customer_service') {
+      return "Cette commande a été déposée au service client"
+    } else if (status === 'return') {
+      return "Retour???"
+    } else{
+      return "Cette commande n'est pas dans la liste"
+    }
+    
+  }
+
+
+/////////////////////////////////
+// retourne le status en français
 /////////////////////////////////
 
   export const _getStatus = (status: any) => {

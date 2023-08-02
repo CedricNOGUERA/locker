@@ -25,7 +25,7 @@ const ScanPage = ({ scanPageProps }: any) => {
   const changeStatus = () => {
     let data = {
       status: newStatus,
-      shippedBy: 'api/users/' + dataStore.id,
+      // shippedBy: 'api/users/' + dataStore.id,
     }
    
     let config = {

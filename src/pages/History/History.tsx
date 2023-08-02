@@ -105,7 +105,6 @@ const History = () => {
     trigger
   }
 
-  console.log(selectedOrder)
   return (
     <Container className='order-list pb-5 mb-5'>
       {selectedOrder && 

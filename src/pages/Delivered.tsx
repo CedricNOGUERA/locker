@@ -67,9 +67,6 @@ const Delivered: React.FC = () => {
     })
   }
 
-
-
-console.log(selectedOrder)
   const searchBarProps = {
     searchOrder,
     setSearchOrder,
@@ -101,6 +98,9 @@ console.log(selectedOrder)
     setSelectedOrder,
      newStatus,
   };
+
+
+  console.log(orderByStatus)
 
   return (
     <Container fluid className="cde App px-0">

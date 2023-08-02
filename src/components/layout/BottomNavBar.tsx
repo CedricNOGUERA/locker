@@ -1,10 +1,15 @@
 import React from 'react'
 import { Container, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import imag from '../../../src/styles/imagePlus4.png'
 import UserQrcode from '../ui/modals/UserQrcode'
+import userDataStore from '../../store/userDataStore'
 
 const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem }: any) => {
+ //////////////////////////
+  // Store 
+  /////////////////////////
+  const dataStore = userDataStore((state: any) => state)
+ 
   //////////////////////
   //Auth deliverer modal
   //////////////////////
@@ -18,18 +23,21 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
   const retrieve = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'overtime' &&
-      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
+      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore&&
+      order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
   const progress = orderData['hydra:member']?.filter(
     (order: any) =>
       // order?.status === 'created' &&
       order?.status === 'picked_up' &&
-      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
+      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore&&
+      order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
   const ready_for_delivery = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'ready_for_delivery' &&
-      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
+      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore&&
+      order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
 
   /////////////////////

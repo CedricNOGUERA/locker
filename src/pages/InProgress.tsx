@@ -55,9 +55,13 @@ const InProgress: React.FC = () => {
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'picked_up' &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
+      order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
+      // order?.shippedBy?.firstName === `${dataStore.firstname}`
   )
 
+  // console.log(orderByStatus?.shippedBy['@id'])
+  // console.log(orderByStatus[2].shippedBy["@id"])
   //////////////////////////
   // UseEffect
   /////////////////////////

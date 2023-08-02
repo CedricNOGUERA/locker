@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useNavigate } from 'react-router-dom'
 import './App.css'
 import userDataStore from './store/userDataStore'
 import 'animate.css'
@@ -23,6 +23,8 @@ function App() {
   const [selectedOrderCity, setSelectedOrderCity] = React.useState<any>('')
   const [orderData, setOrderData] = React.useState<any>([])
   const [selectedItem, setSelectedItem] = React.useState<string>('home')
+
+  const navigate = useNavigate();
 
   /////////////////////
   //UseEffect
@@ -59,12 +61,24 @@ function App() {
       })
       .catch((error: any) => {
         setIsLoading(false)
+        if(error?.response?.data?.message === 'Expired JWT Token'){
+          navigate('/connexion')
+        }
+        console.log(error)
       })
   }
 
   const getBookingAllSlot = (token: any) => {
     BookingSlotservice.allSlot(token).then((response: any) => {
       setAllSlot(response.data)
+    })
+    .catch((error: any) => {
+      setIsLoading(false)
+      if(error?.response?.data?.message === 'Expired JWT Token'){
+        alert('Session expirée')
+        navigate('/connexion')
+      }
+      console.log(error)
     })
   }
   return (
