@@ -75,15 +75,12 @@ const Prepared: React.FC = () => {
     (order: any) =>
       order?.status === 'ready_for_delivery' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
-
-
   )
 
 
   //////////////////////////
   // UseEffect
   /////////////////////////
-
   React.useEffect(() => {
     if (isScan) {
       const scanInterval = setInterval(() => {
@@ -118,7 +115,6 @@ const Prepared: React.FC = () => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
   }, [searchOrder])
 
-
   React.useEffect(() => {
     setStoreName(
       allSlot?.['hydra:member']
@@ -130,23 +126,9 @@ const Prepared: React.FC = () => {
     )
   }, [selectedStore])
 
-  // const getOrderByPage = (token: any, page: any) => {
-  //   OrdersService.ordersByPage(token, page)
-  //     .then((response: any) => {
-  //       setIsLoading(false)
-  //       setOrderData(response.data)
-  //     })
-  //     .catch((error: any) => {
-  //       setIsLoading(false)
-  //     })
-  // }
-
-
   const handleScan = () => {
     setIsAnomalie(false)
-    
           setIsScan(true)
-          
           if (videoRef.current) {
             navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
             .then((stream) => {
@@ -198,21 +180,16 @@ const Prepared: React.FC = () => {
               setSelectedOrder('')
             }else if(myScan[0].status !== 'ready_for_delivery') {
               setIsAnomalie(true)
-              console.log(myScan[0]?.shippedBy?.firstName)
               setanomalyMsg(_getScanMsg(myScan[0]?.status, (`${myScan[0]?.shippedBy?.firstName} ${myScan[0]?.shippedBy?.lastName}` )))
               setSelectedOrder('')
             }else if(myScan[0].bookingSlot?.slot?.temperatureZone?.locker['@id'] !== selectedStore) {
               setIsAnomalie(true)
               setanomalyMsg(`Attention, cette commande est pour un autre point de vente!!!  `)
               setAnomalyMsgSecondary(`${ myScan[0].bookingSlot?.slot?.temperatureZone?.locker?.location}`)
-              
               setSelectedOrder('')
-            
             }
-            
             else{
               setIsAnomalie(false)
-              console.log(myScan)
               setSelectedOrder(
                 myScan[0]
                 )

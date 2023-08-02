@@ -242,5 +242,12 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
   return imge
 }
 
-  
+
+/////////////////////////////////
+// Rafraîcit l'application
+/////////////////////////////////
+
+export const _refreshPage = () => {
+  window.location.reload()
+}
 

@@ -4,6 +4,7 @@ import userDataStore from '../../store/userDataStore'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import BackBar from './BackBar'
+import { _refreshPage } from '../../utils/functions'
 
 const ScanPage = ({ scanPageProps }: any) => {
   ////////////////////
@@ -75,7 +76,7 @@ const ScanPage = ({ scanPageProps }: any) => {
       <Container
         className='bg-light p-2 w-75  border  animate__animated animate__fadeInDown'
         onClick={() => {
-          changeStatus()
+          _refreshPage()
         }}
       >
         <div className='m-auto'>

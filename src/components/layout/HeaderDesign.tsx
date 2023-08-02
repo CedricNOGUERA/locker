@@ -56,11 +56,6 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       >
         <Row className=' pe-0'>
           <Col xs={2} className='ff-agency m-auto pb-2 '>
-            {/* <i className={`ri-user-line fs-1 align-bottom`} 
-            // <i className={`ri-arrow-left-s-line fs-1 align-bottom`} 
-            // onClick={() => rtn()}
-            onClick={handleShow}
-            ></i> */}
           </Col>
           <Col xs={8} sm={8} className='ff-agency m-auto text-center pb-2 '>
             <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>

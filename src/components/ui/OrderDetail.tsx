@@ -262,11 +262,11 @@ const OrderDetail = ({ scanPageProps }: any) => {
                 <span className='fw-bold font-85'>n° {selectedOrder?.barcode}</span>
               </span>
             </Col>
-            <Col xs={2} className='m-auto text-light text-start ps-1 pe-2 py-0'>
+            <Col xs={2} className='m-auto text-light text-start ps- me-3 py-0'>
               <BadgedIcon
                 slot={selectedOrder?.bookingSlot}
                 borderColor='secondary'
-                imgSize='30px'
+                imgSize='28px'
               />
             </Col>
           </Row>
