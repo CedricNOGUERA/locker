@@ -112,7 +112,6 @@ const Auth = () => {
   }, [token])
 
   React.useEffect(() => {
-    // if (token && token?.length > 0) {
       authLogin(
         true,
         myData.id,
@@ -126,7 +125,6 @@ const Auth = () => {
 
       )
     
-    // }
   }, [authLogin, myData, token])
 
   useEffect(() => {

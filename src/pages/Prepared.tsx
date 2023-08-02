@@ -12,21 +12,15 @@ import 'animate.css'
 import OrdersService from '../service/Orders/OrdersService'
 import OrderList from '../components/ui/OrderList';
 import OrderDetail from '../components/ui/OrderDetail';
-// import { QrReader } from 'react-qr-reader';
 import jsQR from 'jsqr';
 import noOrder from '../styles/astro.png'
-//@ts-ignore
-import QrCodeReader from 'qrcode-reader';
 import BackButton from '../components/ui/BackButton';
-type QRCodeType = "text" | "url" | "email" | "phone" | "contact" | "unknown";
-// import noOrder from '../../../styles/astro.png'
 
 
 
 
 const Prepared: React.FC = () => {
   
-  const [data, setData] = useState('No result');
 
   //////////////////////////
   // booleans States
@@ -77,15 +71,11 @@ const Prepared: React.FC = () => {
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'created' &&
       order?.status === 'ready_for_delivery' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
 
 
   )
-
-
-
 
 
   //////////////////////////
@@ -276,30 +266,27 @@ const Prepared: React.FC = () => {
             {isAnomalie ? (
               <Container fluid className='pb-5'>
                 <Container className='my-2 px-0'>
-                  <Container className='px- py-0 bg-secondary rounded-pill shadow my-auto '>
+                  <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
                     <Row>
                       <Col
                         xs={2}
                         md={5}
                         lg={5}
                         className='m-auto py-0'
-                        onClick={() => setSelectedOrder('')}
+                        onClick={() => setIsAnomalie(false)}
                       >
                         <BackButton />
                       </Col>
-                      <Col xs={2} className='m-auto text-light text-start ps-1 pe-2 py-0'>
-                        {/* <BadgedIcon
-                    slot={selectedOrder?.bookingSlot}
-                    borderColor='secondary'
-                    imgSize='30px'
-                  /> */}
-                      </Col>
-                      <Col className='m-auto text-light text-start ps-1 pe-2 py-0'>
+                      <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
                         <span className='fw-bold font-85'>Anomalie</span>
                       </Col>
+                      <Col
+                        xs={2}
+                        className='m-auto text-light text-start ps-1 pe-2 py-0'
+                      ></Col>
                     </Row>
                   </Container>
-                  <Container className='text-center'>
+                  <Container className='text-center mt-3'>
                     <p>Une anomalie est survenue...</p>
                     <img src={noOrder} alt='no-order' style={{ height: '256px' }} />
                     <p className='mt-3'>
@@ -350,7 +337,7 @@ const Prepared: React.FC = () => {
           </Button>
         )}
       </div>
-      {(!selectedOrder ) && (
+      {!selectedOrder && (
         <Button
           className='fab rounded-circle bg-info border-0'
           onClick={handleScan}

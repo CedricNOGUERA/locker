@@ -47,7 +47,6 @@ const ToRetrieve: React.FC = () => {
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
   const [storeName, setStoreName] = React.useState<any>([])
 
-
   const newStatus = 'operout'
 
   const orderByStatus = orderData['hydra:member']?.filter(
@@ -81,14 +80,12 @@ const ToRetrieve: React.FC = () => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
   }, [searchOrder])
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     setStoreName(
-      allSlot?.['hydra:member']
-        && allSlot?.['hydra:member']?.filter((locker: any)=> 
-        
-        locker?.slot?.temperatureZone?.locker['@id'] === selectedStore
+      allSlot?.['hydra:member'] &&
+        allSlot?.['hydra:member']?.filter(
+          (locker: any) => locker?.slot?.temperatureZone?.locker['@id'] === selectedStore
         )
-        
     )
   }, [selectedStore])
 
@@ -124,7 +121,7 @@ const ToRetrieve: React.FC = () => {
     orderByStatus,
     orderData,
     getOrderByPage,
-    storeName
+    storeName,
   }
 
   const scanPageProps = {
@@ -159,7 +156,9 @@ const ToRetrieve: React.FC = () => {
         <>
           {!selectedOrder ? (
             <>
-            <div className='col-12 pb-0 text-center font-75'>{storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}</div>
+              <div className='col-12 pb-0 text-center font-75'>
+                {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+              </div>
               <SearchBar searchBarProps={searchBarProps} />
               <OrderList orderListProps={orderListProps} />
             </>

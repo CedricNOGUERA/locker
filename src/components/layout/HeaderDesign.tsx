@@ -18,7 +18,6 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
   //////////////////////////
   // Store states
   /////////////////////////
-  const dataStore = userDataStore((state: any) => state)
   const authLogout = userDataStore((state: any) => state.authLogout)
   const newOrderDelete = newOrderDataStore((state: any) => state.newOrderDelete)
   const bookingRemove = bookingStore((state: any) => state.bookingRemove)
@@ -102,7 +101,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
-          <Container className='mb-2'>
+          {/* <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
               to='/historique'
@@ -116,7 +115,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
                 <Col className='m-auto user-name'>Historique</Col>
               </Row>
             </Link>
-          </Container>
+          </Container> */}
           <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
@@ -128,7 +127,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
                   {' '}
                   <i className='ri-check-line fs-5'></i>
                 </Col>{' '}
-                <Col className='m-auto user-name'>déposées</Col>
+                <Col className='m-auto user-name'>Créées</Col>
               </Row>
             </Link>
           </Container>
@@ -173,7 +172,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </span>
           </Container>
-          <Container className='mb-2'>
+          {/* <Container className='mb-2'>
             <span className='text-decoration-none text-light' onClick={refreshPage}>
               <Row className='menu-link'>
                 <Col xs={2}>
@@ -183,7 +182,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
                 <Col className='m-auto user-name'>Aide</Col>
               </Row>
             </span>
-          </Container>
+          </Container> */}
           <Divider className='log-out pb-5 me-3'></Divider>
           <Container className='log-out'>
             <Row

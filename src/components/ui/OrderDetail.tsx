@@ -13,21 +13,16 @@ const OrderDetail = ({ scanPageProps }: any) => {
 
   const dataStore: any = userDataStore((states: any) => states)
 
-  const [startScan, setStartScan] = React.useState(false)
   const [isDetail, setIsDetail] = React.useState(false)
   const [isErrorValid, setIsErrorValid] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
-  const [isGood, setIsGood] = React.useState(false)
 
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = React.useState(false)
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
- 
- 
-  const [showUpdateStatus, setShowUpdateStatus] = React.useState(false);
-
-  const handleCloseUpdateStatus = () => setShowUpdateStatus(false);
+  const [showUpdateStatus, setShowUpdateStatus] = React.useState(false)
+  const handleCloseUpdateStatus = () => setShowUpdateStatus(false)
   const handleShowUpdateStatus = () => {
     setShowUpdateStatus(true)
     handleClose()
@@ -37,176 +32,161 @@ const OrderDetail = ({ scanPageProps }: any) => {
     }, 2000)
   }
 
+  const myOrder = {
+    order: {
+      id: 114,
 
- const myOrder =  {
+      id_address_delivery: '5313',
 
-    "order": {
+      id_address_invoice: '5313',
 
-        "id": 114,
+      id_cart: '128',
 
-        "id_address_delivery": "5313",
+      id_currency: '3',
 
-        "id_address_invoice": "5313",
+      id_lang: '1',
 
-        "id_cart": "128",
+      id_customer: '2',
 
-        "id_currency": "3",
+      id_carrier: '64',
 
-        "id_lang": "1",
+      current_state: '0',
 
-        "id_customer": "2",
+      module: 'osb',
 
-        "id_carrier": "64",
+      invoice_number: '0',
 
-        "current_state": "0",
+      invoice_date: '0000-00-00 00:00:00',
 
-        "module": "osb",
+      delivery_number: '0',
 
-        "invoice_number": "0",
+      delivery_date: '0000-00-00 00:00:00',
 
-        "invoice_date": "0000-00-00 00:00:00",
+      valid: '0',
 
-        "delivery_number": "0",
+      date_add: '2023-07-28 09:37:25',
 
-        "delivery_date": "0000-00-00 00:00:00",
+      date_upd: '2023-07-28 09:37:25',
 
-        "valid": "0",
+      shipping_number: '',
 
-        "date_add": "2023-07-28 09:37:25",
+      id_shop_group: '1',
 
-        "date_upd": "2023-07-28 09:37:25",
+      id_shop: '1',
 
-        "shipping_number": "",
+      secure_key: '5c9607ec1430704df19f452ce0a241e5',
 
-        "id_shop_group": "1",
+      payment: 'Carte bancaire',
 
-        "id_shop": "1",
+      recyclable: '0',
 
-        "secure_key": "5c9607ec1430704df19f452ce0a241e5",
+      gift: '0',
 
-        "payment": "Carte bancaire",
+      gift_message: '',
 
-        "recyclable": "0",
+      mobile_theme: '0',
 
-        "gift": "0",
+      total_discounts: '0.000000',
 
-        "gift_message": "",
+      total_discounts_tax_incl: '0.000000',
 
-        "mobile_theme": "0",
+      total_discounts_tax_excl: '0.000000',
 
-        "total_discounts": "0.000000",
+      total_paid: '42340.000000',
 
-        "total_discounts_tax_incl": "0.000000",
+      total_paid_tax_incl: '42340.000000',
 
-        "total_discounts_tax_excl": "0.000000",
+      total_paid_tax_excl: '36188.000000',
 
-        "total_paid": "42340.000000",
+      total_paid_real: '42340.000000',
 
-        "total_paid_tax_incl": "42340.000000",
+      total_products: '36188.000000',
 
-        "total_paid_tax_excl": "36188.000000",
+      total_products_wt: '42340.000000',
 
-        "total_paid_real": "42340.000000",
+      total_shipping: '0.000000',
 
-        "total_products": "36188.000000",
+      total_shipping_tax_incl: '0.000000',
 
-        "total_products_wt": "42340.000000",
+      total_shipping_tax_excl: '0.000000',
 
-        "total_shipping": "0.000000",
+      carrier_tax_rate: '0.000',
 
-        "total_shipping_tax_incl": "0.000000",
+      total_wrapping: '0.000000',
 
-        "total_shipping_tax_excl": "0.000000",
+      total_wrapping_tax_incl: '0.000000',
 
-        "carrier_tax_rate": "0.000",
+      total_wrapping_tax_excl: '0.000000',
 
-        "total_wrapping": "0.000000",
+      round_mode: '3',
 
-        "total_wrapping_tax_incl": "0.000000",
+      round_type: '1',
 
-        "total_wrapping_tax_excl": "0.000000",
+      conversion_rate: '1.000000',
 
-        "round_mode": "3",
+      reference: '114',
 
-        "round_type": "1",
+      associations: {
+        order_rows: [
+          {
+            id: '165',
 
-        "conversion_rate": "1.000000",
+            product_id: '200',
 
-        "reference": "114",
+            product_attribute_id: '0',
 
-        "associations": {
+            product_quantity: '3',
 
-            "order_rows": [
+            product_name: 'Bouilloire Proline 1L',
 
-                {
+            product_reference: 'test63',
 
-                    "id": "165",
+            product_ean13: '5698845135421',
 
-                    "product_id": "200",
+            product_isbn: '',
 
-                    "product_attribute_id": "0",
+            product_upc: '16',
 
-                    "product_quantity": "3",
+            product_price: '2094.017093',
 
-                    "product_name": "Bouilloire Proline 1L",
+            id_customization: '0',
 
-                    "product_reference": "test63",
+            unit_price_tax_incl: '2449.999999',
 
-                    "product_ean13": "5698845135421",
+            unit_price_tax_excl: '2094.017093',
+          },
 
-                    "product_isbn": "",
+          {
+            id: '166',
 
-                    "product_upc": "16",
+            product_id: '179',
 
-                    "product_price": "2094.017093",
+            product_attribute_id: '0',
 
-                    "id_customization": "0",
+            product_quantity: '1',
 
-                    "unit_price_tax_incl": "2449.999999",
+            product_name: 'Téléviseur QLED 48" 4K',
 
-                    "unit_price_tax_excl": "2094.017093"
+            product_reference: 'test195',
 
-                },
+            product_ean13: '9876543219513',
 
-                {
+            product_isbn: '',
 
-                    "id": "166",
+            product_upc: '',
 
-                    "product_id": "179",
+            product_price: '29905.982906',
 
-                    "product_attribute_id": "0",
+            id_customization: '0',
 
-                    "product_quantity": "1",
+            unit_price_tax_incl: '34990.000000',
 
-                    "product_name": "Téléviseur QLED 48\" 4K",
-
-                    "product_reference": "test195",
-
-                    "product_ean13": "9876543219513",
-
-                    "product_isbn": "",
-
-                    "product_upc": "",
-
-                    "product_price": "29905.982906",
-
-                    "id_customization": "0",
-
-                    "unit_price_tax_incl": "34990.000000",
-
-                    "unit_price_tax_excl": "29905.982906"
-
-                }
-
-            ]
-
-        }
-
-    }
-
-}
-
-
+            unit_price_tax_excl: '29905.982906',
+          },
+        ],
+      },
+    },
+  }
 
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
@@ -214,9 +194,6 @@ const OrderDetail = ({ scanPageProps }: any) => {
     })
   }
 
-
-
- 
   const changeStatus = () => {
     setIsLoading(true)
     let data = {
@@ -237,10 +214,9 @@ const OrderDetail = ({ scanPageProps }: any) => {
     axios
       .request(config)
       .then((response: any) => {
-    
         console.log(response.data)
         getallOrders(dataStore.token)
-        
+
         setIsLoading(false)
         handleShowUpdateStatus()
       })
@@ -251,16 +227,11 @@ const OrderDetail = ({ scanPageProps }: any) => {
       })
   }
 
-  
-
   return (
     <Container fluid className='pb-5'>
-      {selectedOrder?.length === 0 ? (
-        <></>
-      ) : (
         <div className='text-center'>
-          <p className='col-12 pb-0 text-center font-75'>Détails de la commande</p>
-          <Container className=' bg-secondary rounded-pill shadow my-auto '>
+          <p className='col-12 mb-0 text-center font-75'>Détails de la commande</p>
+          <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
             <Row>
               <Col
                 xs={2}
@@ -271,15 +242,17 @@ const OrderDetail = ({ scanPageProps }: any) => {
               >
                 <BackButton />
               </Col>
+              <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
+                <span className='fw-bold font-85'>
+                  <span className='fw-bold font-85'>n° {selectedOrder?.barcode}</span>
+                </span>
+              </Col>
               <Col xs={2} className='m-auto text-light text-start ps-1 pe-2 py-0'>
                 <BadgedIcon
                   slot={selectedOrder?.bookingSlot}
                   borderColor='secondary'
                   imgSize='30px'
                 />
-              </Col>
-              <Col className='m-auto text-light text-start ps-3 pe-2 py-0'>
-                <span className='fw-bold font-85'>n° {selectedOrder?.barcode}</span>
               </Col>
             </Row>
           </Container>
@@ -342,18 +315,18 @@ const OrderDetail = ({ scanPageProps }: any) => {
             </Button>
           </Container>
         </div>
-      )}
 
-      <Modal show={showUpdateStatus} onHide={handleCloseUpdateStatus}  >
-        <Modal.Body className='bg-dark rounded text-light'> {''}<Row className='m-auto'>
-          <Col xs={2} >
-          <i className="ri-checkbox-circle-line text-success fs-1 me-2 animate__animated animate__fadeInDown"></i>
-          </Col>
-          <Col className='m-auto'>
-          Commande prise en charge
-          </Col>
-          </Row></Modal.Body>
-        
+      <Modal show={showUpdateStatus} onHide={handleCloseUpdateStatus}>
+        <Modal.Body className='bg-dark rounded text-light'>
+          {' '}
+          {''}
+          <Row className='m-auto'>
+            <Col xs={2}>
+              <i className='ri-checkbox-circle-line text-success fs-1 me-2 animate__animated animate__fadeInDown'></i>
+            </Col>
+            <Col className='m-auto'>Commande prise en charge</Col>
+          </Row>
+        </Modal.Body>
       </Modal>
 
       <Modal show={show} onHide={handleClose}>
