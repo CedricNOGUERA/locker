@@ -1,6 +1,5 @@
 import React from "react";
 import { Navigate, useOutletContext } from "react-router-dom";
-import Loading from "../components/ui/Loading";
 import userDataStore from "../store/userDataStore";
 import "../App.css";
 import "animate.css";
@@ -10,7 +9,6 @@ import SearchBar from "../components/ui/SearchBar";
 import OrderList from "../components/ui/OrderList";
 // import ScanPage from "../components/ui/ScanPage";
 import { Container } from "react-bootstrap";
-import ScanPageDelivered from "../components/ui/ScanPageDelivered";
 import ScanPage from "../components/ui/ScanPage";
 import OrdersService from "../service/Orders/OrdersService";
 import PlaceHolder from "../components/ui/loading/PlaceHolder";

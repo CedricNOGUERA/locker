@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
@@ -27,7 +27,6 @@ const Prepared: React.FC = () => {
   /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
-  const [startScan, setStartScan] = React.useState<boolean>(false)
 
   //////////////////////////
   // Store & context state
@@ -82,7 +81,7 @@ const Prepared: React.FC = () => {
   // UseEffect
   /////////////////////////
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isScan) {
       const scanInterval = setInterval(() => {
         scanQRCode();

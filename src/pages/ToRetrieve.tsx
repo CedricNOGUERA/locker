@@ -89,6 +89,10 @@ const ToRetrieve: React.FC = () => {
     )
   }, [selectedStore])
 
+
+   //////////////////////////
+  // Events
+  /////////////////////////
   const getOrderByPage = (token: any, page: any) => {
     OrdersService.ordersByPage(token, page)
       .then((response: any) => {
