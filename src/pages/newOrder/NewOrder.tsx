@@ -16,7 +16,7 @@ import {
   Spinner,
 } from 'react-bootstrap'
 import Badge from 'react-bootstrap/Badge'
-import { Navigate, useOutletContext } from 'react-router-dom'
+import { Navigate, useNavigate, useOutletContext } from 'react-router-dom'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 import newOrderDataStore from '../../store/newOrderDataStore'
 import userDataStore from '../../store/userDataStore'
@@ -36,6 +36,7 @@ import InfoTopBar from './InfoTopBar'
 import interrogation from '../../styles/interrogation.png'
 
 const NewOrder = () => {
+  const navigate = useNavigate();
   //////////////////////////
   // booleans States
   /////////////////////////
@@ -194,11 +195,21 @@ const NewOrder = () => {
       .then((response: any) => {
         setAutoCompletTab(response.data)
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setIsError(true)
         setMsgError(getError(error))
         setCodeError(error.status)
+      
+        if(error?.response?.data?.message === 'Expired JWT Token'){
+          alert('Session expirée, reconnectez-vous.')
+          navigate('/connexion')
+        }
+        if(error?.response?.data?.message === 'Invalid JWT Token'){
+          navigate('/connexion')
+        }
+        console.log(error)
       })
+    
   }
 
   const getBookingAllSlot = (token: any) => {

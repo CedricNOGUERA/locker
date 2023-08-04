@@ -5,7 +5,11 @@ import BadgedIcon from './BadgedIcon'
 import userDataStore from '../../store/userDataStore'
 import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 const OrderDetail = ({ scanPageProps }: any) => {
+
+  const navigate = useNavigate();
+
   ////////////////////
   //Props & store
   ///////////////////
@@ -193,6 +197,16 @@ const OrderDetail = ({ scanPageProps }: any) => {
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
       setOrderData(response.data)
+    }).catch((error: any) => {
+      
+      if(error?.response?.data?.message === 'Expired JWT Token'){
+        alert('Session expirée, reconnectez-vous.')
+        navigate('/connexion')
+      }
+      if(error?.response?.data?.message === 'Invalid JWT Token'){
+        navigate('/connexion')
+      }
+      console.log(error)
     })
   }
 
