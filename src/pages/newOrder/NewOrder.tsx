@@ -705,6 +705,8 @@ const NewOrder = () => {
     )
     return filteredData
   }
+  console.log(slotLocationTab("Parking Carrefour Punaauia - Côté mer"))
+  // console.log(slotLocationTab('Parking Carrefour Faa\'a - Rez-de-chaussée'))
 
   const uniqueTempTab = (locker: any) => {
     const newTab = [
@@ -714,6 +716,8 @@ const NewOrder = () => {
     ]
     return newTab
   }
+  console.log(uniqueTempTab('Parking Carrefour Punaauia - Côté mer'))
+  // console.log(uniqueTempTab('Parking Carrefour Faa\'a - Rez-de-chaussée'))
 
   const lockerAvailability = allSlot?.['hydra:member']
     ?.filter(
@@ -850,11 +854,7 @@ const NewOrder = () => {
                           <img
                             alt='Temp icon'
                             src={
-                              'https://img.icons8.com/color/512/' +
-                              _imgFilter(
-                                slotLocationTab(locker)[indx].slot?.temperatureZone?.keyTemp
-                              ) +
-                              '.png'
+                              'https://img.icons8.com/color/512/' + _imgFilter(slots) + '.png'
                             }
                             style={{ width: '32px' }}
                           />
@@ -864,9 +864,7 @@ const NewOrder = () => {
 
                           {slotLocationTab(locker)
                             ?.filter(
-                              (lock: any) =>
-                                lock?.slot?.temperatureZone?.keyTemp ===
-                                slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                              (lock: any) => lock?.slot?.temperatureZone?.keyTemp === slots
                             )
                             ?.map((temp: any) => (
                               <div key={Math.random()} className='badge-hoster px-0 ms-1 pt-1'>
@@ -895,8 +893,9 @@ const NewOrder = () => {
                   setTrigger(true)
                   handleAddStartProduct()
                 }}
+                className='m-auto'
               >
-                <div>
+                <div className='bg-'>
                   <InputGroup className='my-3'>
                     <InputGroup.Text
                       id='basic-addon1'
@@ -925,7 +924,7 @@ const NewOrder = () => {
                     />
                   </InputGroup>
                   {lockerAvailability < qty && (
-                    <Alert variant='danger' className='mt-2 py-0 text-cente'>
+                    <Alert variant='danger' className='mt-2 py-0'>
                       <InfoAlert
                         icon='ri-error-warning-line'
                         iconColor='danger'
@@ -934,12 +933,14 @@ const NewOrder = () => {
                       />
                     </Alert>
                   )}
-                  <Button
-                    className='bg-info rounded-pill border-info text-light'
-                    type='submit'
-                  >
-                    Valider
-                  </Button>
+                  <div className='text-end'>
+                    <Button
+                      className='bg-info rounded-pill border-info text-light'
+                      type='submit'
+                    >
+                      Valider
+                    </Button>
+                  </div>
                 </div>{' '}
               </form>
             </div>
@@ -1106,7 +1107,7 @@ const NewOrder = () => {
               </form>
             </div>
           ) : (
-            <div>
+            <div className='mt-5'>
               <form
                 onSubmit={(e) => {
                   if (
