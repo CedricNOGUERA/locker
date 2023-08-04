@@ -3,6 +3,7 @@ import { Container, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import UserQrcode from '../ui/modals/UserQrcode'
 import userDataStore from '../../store/userDataStore'
+import imag from '../../styles/imagePlus4.png'
 
 const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem }: any) => {
  //////////////////////////
@@ -81,7 +82,7 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             <p>Livraisons</p>
           </Link>
         </Nav.Item>
-        {/* <Nav.Item
+        <Nav.Item
           className='nav-item text-center '
           style={{ position: 'absolute', bottom: '45px' }}
           onClick={() => handleSelect('order')}
@@ -96,7 +97,7 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
         </Nav.Item>
         <Nav.Item className='nav-item text-center'>
           <div className='text-center '></div>
-        </Nav.Item> */}
+        </Nav.Item>
 
         <Nav.Item className='nav-item text-center' onClick={() => handleSelect('retrieve')}>
           <Link

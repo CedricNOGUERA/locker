@@ -5,7 +5,11 @@ import BadgedIcon from './BadgedIcon'
 import userDataStore from '../../store/userDataStore'
 import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 const OrderDetail = ({ scanPageProps }: any) => {
+
+  const navigate = useNavigate();
+
   ////////////////////
   //Props & store
   ///////////////////
@@ -16,7 +20,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
   const [isDetail, setIsDetail] = React.useState<boolean>(false)
   const [isErrorValid, setIsErrorValid] = React.useState<boolean>(false)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [isAmount, setIsAmount] = React.useState<boolean>(false)
+  const [isAmount, setIsAmount] = React.useState<boolean>(true)
   const [errorMsg, setErrorMsg] = React.useState<string>('')
 
   const [show, setShow] = React.useState<boolean>(false)
@@ -193,6 +197,16 @@ const OrderDetail = ({ scanPageProps }: any) => {
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
       setOrderData(response.data)
+    }).catch((error: any) => {
+      
+      if(error?.response?.data?.message === 'Expired JWT Token'){
+        alert('Session expirée, reconnectez-vous.')
+        navigate('/connexion')
+      }
+      if(error?.response?.data?.message === 'Invalid JWT Token'){
+        navigate('/connexion')
+      }
+      console.log(error)
     })
   }
 
@@ -274,29 +288,30 @@ const OrderDetail = ({ scanPageProps }: any) => {
         <Table striped className='mt-3'>
           <thead>
             <tr>
-              <th className='text-start text-secondary'>Qté</th>
-              <th className='text-start text-secondary'>Libellé produit</th>
-              {isAmount && (
+              <th className='text-center text-secondary'>Qté</th>
+              <th className='text-center text-secondary'>Libellé produit</th>
+              {!isAmount && (
 
                 <th className='text-end text-secondary'>Montant</th>
               )}
             </tr>
           </thead>
           <tbody>
-            {myOrder?.order?.associations?.order_rows.map((prod: any, index: any) => (
+            {/* {myOrder?.order?.associations?.order_rows.map((prod: any, index: any) => ( */}
+            {selectedOrder?.products.map((prod: any, index: any) => (
               <tr key={index}>
-                <td className='text-center font-85'>{prod?.product_quantity}</td>
-                <td className='text-start font-85'>{prod?.product_name}</td>
-                {isAmount && (
+                <td className='text-center font-85'>{prod?.quantity}</td>
+                <td className='text-center font-85'>{prod?.name}</td>
+                {!isAmount && (
                   <td className='text-end font-85'>
                   {(
-                    parseFloat(prod?.product_price) * parseInt(prod?.product_quantity)
+                    parseFloat(prod?.price) * parseInt(prod?.quantity)
                   ).toFixed(0)}
                 </td>
                   )}
               </tr>
             ))}
-            {isAmount && (
+            {!isAmount && (
               <>
                 <tr>
                   <td colSpan={2} className='text-end font-85'>
