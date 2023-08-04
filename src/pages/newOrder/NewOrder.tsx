@@ -11,11 +11,12 @@ import {
   FormCheck,
   FormGroup,
   InputGroup,
+  Modal,
   Row,
   Spinner,
 } from 'react-bootstrap'
 import Badge from 'react-bootstrap/Badge'
-import {Navigate, useOutletContext } from 'react-router-dom'
+import { Navigate, useOutletContext } from 'react-router-dom'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 import newOrderDataStore from '../../store/newOrderDataStore'
 import userDataStore from '../../store/userDataStore'
@@ -32,6 +33,7 @@ import InfoAlert from '../../components/ui/warning/InfoAlert'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import InfoTopBar from './InfoTopBar'
+import interrogation from '../../styles/interrogation.png'
 
 const NewOrder = () => {
   //////////////////////////
@@ -98,14 +100,19 @@ const NewOrder = () => {
   const [bookingSlotIds, setBookingSlotIds] = React.useState<any>([])
   const [tempZones, setTempZones] = React.useState<any>([])
   const [slotSizes, setSlotSizes] = React.useState<any>([])
+  // const [productDetail, setProductDetail] = React.useState<any>([])
   const [productDetail, setProductDetail] = React.useState<any>([])
-
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
   const [availableSelect, setAvailableSelect] = React.useState<any>([])
 
   const [availableSlot, setAvailableSlot] = React.useState<any>()
   const [msgError, setMsgError] = React.useState<any>()
   const [codeError, setCodeError] = React.useState<any>()
+
+  const [show, setShow] = React.useState(false)
+
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
   ////////////////////////
   //Regex pour vérifier que le numéro de téléphone du client commence par 87 ou 88 ou 89
@@ -116,7 +123,7 @@ const NewOrder = () => {
   // UseEffect
   /////////////////////////
   React.useEffect(() => {
-    // getClients(dataStore.token)
+    getClients(dataStore.token)
   }, [])
 
   React.useEffect(() => {
@@ -182,17 +189,17 @@ const NewOrder = () => {
   // Events
   /////////////////////////
 
-  // const getClients = (token: any) => {
-  //   ClientService.allClients(token)
-  //     .then((response: any) => {
-  //       setAutoCompletTab(response.data)
-  //     })
-  //     .catch((error) => {
-  //       setIsError(true)
-  //       setMsgError(getError(error))
-  //       setCodeError(error.status)
-  //     })
-  // }
+  const getClients = (token: any) => {
+    ClientService.allClients(token)
+      .then((response: any) => {
+        setAutoCompletTab(response.data)
+      })
+      .catch((error) => {
+        setIsError(true)
+        setMsgError(getError(error))
+        setCodeError(error.status)
+      })
+  }
 
   const getBookingAllSlot = (token: any) => {
     setIsLoading(true)
@@ -248,7 +255,6 @@ const NewOrder = () => {
     setClientPhone('')
     setAgeRestriction(false)
   }
-  console.log(productDetail)
 
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
@@ -292,7 +298,7 @@ const NewOrder = () => {
               : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty),
-            products: [productDetail],
+            products: productDetail[0],
           }
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
@@ -332,7 +338,7 @@ const NewOrder = () => {
               : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty) / parseInt(qty),
-            products: [productDetail[indx]],
+            products: productDetail[indx],
           }))
 
     if (ageRestriction === true) {
@@ -360,6 +366,7 @@ const NewOrder = () => {
         .request(config)
         .then((response: any) => {
           console.log(response)
+          handleClose()
           newOrderDelete()
           setTempZones([])
           setSlotSizes([])
@@ -392,6 +399,7 @@ const NewOrder = () => {
         })
         .catch((error: any) => {
           console.log(error)
+          handleClose()
           setMsgError(getError(error))
           setIsValid(false)
           setQty('')
@@ -435,11 +443,11 @@ const NewOrder = () => {
       Promise.all(promises)
         .then((responses) => {
           const numOrder = responses?.map((num: any) => num?.data?.barcode)
+          handleClose()
           newOrderDelete()
           setTempZones([])
           setSlotSizes([])
           setBookingSlotIds([])
-
           setQty('')
           getallOrders(dataStore.token)
           getBookingAllSlot(dataStore.token)
@@ -463,7 +471,7 @@ const NewOrder = () => {
           })
         })
         .catch((error) => {
-          // console.log(error)
+          handleClose()
           logCatcher(error.response.statusText)
           setMsgError(getError(error))
           popUpError(error.response.status, error.response.data['hydra:description'])
@@ -487,51 +495,35 @@ const NewOrder = () => {
 
   const newOrderModal = async (e: any) => {
     e.preventDefault()
-
-    const { value: accept } = await Swal.fire({
-      icon: 'question',
-      title: 'Voulez-vous valider la commande ?',
-      inputValue: 1,
-      showCancelButton: true,
-      confirmButtonText: 'Continuer',
-      confirmButtonColor: '#54AB57',
-      cancelButtonText: 'Annuler',
-      cancelButtonColor: '#eb5959',
+    handleShow()
+  }
+  const cancelNewOrder = () => {
+    Swal.fire({
+      position: 'top-end',
+      toast: true,
+      icon: 'error',
+      title: 'Commande non finalisée',
+      showConfirmButton: false,
+      timer: 3000,
     })
-
-    if (accept) {
-      createNewOrder()
-    } else {
-      Swal.fire({
-        position: 'top-end',
-        toast: true,
-        icon: 'error',
-        title: 'Commande non finalisée',
-        showConfirmButton: false,
-        timer: 3000,
-      })
-      newOrderDelete()
-      setTempZones([])
-      setSlotSizes([])
-      setBookingSlotIds([])
-      setQty('')
-      setTrigger(false)
-      setTrigger2(false)
-      setClientName('')
-      setClientEmail('')
-      setChoosedName('')
-      setChoosedEmail('')
-      setClientPhone('')
-      setChoosedPhone('')
-      setChosenLocker([])
-      setAgeRestriction(false)
-      setIsValid(false)
-      if (logs.logApp) {
-        logCatcher(logs.logApp + ' / date :' + now + '- Commande non finalisée')
-      } else {
-        logCatcher('date :' + now + '- Commande non finalisée')
-      }
-    }
+    handleClose()
+    newOrderDelete()
+    setTempZones([])
+    setSlotSizes([])
+    setBookingSlotIds([])
+    setQty('')
+    setTrigger(false)
+    setTrigger2(false)
+    setClientName('')
+    setClientEmail('')
+    setChoosedName('')
+    setChoosedEmail('')
+    setClientPhone('')
+    setChoosedPhone('')
+    setChosenLocker([])
+    setAgeRestriction(false)
+    setIsValid(false)
+    setProductDetail([])
   }
 
   const validOrder = (e: any) => {
@@ -577,70 +569,91 @@ const NewOrder = () => {
     )
   }
 
-
   const handleChangeSelect = (e: any, indx: any) => {
     //conditions si "e.currentTarget.value" est vide
     if (e.currentTarget.value.trim() !== '') {
       try {
         const zone: any = JSON.parse(e.currentTarget.value)
-        
-            const newTab: any = [...tempZones]
-            newTab[indx] = zone?.slot?.temperatureZone?.myKey
-            setTempZones(newTab)
-        
-            const newTabSize: any = [...slotSizes]
-            newTabSize[indx] = zone.slot?.size
-            setSlotSizes(newTabSize)
-        
-            const newTabBooking: any = [...bookingSlotIds]
-            newTabBooking[indx] = zone['@id']
-            setBookingSlotIds(newTabBooking)
-            newOrderRegister(
-              zone?.slot?.temperatureZone?.locker['@id'],
-              zone?.slot?.temperatureZone?.locker?.location,
-              bookingSlotIds,
-              zone?.company['@id'],
-              zone?.company?.name,
-              zone?.slot?.temperatureZone?.locker?.type,
-              dataStore?.id,
-              tempZones,
-              zone?.slot?.temperatureZone?.myKey,
-              slotSizes,
-              parseInt(qty),
-              ageRestriction === true ? 18 : 0
-            )
+
+        const newTab: any = [...tempZones]
+        newTab[indx] = zone?.slot?.temperatureZone?.myKey
+        setTempZones(newTab)
+
+        const newTabSize: any = [...slotSizes]
+        newTabSize[indx] = zone.slot?.size
+        setSlotSizes(newTabSize)
+
+        const newTabBooking: any = [...bookingSlotIds]
+        newTabBooking[indx] = zone['@id']
+        setBookingSlotIds(newTabBooking)
+        newOrderRegister(
+          zone?.slot?.temperatureZone?.locker['@id'],
+          zone?.slot?.temperatureZone?.locker?.location,
+          bookingSlotIds,
+          zone?.company['@id'],
+          zone?.company?.name,
+          zone?.slot?.temperatureZone?.locker?.type,
+          dataStore?.id,
+          tempZones,
+          zone?.slot?.temperatureZone?.myKey,
+          slotSizes,
+          parseInt(qty),
+          ageRestriction === true ? 18 : 0
+        )
       } catch (error) {
-        console.error('Erreur lors du traitement des données JSON :', error);
+        console.error('Erreur lors du traitement des données JSON :', error)
       }
     } else {
-      console.error('Les données JSON sont vides.');
+      console.error('Les données JSON sont vides.')
     }
   }
- 
+  const handleAddStartProduct = () => {
+    const newTab = Array.from({ length: parseInt(qty) }).map((_, index) => [
+      {
+        name: '',
+        price: null,
+        quantity: null,
+      },
+    ])
+    setProductDetail((prevProductDetail: any) => [...prevProductDetail, ...newTab])
+  }
+  const handleAddProduct = (indx: any) => {
+    let newTab: any[] = [...productDetail]
+    newTab[indx][productDetail[indx].length] = {
+      name: '',
+      price: null,
+      quantity: null,
+    }
+    setProductDetail(newTab)
+  }
 
   const handleAddCart = (qty: any) => {
     const newTab = Array.from({ length: parseInt(qty) }).map((_, indx) => ({
-      panier: indx + 1,
-      detail: '',
-      // "tempZone": '',
-      // "size": '',
-      // "amount": 0,
+      name: '',
+      price: null,
+      quantity: null,
     }))
     setProductDetail((prevProductDetail: any) => [...prevProductDetail, ...newTab])
   }
 
   const _handleChangeProduct = (
     e: any,
-    indx: any,
-    key: any,
-    productDetail: any,
-    setProductDetail: any
+    indx: number,
+    index: number,
+    key: string,
+    productDetail: any[][],
+    setProductDetail: React.Dispatch<React.SetStateAction<any[][]>>
   ) => {
-    const newProduits: any = [...productDetail]
-    newProduits[indx][key] = key === 'qty' ? parseInt(e.target?.value) : e.target?.value
-    setProductDetail(newProduits)
-  }
+    const { value } = e.target
 
+    const newProductDetail2 = [...productDetail]
+
+    if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
+      newProductDetail2[indx][index][key] =
+        key === 'quantity' || key === 'price' ? parseInt(value) : value
+      setProductDetail(newProductDetail2)
+    }
+  }
 
   const borderClasses = ['border-info', 'border-warning', 'border-secondary']
 
@@ -657,7 +670,7 @@ const NewOrder = () => {
   }
 
   const handleFirstStepClick = () => {
-    setChosenLocker([]);
+    setChosenLocker([])
     newOrderRegister(
       null,
       orderStore.location,
@@ -671,25 +684,20 @@ const NewOrder = () => {
       null,
       0,
       0
-    );
-  };
-  
+    )
+  }
+
   const handleSecondStepClick = () => {
-    
-    setTrigger(false);
-    setQty(undefined);
-    setProductDetail([]);
-  };
-  
+    setTrigger(false)
+    setQty(undefined)
+    setProductDetail([])
+  }
+
   const handleThirdStepClick = () => {
-    setTrigger2(false);
-    setProductDetail([]);
-    setClientPhone('');
-    setChoosedPhone('');
-
-  };
-
-
+    setTrigger2(false)
+    setClientPhone('')
+    setChoosedPhone('')
+  }
 
   const slotLocationTab = (location: any) => {
     const filteredData = allSlot?.['hydra:member']?.filter(
@@ -715,7 +723,14 @@ const NewOrder = () => {
     )
     ?.reduce((acc: any, current: any) => acc + current.available, 0)
 
-const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, handleSecondStepClick, handleThirdStepClick}
+  const infoToBarProps = {
+    chosenLocker,
+    trigger,
+    trigger2,
+    handleFirstStepClick,
+    handleSecondStepClick,
+    handleThirdStepClick,
+  }
 
   return (
     <div>
@@ -797,17 +812,10 @@ const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, 
                       }
                       className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-cente'
                     >
-                      {/* <Row>
-                        <Col xs={3} className='ps-2 pe-1'>
-                          <div className=' m-auto'>
-                            <img src={imagLogo} alt='logo' width={35} />
-                          </div>
-                        </Col>
-                        <Col className='ps-0 pe-1'>{locker}</Col>
-                      </Row> */}
                       {locker}
                     </Col>
-                    <Col xs={
+                    <Col
+                      xs={
                         allSlot?.['hydra:member']
                           ?.filter(
                             (lockers: any) =>
@@ -831,7 +839,8 @@ const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, 
                               )?.length === 2
                           ? 5
                           : 4
-                      } >
+                      }
+                    >
                       {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
                         <div
                           key={indx}
@@ -884,7 +893,7 @@ const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, 
                 onSubmit={(e) => {
                   e.preventDefault()
                   setTrigger(true)
-                  handleAddCart(qty)
+                  handleAddStartProduct()
                 }}
               >
                 <div>
@@ -939,7 +948,7 @@ const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, 
               <form onSubmit={validOrder}>
                 <Accordion defaultActiveKey='0'>
                   {Array.from({ length: parseInt(qty) }).map((_, indx) => (
-                    <React.Fragment key={indx * 10}>
+                    <React.Fragment key={indx * 10 + 25}>
                       <Accordion.Item eventKey={`${indx}`}>
                         <Accordion.Header>Choix n°{indx + 1}</Accordion.Header>
                         <Accordion.Body>
@@ -983,62 +992,101 @@ const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, 
                               </option>
                             ))}
                           </Form.Select>
-
-                          {/* <Dropdown>
-                            <Dropdown.Toggle
-                              className='tempzone'
-                              variant='outline-secondary'
-                              id='dropdown-basic'
-                            >
-                              Dropdown Button
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu className='tempzone'>
-                              {chosenLocker?.map((lockers: any, index: any) => (
-                                <>
-                                  <Dropdown.Item className='border-bottom'>
-                                    <Row>
-                                      <Col>
-                                        <BadgedIcon
-                                          slot={lockers}
-                                          borderColor='light'
-                                          imgSize='40px'
+                          <Row>
+                            <Col xs={3} className='font-75 my-0 py-0'>
+                              Qté
+                            </Col>
+                            <Col className='font-75 my-0 py-0'>Produit</Col>
+                            <Col xs={4} className='font-75 my-0 py-0'>
+                              Prix
+                            </Col>
+                          </Row>
+                          {productDetail[indx] &&
+                            productDetail[indx]?.map((prod: any, index: any) => (
+                              <React.Fragment key={index}>
+                                <Row style={{ height: 50 }}>
+                                  <React.Fragment key={index}>
+                                    <Col
+                                      className='font-75 mx-0 px-0'
+                                      xs={1}
+                                      style={{ width: 5 }}
+                                    >
+                                      {index + 1}
+                                    </Col>
+                                    <Col xs={2}>
+                                      <InputGroup className='mb-4 pe-0'>
+                                        <Form.Control
+                                          className='px-0 text-center'
+                                          type='number'
+                                          placeholder='Qté'
+                                          value={prod?.quantity}
+                                          onChange={(e) =>
+                                            _handleChangeProduct(
+                                              e,
+                                              indx,
+                                              index,
+                                              'quantity',
+                                              productDetail,
+                                              setProductDetail
+                                            )
+                                          }
+                                          required
                                         />
-                                      </Col>
-                                      <Col>
-                                        <div>
-                                          {lockers?.available}{' '}
-                                          {lockers?.available > 1 ? 'casiers' : 'casier'}
-                                        </div>
-                                      </Col>
-                                    </Row>
-                                  </Dropdown.Item>
-                                </>
-                              ))}
-                            </Dropdown.Menu>
-                          </Dropdown> */}
+                                      </InputGroup>
+                                    </Col>
+                                    <Col className='px-0'>
+                                      <InputGroup className='mb-4'>
+                                        <Form.Control
+                                          placeholder='Produit'
+                                          value={prod?.name}
+                                          onChange={(e) =>
+                                            _handleChangeProduct(
+                                              e,
+                                              indx,
+                                              index,
+                                              'name',
+                                              productDetail,
+                                              setProductDetail
+                                            )
+                                          }
+                                          required
+                                        />
+                                      </InputGroup>
+                                    </Col>
+                                    <Col xs={4}>
+                                      <InputGroup className='mb-4'>
+                                        <Form.Control
+                                          type='number'
+                                          placeholder='prix'
+                                          value={prod?.price}
+                                          onChange={(e) =>
+                                            _handleChangeProduct(
+                                              e,
+                                              indx,
+                                              index,
+                                              'price',
+                                              productDetail,
+                                              setProductDetail
+                                            )
+                                          }
+                                          required
+                                        />
+                                      </InputGroup>
+                                    </Col>
+                                  </React.Fragment>
+                                </Row>
+                              </React.Fragment>
+                            ))}
 
-                          <InputGroup className='mb-4'>
-                            <InputGroup.Text className='border-end-0 bg-secondary-500'>
-                              <i className='ri-inbox-archive-line text-secondary'></i>
-                            </InputGroup.Text>
-                            <Form.Control
-                              as='textarea'
-                              aria-label='textarea'
-                              placeholder={`Produits du panier n° ${indx + 1}`}
-                              value={productDetail[indx]?.detail}
-                              onChange={(e) =>
-                                _handleChangeProduct(
-                                  e,
-                                  indx,
-                                  'detail',
-                                  productDetail,
-                                  setProductDetail
-                                )
-                              }
-                              required
-                            />
-                          </InputGroup>
+                          <Button
+                            onClick={() => {
+                              handleAddProduct(indx)
+                            }}
+                            variant='warning'
+                            className='rounded-pill text-light'
+                          >
+                            <i className='ri-add-fill me-1 align-bottom'></i>
+                          </Button>
                         </Accordion.Body>
                       </Accordion.Item>
                     </React.Fragment>
@@ -1061,7 +1109,6 @@ const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, 
             <div>
               <form
                 onSubmit={(e) => {
-                  newOrderModal(e)
                   if (
                     (clientPhone?.length !== 8 && choosedPhone === '') ||
                     (choosedPhone?.length !== 8 && clientPhone === '')
@@ -1267,22 +1314,19 @@ const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, 
                     />
                   </Alert>
                 )}
-                {
-                  // isMsgErrorPhone &&
-                  clientName &&
-                    clientName?.length < 1 &&
-                    choosedPhone &&
-                    choosedPhone?.length < 1 && (
-                      <Alert variant='danger' className='mt-2 py-0 '>
-                        <InfoAlert
-                          icon='ri-error-warning-line'
-                          iconColor='danger'
-                          message={'Ce champ est obligatoire'}
-                          fontSize='font-75'
-                        />
-                      </Alert>
-                    )
-                }
+                {clientName &&
+                  clientName?.length < 1 &&
+                  choosedPhone &&
+                  choosedPhone?.length < 1 && (
+                    <Alert variant='danger' className='mt-2 py-0 '>
+                      <InfoAlert
+                        icon='ri-error-warning-line'
+                        iconColor='danger'
+                        message={'Ce champ est obligatoire'}
+                        fontSize='font-75'
+                      />
+                    </Alert>
+                  )}
                 {availableSlot < parseInt(qty) && (
                   <AlertIsError
                     title={'Attention'}
@@ -1322,6 +1366,22 @@ const infoToBarProps =  {chosenLocker, trigger, trigger2, handleFirstStepClick, 
           )}
         </Container>
       )}
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Body>
+          <div className='text-center my-3 animate__animated animate__jello'>
+            <img src={interrogation} alt="point d'interrogation" width={150} />
+          </div>
+          <p>Voulez-vous valider cette commande ?</p>
+          <div className='mt-3 text-end'>
+            <Button variant='warning' onClick={cancelNewOrder} className='me-3'>
+              Annuler
+            </Button>
+            <Button variant='info' onClick={createNewOrder}>
+              Valider
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   )
 }

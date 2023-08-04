@@ -58,9 +58,9 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
           <Col xs={2} className='ff-agency m-auto pb-2 '>
           </Col>
           <Col xs={8} sm={8} className='ff-agency m-auto text-center pb-2 '>
-            <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>
+            {/* <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>
               <img src={imagLogo} alt='logo' width={35} />
-            </div>
+            </div> */}
             <div>{title}</div>
           </Col>
           <Col xs={2}  className='py-2 m-auto company-name align-bottom  text-end animate__animated animate__bounceIn top-menu fw-bold'>
