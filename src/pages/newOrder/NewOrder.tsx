@@ -705,9 +705,7 @@ const NewOrder = () => {
     )
     return filteredData
   }
-  console.log(slotLocationTab("Parking Carrefour Punaauia - Côté mer"))
-  // console.log(slotLocationTab('Parking Carrefour Faa\'a - Rez-de-chaussée'))
-
+  
   const uniqueTempTab = (locker: any) => {
     const newTab = [
       ...new Set(
@@ -716,9 +714,7 @@ const NewOrder = () => {
     ]
     return newTab
   }
-  console.log(uniqueTempTab('Parking Carrefour Punaauia - Côté mer'))
-  // console.log(uniqueTempTab('Parking Carrefour Faa\'a - Rez-de-chaussée'))
-
+  
   const lockerAvailability = allSlot?.['hydra:member']
     ?.filter(
       (lockers: any) =>
