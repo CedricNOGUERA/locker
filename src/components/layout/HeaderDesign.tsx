@@ -95,7 +95,6 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
-        
           <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'

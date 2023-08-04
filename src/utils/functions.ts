@@ -119,7 +119,7 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
     } else if (status === 'return') {
       return "Retour???"
     } else{
-      return "Cette commande n'est pas dans la liste"
+      return "Cette commande n'existe pas"
     }
     
   }

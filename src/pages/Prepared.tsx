@@ -238,7 +238,7 @@ const Prepared: React.FC = () => {
     newStatus,
   }
 
-
+console.log(allSlot)
   return (
     <>
       <Container fluid className='cde App px-0'>
@@ -262,7 +262,7 @@ const Prepared: React.FC = () => {
             {isAnomalie ? (
               <Container fluid className='pb-5'>
                 <Container className='my-2 px-0'>
-                  <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
+                  <Container className='py-0 bg-secondary rounded-pill shadow my-auto mt-3'>
                     <Row>
                       <Col
                         xs={2}

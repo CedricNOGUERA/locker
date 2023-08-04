@@ -2,7 +2,6 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_END_POINT
 const API_PRESTA = "https://prestashop.itahitilab.io/api/"
-
 class OrderService {
     allOrders(token: any) {
         return axios.get(API_URL + "orders" , {headers: {"Authorization": "Bearer " + token}})

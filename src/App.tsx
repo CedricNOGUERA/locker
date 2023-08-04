@@ -64,6 +64,9 @@ function App() {
         if(error?.response?.data?.message === 'Expired JWT Token'){
           navigate('/connexion')
         }
+        if(error?.response?.data?.message === 'Invalid JWT Token'){
+          navigate('/connexion')
+        }
         console.log(error)
       })
   }
@@ -75,7 +78,10 @@ function App() {
     .catch((error: any) => {
       setIsLoading(false)
       if(error?.response?.data?.message === 'Expired JWT Token'){
-        alert('Session expirée')
+        alert('Session expirée, reconnectez-vous.')
+        navigate('/connexion')
+      }
+      if(error?.response?.data?.message === 'Invalid JWT Token'){
         navigate('/connexion')
       }
       console.log(error)

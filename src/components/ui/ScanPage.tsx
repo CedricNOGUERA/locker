@@ -5,8 +5,12 @@ import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import BackBar from './BackBar'
 import { _refreshPage } from '../../utils/functions'
+import { useNavigate } from 'react-router-dom'
 
 const ScanPage = ({ scanPageProps }: any) => {
+
+  const navigate = useNavigate();
+
   ////////////////////
   //Props & store
   ///////////////////
@@ -20,6 +24,15 @@ const ScanPage = ({ scanPageProps }: any) => {
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
       setOrderData(response.data)
+     
+    }).catch((error: any) => {
+      if(error?.response?.data?.message === 'Expired JWT Token'){
+        navigate('/connexion')
+      }
+      if(error?.response?.data?.message === 'Invalid JWT Token'){
+        navigate('/connexion')
+      }
+      console.log(error?.response?.data?.message)
     })
   }
 
@@ -76,7 +89,14 @@ const ScanPage = ({ scanPageProps }: any) => {
       <Container
         className='bg-light p-2 w-75  border  animate__animated animate__fadeInDown'
         onClick={() => {
-          _refreshPage()
+          if(selectedOrder?.status === "created"){
+
+            changeStatus()
+          }else{
+
+            getallOrders(dataStore.token)
+            setSelectedOrder(null)
+          }
         }}
       >
         <div className='m-auto'>
