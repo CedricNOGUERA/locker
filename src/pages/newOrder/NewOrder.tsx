@@ -109,6 +109,8 @@ const NewOrder = () => {
   const [availableSlot, setAvailableSlot] = React.useState<any>()
   const [msgError, setMsgError] = React.useState<any>()
   const [codeError, setCodeError] = React.useState<any>()
+  const [expireToken, setExpireToken] = React.useState<boolean>(false)
+
 
   const [show, setShow] = React.useState(false)
 
@@ -190,6 +192,25 @@ const NewOrder = () => {
   // Events
   /////////////////////////
 
+  const expiredToken = (error: any) => {
+    if(!expireToken){
+      if (error?.response?.data?.message === 'Expired JWT Token') {
+        setExpireToken(true)
+        alert('Session expirée, reconnectez-vous.')
+
+        navigate('/connexion')
+        return
+      }
+      if (error?.response?.data?.message === 'Invalid JWT Token') {
+        setExpireToken(true)
+        alert('Token invalide, reconnectez-vous.')
+
+        navigate('/connexion')
+        return
+      }
+    }
+  }
+
   const getClients = (token: any) => {
     ClientService.allClients(token)
       .then((response: any) => {
@@ -199,14 +220,7 @@ const NewOrder = () => {
         setIsError(true)
         setMsgError(getError(error))
         setCodeError(error.status)
-      
-        if(error?.response?.data?.message === 'Expired JWT Token'){
-          alert('Session expirée, reconnectez-vous.')
-          navigate('/connexion')
-        }
-        if(error?.response?.data?.message === 'Invalid JWT Token'){
-          navigate('/connexion')
-        }
+        expiredToken(error)
         console.log(error)
       })
     

@@ -15,6 +15,7 @@ function App() {
   ////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [expireToken, setExpireToken] = React.useState<boolean>(false)
 
   const token = userDataStore((state: any) => state.token)
 
@@ -52,6 +53,22 @@ function App() {
   /////////////////////
   //Events
   ////////////////////
+  const expiredToken = (error: any) => {
+    if(!expireToken){
+      if(error?.response?.data?.message === 'Expired JWT Token'){
+        setExpireToken(true)
+        alert('Session expirée, reconnectez-vous.')
+        navigate('/connexion')
+        return
+      }
+      if(error?.response?.data?.message === 'Invalid JWT Token'){
+        setExpireToken(true)
+        alert('Token invalide, reconnectez-vous.')
+        navigate('/connexion')
+        return
+      }
+    }
+    }
 
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token)
@@ -61,12 +78,7 @@ function App() {
       })
       .catch((error: any) => {
         setIsLoading(false)
-        if(error?.response?.data?.message === 'Expired JWT Token'){
-          navigate('/connexion')
-        }
-        if(error?.response?.data?.message === 'Invalid JWT Token'){
-          navigate('/connexion')
-        }
+       expiredToken(error)
         console.log(error)
       })
   }
@@ -77,13 +89,6 @@ function App() {
     })
     .catch((error: any) => {
       setIsLoading(false)
-      if(error?.response?.data?.message === 'Expired JWT Token'){
-        alert('Session expirée, reconnectez-vous.')
-        navigate('/connexion')
-      }
-      if(error?.response?.data?.message === 'Invalid JWT Token'){
-        navigate('/connexion')
-      }
       console.log(error)
     })
   }
