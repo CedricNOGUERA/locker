@@ -78,6 +78,7 @@ const NewOrder = () => {
     setAllSlot,
     selectedItem,
     setSelectedItem,
+    expireToken, setExpireToken,
   ] = useOutletContext<any>()
 
   //////////////////////////
@@ -101,7 +102,6 @@ const NewOrder = () => {
   const [bookingSlotIds, setBookingSlotIds] = React.useState<any>([])
   const [tempZones, setTempZones] = React.useState<any>([])
   const [slotSizes, setSlotSizes] = React.useState<any>([])
-  // const [productDetail, setProductDetail] = React.useState<any>([])
   const [productDetail, setProductDetail] = React.useState<any>([])
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
   const [availableSelect, setAvailableSelect] = React.useState<any>([])
@@ -109,7 +109,6 @@ const NewOrder = () => {
   const [availableSlot, setAvailableSlot] = React.useState<any>()
   const [msgError, setMsgError] = React.useState<any>()
   const [codeError, setCodeError] = React.useState<any>()
-  const [expireToken, setExpireToken] = React.useState<boolean>(false)
 
 
   const [show, setShow] = React.useState(false)
@@ -197,6 +196,7 @@ const NewOrder = () => {
       if (error?.response?.data?.message === 'Expired JWT Token') {
         setExpireToken(true)
         alert('Session expirée, reconnectez-vous.')
+        console.log("client_neworder")
 
         navigate('/connexion')
         return
