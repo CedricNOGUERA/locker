@@ -58,6 +58,7 @@ function App() {
       if(error?.response?.data?.message === 'Expired JWT Token'){
         setExpireToken(true)
         alert('Session expirée, reconnectez-vous.')
+        console.log('allOrder_app')
         navigate('/connexion')
         return
       }
@@ -78,7 +79,7 @@ function App() {
       })
       .catch((error: any) => {
         setIsLoading(false)
-       expiredToken(error)
+        expiredToken(error)
         console.log(error)
       })
   }
@@ -114,6 +115,7 @@ function App() {
             setAllSlot,
             selectedItem,
             setSelectedItem,
+            expireToken, setExpireToken,
           ]}
         />
       )}
