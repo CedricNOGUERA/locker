@@ -126,7 +126,7 @@ const NewOrder = () => {
   /////////////////////////
   React.useEffect(() => {
     getClients(dataStore.token)
-  }, [])
+  }, [trigger2, dataStore.token])
 
   React.useEffect(() => {
     setIsValidPhone(regex.test(choosedPhone ? choosedPhone : clientPhone))
@@ -636,8 +636,8 @@ const NewOrder = () => {
     const newTab = Array.from({ length: parseInt(qty) }).map((_, index) => [
       {
         name: '',
-        price: null,
-        quantity: null,
+        price: '',
+        quantity: '',
       },
     ])
     setProductDetail((prevProductDetail: any) => [...prevProductDetail, ...newTab])
@@ -646,8 +646,8 @@ const NewOrder = () => {
     let newTab: any[] = [...productDetail]
     newTab[indx][productDetail[indx].length] = {
       name: '',
-      price: null,
-      quantity: null,
+      price: '',
+      quantity: '',
     }
     setProductDetail(newTab)
   }
@@ -655,8 +655,8 @@ const NewOrder = () => {
   const handleAddCart = (qty: any) => {
     const newTab = Array.from({ length: parseInt(qty) }).map((_, indx) => ({
       name: '',
-      price: null,
-      quantity: null,
+      price: '',
+      quantity: '',
     }))
     setProductDetail((prevProductDetail: any) => [...prevProductDetail, ...newTab])
   }
@@ -675,7 +675,7 @@ const NewOrder = () => {
 
     if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
       newProductDetail2[indx][index][key] =
-        key === 'quantity' || key === 'price' ? parseInt(value) : value
+        (key === 'quantity' || key === 'price') ? parseInt(value) : value
       setProductDetail(newProductDetail2)
     }
   }
@@ -714,7 +714,7 @@ const NewOrder = () => {
 
   const handleSecondStepClick = () => {
     setTrigger(false)
-    setQty(undefined)
+    setQty('')
     setProductDetail([])
   }
 
@@ -937,7 +937,7 @@ const NewOrder = () => {
                         )
                         ?.reduce((acc: any, current: any) => acc + current?.available, 0)}
                       placeholder='Nombre de panier*'
-                      value={qty}
+                      value={parseFloat(qty) || ''} 
                       onChange={(e) => {
                         setQty(e.currentTarget.value)
                       }}
@@ -1041,7 +1041,8 @@ const NewOrder = () => {
                                           className='px-0 text-center'
                                           type='number'
                                           placeholder='Qté'
-                                          value={prod?.quantity}
+                                          value={parseFloat(prod?.quantity) || ''} 
+                                          // {prod?.quantity}
                                           onChange={(e) =>
                                             _handleChangeProduct(
                                               e,
@@ -1080,7 +1081,7 @@ const NewOrder = () => {
                                         <Form.Control
                                           type='number'
                                           placeholder='prix'
-                                          value={prod?.price}
+                                          value={parseFloat(prod?.price) || ''}
                                           onChange={(e) =>
                                             _handleChangeProduct(
                                               e,

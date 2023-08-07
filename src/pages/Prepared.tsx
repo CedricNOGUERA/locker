@@ -59,6 +59,7 @@ const Prepared: React.FC = () => {
   const [storeName, setStoreName] = React.useState<any>([])
 
   const [isScan, setIsScan] = React.useState<boolean>(false)
+  const [isScanning, setIsScanning] = React.useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement>(null);
   const [scanCode, SetScanCode] = React.useState<string>('')
 
@@ -128,14 +129,14 @@ const Prepared: React.FC = () => {
 
   const handleScan = () => {
     setIsAnomalie(false)
-          setIsScan(true)
-          if (videoRef.current) {
-            navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
-            .then((stream) => {
-              videoStream = stream;
-              videoRef.current!.srcObject = stream;
-              videoRef?.current!.play();
-              requestAnimationFrame(scanQRCode);
+    if (videoRef.current) {
+      navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
+      .then((stream) => {
+        videoStream = stream
+        videoRef.current!.srcObject = stream
+        videoRef.current!.play()
+        requestAnimationFrame(scanQRCode)
+        setIsScan(true)
         })
         .catch((error) => console.error('Error accessing camera:', error));
     }
@@ -282,15 +283,16 @@ console.log(allSlot)
                       ></Col>
                     </Row>
                   </Container>
-                 
+
                   <Container className='text-center mt-3'>
                     <p>Une anomalie est survenue...</p>
-                    <p><b>{anomalyMsg}</b></p>
+                    <p>
+                      <b>{anomalyMsg}</b>
+                    </p>
                     <p>{anomalyMsgSecondary}</p>
                     <img src={noOrder} alt='no-order' style={{ height: '256px' }} />
                     <p className='mt-3'>
-                      Réessayez le scan ou recherchez
-                      d'où vient l'anomalie
+                      Réessayez le scan ou recherchez d'où vient l'anomalie
                     </p>
                   </Container>
                 </Container>
@@ -329,19 +331,24 @@ console.log(allSlot)
             className='rounded-pill border-0 bg-warning'
             onClick={() => {
               stopScan()
-              console.log('object')
+            
+              console.log('stop')
             }}
           >
             Stop
           </Button>
         )}
       </div>
-      { !selectedOrder &&  (
-        <Button
+      {(!selectedOrder) && (
+          <Button
           className='fab rounded-circle bg-info border-0'
-          onClick={handleScan}
+          onClick={() => {
+            handleScan()
+            setIsScanning(true)
+            setIsScan(true)
+          }}
           style={{ width: 55, height: 55 }}
-        >
+          >
           <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
         </Button>
       )}
