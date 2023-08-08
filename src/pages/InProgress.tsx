@@ -51,11 +51,14 @@ const InProgress: React.FC = () => {
   const [storeName, setStoreName] = React.useState<any>([])
 
   const newStatus = 'operin'
-
+console.log(selectedOrder)
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'picked_up' &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore 
+      &&
+      order?.shippedBy &&
       order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
       // order?.shippedBy?.firstName === `${dataStore.firstname}`
   )

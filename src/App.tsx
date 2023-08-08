@@ -14,6 +14,7 @@ function App() {
   //States
   ////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
+  const authLogout = userDataStore((state: any) => state.authLogout)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [expireToken, setExpireToken] = React.useState<boolean>(false)
 
@@ -40,12 +41,13 @@ function App() {
   React.useEffect(() => {
     setSelectedOrderCity(
       allSlot?.['hydra:member']
-        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker.city
+        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker?.city
         : ''
     )
     setSelectedStore(
       allSlot?.['hydra:member']
-        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker['@id']
+        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker && 
+        allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker['@id']
         : ''
     )
   }, [allSlot])
@@ -59,13 +61,15 @@ function App() {
         setExpireToken(true)
         alert('Session expirée, reconnectez-vous.')
         console.log('allOrder_app')
-        navigate('/connexion')
+        authLogout()
+        // navigate('/connexion')
         return
       }
       if(error?.response?.data?.message === 'Invalid JWT Token'){
         setExpireToken(true)
         alert('Token invalide, reconnectez-vous.')
-        navigate('/connexion')
+        authLogout()
+        // navigate('/connexion')
         return
       }
     }

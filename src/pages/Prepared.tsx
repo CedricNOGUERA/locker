@@ -75,6 +75,7 @@ const Prepared: React.FC = () => {
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'ready_for_delivery' &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
 

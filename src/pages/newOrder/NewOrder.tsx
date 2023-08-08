@@ -56,6 +56,7 @@ const NewOrder = () => {
   // Store & context state
   /////////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
+  const authLogout = userDataStore((state: any) => state.authLogout)
   const dataStore = userDataStore((state: any) => state)
   const newOrderRegister = newOrderDataStore((state: any) => state.newOrderRegister)
   const newOrderDelete = newOrderDataStore((state: any) => state.newOrderDelete)
@@ -202,13 +203,15 @@ const NewOrder = () => {
         setExpireToken(true)
         alert('Session expirée, reconnectez-vous.')
         console.log("client_neworder")
-        navigate('/connexion')
+        authLogout()
+        // navigate('/connexion')
         return
       }
       if (error?.response?.data?.message === 'Invalid JWT Token') {
         setExpireToken(true)
         alert('Token invalide, reconnectez-vous.')
-        navigate('/connexion')
+        authLogout()
+        // navigate('/connexion')
         return
       }
     }
@@ -596,7 +599,7 @@ const NewOrder = () => {
       )
     )
   }
-
+console.log(chosenLocker)
   const handleChangeSelect = (e: any, indx: any) => {
     //conditions si "e.currentTarget.value" est vide
     if (e.currentTarget.value.trim() !== '') {
@@ -746,6 +749,7 @@ const NewOrder = () => {
   const lockerAvailability = allSlot?.['hydra:member']
     ?.filter(
       (lockers: any) =>
+      lockers?.slot?.temperatureZone?.locker &&
         lockers?.slot?.temperatureZone?.locker['@id'] ===
         chosenLocker[0]?.slot?.temperatureZone?.locker['@id']
     )
@@ -991,26 +995,34 @@ const NewOrder = () => {
                                 key={index}
                                 value={JSON.stringify(lockers)}
                                 className={`text-light ${
-                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                                  lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH'
+                                  // ||
+                                  // lockers?.slot?.temperatureZone?.myKey === 'MT'
                                     ? 'bg-succes'
-                                    : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                      lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                    : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE'
+                                    // ||
+                                    // lockers?.slot?.temperatureZone?.myKey === 'LT'
                                     ? 'bg-inf'
-                                    : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                        lockers?.slot?.temperatureZone?.myKey === 'CA') &&
+                                    : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' 
+                                    // ||
+                                    //     lockers?.slot?.temperatureZone?.myKey === 'CA'
+                                        ) &&
                                       'bg-warnin'
                                 }`}
                                 disabled={lockers.available < 1 ? true : false}
                               >
-                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                                lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' 
+                                // ||
+                                // lockers?.slot?.temperatureZone?.myKey === 'MT'
                                   ? '🍃 Zone Fraîche'
-                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                    lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' 
+                                  // ||
+                                  //   lockers?.slot?.temperatureZone?.myKey === 'LT'
                                   ? '❄ Zone Congelée'
-                                  : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                      lockers?.slot?.temperatureZone?.myKey === 'CA') &&
+                                  : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' 
+                                  // ||
+                                  //     lockers?.slot?.temperatureZone?.myKey === 'CA'
+                                      ) &&
                                     '☀️ Zone Ambiante'}{' '}
                                 {lockers?.slot.size}- {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
