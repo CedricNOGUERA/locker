@@ -216,6 +216,7 @@ const NewOrder = () => {
       }
     }
   }
+  console.log(autoCompletTab)
 
   const getClients = (token: any) => {
     ClientService.allClients(token)
