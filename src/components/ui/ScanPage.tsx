@@ -4,12 +4,18 @@ import userDataStore from '../../store/userDataStore'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import BackBar from './BackBar'
+import { _refreshPage } from '../../utils/functions'
+import { useNavigate } from 'react-router-dom'
 
 const ScanPage = ({ scanPageProps }: any) => {
+
+  const navigate = useNavigate();
+
   ////////////////////
   //Props & store
   ///////////////////
-  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
+    
+    const { selectedOrder, setOrderData, setSelectedOrder, newStatus, } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
 
@@ -19,13 +25,24 @@ const ScanPage = ({ scanPageProps }: any) => {
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
       setOrderData(response.data)
+     
+    }).catch((error: any) => {
+      if(error?.response?.data?.message === 'Expired JWT Token'){
+        navigate('/connexion')
+        alert('Session expirée, reconnectez-vous.')
+      }
+      if(error?.response?.data?.message === 'Invalid JWT Token'){
+        navigate('/connexion')
+        alert('Session expirée, reconnectez-vous.')
+      }
+      console.log(error?.response?.data?.message)
     })
   }
 
   const changeStatus = () => {
     let data = {
       status: newStatus,
-      shippedBy: 'api/users/' + dataStore.id,
+      // shippedBy: 'api/users/' + dataStore.id,
     }
    
     let config = {
@@ -59,7 +76,7 @@ const ScanPage = ({ scanPageProps }: any) => {
   return (
     <Container fluid className='pb-5'>
       <Container className='my-2 px-0'>
-        <BackBar setSelectedOrder={setSelectedOrder} selectedOrder={selectedOrder} />
+        <BackBar setSelectedOrder={setSelectedOrder} selectedOrder={selectedOrder} getallOrders={getallOrders} />
       </Container>
       <Container className='text-center text-danger py-0  m-auto opacity-75'>
         <span className='align-middle'>
@@ -75,7 +92,14 @@ const ScanPage = ({ scanPageProps }: any) => {
       <Container
         className='bg-light p-2 w-75  border  animate__animated animate__fadeInDown'
         onClick={() => {
-          changeStatus()
+          if(selectedOrder?.status === "created"){
+
+            changeStatus()
+          }else{
+
+            getallOrders(dataStore.token)
+            setSelectedOrder(null)
+          }
         }}
       >
         <div className='m-auto'>

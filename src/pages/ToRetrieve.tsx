@@ -130,7 +130,6 @@ const ToRetrieve: React.FC = () => {
 
   const scanPageProps = {
     selectedOrder,
-    orderData,
     setOrderData,
     messageApi,
     setSelectedOrder,

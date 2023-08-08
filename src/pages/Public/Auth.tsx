@@ -127,7 +127,7 @@ const Auth = () => {
       handleClearCache()
     
   }, [authLogin, myData, token])
-
+console.log(myData)
   useEffect(() => {
     if (myEmail) {
       setIsNotEmail(false)
@@ -254,7 +254,6 @@ const Auth = () => {
             <Card.Body className=''>
               <div className='logo-app text-center text-light animate__animated animate__rotateIn'></div>
               <div
-              onClick={handleShowModal} 
                className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
                 OVER BOX
               </div>

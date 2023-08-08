@@ -5,7 +5,11 @@ import BadgedIcon from './BadgedIcon'
 import userDataStore from '../../store/userDataStore'
 import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 const OrderDetail = ({ scanPageProps }: any) => {
+
+  const navigate = useNavigate();
+
   ////////////////////
   //Props & store
   ///////////////////
@@ -13,15 +17,17 @@ const OrderDetail = ({ scanPageProps }: any) => {
 
   const dataStore: any = userDataStore((states: any) => states)
 
-  const [isDetail, setIsDetail] = React.useState(false)
-  const [isErrorValid, setIsErrorValid] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(false)
+  const [isDetail, setIsDetail] = React.useState<boolean>(false)
+  const [isErrorValid, setIsErrorValid] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isAmount, setIsAmount] = React.useState<boolean>(true)
+  const [errorMsg, setErrorMsg] = React.useState<string>('')
 
-  const [show, setShow] = React.useState(false)
+  const [show, setShow] = React.useState<boolean>(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
-  const [showUpdateStatus, setShowUpdateStatus] = React.useState(false)
+  const [showUpdateStatus, setShowUpdateStatus] = React.useState<boolean>(false)
   const handleCloseUpdateStatus = () => setShowUpdateStatus(false)
   const handleShowUpdateStatus = () => {
     setShowUpdateStatus(true)
@@ -191,11 +197,33 @@ const OrderDetail = ({ scanPageProps }: any) => {
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
       setOrderData(response.data)
+    }).catch((error: any) => {
+      
+      if(error?.response?.data?.message === 'Expired JWT Token'){
+        alert('Session expirée, reconnectez-vous.')
+        navigate('/connexion')
+      }
+      if(error?.response?.data?.message === 'Invalid JWT Token'){
+        navigate('/connexion')
+      }
+      console.log(error)
     })
   }
 
   const changeStatus = () => {
     setIsLoading(true)
+    console.log(selectedOrder)
+    if(selectedOrder?.status === 'picked_up'){
+      setIsErrorValid(true)
+      setIsLoading(false)
+    setErrorMsg(
+    'Cette commande est déja prise en charge par ' +
+      selectedOrder?.shippedBy?.firstName +
+      ", rafraichissez l'application"
+)
+    }else{
+
+    
     let data = {
       status: newStatus,
       shippedBy: 'api/users/' + dataStore.id,
@@ -216,7 +244,6 @@ const OrderDetail = ({ scanPageProps }: any) => {
       .then((response: any) => {
         console.log(response.data)
         getallOrders(dataStore.token)
-
         setIsLoading(false)
         handleShowUpdateStatus()
       })
@@ -225,96 +252,108 @@ const OrderDetail = ({ scanPageProps }: any) => {
         setIsErrorValid(true)
         setIsLoading(false)
       })
+    }
+
   }
 
   return (
     <Container fluid className='pb-5'>
-        <div className='text-center'>
-          <p className='col-12 mb-0 text-center font-75'>Détails de la commande</p>
-          <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
-            <Row>
-              <Col
-                xs={2}
-                md={5}
-                lg={5}
-                className='m-auto py-0'
-                onClick={() => setSelectedOrder('')}
-              >
-                <BackButton />
-              </Col>
-              <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
-                <span className='fw-bold font-85'>
-                  <span className='fw-bold font-85'>n° {selectedOrder?.barcode}</span>
-                </span>
-              </Col>
-              <Col xs={2} className='m-auto text-light text-start ps-1 pe-2 py-0'>
-                <BadgedIcon
-                  slot={selectedOrder?.bookingSlot}
-                  borderColor='secondary'
-                  imgSize='30px'
-                />
-              </Col>
-            </Row>
-          </Container>
-          <Table striped className='mt-3'>
-            <thead>
-              <tr>
-                <th className='col-xs-1 text-start text-secondary'>Qté</th>
-                <th className='col-xs-6 text-start text-secondary'>Libellé produit</th>
-                <th className='col-xs-1 text-end text-secondary'>Montant</th>
-              </tr>
-            </thead>
-            <tbody>
-              {myOrder?.order?.associations?.order_rows.map((prod: any, index: any) => (
-                <tr key={index}>
-                  <td className='text-center font-85'>{prod?.product_quantity}</td>
-                  <td className='text-start font-85'>{prod?.product_name}</td>
+      <div className='text-center'>
+        <p className='col-12 mb-0 text-center font-75'>Détails de la commande</p>
+        <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
+          <Row>
+            <Col
+              xs={2}
+              md={5}
+              lg={5}
+              className='m-auto py-0'
+              onClick={() => setSelectedOrder('')}
+            >
+              <BackButton />
+            </Col>
+            <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
+              <span className='fw-bold font-85'>
+                <span className='fw-bold font-85'>n° {selectedOrder?.barcode}</span>
+              </span>
+            </Col>
+            <Col xs={2} className='m-auto text-light text-start ps- me-3 py-0'>
+              <BadgedIcon
+                slot={selectedOrder?.bookingSlot}
+                borderColor='secondary'
+                imgSize='28px'
+              />
+            </Col>
+          </Row>
+        </Container>
+        <Table striped className='mt-3'>
+          <thead>
+            <tr>
+              <th className='text-center text-secondary'>Qté</th>
+              <th className='text-center text-secondary'>Libellé produit</th>
+              {!isAmount && (
+
+                <th className='text-end text-secondary'>Montant</th>
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {/* {myOrder?.order?.associations?.order_rows.map((prod: any, index: any) => ( */}
+            {selectedOrder?.products.map((prod: any, index: any) => (
+              <tr key={index}>
+                <td className='text-center font-85'>{prod?.quantity}</td>
+                <td className='text-center font-85'>{prod?.name}</td>
+                {!isAmount && (
                   <td className='text-end font-85'>
-                    {(
-                      parseFloat(prod?.product_price) * parseInt(prod?.product_quantity)
-                    ).toFixed(2)}
+                  {(
+                    parseFloat(prod?.price) * parseInt(prod?.quantity)
+                  ).toFixed(0)}
+                </td>
+                  )}
+              </tr>
+            ))}
+            {!isAmount && (
+              <>
+                <tr>
+                  <td colSpan={2} className='text-end font-85'>
+                    Total HT
+                  </td>
+                  <td className='text-end font-85'>
+                    {parseInt(myOrder.order.total_products).toFixed(0)}
                   </td>
                 </tr>
-              ))}
-              <tr>
-                <td colSpan={2} className='text-end font-85'>
-                  Total HT
-                </td>
-                <td className='text-end font-85'>
-                  {parseInt(myOrder.order.total_products).toFixed(2)}
-                </td>
-              </tr>
-              <tr>
-                <td colSpan={2} className='text-end font-85'>
-                  Montant TVA
-                </td>
-                <td className='text-end font-85'>
-                  {(
-                    parseInt(myOrder.order.total_products_wt) -
-                    parseInt(myOrder.order.total_products)
-                  ).toFixed(2)}
-                </td>
-              </tr>
-              <tr>
-                <td colSpan={2} className='text-end font-85'>
-                  Total TTC
-                </td>
-                <td className='text-end font-85'>
-                  <b>{parseInt(myOrder.order.total_products_wt).toFixed(2)}</b>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-          <Container className='text-end mt-4'>
-            <Button
-              className='bg-info rounded-pill border-info text-light ms-3'
-              type='submit'
-              onClick={handleShow}
-            >
-              Valider
-            </Button>
-          </Container>
-        </div>
+                <tr>
+                  <td colSpan={2} className='text-end font-85'>
+                    Montant TVA
+                  </td>
+                  <td className='text-end font-85'>
+                    {(
+                      parseInt(myOrder.order.total_products_wt) -
+                      parseInt(myOrder.order.total_products)
+                    ).toFixed(0)}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan={2} className='text-end font-85'>
+                    Total TTC
+                  </td>
+                  <td className='text-end font-85'>
+                    <b>{parseInt(myOrder.order.total_products_wt).toFixed(0)}</b>
+                  </td>
+                </tr>
+              </>
+            )}
+          </tbody>
+        </Table>
+        <Container className='text-end mt-4'>
+          <Button
+            className='bg-info rounded-pill border-info text-light ms-3'
+            type='submit'
+            onClick={handleShow}
+          >
+            Valider
+          </Button>
+        </Container>
+      </div>
 
       <Modal show={showUpdateStatus} onHide={handleCloseUpdateStatus}>
         <Modal.Body className='bg-dark rounded text-light'>
@@ -333,9 +372,9 @@ const OrderDetail = ({ scanPageProps }: any) => {
         {isErrorValid ? (
           <>
             <Modal.Header closeButton>
-              <Modal.Title>OUPS</Modal.Title>
+              <Modal.Title><i className="ri-error-warning-line fs-2 text-warning"></i>Attention</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Une anomalie est survenue...</Modal.Body>
+            <Modal.Body>{errorMsg ? errorMsg : 'Une anomalie est survenue... Rafraichissez la page'}</Modal.Body>
             <Modal.Footer>
               <Button
                 size='lg'

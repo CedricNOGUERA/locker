@@ -28,7 +28,7 @@ const InfoTopBar = ({ infoToBarProps }: any) => {
         }
       >
         {chosenLocker?.length === 0 ? (
-          <Link to='/in-progress' className='text-decoration-none'>
+          <Link to='/livraisons' className='text-decoration-none'>
             <BackButton />
           </Link>
         ) : (

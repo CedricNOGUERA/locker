@@ -26,7 +26,7 @@ const Map = () => {
           <Row>
            
                 <Col xs={2} md={5} lg={5}>
-                  <Link to='/in-progress' className='text-decoration-none'>
+                  <Link to='/livraisons' className='text-decoration-none'>
                     <i className='ri-arrow-left-line text-info ms-2 fs-3 bg-secondary rounded-pill'></i>{' '}
                   </Link>
                 </Col>

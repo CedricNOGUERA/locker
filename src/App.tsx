@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useNavigate } from 'react-router-dom'
 import './App.css'
 import userDataStore from './store/userDataStore'
 import 'animate.css'
@@ -14,7 +14,9 @@ function App() {
   //States
   ////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
+  const authLogout = userDataStore((state: any) => state.authLogout)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [expireToken, setExpireToken] = React.useState<boolean>(false)
 
   const token = userDataStore((state: any) => state.token)
 
@@ -23,6 +25,8 @@ function App() {
   const [selectedOrderCity, setSelectedOrderCity] = React.useState<any>('')
   const [orderData, setOrderData] = React.useState<any>([])
   const [selectedItem, setSelectedItem] = React.useState<string>('home')
+
+  const navigate = useNavigate();
 
   /////////////////////
   //UseEffect
@@ -37,12 +41,13 @@ function App() {
   React.useEffect(() => {
     setSelectedOrderCity(
       allSlot?.['hydra:member']
-        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker.city
+        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker?.city
         : ''
     )
     setSelectedStore(
       allSlot?.['hydra:member']
-        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone.locker['@id']
+        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker && 
+        allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker['@id']
         : ''
     )
   }, [allSlot])
@@ -50,6 +55,25 @@ function App() {
   /////////////////////
   //Events
   ////////////////////
+  const expiredToken = (error: any) => {
+    if(!expireToken){
+      if(error?.response?.data?.message === 'Expired JWT Token'){
+        setExpireToken(true)
+        alert('Session expirée, reconnectez-vous.')
+        console.log('allOrder_app')
+        authLogout()
+        // navigate('/connexion')
+        return
+      }
+      if(error?.response?.data?.message === 'Invalid JWT Token'){
+        setExpireToken(true)
+        alert('Token invalide, reconnectez-vous.')
+        authLogout()
+        // navigate('/connexion')
+        return
+      }
+    }
+    }
 
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token)
@@ -59,12 +83,18 @@ function App() {
       })
       .catch((error: any) => {
         setIsLoading(false)
+        expiredToken(error)
+        console.log(error)
       })
   }
 
   const getBookingAllSlot = (token: any) => {
     BookingSlotservice.allSlot(token).then((response: any) => {
       setAllSlot(response.data)
+    })
+    .catch((error: any) => {
+      setIsLoading(false)
+      console.log(error)
     })
   }
   return (
@@ -89,6 +119,7 @@ function App() {
             setAllSlot,
             selectedItem,
             setSelectedItem,
+            expireToken, setExpireToken,
           ]}
         />
       )}

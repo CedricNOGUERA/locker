@@ -1,10 +1,16 @@
 import React from 'react'
 import { Container, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import imag from '../../../src/styles/imagePlus4.png'
 import UserQrcode from '../ui/modals/UserQrcode'
+import userDataStore from '../../store/userDataStore'
+import imag from '../../styles/imagePlus4.png'
 
 const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem }: any) => {
+ //////////////////////////
+  // Store 
+  /////////////////////////
+  const dataStore = userDataStore((state: any) => state)
+ 
   //////////////////////
   //Auth deliverer modal
   //////////////////////
@@ -18,18 +24,24 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
   const retrieve = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'overtime' &&
-      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
+      order?.bookingSlot?.slot?.temperatureZone?.locker && 
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
   const progress = orderData['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'created' &&
       order?.status === 'picked_up' &&
-      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] && 
+      (order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore )
+      &&
+      order?.shippedBy &&
+      (order?.shippedBy['@id'] === `/api/users/${dataStore.id}`)
   )
   const ready_for_delivery = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'ready_for_delivery' &&
-      order?.bookingSlot.slot?.temperatureZone.locker['@id'] === selectedStore
+      order?.bookingSlot?.slot?.temperatureZone?.locker && 
+      
+      order?.bookingSlot.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
 
   /////////////////////
@@ -66,7 +78,7 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             className={`nav-link px-0 text-${
               selectedItem === 'progress' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
-            to='/in-progress'
+            to='/livraisons'
           >
             <i className='ri-truck-line fs-3 '></i>
             {progress?.length > 0 && (
@@ -75,7 +87,7 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             <p>Livraisons</p>
           </Link>
         </Nav.Item>
-        {/* <Nav.Item
+        <Nav.Item
           className='nav-item text-center '
           style={{ position: 'absolute', bottom: '45px' }}
           onClick={() => handleSelect('order')}
@@ -90,14 +102,14 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
         </Nav.Item>
         <Nav.Item className='nav-item text-center'>
           <div className='text-center '></div>
-        </Nav.Item> */}
+        </Nav.Item>
 
         <Nav.Item className='nav-item text-center' onClick={() => handleSelect('retrieve')}>
           <Link
             className={`nav-link px-0  text-${
               selectedItem === 'retrieve' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
-            to='/orders-to-retrieve'
+            to='/retraits'
           >
             <i className='ri-inbox-unarchive-line fs-3 text-center'></i>
             {retrieve?.length > 0 && (

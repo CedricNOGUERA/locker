@@ -2,6 +2,7 @@ import moment from 'moment'
 import { _getStatus, _getStatusMsg } from '../../utils/functions'
 
 const DetailHistory = ({ selectedOrder }: any) => {
+  console.log(selectedOrder)
   return (
     <div className='history-tl-container animate__animated animate__backInLeft pb-5'>
       <ul className='tl d-flex flex-column-reverse '>
@@ -22,7 +23,15 @@ const DetailHistory = ({ selectedOrder }: any) => {
               )}
               <div className='item-title'>{_getStatus(order.status)}</div>
               <div className='item-detail'> {_getStatusMsg(order.status)}</div>
-              
+              <div className='item-detail'>
+                {' '}
+                {(order.status === 'picked_up' || order.status === 'operin') && (
+                  <p>
+                    Livreur : {selectedOrder?.shippedBy?.firstName}{' '}
+                    {selectedOrder?.shippedBy?.lastName}
+                  </p>
+                )}{' '}
+              </div>
             </li>
           ))}
 
@@ -36,9 +45,7 @@ const DetailHistory = ({ selectedOrder }: any) => {
                 : moment(selectedOrder?.createdAt).format('DD/MM/YY')}
               <br />{' '}
               {selectedOrder?.history?.length > 0
-                ? moment(
-                    selectedOrder?.updatedAt
-                  ).format('HH:mm:ss')
+                ? moment(selectedOrder?.updatedAt).format('HH:mm:ss')
                 : moment(selectedOrder?.createdAt).format('HH:mm:ss')}
             </div>
             <div className='item-title-current'>{_getStatus(selectedOrder.status)}</div>
@@ -47,9 +54,12 @@ const DetailHistory = ({ selectedOrder }: any) => {
               {' '}
               {_getStatusMsg(selectedOrder.status)}
             </div>
-            {selectedOrder.status === 'picked_up' && 
-            <div className='item-detail'>Livreur : {selectedOrder?.shippedBy?.firstName} {selectedOrder?.shippedBy?.lastName}</div>
-            }
+            {(selectedOrder.status === 'picked_up' || selectedOrder.status === 'operin') && (
+              <div className='item-detail'>
+                Livreur : {selectedOrder?.shippedBy?.firstName}{' '}
+                {selectedOrder?.shippedBy?.lastName}
+              </div>
+            )}
           </li>
         )}
       </ul>

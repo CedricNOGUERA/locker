@@ -56,12 +56,11 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       >
         <Row className=' pe-0'>
           <Col xs={2} className='ff-agency m-auto pb-2 '>
-            <i className={`ri-arrow-left-s-line fs-1 align-bottom`} onClick={() => rtn()}></i>
           </Col>
           <Col xs={8} sm={8} className='ff-agency m-auto text-center pb-2 '>
-            <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>
+            {/* <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>
               <img src={imagLogo} alt='logo' width={35} />
-            </div>
+            </div> */}
             <div>{title}</div>
           </Col>
           <Col xs={2}  className='py-2 m-auto company-name align-bottom  text-end animate__animated animate__bounceIn top-menu fw-bold'>
@@ -78,12 +77,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
         className='menu-right bg-secondary border-0'
       >
         <Offcanvas.Header closeButton closeVariant='white' >
-          {/* <Offcanvas.Title>
-            {' '}
-            <b className='text-info font-85'>
-              {dataStore.company_name}
-            </b>
-          </Offcanvas.Title> */}
+       
         </Offcanvas.Header>
         <Offcanvas.Body className='text-light pe-0'>
           <Container className='mb-2'>
@@ -101,21 +95,6 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
-          {/* <Container className='mb-2'>
-            <Link
-              className='text-decoration-none text-light'
-              to='/historique'
-              onClick={handleCloseOffcanvas}
-            >
-              <Row className='menu-link'>
-                <Col xs={2}>
-                  {' '}
-                  <i className='ri-history-line fs-5'></i>
-                </Col>{' '}
-                <Col className='m-auto user-name'>Historique</Col>
-              </Row>
-            </Link>
-          </Container> */}
           <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
@@ -127,7 +106,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
                   {' '}
                   <i className='ri-check-line fs-5'></i>
                 </Col>{' '}
-                <Col className='m-auto user-name'>Créées</Col>
+                <Col className='m-auto user-name'>Test</Col>
               </Row>
             </Link>
           </Container>
@@ -172,17 +151,6 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </span>
           </Container>
-          {/* <Container className='mb-2'>
-            <span className='text-decoration-none text-light' onClick={refreshPage}>
-              <Row className='menu-link'>
-                <Col xs={2}>
-                  {' '}
-                  <i className='ri-questionnaire-line fs-5'></i>
-                </Col>{' '}
-                <Col className='m-auto user-name'>Aide</Col>
-              </Row>
-            </span>
-          </Container> */}
           <Divider className='log-out pb-5 me-3'></Divider>
           <Container className='log-out'>
             <Row
