@@ -125,8 +125,13 @@ const NewOrder = () => {
   // UseEffect
   /////////////////////////
   React.useEffect(() => {
-    getClients(dataStore.token)
-  }, [trigger2, dataStore.token])
+    if(trigger2){
+      console.log(expireToken)
+      console.log(trigger2)
+      getClients(dataStore.token)
+      console.log("client request")
+    }
+  }, [trigger2])
 
   React.useEffect(() => {
     setIsValidPhone(regex.test(choosedPhone ? choosedPhone : clientPhone))
@@ -197,14 +202,12 @@ const NewOrder = () => {
         setExpireToken(true)
         alert('Session expirée, reconnectez-vous.')
         console.log("client_neworder")
-
         navigate('/connexion')
         return
       }
       if (error?.response?.data?.message === 'Invalid JWT Token') {
         setExpireToken(true)
         alert('Token invalide, reconnectez-vous.')
-
         navigate('/connexion')
         return
       }
