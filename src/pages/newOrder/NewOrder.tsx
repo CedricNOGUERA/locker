@@ -944,7 +944,8 @@ console.log(chosenLocker)
                             chosenLocker[0]?.slot?.temperatureZone?.locker['@id']
                         )
                         ?.reduce((acc: any, current: any) => acc + current?.available, 0)}
-                      placeholder='Nombre de panier*'
+                      min={1}
+                        placeholder='Nombre de panier*'
                       value={parseFloat(qty) || ''} 
                       onChange={(e) => {
                         setQty(e.currentTarget.value)
@@ -1057,6 +1058,7 @@ console.log(chosenLocker)
                                           className='px-0 text-center'
                                           type='number'
                                           placeholder='Qté'
+                                          min={1}
                                           value={parseFloat(prod?.quantity) || ''} 
                                           // {prod?.quantity}
                                           onChange={(e) =>
@@ -1097,6 +1099,7 @@ console.log(chosenLocker)
                                         <Form.Control
                                           type='number'
                                           placeholder='prix'
+                                          min={1}
                                           value={parseFloat(prod?.price) || ''}
                                           onChange={(e) =>
                                             _handleChangeProduct(
