@@ -175,11 +175,14 @@ const Prepared: React.FC = () => {
             setIsScan(false)
           }else {
 
-            const myScan = orderData["hydra:member"]?.filter((locker: any) => locker?.barcode === code?.data)
+            const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === code?.data || order?.id === parseInt(code?.data)))
+            console.log(myScan)
             if(myScan.length === 0){
               setIsAnomalie(true)
               setanomalyMsg(_getScanMsg(myScan[0]?.status, ''))
               setSelectedOrder('')
+              console.log("object anomalie")
+
             }else if(myScan[0].status !== 'ready_for_delivery') {
               setIsAnomalie(true)
               setanomalyMsg(_getScanMsg(myScan[0]?.status, (`${myScan[0]?.shippedBy?.firstName} ${myScan[0]?.shippedBy?.lastName}` )))
@@ -204,7 +207,7 @@ const Prepared: React.FC = () => {
     }
   };
 
-
+console.log(orderData)
 
 
   //////////////////////////
