@@ -49,7 +49,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'in-progress',
+        path: 'livraisons',
         element: (
           <React.Fragment>
             <HeaderDesign title='Livraisons' />
@@ -67,7 +67,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'orders-to-retrieve',
+        path: 'retraits',
         element: (
           <React.Fragment>
             <HeaderDesign title='A récupérer' />

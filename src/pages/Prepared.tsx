@@ -207,7 +207,7 @@ const Prepared: React.FC = () => {
     }
   };
 
-console.log(orderData)
+
 
 
   //////////////////////////
@@ -243,7 +243,7 @@ console.log(orderData)
     newStatus,
   }
 
-console.log(allSlot)
+
   return (
     <>
       <Container fluid className='cde App px-0'>

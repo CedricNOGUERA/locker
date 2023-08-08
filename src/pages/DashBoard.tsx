@@ -114,7 +114,7 @@ console.log(allSlot)
               setSelectedOrderCity(slot?.slot?.temperatureZone?.locker?.city)
             }}
           >
-            <Link to='/in-progress' className=' text-decoration-none'>
+            <Link to='/livraisons' className=' text-decoration-none'>
               {' '}
               <Row className='pe-0 ps-1 w-100'>
                 <Col xs={1} className='m-auto ms-0 me-2 text-start'>
