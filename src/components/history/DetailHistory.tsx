@@ -2,6 +2,7 @@ import moment from 'moment'
 import { _getStatus, _getStatusMsg } from '../../utils/functions'
 
 const DetailHistory = ({ selectedOrder }: any) => {
+  console.log(selectedOrder)
   return (
     <div className='history-tl-container animate__animated animate__backInLeft pb-5'>
       <ul className='tl d-flex flex-column-reverse '>
@@ -53,7 +54,7 @@ const DetailHistory = ({ selectedOrder }: any) => {
               {' '}
               {_getStatusMsg(selectedOrder.status)}
             </div>
-            {selectedOrder.status === 'operin' && (
+            {(selectedOrder.status === 'picked_up' || selectedOrder.status === 'operin') && (
               <div className='item-detail'>
                 Livreur : {selectedOrder?.shippedBy?.firstName}{' '}
                 {selectedOrder?.shippedBy?.lastName}

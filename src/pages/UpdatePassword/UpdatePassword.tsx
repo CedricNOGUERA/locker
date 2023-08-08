@@ -98,7 +98,7 @@ const UpdatePassword = () => {
     //       timerProgressBar: true,
     //       didOpen: () => {
     //         setTimeout(() => {
-    //           navigate('/in-progress')
+    //           navigate('/livraisons')
     //         }, 3000)
     //       },
     //     })

@@ -78,7 +78,7 @@ const Forgot = () => {
           timerProgressBar: true,
           didOpen: () => {
             setTimeout(() => {
-              navigate('/in-progress')
+              navigate('/livraisons')
             }, 5000)
           },
         })

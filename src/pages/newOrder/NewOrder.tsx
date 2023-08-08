@@ -217,6 +217,8 @@ const NewOrder = () => {
     }
   }
 
+
+  
   const getClients = (token: any) => {
     ClientService.allClients(token)
       .then((response: any) => {
@@ -599,7 +601,6 @@ const NewOrder = () => {
       )
     )
   }
-console.log(chosenLocker)
   const handleChangeSelect = (e: any, indx: any) => {
     //conditions si "e.currentTarget.value" est vide
     if (e.currentTarget.value.trim() !== '') {
@@ -638,9 +639,11 @@ console.log(chosenLocker)
       console.error('Les données JSON sont vides.')
     }
   }
+
   const handleAddStartProduct = () => {
     const newTab = Array.from({ length: parseInt(qty) }).map((_, index) => [
       {
+        id: 1,
         name: '',
         price: '',
         quantity: '',
@@ -648,9 +651,12 @@ console.log(chosenLocker)
     ])
     setProductDetail((prevProductDetail: any) => [...prevProductDetail, ...newTab])
   }
+
   const handleAddProduct = (indx: any) => {
+    console.log(indx)
     let newTab: any[] = [...productDetail]
     newTab[indx][productDetail[indx].length] = {
+      id: Math.random(),
       name: '',
       price: '',
       quantity: '',
@@ -658,14 +664,12 @@ console.log(chosenLocker)
     setProductDetail(newTab)
   }
 
-  const handleAddCart = (qty: any) => {
-    const newTab = Array.from({ length: parseInt(qty) }).map((_, indx) => ({
-      name: '',
-      price: '',
-      quantity: '',
-    }))
-    setProductDetail((prevProductDetail: any) => [...prevProductDetail, ...newTab])
+  const handleDeleteProduct = (indx: any, id: any) => {
+    const newList = [...productDetail]
+    newList[indx] = productDetail[indx]?.filter((prod: any) => prod?.id !== id)
+    setProductDetail(newList)
   }
+
 
   const _handleChangeProduct = (
     e: any,
@@ -943,8 +947,9 @@ console.log(chosenLocker)
                             chosenLocker[0]?.slot?.temperatureZone?.locker['@id']
                         )
                         ?.reduce((acc: any, current: any) => acc + current?.available, 0)}
+                      min={1}
                       placeholder='Nombre de panier*'
-                      value={parseFloat(qty) || ''} 
+                      value={parseFloat(qty) || ''}
                       onChange={(e) => {
                         setQty(e.currentTarget.value)
                       }}
@@ -996,33 +1001,31 @@ console.log(chosenLocker)
                                 value={JSON.stringify(lockers)}
                                 className={`text-light ${
                                   lockers?.slot?.temperatureZone?.keyTemp === 'FRESH'
-                                  // ||
-                                  // lockers?.slot?.temperatureZone?.myKey === 'MT'
-                                    ? 'bg-succes'
+                                    ? // ||
+                                      // lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                      'bg-succes'
                                     : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE'
-                                    // ||
-                                    // lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                    ? 'bg-inf'
-                                    : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' 
-                                    // ||
-                                    //     lockers?.slot?.temperatureZone?.myKey === 'CA'
-                                        ) &&
+                                    ? // ||
+                                      // lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                      'bg-inf'
+                                    : lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' &&
+                                      // ||
+                                      //     lockers?.slot?.temperatureZone?.myKey === 'CA'
                                       'bg-warnin'
                                 }`}
                                 disabled={lockers.available < 1 ? true : false}
                               >
-                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' 
-                                // ||
-                                // lockers?.slot?.temperatureZone?.myKey === 'MT'
-                                  ? '🍃 Zone Fraîche'
-                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' 
-                                  // ||
-                                  //   lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                  ? '❄ Zone Congelée'
-                                  : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' 
-                                  // ||
-                                  //     lockers?.slot?.temperatureZone?.myKey === 'CA'
-                                      ) &&
+                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH'
+                                  ? // ||
+                                    // lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                    '🍃 Zone Fraîche'
+                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE'
+                                  ? // ||
+                                    //   lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                    '❄ Zone Congelée'
+                                  : lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' &&
+                                    // ||
+                                    //     lockers?.slot?.temperatureZone?.myKey === 'CA'
                                     '☀️ Zone Ambiante'}{' '}
                                 {lockers?.slot.size}- {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
@@ -1043,21 +1046,21 @@ console.log(chosenLocker)
                               <React.Fragment key={index}>
                                 <Row style={{ height: 50 }}>
                                   <React.Fragment key={index}>
-                                    <Col
+                                    {/* <Col
                                       className='font-75 mx-0 px-0'
                                       xs={1}
                                       style={{ width: 5 }}
                                     >
                                       {index + 1}
-                                    </Col>
-                                    <Col xs={2}>
+                                    </Col> */}
+                                    <Col xs={2} className='px-1'>
                                       <InputGroup className='mb-4 pe-0'>
                                         <Form.Control
                                           className='px-0 text-center'
                                           type='number'
                                           placeholder='Qté'
-                                          value={parseFloat(prod?.quantity) || ''} 
-                                          // {prod?.quantity}
+                                          min={1}
+                                          value={parseFloat(prod?.quantity) || ''}
                                           onChange={(e) =>
                                             _handleChangeProduct(
                                               e,
@@ -1091,11 +1094,12 @@ console.log(chosenLocker)
                                         />
                                       </InputGroup>
                                     </Col>
-                                    <Col xs={4}>
+                                    <Col xs={3} className='px-1'>
                                       <InputGroup className='mb-4'>
                                         <Form.Control
                                           type='number'
                                           placeholder='prix'
+                                          min={1}
                                           value={parseFloat(prod?.price) || ''}
                                           onChange={(e) =>
                                             _handleChangeProduct(
@@ -1111,6 +1115,17 @@ console.log(chosenLocker)
                                         />
                                       </InputGroup>
                                     </Col>
+                                    {
+                                      productDetail[indx] && 
+                                      productDetail[indx]?.length > 1 && 
+                                      <Col xs={1} className='px-0 ' onClick={() => {
+                                          handleDeleteProduct(indx, prod?.id)
+                                        console.log(prod)
+                                      }}>
+                                      <i className='ri-delete-bin-2-line fs-5 align-top text-secondary'></i>
+                                      {/* <i className='ri-close-circle-line align-top text-secondary'></i> */}
+                                    </Col>
+                                    }
                                   </React.Fragment>
                                 </Row>
                               </React.Fragment>
