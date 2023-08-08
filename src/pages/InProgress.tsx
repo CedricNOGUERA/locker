@@ -25,6 +25,8 @@ const InProgress: React.FC = () => {
   // Store & context state
   /////////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
+  
+  const authLogout = userDataStore((state: any) => state.authLogout)
   const dataStore = userDataStore((state: any) => state)
   const [
     selectedStore,
@@ -37,6 +39,8 @@ const InProgress: React.FC = () => {
     setAllSlot,
     selectedItem,
     setSelectedItem,
+    expireToken, setExpireToken,
+
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -51,7 +55,7 @@ const InProgress: React.FC = () => {
   const [storeName, setStoreName] = React.useState<any>([])
 
   const newStatus = 'operin'
-console.log(selectedOrder)
+
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
       order?.status === 'picked_up' &&
@@ -101,6 +105,34 @@ console.log(selectedOrder)
     )
   }, [selectedStore])
 
+  const expiredToken = (error: any) => {
+    if(!expireToken){
+      if(error?.response?.data?.message === 'Expired JWT Token'){
+        setExpireToken(true)
+        alert('Session expirée, reconnectez-vous.')
+        console.log('allOrder_app')
+        authLogout()
+        return
+      }
+      if(error?.response?.data?.message === 'Invalid JWT Token'){
+        setExpireToken(true)
+        alert('Token invalide, reconnectez-vous.')
+        authLogout()
+        return
+      }
+    }
+    }
+
+  const getallOrders = (token: any) => {
+    OrdersService.allOrders(token).then((response: any) => {
+      setOrderData(response.data)
+     
+    }).catch((error: any) => {
+      expiredToken(error)
+      console.log(error?.response?.data?.message)
+    })
+  }
+
   const getOrderByPage = (token: any, page: any) => {
     OrdersService.ordersByPage(token, page)
       .then((response: any) => {
@@ -142,6 +174,7 @@ console.log(selectedOrder)
     messageApi,
     setSelectedOrder,
     newStatus,
+    
   }
 
   return (

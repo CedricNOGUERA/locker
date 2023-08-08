@@ -14,7 +14,8 @@ const ScanPage = ({ scanPageProps }: any) => {
   ////////////////////
   //Props & store
   ///////////////////
-  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
+    
+    const { selectedOrder, setOrderData, setSelectedOrder, newStatus, } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
 
@@ -28,9 +29,11 @@ const ScanPage = ({ scanPageProps }: any) => {
     }).catch((error: any) => {
       if(error?.response?.data?.message === 'Expired JWT Token'){
         navigate('/connexion')
+        alert('Session expirée, reconnectez-vous.')
       }
       if(error?.response?.data?.message === 'Invalid JWT Token'){
         navigate('/connexion')
+        alert('Session expirée, reconnectez-vous.')
       }
       console.log(error?.response?.data?.message)
     })
@@ -73,7 +76,7 @@ const ScanPage = ({ scanPageProps }: any) => {
   return (
     <Container fluid className='pb-5'>
       <Container className='my-2 px-0'>
-        <BackBar setSelectedOrder={setSelectedOrder} selectedOrder={selectedOrder} />
+        <BackBar setSelectedOrder={setSelectedOrder} selectedOrder={selectedOrder} getallOrders={getallOrders} />
       </Container>
       <Container className='text-center text-danger py-0  m-auto opacity-75'>
         <span className='align-middle'>
