@@ -6,7 +6,8 @@ import userDataStore from '../../store/userDataStore'
 import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-const OrderDetail = ({ scanPageProps }: any) => {
+import QrCode from '../QrCode'
+const DeliveryDetail = ({ scanPageProps }: any) => {
 
   const navigate = useNavigate();
 
@@ -256,11 +257,10 @@ const OrderDetail = ({ scanPageProps }: any) => {
 
   }
 
-
   return (
     <Container fluid className='pb-5'>
       <div className='text-center'>
-        <p className='col-12 mb-0 text-center font-75'>Détail de la commande</p>
+        <p className='col-12 mb-0 text-center font-75'>Détail de la commande à livrer</p>
         <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
           <Row>
             <Col
@@ -351,7 +351,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
             type='submit'
             onClick={handleShow}
           >
-            Valider
+            Qrcode
           </Button>
         </Container>
       </div>
@@ -369,7 +369,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} centered>
         {isErrorValid ? (
           <>
             <Modal.Header closeButton>
@@ -394,10 +394,61 @@ const OrderDetail = ({ scanPageProps }: any) => {
           </>
         ) : (
           <>
-            <Modal.Header closeButton>
+            {/* <Modal.Header closeButton>
               <Modal.Title>Préparation</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Voulez-vous prendre en charge cette commande ?</Modal.Body>
+            </Modal.Header> */}
+            <Modal.Body>
+            <Container className='text-center text-danger py-0  m-auto opacity-75'>
+        <span className='align-middle'>
+          <i className='ri-error-warning-line fs-5'></i>
+        </span>{' '}
+        <small className='fw-bold align-middle '>haut du qrcode</small>{' '}
+        <div className='bounced-arrow justify-content-around'>
+          <i className='ri-arrow-up-fill '></i>
+          <i className='ri-arrow-up-fill '></i>
+          <i className='ri-arrow-up-fill '></i>
+        </div>
+      </Container>
+      <Container
+        className='bg-light p-2 border  animate__animated animate__fadeInDown'
+        onClick={() => {
+          if(selectedOrder?.status === "created"){
+
+            changeStatus()
+          }else{
+
+            getallOrders(dataStore.token)
+            setSelectedOrder(null)
+          }
+        }}
+      >
+        <div className='m-auto'>
+          {newStatus === 'receive' && selectedOrder.multiOrderCode ? (
+            <QrCode data={`${selectedOrder?.multiOrderCode}`} />
+          ) : newStatus === 'receive' && !selectedOrder.multiOrderCode ? (
+            <QrCode data={`${selectedOrder?.receiveCode}`} />
+          ) : (
+            <QrCode data={`${selectedOrder?.barcode}`} />
+          )}
+        </div>
+      </Container>
+      <Container className='text-center text-dark font-85'>
+        <small>Respectez le sens du qrcode lors du scan</small>
+      </Container>
+      <Container className='text-center mt-4 px-0'>
+        <Alert variant='secondary' className='border-2 border-secondary'>
+          Saisie manuelle :
+          <p className='text-info fw-bold m-0'>
+            {newStatus === 'receive' && selectedOrder.multiOrderCode
+              ? selectedOrder?.multiOrderCode
+              : newStatus === 'receive' && !selectedOrder.multiOrderCode
+              ? selectedOrder?.receiveCode
+              : selectedOrder?.barcode}
+          </p>
+        </Alert>
+      </Container>
+            </Modal.Body>
+            {/* <Modal.Body>Voulez-vous déposer cette commande ?</Modal.Body> */}
             <Modal.Footer>
               <Button
                 size='lg'
@@ -409,15 +460,19 @@ const OrderDetail = ({ scanPageProps }: any) => {
                   handleClose()
                 }}
               >
-                Non
+                Annuler
               </Button>
               <Button
                 size='lg'
                 type='submit'
                 className='bg-info rounded-pill border-info text-light ms-3 px-4 '
-                onClick={changeStatus}
+                onClick={() => {
+                    getallOrders(dataStore.token)
+                    setSelectedOrder(null)
+                }}
+                
               >
-                {isLoading ? <Spinner size='sm' as='span' /> : 'Oui'}
+                {isLoading ? <Spinner size='sm' as='span' /> : 'Déposer'}
               </Button>
             </Modal.Footer>
           </>
@@ -427,4 +482,4 @@ const OrderDetail = ({ scanPageProps }: any) => {
   )
 }
 
-export default OrderDetail
+export default DeliveryDetail

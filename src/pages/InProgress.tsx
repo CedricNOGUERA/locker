@@ -64,11 +64,8 @@ const InProgress: React.FC = () => {
       &&
       order?.shippedBy &&
       order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
-      // order?.shippedBy?.firstName === `${dataStore.firstname}`
   )
 
-  // console.log(orderByStatus?.shippedBy['@id'])
-  // console.log(orderByStatus[2].shippedBy["@id"])
   //////////////////////////
   // UseEffect
   /////////////////////////
