@@ -37,11 +37,18 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
   const handleCloseOffcanvas = () => setShowOffcanvas(false)
   const handleShowOffcanvas = () => setShowOffcanvas(true)
 
+  ////////////////////////
+  //origin page
+  ///////////////////////
+  const [origin, setOrigin] = React.useState(window?.history?.state.key);
+
   /////////////////////////
   //Fonction de retour en arrière
   ////////////////////////
   const rtn = () => {
-    window.history.back()
+    if(window?.history?.state?.key !== origin){
+      window.history.back()
+    }
   }
   function refreshPage() {
     window.location.reload()
@@ -55,7 +62,11 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
         className='top-nav-design sticky-top pb-2 text-info shadow opacity-75'
       >
         <Row className=' pe-0'>
-          <Col xs={2} className='ff-agency m-auto pb-2 '>
+          <Col xs={2} className='py-2 ff-agency m-auto text-center'>
+
+              <Button variant='' onClick={rtn}>
+              <i className='ri-arrow-left-s-line text-info fs-4'></i>
+            </Button>
           </Col>
           <Col xs={8} sm={8} className='ff-agency m-auto text-center pb-2 '>
             {/* <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>
@@ -63,7 +74,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
             </div> */}
             <div>{title}</div>
           </Col>
-          <Col xs={2}  className='py-2 m-auto company-name align-bottom  text-end animate__animated animate__bounceIn top-menu fw-bold'>
+          <Col xs={2}  className='py-2 m-auto  align-bottom  text-end'>
             <Button variant='' onClick={handleShowOffcanvas}>
               <i className='ri-more-2-fill text-info fs-4'></i>
             </Button>
@@ -113,6 +124,21 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
           <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
+              to='/dashboard'
+              onClick={handleCloseOffcanvas}
+            >
+              <Row className=' menu-link'>
+                <Col xs={2}>
+                  {' '}
+                  <i className='ri-line-chart-line fs-5'></i>
+                </Col>{' '}
+                <Col className='m-auto user-name'>Tableau de bord</Col>
+              </Row>
+            </Link>
+          </Container>
+          {/* <Container className='mb-2'>
+            <Link
+              className='text-decoration-none text-light'
               to='/retour'
               onClick={handleCloseOffcanvas}
             >
@@ -124,7 +150,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
                 <Col className='m-auto user-name'>Commande à retourner</Col>
               </Row>
             </Link>
-          </Container>
+          </Container> */}
           <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'

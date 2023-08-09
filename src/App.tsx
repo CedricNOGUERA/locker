@@ -26,11 +26,17 @@ function App() {
   const [orderData, setOrderData] = React.useState<any>([])
   const [selectedItem, setSelectedItem] = React.useState<string>('home')
 
+  const [origin, setOrigin] = React.useState(window?.history?.state.key);
   const navigate = useNavigate();
 
   /////////////////////
   //UseEffect
   ////////////////////
+
+  // React.useEffect(() => 
+  // , [])
+
+
   React.useEffect(() => {
     if (token && token?.length > 0) {
       getallOrders(token)
@@ -62,14 +68,12 @@ function App() {
         alert('Session expirée, reconnectez-vous.')
         console.log('allOrder_app')
         authLogout()
-        // navigate('/connexion')
         return
       }
       if(error?.response?.data?.message === 'Invalid JWT Token'){
         setExpireToken(true)
         alert('Token invalide, reconnectez-vous.')
         authLogout()
-        // navigate('/connexion')
         return
       }
     }

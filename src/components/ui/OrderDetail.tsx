@@ -298,7 +298,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
           </thead>
           <tbody>
             {/* {myOrder?.order?.associations?.order_rows.map((prod: any, index: any) => ( */}
-            {selectedOrder?.products.map((prod: any, index: any) => (
+            {selectedOrder?.products?.map((prod: any, index: any) => (
               <tr key={index}>
                 <td className='text-center font-85'>{prod?.quantity}</td>
                 <td className='text-center font-85'>{prod?.name}</td>
