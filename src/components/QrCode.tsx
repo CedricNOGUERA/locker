@@ -7,7 +7,7 @@ const QrCode = ({ data }: any) => {
       errorLevel='H'
       value={data}
       // icon={image}
-      size={230}
+      size={210}
       color='#3262a8'
       style={{
         margin: 'auto',
