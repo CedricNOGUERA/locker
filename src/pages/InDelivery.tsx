@@ -345,8 +345,12 @@ const InDelivery: React.FC = () => {
                       </Col>
                       <Col
                         xs={2}
+                        md={5}
+                        lg={5}
                         className='m-auto text-light text-start ps-1 pe-2 py-0'
-                      ></Col>
+                      >
+                        <i className='ri-question-line text-warning fs-3 bg-secondary rounded-pill'></i>
+                      </Col>
                     </Row>
                   </Container>
 
