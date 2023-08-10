@@ -347,10 +347,10 @@
 --------------------------*/
 .back-to-top {
   position: fixed;
-  bottom: 65px;
-  right: 46%;
+  bottom: 85px;
+  width: 100%;
+  text-align: center;  
   z-index: 9;
-  transition: all 0.3s;
 }
 
 

@@ -306,6 +306,7 @@ const InDelivery: React.FC = () => {
   }
 
 
+
   return (
     <>
       <Container fluid className='cde App px-0'>
@@ -401,8 +402,6 @@ const InDelivery: React.FC = () => {
             className='rounded-pill border-0 bg-warning'
             onClick={() => {
               stopScan()
-            
-              console.log('stop')
             }}
           >
             Stop
