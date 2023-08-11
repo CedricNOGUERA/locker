@@ -297,9 +297,7 @@ const InDelivery: React.FC = () => {
           <>
             {isAnomaly ? (
               <Container fluid className='pb-5'>
-                <div className='col-12 pb-0 text-center font-75'>
-                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-                </div>
+               
                 <Container className='my-2 px-0'>
                   <Container className='py-0 bg-secondary rounded-pill shadow my-auto mt-3'>
                     <Row>
