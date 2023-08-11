@@ -357,10 +357,12 @@ const Prepared: React.FC = () => {
             height: 'auto',
             position: 'fixed',
             bottom: '13%',
-            zIndex: 500,
+            zIndex: 2500,
           }}
         >
-          <video ref={videoRef} />
+          <video style={{
+            width: '100%',
+          }} ref={videoRef} />
         </div>
       )}
       <div className='fab2'>
@@ -370,7 +372,6 @@ const Prepared: React.FC = () => {
             className='rounded-pill border-0 bg-warning'
             onClick={() => {
               stopScan()
-
               console.log('stop')
             }}
           >

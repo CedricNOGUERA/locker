@@ -841,12 +841,62 @@ const NewOrder = () => {
                           ? 7
                           : 8
                       }
+                      md={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 3
+                          ? 4
+                          : allSlot?.['hydra:member']
+                              ?.filter(
+                                (lockers: any) =>
+                                  lockers?.slot?.temperatureZone?.locker?.location === locker
+                              )
+                              ?.filter(
+                                (lock: any) =>
+                                  lock?.slot?.temperatureZone?.keyTemp ===
+                                  slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                              )?.length === 2
+                          ? 6
+                          : 7
+                      }
                       className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-cente'
                     >
                       {locker}
                     </Col>
                     <Col
                       xs={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 3
+                          ? 7
+                          : allSlot?.['hydra:member']
+                              ?.filter(
+                                (lockers: any) =>
+                                  lockers?.slot?.temperatureZone?.locker?.location === locker
+                              )
+                              ?.filter(
+                                (lock: any) =>
+                                  lock?.slot?.temperatureZone?.keyTemp ===
+                                  slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                              )?.length === 2
+                          ? 5
+                          : 4
+                      }
+                      md={
                         allSlot?.['hydra:member']
                           ?.filter(
                             (lockers: any) =>
@@ -888,7 +938,6 @@ const NewOrder = () => {
                           <span className='font-65 pt-2 ms-1 '>
                             <i className='ri-arrow-right-line'></i>
                           </span>
-
                           {slotLocationTab(locker)
                             ?.filter(
                               (lock: any) => lock?.slot?.temperatureZone?.keyTemp === slots
