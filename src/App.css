@@ -1,22 +1,3 @@
-/* 
-@media (orientation: landscape) {
-  .first-block{
-    display: none; 
-  }
-  .warning-paysage{
-    display: block;
-    
-    padding-top: 20%;
-    height: 100vh;
-  }
-}
-
-@media (orientation: portrait) {
-  .warning-paysage{
-    display: none;
-  }
-} */
-
 
 .text-inf{
   color: #11ffd4 !important;
@@ -366,9 +347,8 @@
 --------------------------*/
 .back-to-top {
   position: fixed;
-  bottom: 85px;
   width: 100%;
-  text-align: center;  
+  bottom: 12%;
   z-index: 9;
 }
 
