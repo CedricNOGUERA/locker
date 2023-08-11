@@ -355,14 +355,16 @@ const Prepared: React.FC = () => {
           style={{
             width: '100%',
             height: 'auto',
-            position: 'fixed',
+            position: 'absolute',
             bottom: '13%',
-            zIndex: 2500,
+            zIndex: 2400,
           }}
         >
-          <video style={{
+          <video 
+          style={{
             width: '100%',
-          }} ref={videoRef} />
+          }} 
+          ref={videoRef} />
         </div>
       )}
       <div className='fab2'>
