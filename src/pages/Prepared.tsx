@@ -292,6 +292,9 @@ const Prepared: React.FC = () => {
           <>
             {isAnomaly ? (
               <Container fluid className='pb-5'>
+                <div className='col-12 pb-0 text-center font-75'>
+                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+                </div>
                 <Container className='my-2 px-0'>
                   <Container className='py-0 bg-secondary rounded-pill shadow my-auto mt-3'>
                     <Row>
@@ -302,7 +305,8 @@ const Prepared: React.FC = () => {
                         className='m-auto py-0'
                         onClick={() => {
                           setSelectedOrder('')
-                          setIsAnomaly(false)}}
+                          setIsAnomaly(false)
+                        }}
                       >
                         <BackButton />
                       </Col>
@@ -366,7 +370,7 @@ const Prepared: React.FC = () => {
             className='rounded-pill border-0 bg-warning'
             onClick={() => {
               stopScan()
-            
+
               console.log('stop')
             }}
           >
@@ -374,8 +378,8 @@ const Prepared: React.FC = () => {
           </Button>
         )}
       </div>
-      {(!selectedOrder) && (
-          <Button
+      {!selectedOrder && (
+        <Button
           className='fab rounded-circle bg-info border-0 shadow-3'
           onClick={() => {
             handleScan()
@@ -383,7 +387,7 @@ const Prepared: React.FC = () => {
             setIsScan(true)
           }}
           style={{ width: 55, height: 55 }}
-          >
+        >
           <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
         </Button>
       )}

@@ -63,11 +63,9 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       >
         <Row className=' pe-0'>
           <Col xs={2} className='py-2 ff-agency m-auto text-center'>
-
-              <Button variant='' onClick={rtn}>
+            {/* <Button variant='' onClick={rtn}>
               <i className='ri-home-line text-info fs-4'></i>
-              {/* <i className='ri-arrow-left-s-line text-info fs-4'></i> */}
-            </Button>
+            </Button> */}
           </Col>
           <Col xs={8} sm={8} className='ff-agency m-auto text-center pb-2 '>
             {/* <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>
@@ -75,7 +73,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
             </div> */}
             <div>{title}</div>
           </Col>
-          <Col xs={2}  className='py-2 m-auto  align-bottom  text-end'>
+          <Col xs={2} className='py-2 m-auto  align-bottom  text-end'>
             <Button variant='' onClick={handleShowOffcanvas}>
               <i className='ri-more-2-fill text-info fs-4'></i>
             </Button>
@@ -88,9 +86,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
         placement='end'
         className='menu-right bg-secondary border-0'
       >
-        <Offcanvas.Header closeButton closeVariant='white' >
-       
-        </Offcanvas.Header>
+        <Offcanvas.Header closeButton closeVariant='white'></Offcanvas.Header>
         <Offcanvas.Body className='text-light pe-0'>
           <Container className='mb-2'>
             <Row

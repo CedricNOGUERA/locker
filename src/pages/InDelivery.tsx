@@ -192,12 +192,19 @@ const InDelivery: React.FC = () => {
                       myScan?.shippedBy.firstName
                   )
                   setSelectedOrder(myScan)
-                } else {
+                } else  if (
+                  myScan.bookingSlot?.slot?.temperatureZone?.locker &&
+                  myScan.bookingSlot?.slot?.temperatureZone?.locker['@id'] !== selectedStore
+                ) {
                   setIsAnomaly(true)
                   setMsgAnomaly(
-                    'Cette commande est déjà prise en charge par ' +
-                      myScan?.shippedBy.firstName
+                    'Commande pour : ' +
+                      myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
                   )
+                  setSelectedOrder(myScan)
+                }
+                else {
+                  //OK
                   setSelectedOrder(myScan)
                 }
               } else if (myScan?.status === 'created') {
@@ -216,7 +223,10 @@ const InDelivery: React.FC = () => {
                   )
                   setSelectedOrder(myScan)
                 } else {
-                  //OK
+                  setIsAnomaly(true)
+                  setMsgAnomaly(
+                    'Cette commande est sur le quai des livraisons'
+                  )
                   setSelectedOrder(myScan)
                 }
               }
@@ -287,6 +297,9 @@ const InDelivery: React.FC = () => {
           <>
             {isAnomaly ? (
               <Container fluid className='pb-5'>
+                <div className='col-12 pb-0 text-center font-75'>
+                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+                </div>
                 <Container className='my-2 px-0'>
                   <Container className='py-0 bg-secondary rounded-pill shadow my-auto mt-3'>
                     <Row>
@@ -297,7 +310,8 @@ const InDelivery: React.FC = () => {
                         className='m-auto py-0'
                         onClick={() => {
                           setSelectedOrder('')
-                          setIsAnomaly(false)}}
+                          setIsAnomaly(false)
+                        }}
                       >
                         <BackButton />
                       </Col>
