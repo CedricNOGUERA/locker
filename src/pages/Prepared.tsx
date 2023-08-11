@@ -351,12 +351,12 @@ const Prepared: React.FC = () => {
         )}
       </Container>
       {isScan && (
-        <div
+        <div className='text-center'
           style={{
             width: '100%',
             height: 'auto',
             position: 'fixed',
-            bottom: '125px',
+            bottom: '13%',
             zIndex: 500,
           }}
         >
