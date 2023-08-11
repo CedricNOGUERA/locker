@@ -303,8 +303,8 @@ const InDelivery: React.FC = () => {
                     <Row>
                       <Col
                         xs={2}
-                        md={5}
-                        lg={5}
+                        md={2}
+                        lg={2}
                         className='m-auto py-0'
                         onClick={() => {
                           setSelectedOrder('')
@@ -314,13 +314,13 @@ const InDelivery: React.FC = () => {
                         <BackButton />
                       </Col>
                       <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
-                        <span className='fw-bold font-85'>{scanCode}</span>
+                        <span className='fw-bold font-85'>{selectedOrder ? scanCode : "Une anomalie est survenu : " + scanCode}</span>
                       </Col>
                       <Col
                         xs={2}
-                        md={5}
-                        lg={5}
-                        className='m-auto text-light text-start ps-1 pe-2 py-0'
+                        md={2}
+                        lg={2}
+                        className='m-auto text-light text-end ps-1 pe-2 py-0'
                       >
                         <i className='ri-question-line text-warning fs-3 bg-secondary rounded-pill'></i>
                       </Col>
@@ -328,7 +328,7 @@ const InDelivery: React.FC = () => {
                   </Container>
 
                   <Container className='text-center mt-3'>
-                    <p>Une anomalie est survenue...</p>
+                  <p>{selectedOrder && "Une anomalie est survenue ..."}</p>
                     <p>
                       <b>{msgAnomaly}</b>
                     </p>
