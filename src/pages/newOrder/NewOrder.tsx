@@ -979,7 +979,7 @@ const NewOrder = () => {
                   {Array.from({ length: parseInt(qty) }).map((_, indx) => (
                     <React.Fragment key={indx * 10 + 25}>
                       <Accordion.Item eventKey={`${indx}`}>
-                        <Accordion.Header>Choix n°{indx + 1}</Accordion.Header>
+                        <Accordion.Header>Panier n°{indx + 1}</Accordion.Header>
                         <Accordion.Body>
                           <Form.Select
                             onChange={(e) => {

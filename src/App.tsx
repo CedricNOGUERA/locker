@@ -102,39 +102,49 @@ function App() {
     })
   }
   return (
-    <div className=''>
-      {!isLogged && <Navigate to='/connexion' />}
-      {isLoading ? (
-        <>
-          <Container className='text-center pt-5 vh-100'>
-            <Loading vairant='warning' className='' />
-          </Container>
-        </>
-      ) : (
-        <Outlet
-          context={[
-            selectedStore,
-            setSelectedStore,
-            orderData,
-            setOrderData,
-            selectedOrderCity,
-            setSelectedOrderCity,
-            allSlot,
-            setAllSlot,
-            selectedItem,
-            setSelectedItem,
-            expireToken, setExpireToken,
-          ]}
+    <>
+      {/* <div className='warning-paysage text-center'>
+        <i className='ri-refresh-line text-dark fs-1'></i>
+        <p>Cette application ne prend pas en charge le mode paysage</p>
+      </div> */}
+
+      <div className='first-block'>
+        {!isLogged && <Navigate to='/connexion' />}
+        {isLoading ? (
+          <>
+            <Container className='text-center pt-5 vh-100'>
+              <Loading vairant='warning' className='' />
+            </Container>
+          </>
+        ) : (
+          <>
+            <Outlet
+              context={[
+                selectedStore,
+                setSelectedStore,
+                orderData,
+                setOrderData,
+                selectedOrderCity,
+                setSelectedOrderCity,
+                allSlot,
+                setAllSlot,
+                selectedItem,
+                setSelectedItem,
+                expireToken,
+                setExpireToken,
+              ]}
+            />
+          </>
+        )}
+
+        <BottomNavBar
+          orderData={orderData}
+          selectedStore={selectedStore}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
         />
-      )}
-   
-      <BottomNavBar
-        orderData={orderData}
-        selectedStore={selectedStore}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-      />
-    </div>
+      </div>
+    </>
   )
 }
 

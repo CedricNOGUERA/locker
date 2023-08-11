@@ -65,7 +65,8 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
           <Col xs={2} className='py-2 ff-agency m-auto text-center'>
 
               <Button variant='' onClick={rtn}>
-              <i className='ri-arrow-left-s-line text-info fs-4'></i>
+              <i className='ri-home-line text-info fs-4'></i>
+              {/* <i className='ri-arrow-left-s-line text-info fs-4'></i> */}
             </Button>
           </Col>
           <Col xs={8} sm={8} className='ff-agency m-auto text-center pb-2 '>
