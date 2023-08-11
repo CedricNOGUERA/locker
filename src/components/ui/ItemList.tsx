@@ -26,7 +26,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
             <BadgedIcon slot={liv?.bookingSlot} borderColor='light' imgSize='40px' />
           </span>
         </Col>
-        <Col className='text-secondary text-start align-bottom m-auto py-0 pe-0 ps-3 my-0'>
+        <Col className='text-secondary text-start align-bottom m-auto py-0 pe-0 ps-3 ps-md-4  my-0'>
           <small className='ff-agency font-75 '>{liv?.barcode}</small> 
           {trigger !== 'history' && (
           <small className='font-65'> -{' '}{formattedDate(liv?.createdAt)}</small>

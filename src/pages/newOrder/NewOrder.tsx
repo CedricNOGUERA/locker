@@ -36,7 +36,7 @@ import InfoTopBar from './InfoTopBar'
 import interrogation from '../../styles/interrogation.png'
 
 const NewOrder = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   //////////////////////////
   // booleans States
   /////////////////////////
@@ -79,7 +79,8 @@ const NewOrder = () => {
     setAllSlot,
     selectedItem,
     setSelectedItem,
-    expireToken, setExpireToken,
+    expireToken,
+    setExpireToken,
   ] = useOutletContext<any>()
 
   //////////////////////////
@@ -111,7 +112,6 @@ const NewOrder = () => {
   const [msgError, setMsgError] = React.useState<any>()
   const [codeError, setCodeError] = React.useState<any>()
 
-
   const [show, setShow] = React.useState(false)
 
   const handleClose = () => setShow(false)
@@ -126,11 +126,11 @@ const NewOrder = () => {
   // UseEffect
   /////////////////////////
   React.useEffect(() => {
-    if(trigger2){
+    if (trigger2) {
       console.log(expireToken)
       console.log(trigger2)
       getClients(dataStore.token)
-      console.log("client request")
+      console.log('client request')
     }
   }, [trigger2])
 
@@ -198,11 +198,11 @@ const NewOrder = () => {
   /////////////////////////
 
   const expiredToken = (error: any) => {
-    if(!expireToken){
+    if (!expireToken) {
       if (error?.response?.data?.message === 'Expired JWT Token') {
         setExpireToken(true)
         alert('Session expirée, reconnectez-vous.')
-        console.log("client_neworder")
+        console.log('client_neworder')
         authLogout()
         // navigate('/connexion')
         return
@@ -217,8 +217,6 @@ const NewOrder = () => {
     }
   }
 
-
-  
   const getClients = (token: any) => {
     ClientService.allClients(token)
       .then((response: any) => {
@@ -231,7 +229,6 @@ const NewOrder = () => {
         expiredToken(error)
         console.log(error)
       })
-    
   }
 
   const getBookingAllSlot = (token: any) => {
@@ -653,7 +650,6 @@ const NewOrder = () => {
   }
 
   const handleAddProduct = (indx: any) => {
-    console.log(indx)
     let newTab: any[] = [...productDetail]
     newTab[indx][productDetail[indx].length] = {
       id: Math.random(),
@@ -670,7 +666,6 @@ const NewOrder = () => {
     setProductDetail(newList)
   }
 
-
   const _handleChangeProduct = (
     e: any,
     indx: number,
@@ -685,7 +680,7 @@ const NewOrder = () => {
 
     if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
       newProductDetail2[indx][index][key] =
-        (key === 'quantity' || key === 'price') ? parseInt(value) : value
+        key === 'quantity' || key === 'price' ? parseInt(value) : value
       setProductDetail(newProductDetail2)
     }
   }
@@ -740,7 +735,7 @@ const NewOrder = () => {
     )
     return filteredData
   }
-  
+
   const uniqueTempTab = (locker: any) => {
     const newTab = [
       ...new Set(
@@ -749,13 +744,13 @@ const NewOrder = () => {
     ]
     return newTab
   }
-  
+
   const lockerAvailability = allSlot?.['hydra:member']
     ?.filter(
       (lockers: any) =>
-      lockers?.slot?.temperatureZone?.locker &&
+        lockers?.slot?.temperatureZone?.locker &&
         lockers?.slot?.temperatureZone?.locker['@id'] ===
-        chosenLocker[0]?.slot?.temperatureZone?.locker['@id']
+          chosenLocker[0]?.slot?.temperatureZone?.locker['@id']
     )
     ?.reduce((acc: any, current: any) => acc + current.available, 0)
 
@@ -984,7 +979,7 @@ const NewOrder = () => {
                   {Array.from({ length: parseInt(qty) }).map((_, indx) => (
                     <React.Fragment key={indx * 10 + 25}>
                       <Accordion.Item eventKey={`${indx}`}>
-                        <Accordion.Header>Choix n°{indx + 1}</Accordion.Header>
+                        <Accordion.Header>Panier n°{indx + 1}</Accordion.Header>
                         <Accordion.Body>
                           <Form.Select
                             onChange={(e) => {
@@ -997,6 +992,7 @@ const NewOrder = () => {
                             <option value=''>Température du Panier n°{indx + 1}</option>
                             {chosenLocker?.map((lockers: any, index: any) => (
                               <option
+                                onChange={() => console.log('index')}
                                 key={index}
                                 value={JSON.stringify(lockers)}
                                 className={`text-light ${
@@ -1027,17 +1023,17 @@ const NewOrder = () => {
                                     // ||
                                     //     lockers?.slot?.temperatureZone?.myKey === 'CA'
                                     '☀️ Zone Ambiante'}{' '}
-                                {lockers?.slot.size}- {lockers?.available}{' '}
+                                ({lockers?.slot.size}) - {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
                               </option>
                             ))}
                           </Form.Select>
                           <Row>
-                            <Col xs={3} className='font-75 my-0 py-0'>
+                            <Col xs={2} className='font-75 my-0 py-0'>
                               Qté
                             </Col>
                             <Col className='font-75 my-0 py-0'>Produit</Col>
-                            <Col xs={4} className='font-75 my-0 py-0'>
+                            <Col xs={3} className='font-75 my-0 py-0'>
                               Prix
                             </Col>
                           </Row>
@@ -1046,13 +1042,13 @@ const NewOrder = () => {
                               <React.Fragment key={index}>
                                 <Row style={{ height: 50 }}>
                                   <React.Fragment key={index}>
-                                    {/* <Col
+                                    <Col
                                       className='font-75 mx-0 px-0'
                                       xs={1}
                                       style={{ width: 5 }}
                                     >
                                       {index + 1}
-                                    </Col> */}
+                                    </Col>
                                     <Col xs={2} className='px-1'>
                                       <InputGroup className='mb-4 pe-0'>
                                         <Form.Control
@@ -1115,17 +1111,20 @@ const NewOrder = () => {
                                         />
                                       </InputGroup>
                                     </Col>
-                                    {
-                                      productDetail[indx] && 
-                                      productDetail[indx]?.length > 1 && 
-                                      <Col xs={1} className='px-0 ' onClick={() => {
-                                          handleDeleteProduct(indx, prod?.id)
-                                        console.log(prod)
-                                      }}>
-                                      <i className='ri-delete-bin-2-line fs-5 align-top text-secondary'></i>
-                                      {/* <i className='ri-close-circle-line align-top text-secondary'></i> */}
-                                    </Col>
-                                    }
+                                    {productDetail[indx] &&
+                                      productDetail[indx]?.length > 1 && (
+                                        <Col
+                                          xs={1}
+                                          className='px-0 '
+                                          onClick={() => {
+                                            handleDeleteProduct(indx, prod?.id)
+                                            console.log(prod)
+                                          }}
+                                        >
+                                          <i className='ri-delete-bin-2-line fs-5 align-top text-secondary'></i>
+                                          {/* <i className='ri-close-circle-line align-top text-secondary'></i> */}
+                                        </Col>
+                                      )}
                                   </React.Fragment>
                                 </Row>
                               </React.Fragment>
@@ -1138,7 +1137,7 @@ const NewOrder = () => {
                             variant='warning'
                             className='rounded-pill text-light'
                           >
-                            <i className='ri-add-fill me-1 align-bottom'></i>
+                            <i className='ri-add-fill fs-4 align-bottom'></i>
                           </Button>
                         </Accordion.Body>
                       </Accordion.Item>

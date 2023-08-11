@@ -64,6 +64,8 @@ const Prepared: React.FC = () => {
   const [scanCode, SetScanCode] = React.useState<string>('')
 
   const [isAnomalie, setIsAnomalie] = React.useState<boolean>(false)
+  const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
+  const [msgAnomaly, setMsgAnomaly] = React.useState<any>("")
   const [anomalyMsg, setanomalyMsg] = React.useState<any>("")
   const [anomalyMsgSecondary, setAnomalyMsgSecondary] = React.useState<any>("")
 
@@ -129,7 +131,7 @@ const Prepared: React.FC = () => {
   }, [selectedStore])
 
   const handleScan = () => {
-    setIsAnomalie(false)
+    setIsAnomaly(false)
     if (videoRef.current) {
       navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
       .then((stream) => {
@@ -174,33 +176,57 @@ const Prepared: React.FC = () => {
             setIsAnomalie(false)
             setIsScan(false)
           }else {
-
-            const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === code?.data || order?.id === parseInt(code?.data)))
+            const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === code?.data || order?.id === parseInt(code?.data)))[0]
             console.log(myScan)
-            if(myScan.length === 0){
-              setIsAnomalie(true)
-              setanomalyMsg(_getScanMsg(myScan[0]?.status, ''))
-              setSelectedOrder('')
-              console.log("object anomalie")
-
-            }else if(myScan[0].status !== 'ready_for_delivery') {
-              setIsAnomalie(true)
-              setanomalyMsg(_getScanMsg(myScan[0]?.status, (`${myScan[0]?.shippedBy?.firstName} ${myScan[0]?.shippedBy?.lastName}` )))
-              setSelectedOrder('')
-            }else if(myScan[0].bookingSlot?.slot?.temperatureZone?.locker['@id'] !== selectedStore) {
-              setIsAnomalie(true)
-              setanomalyMsg(`Attention, cette commande est pour un autre point de vente!!!  `)
-              setAnomalyMsgSecondary(`${ myScan[0].bookingSlot?.slot?.temperatureZone?.locker?.location}`)
-              setSelectedOrder('')
-            }
-            else{
-              setIsAnomalie(false)
-              setSelectedOrder(
-                myScan[0]
-                )
+            if (myScan) {
+              if (myScan?.status === 'picked_up') {
+                if (!myScan.shippedBy) {
+                  setIsAnomaly(true)
+                  setMsgAnomaly(
+                    'Cette commande n\'est assignée à aucun livreur mais son statuts est "En livraison".'
+                  )
+                  setSelectedOrder(myScan)
+                } else if (myScan.shippedBy.firstName === dataStore?.firstname) {
+                  setIsAnomaly(true)
+                  setMsgAnomaly(
+                    'Vous avez déjà prise en charge cette commande, vérifier la liste des commandes à livrer.'
+                  )
+                  setSelectedOrder(myScan)
+                } else {
+                  setIsAnomaly(true)
+                  setMsgAnomaly(
+                    'Cette commande est déjà prise en charge par ' +
+                      myScan?.shippedBy.firstName
+                  )
+                  setSelectedOrder(myScan)
+                }
+              } else if (myScan?.status === 'created') {
+                setIsAnomaly(true)
+                setMsgAnomaly('Cette commande est en cours de préparation')
+                setSelectedOrder(myScan)
+              } else if (myScan?.status === 'ready_for_delivery') {
+                if (
+                  myScan.bookingSlot?.slot?.temperatureZone?.locker &&
+                  myScan.bookingSlot?.slot?.temperatureZone?.locker['@id'] !== selectedStore
+                ) {
+                  setIsAnomaly(true)
+                  setMsgAnomaly(
+                    'Commande pour : ' +
+                      myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+                  )
+                  setSelectedOrder(myScan)
+                } else {
+                  //OK
+                  setSelectedOrder(myScan)
+                }
               }
+            } else {
+              //no exist
+              setMsgAnomaly("Cette commande n'existe pas.")
+              setIsAnomaly(true)
             }
-            stopScan();
+          }
+           stopScan();
         }
       }
       requestAnimationFrame(scanQRCode);
@@ -264,8 +290,11 @@ const Prepared: React.FC = () => {
           </Container>
         ) : (
           <>
-            {isAnomalie ? (
+            {isAnomaly ? (
               <Container fluid className='pb-5'>
+                <div className='col-12 pb-0 text-center font-75'>
+                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+                </div>
                 <Container className='my-2 px-0'>
                   <Container className='py-0 bg-secondary rounded-pill shadow my-auto mt-3'>
                     <Row>
@@ -274,7 +303,10 @@ const Prepared: React.FC = () => {
                         md={5}
                         lg={5}
                         className='m-auto py-0'
-                        onClick={() => setIsAnomalie(false)}
+                        onClick={() => {
+                          setSelectedOrder('')
+                          setIsAnomaly(false)
+                        }}
                       >
                         <BackButton />
                       </Col>
@@ -283,17 +315,20 @@ const Prepared: React.FC = () => {
                       </Col>
                       <Col
                         xs={2}
+                        md={5}
+                        lg={5}
                         className='m-auto text-light text-start ps-1 pe-2 py-0'
-                      ></Col>
+                      >
+                        <i className='ri-question-line text-warning fs-3 bg-secondary rounded-pill'></i>
+                      </Col>
                     </Row>
                   </Container>
 
                   <Container className='text-center mt-3'>
                     <p>Une anomalie est survenue...</p>
                     <p>
-                      <b>{anomalyMsg}</b>
+                      <b>{msgAnomaly}</b>
                     </p>
-                    <p>{anomalyMsgSecondary}</p>
                     <img src={noOrder} alt='no-order' style={{ height: '256px' }} />
                     <p className='mt-3'>
                       Réessayez le scan ou recherchez d'où vient l'anomalie
@@ -335,7 +370,7 @@ const Prepared: React.FC = () => {
             className='rounded-pill border-0 bg-warning'
             onClick={() => {
               stopScan()
-            
+
               console.log('stop')
             }}
           >
@@ -343,16 +378,16 @@ const Prepared: React.FC = () => {
           </Button>
         )}
       </div>
-      {(!selectedOrder) && (
-          <Button
-          className='fab rounded-circle bg-info border-0'
+      {!selectedOrder && (
+        <Button
+          className='fab rounded-circle bg-info border-0 shadow-3'
           onClick={() => {
             handleScan()
             setIsScanning(true)
             setIsScan(true)
           }}
           style={{ width: 55, height: 55 }}
-          >
+        >
           <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
         </Button>
       )}
