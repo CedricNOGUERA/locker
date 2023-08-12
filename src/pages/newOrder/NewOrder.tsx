@@ -1012,6 +1012,7 @@ const NewOrder = () => {
                   )}
                   <div className='text-end'>
                     <Button
+                    title='Valider la quantité'
                       className='bg-info rounded-pill border-info text-light'
                       type='submit'
                     >
@@ -1180,6 +1181,7 @@ const NewOrder = () => {
                             ))}
 
                           <Button
+                            aria-label="Aria Ajouter" title='Ajouter un produit'
                             onClick={() => {
                               handleAddProduct(indx)
                             }}
@@ -1196,6 +1198,7 @@ const NewOrder = () => {
 
                 <div className='w-100 text-end mt-3'>
                   <Button
+                            aria-label="Aria Valider prod" title='Valider produit'
                     type='submit'
                     className={`bg-info rounded-pill border-info text-light 
                     `}
@@ -1454,6 +1457,7 @@ const NewOrder = () => {
                 </span>
                 <div className='w-100 text-end'>
                   <Button
+                  aria-label="Aria commande" title='Valider commande'
                     type='submit'
                     className={`bg-info rounded-pill border-info text-light 
                     `}
@@ -1474,10 +1478,10 @@ const NewOrder = () => {
           </div>
           <p>Voulez-vous valider cette commande ?</p>
           <div className='mt-3 text-end'>
-            <Button variant='warning' onClick={cancelNewOrder} className='me-3'>
+            <Button aria-label="Aria annuler" title='Annuler commande' variant='warning' onClick={cancelNewOrder} className='me-3'>
               Annuler
             </Button>
-            <Button variant='info' onClick={createNewOrder}>
+            <Button aria-label="Aria valider" title='Valider la commande' variant='info' onClick={createNewOrder}>
               Valider
             </Button>
           </div>

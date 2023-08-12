@@ -3,13 +3,12 @@ import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import { _getScanMsg, _searchWithRegex } from '../utils/functions'
+import { _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
-import OrdersService from '../service/Orders/OrdersService'
 import OrderList from '../components/ui/OrderList';
 import OrderDetail from '../components/ui/OrderDetail';
 import jsQR from 'jsqr';
@@ -20,8 +19,7 @@ import BackButton from '../components/ui/BackButton';
 
 
 const Prepared: React.FC = () => {
-  
-
+   
   //////////////////////////
   // booleans States
   /////////////////////////
@@ -370,6 +368,8 @@ const Prepared: React.FC = () => {
       <div className='fab2'>
         {isScan && (
           <Button
+          aria-label="Aria Stop"
+          title='stop'
             size='sm'
             className='rounded-pill border-0 bg-warning'
             onClick={() => {
@@ -383,6 +383,8 @@ const Prepared: React.FC = () => {
       </div>
       {!selectedOrder && (
         <Button
+        aria-label="Aria Scan"
+        title='scan'
           className='fab rounded-circle bg-info border-0 shadow-3'
           onClick={() => {
             handleScan()

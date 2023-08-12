@@ -8,13 +8,13 @@ import newOrderDataStore from '../../store/newOrderDataStore'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
 import UserQrcode from '../ui/modals/UserQrcode'
-import imagLogo from '../../../src/styles/carrefour-logo.png'
 
 interface headerProps {
   title: string
 }
 
 const HeaderDesign: React.FC<headerProps> = ({ title }) => {
+ 
   //////////////////////////
   // Store states
   /////////////////////////
@@ -41,7 +41,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
   //origin page
   ///////////////////////
   const [origin, setOrigin] = React.useState(window?.history?.state.key);
-
+  
   /////////////////////////
   //Fonction de retour en arrière
   ////////////////////////
@@ -63,18 +63,12 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       >
         <Row className=' pe-0'>
           <Col xs={2} className='py-2 ff-agency m-auto text-center'>
-            {/* <Button variant='' onClick={rtn}>
-              <i className='ri-home-line text-info fs-4'></i>
-            </Button> */}
           </Col>
           <Col xs={8} sm={8} className='ff-agency m-auto text-center pb-2 '>
-            {/* <div className='font-75 text-light bg-light rounded-pill w-25 m-auto'>
-              <img src={imagLogo} alt='logo' width={35} />
-            </div> */}
             <div>{title}</div>
           </Col>
           <Col xs={2} className='py-2 m-auto  align-bottom  text-end'>
-            <Button variant='' onClick={handleShowOffcanvas}>
+            <Button aria-label="Aria Menu" title='Menu' variant='' onClick={handleShowOffcanvas}>
               <i className='ri-more-2-fill text-info fs-4'></i>
             </Button>
           </Col>

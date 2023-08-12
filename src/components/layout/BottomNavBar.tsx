@@ -50,7 +50,6 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
   const handleSelect = (item: any) => {
     setSelectedItem(item)
   }
-console.log(selectedItem)
   
   return (
     <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
@@ -91,8 +90,8 @@ console.log(selectedItem)
           className='nav-item text-center '
           style={{ position: 'absolute', bottom: '45px' }}
           onClick={() => handleSelect('order')}
+          title="Nouvelle commande"
         >
-          <div className='text-center '></div>
           <Link
             to='/nouvelle-commande'
             className='text-info py-1 pb-5 mb-5 text-decoration-none'
