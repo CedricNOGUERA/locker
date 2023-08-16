@@ -357,30 +357,27 @@ const InDelivery: React.FC = () => {
           />
         </div>
       )}
-      <div className='fab2'>
-        {isScan && (
-          <Button
-            size='sm'
-            className='rounded-pill border-0 bg-warning'
-            onClick={() => {
-              stopScan()
-            }}
-          >
-            Stop
-          </Button>
-        )}
-      </div>
       {!selectedOrder && (
         <Button
-          className='fab rounded-circle bg-info border-0'
+          aria-label='Aria Scan'
+          title='scan'
+          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-info'} border-0`}
           onClick={() => {
-            handleScan()
-            setIsScanning(true)
-            setIsScan(true)
+            if (isScan) {
+              stopScan()
+            } else {
+              handleScan()
+              setIsScanning(true)
+              setIsScan(true)
+            }
           }}
           style={{ width: 55, height: 55 }}
         >
-          <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
+          <i
+            className={`ri-${
+              isScan ? 'close-line' : 'qr-scan-2-line'
+            } text-light align-bottom fs-2`}
+          ></i>
         </Button>
       )}
     </>
