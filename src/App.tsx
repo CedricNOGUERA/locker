@@ -26,11 +26,17 @@ function App() {
   const [orderData, setOrderData] = React.useState<any>([])
   const [selectedItem, setSelectedItem] = React.useState<string>('home')
 
+  const [origin, setOrigin] = React.useState(window?.history?.state.key);
   const navigate = useNavigate();
 
   /////////////////////
   //UseEffect
   ////////////////////
+
+  // React.useEffect(() => 
+  // , [])
+
+
   React.useEffect(() => {
     if (token && token?.length > 0) {
       getallOrders(token)
@@ -62,14 +68,12 @@ function App() {
         alert('Session expirée, reconnectez-vous.')
         console.log('allOrder_app')
         authLogout()
-        // navigate('/connexion')
         return
       }
       if(error?.response?.data?.message === 'Invalid JWT Token'){
         setExpireToken(true)
         alert('Token invalide, reconnectez-vous.')
         authLogout()
-        // navigate('/connexion')
         return
       }
     }
@@ -98,39 +102,49 @@ function App() {
     })
   }
   return (
-    <div className=''>
-      {!isLogged && <Navigate to='/connexion' />}
-      {isLoading ? (
-        <>
-          <Container className='text-center pt-5 vh-100'>
-            <Loading vairant='warning' className='' />
-          </Container>
-        </>
-      ) : (
-        <Outlet
-          context={[
-            selectedStore,
-            setSelectedStore,
-            orderData,
-            setOrderData,
-            selectedOrderCity,
-            setSelectedOrderCity,
-            allSlot,
-            setAllSlot,
-            selectedItem,
-            setSelectedItem,
-            expireToken, setExpireToken,
-          ]}
+    <>
+      {/* <div className='warning-paysage text-center'>
+        <i className='ri-refresh-line text-dark fs-1'></i>
+        <p>Cette application ne prend pas en charge le mode paysage</p>
+      </div> */}
+
+      <div className='first-block'>
+        {!isLogged && <Navigate to='/connexion' />}
+        {isLoading ? (
+          <>
+            <Container className='text-center pt-5 vh-100'>
+              <Loading vairant='warning' className='' />
+            </Container>
+          </>
+        ) : (
+          <>
+            <Outlet
+              context={[
+                selectedStore,
+                setSelectedStore,
+                orderData,
+                setOrderData,
+                selectedOrderCity,
+                setSelectedOrderCity,
+                allSlot,
+                setAllSlot,
+                selectedItem,
+                setSelectedItem,
+                expireToken,
+                setExpireToken,
+              ]}
+            />
+          </>
+        )}
+
+        <BottomNavBar
+          orderData={orderData}
+          selectedStore={selectedStore}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
         />
-      )}
-   
-      <BottomNavBar
-        orderData={orderData}
-        selectedStore={selectedStore}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-      />
-    </div>
+      </div>
+    </>
   )
 }
 

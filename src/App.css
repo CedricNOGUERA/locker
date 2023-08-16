@@ -1,22 +1,24 @@
-
-.text-inf{
+.text-inf {
   color: #11ffd4 !important;
 }
-.bg-secondary{
+
+.bg-secondary {
   background-color: #0a5a64 !important;
 }
 
-.bg-succes{
+.bg-succes {
   background-color: #1a800c !important;
 }
-.bg-inf{
+
+.bg-inf {
   background-color: #119797 !important;
 }
-.bg-warnin{
+
+.bg-warnin {
   background-color: #cfa417 !important;
 }
 
-.dropButt{
+.dropButt {
   width: 100%;
 }
 
@@ -30,7 +32,7 @@
   margin: auto;
   width: 160px;
   height: 160px;
-  background-image: url('../src/styles/logo512.png') ;
+  background-image: url('../src/styles/logo512.png');
   background-repeat: no-repeat;
   background-size: 160px;
 }
@@ -41,8 +43,7 @@
 }
 
 .top-nav-design,
-.bottom-navbar
- {
+.bottom-navbar {
   background-color: #2e3338;
   width: 100% !important;
 }
@@ -67,7 +68,7 @@
 .auth-cont {
   height: 100vh;
   overflow-y: hidden;
-  
+
 }
 
 .auth-form {
@@ -76,7 +77,8 @@
   margin-bottom: 10%;
 
 }
-.card-body{
+
+.card-body {
   overflow-y: hidden !important;
 }
 
@@ -97,7 +99,7 @@
 
   .auth-cont {
     width: 60% !important;
-    
+
   }
 
   .teko {
@@ -236,6 +238,7 @@
 
 .menu-right {
   width: 75% !important;
+  z-index: 2520;
 }
 
 @media (min-width: 768px) {
@@ -347,10 +350,9 @@
 --------------------------*/
 .back-to-top {
   position: fixed;
-  bottom: 65px;
-  right: 46%;
+  width: 100%;
+  bottom: 12%;
   z-index: 9;
-  transition: all 0.3s;
 }
 
 
@@ -522,25 +524,25 @@ ul.tl li .timestamp-current {
   }
 }
 
-.badges{
+.badges {
   margin-left: -55%;
 }
 
-.badges2{
+.badges2 {
   margin-left: -65%;
 }
 
-.fusion{
+.fusion {
   margin-left: -199%;
 }
 
-.badge-hoster{
+.badge-hoster {
   position: relative;
   width: auto;
 }
 
 
-.my-badge{
+.my-badge {
   position: absolute;
   left: 25px;
   top: -5px;
@@ -548,34 +550,45 @@ ul.tl li .timestamp-current {
 
 }
 
-.size-indicator{
+.size-indicator {
   position: absolute;
   margin-left: 25px;
   margin-top: -20px;
   background-color: #ffcc00;
   border: 3px solid;
   border-radius: 20px;
-padding: 0 5px 0 5px;
+  padding: 0 5px 0 5px;
 }
 
-.install{
+.install {
   display: none;
 }
 
-.tempzone{
+.tempzone {
   width: 100%;
 }
 
-
-.fab{
+.video {
+  /* width: 100%; */
+  /* height: 620px; */
   position: fixed;
-  bottom: 80px;
-  right: 20px;
-  z-index: 500; 
+  bottom: 10%;
+  z-index: 400;
 }
-.fab2{
+
+
+.fab {
   position: fixed;
-  bottom: 150px;
+  bottom: 13%;
+  /* bottom: 80px; */
+  right: 20px;
+  z-index: 500;
+  box-shadow: 2px 5px 5px rgb(160, 160, 160);
+}
+
+.fab2 {
+  position: fixed;
+  bottom: 23%;
   right: 25px;
-  z-index: 500; 
+  z-index: 501;
 }

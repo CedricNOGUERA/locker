@@ -5,8 +5,6 @@ import { useOutletContext, Link, Navigate } from 'react-router-dom'
 import DashBoardLoader from '../components/ui/loading/DashBoardLoader'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 import images from '../styles/no-order-min.png'
-import LockerService from '../service/Lockers/LockerService'
-import OrdersService from '../service/Orders/OrdersService'
 import BadgedIcon from '../components/ui/BadgedIcon'
 import NoData from '../components/ui/warning/NoData'
 
@@ -124,21 +122,27 @@ console.log(allSlot)
                   <span className='dash-location font-7'>
                     {slot?.slot?.temperatureZone?.locker?.location}{' '}
                   </span>{' '}
-                  {/* -{' '}
-                  <span className='dash-city text-info font-65'>
-                    {slot?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                                slot?.slot?.temperatureZone?.myKey === 'MT'
-                                  ? 'Zone Fraîche'
-                                  : slot?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                    slot?.slot?.temperatureZone?.myKey === 'LT'
-                                  ? 'Zone Congelée'
-                                  : (slot?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                      slot?.slot?.temperatureZone?.myKey === 'CA') &&
-                                    'Zone Ambiante'}{' '}
-                  </span> */}
                 </Col>
                 <Col xs={3} className=' text-start ps-0 pe-0'>
                   <Row>
+                    <Col xs={12} className='mb-1 py-0 text-light px-0'>
+                      <i className='ri-checkbox-line text-info me-1 align-bottom'></i>
+                      <span className='dash-city font-65'>
+                        {' '}
+                        Préparation :{' '}
+                        {
+                          orderData['hydra:member']?.filter(
+                            (order: any) =>
+                              order?.status === 'ready_for_delivery' &&
+                              order?.bookingSlot.slot?.temperatureZone.locker.location ===
+                                slot?.slot?.temperatureZone.locker.location &&
+                              order?.bookingSlot.slot?.temperatureZone.keyTemp ===
+                                slot?.slot?.temperatureZone?.keyTemp &&
+                              order?.bookingSlot.slot?.size === slot?.slot?.size
+                          )?.length
+                        }
+                      </span>
+                    </Col>
                     <Col xs={12} className='mb-1 py-0 text-light px-0'>
                       <i className='ri-truck-line text-info me-1 align-bottom'></i>
                       <span className='dash-city font-65'>
@@ -147,7 +151,7 @@ console.log(allSlot)
                         {
                           orderData['hydra:member']?.filter(
                             (order: any) =>
-                              order?.status === 'created' &&
+                              order?.status === 'picked_up' &&
                               order?.bookingSlot.slot?.temperatureZone.locker.location ===
                                 slot?.slot?.temperatureZone.locker.location &&
                               order?.bookingSlot.slot?.temperatureZone.keyTemp ===

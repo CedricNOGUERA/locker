@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef } from 'react'
 import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
@@ -9,17 +9,13 @@ import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
-import OrderList from '../components/ui/OrderList';
-import OrderDetail from '../components/ui/OrderDetail';
-import jsQR from 'jsqr';
+import OrderList from '../components/ui/OrderList'
+import jsQR from 'jsqr'
 import noOrder from '../styles/astro.png'
-import BackButton from '../components/ui/BackButton';
+import BackButton from '../components/ui/BackButton'
+import DeliveryDetail from '../components/ui/DeliveryDetail'
 
-
-
-
-const Prepared: React.FC = () => {
-   
+const InDelivery: React.FC = () => {
   //////////////////////////
   // booleans States
   /////////////////////////
@@ -58,45 +54,43 @@ const Prepared: React.FC = () => {
 
   const [isScan, setIsScan] = React.useState<boolean>(false)
   const [isScanning, setIsScanning] = React.useState<boolean>(false)
-  let videoRef = useRef<any>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const [scanCode, SetScanCode] = React.useState<string>('')
 
-  const [isAnomalie, setIsAnomalie] = React.useState<boolean>(false)
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
-  const [msgAnomaly, setMsgAnomaly] = React.useState<any>("")
+  const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
 
-  let videoStream: MediaStream | null = null;
+  let videoStream: MediaStream | null = null
 
-  const trigger ="preparations"
-  const newStatus = 'picked_up'
+  const newStatus = 'operin'
 
   const orderByStatus = orderData['hydra:member']?.filter(
     (order: any) =>
-      order?.status === 'ready_for_delivery' &&
+      order?.status === 'picked_up' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
+      order?.shippedBy &&
+      order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
-
 
   //////////////////////////
   // UseEffect
   /////////////////////////
-  // React.useEffect(() => {
-  //   if (isScan) {
-  //     // const scanInterval = setInterval(() => {
-  //     //   scanQRCode();
-  //     // }, 1500);
-      
-  //     return () => {
-  //       // clearInterval(scanInterval);
-  //     };
-  //   }
-  // }, [isScan]);
+  React.useEffect(() => {
+    if (isScan) {
+      const scanInterval = setInterval(() => {
+        scanQRCode()
+      }, 1500)
 
+      return () => {
+        clearInterval(scanInterval)
+      }
+    }
+  }, [isScan])
 
   React.useEffect(() => {
     setIsLoading(true)
-    setSelectedItem('preparations')
+    setSelectedItem('progress')
   }, [])
 
   React.useEffect(() => {
@@ -117,68 +111,64 @@ const Prepared: React.FC = () => {
 
   React.useEffect(() => {
     setStoreName(
-      allSlot?.['hydra:member']
-        && allSlot?.['hydra:member']?.filter((locker: any)=> 
-        
-        locker?.slot?.temperatureZone?.locker['@id'] === selectedStore
+      allSlot?.['hydra:member'] &&
+        allSlot?.['hydra:member']?.filter(
+          (locker: any) => locker?.slot?.temperatureZone?.locker['@id'] === selectedStore
         )
-        
     )
   }, [selectedStore])
 
-  const handleScan = async () => {
+  const handleScan = () => {
     setIsAnomaly(false)
     if (navigator?.mediaDevices) {
-        console.log(navigator?.mediaDevices)
-        setIsScan(true);
-        
-        console.log(videoStream)
-      try {
-        const stream = await navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } });
-        videoStream = stream;
-        videoRef.current!.srcObject = stream;
-        console.log(videoRef.current!.srcObject)
-        await videoRef.current!.play(); // Attendre la lecture vidéo
-        requestAnimationFrame(scanQRCode);
-        setIsScan(true);
-        console.log("success");
-      } catch (error) {
-        console.error('Error accessing camera:', error);
-      }
-      }
-  };
-  console.log(isScan)
+      navigator?.mediaDevices
+        ?.getUserMedia({ video: { facingMode: 'environment' } })
+        .then((stream) => {
+          videoStream = stream
+          videoRef.current!.srcObject = stream
+          videoRef.current!.play()
+          requestAnimationFrame(scanQRCode)
+          setIsScan(true)
+        })
+        .catch((error) => console.error('Error accessing camera:', error))
+    }
+  }
 
   const stopScan = () => {
-    console.log(videoStream)
-      videoStream?.getTracks().forEach((track) => track.stop());
-      videoStream = null;
+      videoStream?.getTracks().forEach((track) => track.stop())
+      videoStream = null
       setIsScan(false)
-  };
+  }
 
   const scanQRCode = () => {
-    if (videoRef.current && videoStream 
-      && videoRef.current.videoWidth && videoRef.current.videoHeight
-      ) {
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
+    if (
+      videoRef.current &&
+      videoStream &&
+      videoRef.current.videoWidth &&
+      videoRef.current.videoHeight
+    ) {
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('2d')
 
-      canvas.width = videoRef.current.videoWidth;
-      canvas.height = videoRef.current.videoHeight;
-      context?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      canvas.width = videoRef.current.videoWidth
+      canvas.height = videoRef.current.videoHeight
+      context?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height)
 
-      const imageData = context?.getImageData(0, 0, canvas.width, canvas.height);
+      const imageData = context?.getImageData(0, 0, canvas.width, canvas.height)
       if (imageData) {
-        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height)
 
         if (code) {
-          console.log('QR Code detected:', code.data);
+          console.log('QR Code detected:', code.data)
           SetScanCode(code.data)
-          if(code.data === ''){
-            setIsAnomalie(false)
+          if (code.data === '') {
+            setIsAnomaly(false)
             setIsScan(false)
-          }else {
-            const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === code?.data || order?.id === parseInt(code?.data)))[0]
+          } else {
+            const myScan: any = orderData['hydra:member']?.filter(
+              (order: any) =>
+                order?.barcode === code?.data || order?.id === parseInt(code?.data)
+            )[0]
             console.log(myScan)
             if (myScan) {
               if (myScan?.status === 'picked_up') {
@@ -188,18 +178,26 @@ const Prepared: React.FC = () => {
                     'Cette commande n\'est assignée à aucun livreur mais son statuts est "En livraison".'
                   )
                   setSelectedOrder(myScan)
-                } else if (myScan.shippedBy.firstName === dataStore?.firstname) {
-                  setIsAnomaly(true)
-                  setMsgAnomaly(
-                    'Vous avez déjà prise en charge cette commande, vérifier la liste des commandes à livrer.'
-                  )
-                  setSelectedOrder(myScan)
-                } else {
+                } else if (myScan.shippedBy.firstName !== dataStore?.firstname) {
                   setIsAnomaly(true)
                   setMsgAnomaly(
                     'Cette commande est déjà prise en charge par ' +
                       myScan?.shippedBy.firstName
                   )
+                  setSelectedOrder(myScan)
+                } else  if (
+                  myScan.bookingSlot?.slot?.temperatureZone?.locker &&
+                  myScan.bookingSlot?.slot?.temperatureZone?.locker['@id'] !== selectedStore
+                ) {
+                  setIsAnomaly(true)
+                  setMsgAnomaly(
+                    'Commande pour : ' +
+                      myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+                  )
+                  setSelectedOrder(myScan)
+                }
+                else {
+                  //OK
                   setSelectedOrder(myScan)
                 }
               } else if (myScan?.status === 'created') {
@@ -218,7 +216,10 @@ const Prepared: React.FC = () => {
                   )
                   setSelectedOrder(myScan)
                 } else {
-                  //OK
+                  setIsAnomaly(true)
+                  setMsgAnomaly(
+                    'Cette commande est sur le quai des livraisons'
+                  )
                   setSelectedOrder(myScan)
                 }
               }
@@ -228,14 +229,12 @@ const Prepared: React.FC = () => {
               setIsAnomaly(true)
             }
           }
-           stopScan();
+          stopScan()
         }
       }
-      requestAnimationFrame(scanQRCode);
+      requestAnimationFrame(scanQRCode)
     }
-  };
-
-
+  }
 
 
   //////////////////////////
@@ -258,9 +257,7 @@ const Prepared: React.FC = () => {
     setSearchOrder,
     orderByStatus,
     orderData,
-    // getOrderByPage,
     storeName,
-    trigger
   }
 
   const scanPageProps = {
@@ -270,7 +267,6 @@ const Prepared: React.FC = () => {
     setSelectedOrder,
     newStatus,
   }
-
 
   return (
     <>
@@ -294,9 +290,6 @@ const Prepared: React.FC = () => {
           <>
             {isAnomaly ? (
               <Container fluid className='pb-5'>
-                <div className='col-12 pb-0 text-center font-75'>
-                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-                </div>
                 <Container className='my-2 px-0'>
                   <Container className='py-0 bg-secondary rounded-pill shadow my-auto mt-3'>
                     <Row>
@@ -314,7 +307,7 @@ const Prepared: React.FC = () => {
                       </Col>
                       <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
                         <span className='fw-bold font-85'>
-                          {selectedOrder ? scanCode : 'Une anomalie est survenu'}
+                          {selectedOrder ? scanCode : 'Une anomalie est survenu : ' + scanCode}
                         </span>
                       </Col>
                       <Col
@@ -349,7 +342,7 @@ const Prepared: React.FC = () => {
                 <OrderList orderListProps={orderListProps} />
               </>
             ) : (
-              <OrderDetail scanPageProps={scanPageProps} />
+              <DeliveryDetail scanPageProps={scanPageProps} />
             )}
           </>
         )}
@@ -364,7 +357,6 @@ const Prepared: React.FC = () => {
           />
         </div>
       )}
-
       {!selectedOrder && (
         <Button
           aria-label='Aria Scan'
@@ -383,7 +375,7 @@ const Prepared: React.FC = () => {
         >
           <i
             className={`ri-${
-              isScan ? 'close-line' : 'qr-code-line'
+              isScan ? 'close-line' : 'qr-scan-2-line'
             } text-light align-bottom fs-2`}
           ></i>
         </Button>
@@ -392,4 +384,4 @@ const Prepared: React.FC = () => {
   )
 }
 
-export default Prepared
+export default InDelivery

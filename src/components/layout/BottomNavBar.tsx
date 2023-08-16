@@ -50,7 +50,6 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
   const handleSelect = (item: any) => {
     setSelectedItem(item)
   }
-
   
   return (
     <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
@@ -91,8 +90,8 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
           className='nav-item text-center '
           style={{ position: 'absolute', bottom: '45px' }}
           onClick={() => handleSelect('order')}
+          title="Nouvelle commande"
         >
-          <div className='text-center '></div>
           <Link
             to='/nouvelle-commande'
             className='text-info py-1 pb-5 mb-5 text-decoration-none'
@@ -118,11 +117,11 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
             <p>Retraits</p>
           </Link>
         </Nav.Item>
-        <Nav.Item className='nav-item text-center ' onClick={() => handleSelect('home')}>
+        <Nav.Item className='nav-item text-center ' onClick={() => handleSelect('history')}>
           <Link
             to='/historique'
             className={`nav-link  text-${
-              selectedItem === 'home' ? 'light' : 'info'
+              selectedItem === 'history' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
           >
             <i className='ri-history-line fs-3'></i>

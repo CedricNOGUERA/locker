@@ -24,6 +24,7 @@ import Test from './pages/Public/Test'
 import ReturnOrder from './pages/ReturnOrder'
 import Test2 from './pages/Public/Test_copy'
 import Prepared from './pages/Prepared'
+import InDelivery from './pages/InDelivery'
 
 const router = createBrowserRouter([
   {
@@ -53,7 +54,8 @@ const router = createBrowserRouter([
         element: (
           <React.Fragment>
             <HeaderDesign title='Livraisons' />
-            <InProgress />
+            <InDelivery />
+            {/* <InProgress /> */}
           </React.Fragment>
         ),
       },

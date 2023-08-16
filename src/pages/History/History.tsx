@@ -46,7 +46,7 @@ const History = () => {
   const orderByStatus = orderData['hydra:member']
   React.useEffect(() => {
     setIsLoading(true)
-    setSelectedItem('user')
+    setSelectedItem('history')
     // setOrderByStatus(orderData['hydra:member'])
   }, [])
 

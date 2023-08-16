@@ -25,7 +25,7 @@ const ScrollToTop = () => {
   }, [])
 
   return (
-    <div onClick={scrollToTop} className=' back-to-top animate__animated animate__bounce  mb-2'>
+    <div onClick={scrollToTop} className=' back-to-top text-center animate__animated animate__bounce  mb-2'>
       {isVisible && (
         <i className='ri-arrow-up-s-line fs-1 text-info rounded-circle bg-light border-1 '></i>
       )}
