@@ -57,9 +57,6 @@ const InDelivery: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [scanCode, SetScanCode] = React.useState<string>('')
 
-  // const [isAnomalie, setIsAnomalie] = React.useState<boolean>(false)
-  // const [anomalyMsg, setanomalyMsg] = React.useState<any>('')
-  // const [anomalyMsgSecondary, setAnomalyMsgSecondary] = React.useState<any>('')
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
 
@@ -123,7 +120,7 @@ const InDelivery: React.FC = () => {
 
   const handleScan = () => {
     setIsAnomaly(false)
-    if (videoRef.current) {
+    if (navigator?.mediaDevices) {
       navigator?.mediaDevices
         ?.getUserMedia({ video: { facingMode: 'environment' } })
         .then((stream) => {
@@ -138,11 +135,9 @@ const InDelivery: React.FC = () => {
   }
 
   const stopScan = () => {
-    if (videoStream) {
-      videoStream.getTracks().forEach((track) => track.stop())
+      videoStream?.getTracks().forEach((track) => track.stop())
       videoStream = null
       setIsScan(false)
-    }
   }
 
   const scanQRCode = () => {
