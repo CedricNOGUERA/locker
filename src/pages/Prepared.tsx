@@ -309,7 +309,9 @@ const Prepared: React.FC = () => {
                         <BackButton />
                       </Col>
                       <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
-                        <span className='fw-bold font-85'>{selectedOrder ? scanCode : "Une anomalie est survenu"}</span>
+                        <span className='fw-bold font-85'>
+                          {selectedOrder ? scanCode : 'Une anomalie est survenu'}
+                        </span>
                       </Col>
                       <Col
                         xs={2}
@@ -323,7 +325,7 @@ const Prepared: React.FC = () => {
                   </Container>
 
                   <Container className='text-center mt-3'>
-                    <p>{selectedOrder && "Une anomalie est survenue ..."}</p>
+                    <p>{selectedOrder && 'Une anomalie est survenue ...'}</p>
                     <p>
                       <b>{msgAnomaly}</b>
                     </p>
@@ -349,27 +351,20 @@ const Prepared: React.FC = () => {
         )}
       </Container>
       {isScan && (
-        <div className='text-center'
-          style={{
-            width: '100%',
-            height: 'auto',
-            position: 'absolute',
-            bottom: '13%',
-            zIndex: 2400,
-          }}
-        >
-          <video 
-          style={{
-            width: '100%',
-          }} 
-          ref={videoRef} />
+        <div className='video text-center'>
+          <video
+            style={{
+              width: '100%',
+            }}
+            ref={videoRef}
+          />
         </div>
       )}
       <div className='fab2'>
         {isScan && (
           <Button
-          aria-label="Aria Stop"
-          title='stop'
+            aria-label='Aria Stop'
+            title='stop'
             size='sm'
             className='rounded-pill border-0 bg-warning'
             onClick={() => {
@@ -383,8 +378,8 @@ const Prepared: React.FC = () => {
       </div>
       {!selectedOrder && (
         <Button
-        aria-label="Aria Scan"
-        title='scan'
+          aria-label='Aria Scan'
+          title='scan'
           className='fab rounded-circle bg-info border-0 shadow-3'
           onClick={() => {
             handleScan()
