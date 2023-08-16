@@ -841,12 +841,62 @@ const NewOrder = () => {
                           ? 7
                           : 8
                       }
+                      md={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 3
+                          ? 4
+                          : allSlot?.['hydra:member']
+                              ?.filter(
+                                (lockers: any) =>
+                                  lockers?.slot?.temperatureZone?.locker?.location === locker
+                              )
+                              ?.filter(
+                                (lock: any) =>
+                                  lock?.slot?.temperatureZone?.keyTemp ===
+                                  slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                              )?.length === 2
+                          ? 6
+                          : 7
+                      }
                       className='m-auto ms-md-3 font-75 ps-1 px-0 text-sm-cente'
                     >
                       {locker}
                     </Col>
                     <Col
                       xs={
+                        allSlot?.['hydra:member']
+                          ?.filter(
+                            (lockers: any) =>
+                              lockers?.slot?.temperatureZone?.locker?.location === locker
+                          )
+                          ?.filter(
+                            (lock: any) =>
+                              lock?.slot?.temperatureZone?.keyTemp ===
+                              slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                          )?.length === 3
+                          ? 7
+                          : allSlot?.['hydra:member']
+                              ?.filter(
+                                (lockers: any) =>
+                                  lockers?.slot?.temperatureZone?.locker?.location === locker
+                              )
+                              ?.filter(
+                                (lock: any) =>
+                                  lock?.slot?.temperatureZone?.keyTemp ===
+                                  slotLocationTab(locker)[indx]?.slot?.temperatureZone?.keyTemp
+                              )?.length === 2
+                          ? 5
+                          : 4
+                      }
+                      md={
                         allSlot?.['hydra:member']
                           ?.filter(
                             (lockers: any) =>
@@ -888,7 +938,6 @@ const NewOrder = () => {
                           <span className='font-65 pt-2 ms-1 '>
                             <i className='ri-arrow-right-line'></i>
                           </span>
-
                           {slotLocationTab(locker)
                             ?.filter(
                               (lock: any) => lock?.slot?.temperatureZone?.keyTemp === slots
@@ -963,6 +1012,7 @@ const NewOrder = () => {
                   )}
                   <div className='text-end'>
                     <Button
+                    title='Valider la quantité'
                       className='bg-info rounded-pill border-info text-light'
                       type='submit'
                     >
@@ -1131,6 +1181,7 @@ const NewOrder = () => {
                             ))}
 
                           <Button
+                            aria-label="Aria Ajouter" title='Ajouter un produit'
                             onClick={() => {
                               handleAddProduct(indx)
                             }}
@@ -1147,6 +1198,7 @@ const NewOrder = () => {
 
                 <div className='w-100 text-end mt-3'>
                   <Button
+                            aria-label="Aria Valider prod" title='Valider produit'
                     type='submit'
                     className={`bg-info rounded-pill border-info text-light 
                     `}
@@ -1405,6 +1457,7 @@ const NewOrder = () => {
                 </span>
                 <div className='w-100 text-end'>
                   <Button
+                  aria-label="Aria commande" title='Valider commande'
                     type='submit'
                     className={`bg-info rounded-pill border-info text-light 
                     `}
@@ -1425,10 +1478,10 @@ const NewOrder = () => {
           </div>
           <p>Voulez-vous valider cette commande ?</p>
           <div className='mt-3 text-end'>
-            <Button variant='warning' onClick={cancelNewOrder} className='me-3'>
+            <Button aria-label="Aria annuler" title='Annuler commande' variant='warning' onClick={cancelNewOrder} className='me-3'>
               Annuler
             </Button>
-            <Button variant='info' onClick={createNewOrder}>
+            <Button aria-label="Aria valider" title='Valider la commande' variant='info' onClick={createNewOrder}>
               Valider
             </Button>
           </div>

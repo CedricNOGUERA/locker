@@ -62,7 +62,7 @@ const DetailHistory = ({ selectedOrder }: any) => {
             </div>
             {(selectedOrder.status === 'picked_up' || selectedOrder.status === 'operin') && (
               <div className='item-detail'>
-                Livreu : {selectedOrder?.shippedBy?.firstName}{' '}
+                Livreur : {selectedOrder?.shippedBy?.firstName}{' '}
                 {selectedOrder?.shippedBy?.lastName}
               </div>
             )}

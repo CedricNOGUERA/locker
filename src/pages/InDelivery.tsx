@@ -9,9 +9,7 @@ import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
-import OrdersService from '../service/Orders/OrdersService'
 import OrderList from '../components/ui/OrderList'
-import OrderDetail from '../components/ui/OrderDetail'
 import jsQR from 'jsqr'
 import noOrder from '../styles/astro.png'
 import BackButton from '../components/ui/BackButton'
@@ -297,7 +295,6 @@ const InDelivery: React.FC = () => {
           <>
             {isAnomaly ? (
               <Container fluid className='pb-5'>
-               
                 <Container className='my-2 px-0'>
                   <Container className='py-0 bg-secondary rounded-pill shadow my-auto mt-3'>
                     <Row>
@@ -314,7 +311,9 @@ const InDelivery: React.FC = () => {
                         <BackButton />
                       </Col>
                       <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
-                        <span className='fw-bold font-85'>{selectedOrder ? scanCode : "Une anomalie est survenu : " + scanCode}</span>
+                        <span className='fw-bold font-85'>
+                          {selectedOrder ? scanCode : 'Une anomalie est survenu : ' + scanCode}
+                        </span>
                       </Col>
                       <Col
                         xs={2}
@@ -328,7 +327,7 @@ const InDelivery: React.FC = () => {
                   </Container>
 
                   <Container className='text-center mt-3'>
-                  <p>{selectedOrder && "Une anomalie est survenue ..."}</p>
+                    <p>{selectedOrder && 'Une anomalie est survenue ...'}</p>
                     <p>
                       <b>{msgAnomaly}</b>
                     </p>
@@ -354,16 +353,13 @@ const InDelivery: React.FC = () => {
         )}
       </Container>
       {isScan && (
-        <div
-          style={{
-            width: '100%',
-            height: 'auto',
-            position: 'fixed',
-            bottom: '125px',
-            zIndex: 500,
-          }}
-        >
-          <video ref={videoRef} />
+        <div className='video text-center'>
+          <video
+            style={{
+              width: '100%',
+            }}
+            ref={videoRef}
+          />
         </div>
       )}
       <div className='fab2'>

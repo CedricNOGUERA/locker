@@ -3,13 +3,12 @@ import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import { _getScanMsg, _searchWithRegex } from '../utils/functions'
+import { _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
-import OrdersService from '../service/Orders/OrdersService'
 import OrderList from '../components/ui/OrderList';
 import OrderDetail from '../components/ui/OrderDetail';
 import jsQR from 'jsqr';
@@ -20,8 +19,7 @@ import BackButton from '../components/ui/BackButton';
 
 
 const Prepared: React.FC = () => {
-  
-
+   
   //////////////////////////
   // booleans States
   /////////////////////////
@@ -311,7 +309,9 @@ const Prepared: React.FC = () => {
                         <BackButton />
                       </Col>
                       <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
-                        <span className='fw-bold font-85'>{selectedOrder ? scanCode : "Une anomalie est survenu"}</span>
+                        <span className='fw-bold font-85'>
+                          {selectedOrder ? scanCode : 'Une anomalie est survenu'}
+                        </span>
                       </Col>
                       <Col
                         xs={2}
@@ -325,7 +325,7 @@ const Prepared: React.FC = () => {
                   </Container>
 
                   <Container className='text-center mt-3'>
-                    <p>{selectedOrder && "Une anomalie est survenue ..."}</p>
+                    <p>{selectedOrder && 'Une anomalie est survenue ...'}</p>
                     <p>
                       <b>{msgAnomaly}</b>
                     </p>
@@ -351,26 +351,24 @@ const Prepared: React.FC = () => {
         )}
       </Container>
       {isScan && (
-        <div
-          style={{
-            width: '100%',
-            height: 'auto',
-            position: 'fixed',
-            bottom: '125px',
-            zIndex: 500,
-          }}
-        >
-          <video ref={videoRef} />
+        <div className='video text-center'>
+          <video
+            style={{
+              width: '100%',
+            }}
+            ref={videoRef}
+          />
         </div>
       )}
       <div className='fab2'>
         {isScan && (
           <Button
+            aria-label='Aria Stop'
+            title='stop'
             size='sm'
             className='rounded-pill border-0 bg-warning'
             onClick={() => {
               stopScan()
-
               console.log('stop')
             }}
           >
@@ -380,6 +378,8 @@ const Prepared: React.FC = () => {
       </div>
       {!selectedOrder && (
         <Button
+          aria-label='Aria Scan'
+          title='scan'
           className='fab rounded-circle bg-info border-0 shadow-3'
           onClick={() => {
             handleScan()
