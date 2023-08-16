@@ -57,9 +57,6 @@ const InDelivery: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [scanCode, SetScanCode] = React.useState<string>('')
 
-  // const [isAnomalie, setIsAnomalie] = React.useState<boolean>(false)
-  // const [anomalyMsg, setanomalyMsg] = React.useState<any>('')
-  // const [anomalyMsgSecondary, setAnomalyMsgSecondary] = React.useState<any>('')
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
 
@@ -123,7 +120,7 @@ const InDelivery: React.FC = () => {
 
   const handleScan = () => {
     setIsAnomaly(false)
-    if (videoRef.current) {
+    if (navigator?.mediaDevices) {
       navigator?.mediaDevices
         ?.getUserMedia({ video: { facingMode: 'environment' } })
         .then((stream) => {
@@ -138,11 +135,9 @@ const InDelivery: React.FC = () => {
   }
 
   const stopScan = () => {
-    if (videoStream) {
-      videoStream.getTracks().forEach((track) => track.stop())
+      videoStream?.getTracks().forEach((track) => track.stop())
       videoStream = null
       setIsScan(false)
-    }
   }
 
   const scanQRCode = () => {
@@ -362,30 +357,27 @@ const InDelivery: React.FC = () => {
           />
         </div>
       )}
-      <div className='fab2'>
-        {isScan && (
-          <Button
-            size='sm'
-            className='rounded-pill border-0 bg-warning'
-            onClick={() => {
-              stopScan()
-            }}
-          >
-            Stop
-          </Button>
-        )}
-      </div>
       {!selectedOrder && (
         <Button
-          className='fab rounded-circle bg-info border-0'
+          aria-label='Aria Scan'
+          title='scan'
+          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-info'} border-0`}
           onClick={() => {
-            handleScan()
-            setIsScanning(true)
-            setIsScan(true)
+            if (isScan) {
+              stopScan()
+            } else {
+              handleScan()
+              setIsScanning(true)
+              setIsScan(true)
+            }
           }}
           style={{ width: 55, height: 55 }}
         >
-          <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
+          <i
+            className={`ri-${
+              isScan ? 'close-line' : 'qr-scan-2-line'
+            } text-light align-bottom fs-2`}
+          ></i>
         </Button>
       )}
     </>

@@ -58,14 +58,12 @@ const Prepared: React.FC = () => {
 
   const [isScan, setIsScan] = React.useState<boolean>(false)
   const [isScanning, setIsScanning] = React.useState<boolean>(false)
-  const videoRef = useRef<HTMLVideoElement>(null);
+  let videoRef = useRef<any>(null)
   const [scanCode, SetScanCode] = React.useState<string>('')
 
   const [isAnomalie, setIsAnomalie] = React.useState<boolean>(false)
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>("")
-  const [anomalyMsg, setanomalyMsg] = React.useState<any>("")
-  const [anomalyMsgSecondary, setAnomalyMsgSecondary] = React.useState<any>("")
 
   let videoStream: MediaStream | null = null;
 
@@ -83,17 +81,17 @@ const Prepared: React.FC = () => {
   //////////////////////////
   // UseEffect
   /////////////////////////
-  React.useEffect(() => {
-    if (isScan) {
-      const scanInterval = setInterval(() => {
-        scanQRCode();
-      }, 1500);
-
-      return () => {
-        clearInterval(scanInterval);
-      };
-    }
-  }, [isScan]);
+  // React.useEffect(() => {
+  //   if (isScan) {
+  //     // const scanInterval = setInterval(() => {
+  //     //   scanQRCode();
+  //     // }, 1500);
+      
+  //     return () => {
+  //       // clearInterval(scanInterval);
+  //     };
+  //   }
+  // }, [isScan]);
 
 
   React.useEffect(() => {
@@ -128,29 +126,35 @@ const Prepared: React.FC = () => {
     )
   }, [selectedStore])
 
-  const handleScan = () => {
+  const handleScan = async () => {
     setIsAnomaly(false)
-    if (videoRef.current) {
-      navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
-      .then((stream) => {
-        videoStream = stream
-        videoRef.current!.srcObject = stream
-        videoRef.current!.play()
-        requestAnimationFrame(scanQRCode)
-        setIsScan(true)
-        })
-        .catch((error) => console.error('Error accessing camera:', error));
-    }
+    if (navigator?.mediaDevices) {
+        console.log(navigator?.mediaDevices)
+        setIsScan(true);
+        
+        console.log(videoStream)
+      try {
+        const stream = await navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } });
+        videoStream = stream;
+        videoRef.current!.srcObject = stream;
+        console.log(videoRef.current!.srcObject)
+        await videoRef.current!.play(); // Attendre la lecture vidéo
+        requestAnimationFrame(scanQRCode);
+        setIsScan(true);
+        console.log("success");
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+      }
+      }
   };
+  console.log(isScan)
 
   const stopScan = () => {
-    if (videoStream) {
-      videoStream.getTracks().forEach((track) => track.stop());
+    console.log(videoStream)
+      videoStream?.getTracks().forEach((track) => track.stop());
       videoStream = null;
       setIsScan(false)
-    }
   };
-
 
   const scanQRCode = () => {
     if (videoRef.current && videoStream 
@@ -360,35 +364,28 @@ const Prepared: React.FC = () => {
           />
         </div>
       )}
-      <div className='fab2'>
-        {isScan && (
-          <Button
-            aria-label='Aria Stop'
-            title='stop'
-            size='sm'
-            className='rounded-pill border-0 bg-warning'
-            onClick={() => {
-              stopScan()
-              console.log('stop')
-            }}
-          >
-            Stop
-          </Button>
-        )}
-      </div>
+
       {!selectedOrder && (
         <Button
           aria-label='Aria Scan'
           title='scan'
-          className='fab rounded-circle bg-info border-0 shadow-3'
+          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-info'} border-0`}
           onClick={() => {
-            handleScan()
-            setIsScanning(true)
-            setIsScan(true)
+            if (isScan) {
+              stopScan()
+            } else {
+              handleScan()
+              setIsScanning(true)
+              setIsScan(true)
+            }
           }}
           style={{ width: 55, height: 55 }}
         >
-          <i className='ri-qr-code-line text-light align-bottom fs-2'></i>
+          <i
+            className={`ri-${
+              isScan ? 'close-line' : 'qr-code-line'
+            } text-light align-bottom fs-2`}
+          ></i>
         </Button>
       )}
     </>
