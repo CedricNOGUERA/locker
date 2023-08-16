@@ -348,11 +348,8 @@ const InDelivery: React.FC = () => {
         )}
       </Container>
       {isScan && (
-        <div className='video text-center'>
+        <div className='video-container text-center'>
           <video
-            style={{
-              width: '100%',
-            }}
             ref={videoRef}
           />
         </div>
