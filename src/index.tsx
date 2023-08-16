@@ -25,6 +25,7 @@ import ReturnOrder from './pages/ReturnOrder'
 import Test2 from './pages/Public/Test_copy'
 import Prepared from './pages/Prepared'
 import InDelivery from './pages/InDelivery'
+// import InDelivery from './pages/InDelivery'
 
 const router = createBrowserRouter([
   {
