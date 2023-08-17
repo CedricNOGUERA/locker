@@ -105,8 +105,10 @@ const History = () => {
     trigger
   }
 
+  console.log(selectedOrder)
+
   return (
-    <Container className='order-list pb-5 mb-5'>
+    <Container className='order-list pb- mb-'>
       {selectedOrder && 
          <div className='col-12 pb-0 text-center font-75'>
         {' '}

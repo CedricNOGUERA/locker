@@ -8,13 +8,14 @@ const DetailHistory = ({ selectedOrder }: any) => {
     const dateB: any = new Date(b.createdAt);
     return dateA - dateB;
   });
-  
+  console.log(sortedHistory)
   return (
     <div className='history-tl-container animate__animated animate__backInLeft pb-5'>
       <ul className='tl d-flex flex-column-reverse '>
         {selectedOrder &&
           selectedOrder?.history?.length > 0 &&
-          selectedOrder?.history?.map((order: any) => (
+          sortedHistory?.map((order: any) => (
+          // selectedOrder?.history?.map((order: any) => (
             <li key={Math.random()} className='tl-item' ng-repeat='item in retailer_history'>
               {order.status === 'created' ? (
                 <div className='timestamp'>
