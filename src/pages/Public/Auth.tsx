@@ -88,6 +88,8 @@ const Auth = () => {
   //UseEffect
   ///////////////////
 
+console.log(myData)
+
   React.useEffect(() => {
     const handleBeforeInstallPrompt: any = (event:any) => {
       event.preventDefault();

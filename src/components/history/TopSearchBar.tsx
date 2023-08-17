@@ -37,9 +37,9 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
           <>
           <Col
             xs={2}
-            md={2}
-            lg={2}
-            className='m-auto py-0'
+            md={1}
+            lg={1}
+            className='m-auto py-0 text-center'
             onClick={() => setSelectedOrder('')}
           >
             <BackButton />
@@ -49,7 +49,7 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
                 {selectedOrder?.barcode} - {selectedOrder?.client?.email}
               </span>
             </Col>
-            <Col xs={2} md={2} lg={2} className='m-auto text-light text-start  me-3 py-0'>
+            <Col xs={2} md={1} lg={1} className='m-auto text-light text-start  me-3 py-0'>
               <BadgedIcon
                 slot={selectedOrder?.bookingSlot}
                 borderColor='secondary'
