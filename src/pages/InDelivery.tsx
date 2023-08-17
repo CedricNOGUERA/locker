@@ -3,7 +3,7 @@ import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import { _searchWithRegex } from '../utils/functions'
+import { _getStatus, _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
@@ -216,7 +216,12 @@ const InDelivery: React.FC = () => {
                   setMsgAnomaly('Cette commande est sur le quai des livraisons')
                   setSelectedOrder(myScan)
                 }
+              } else if (myScan?.status === 'operin' || myScan?.status === 'reminder' || myScan?.status === 'overtimedue' || myScan?.status === 'overtime') {
+                setIsAnomaly(true)
+                setMsgAnomaly("Cette commande est en status : " + _getStatus(myScan?.status) + ", consultez l'historique. Code barre : " + myScan?.barcode)
+                setSelectedOrder(myScan)
               }
+              
             } else {
               //no exist
               setMsgAnomaly("Cette commande n'existe pas.")
@@ -319,7 +324,7 @@ const InDelivery: React.FC = () => {
 
                   <Container className='text-center mt-3'>
                     <p>{selectedOrder && 'Une anomalie est survenue ...'}</p>
-                    <p>
+                    <p className='font-85' >
                       <b>{msgAnomaly}</b>
                     </p>
                     <img src={noOrder} alt='no-order' style={{ height: '256px' }} />

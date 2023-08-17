@@ -120,7 +120,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
                 <span className='fw-bold font-85'>n° {selectedOrder?.barcode}</span>
               </span>
             </Col>
-            <Col xs={2} md={2} lg={2} className='m-auto text-light text-start ps- me-3 py-0'>
+            <Col xs={2} md={2} lg={2} className='m-auto text-light text-start me-3 py-0'>
               <BadgedIcon
                 slot={selectedOrder?.bookingSlot}
                 borderColor='secondary'
