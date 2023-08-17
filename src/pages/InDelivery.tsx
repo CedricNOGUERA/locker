@@ -76,17 +76,17 @@ const InDelivery: React.FC = () => {
   //////////////////////////
   // UseEffect
   /////////////////////////
-  React.useEffect(() => {
-    if (isScan) {
-      const scanInterval = setInterval(() => {
-        scanQRCode()
-      }, 1500)
+  // React.useEffect(() => {
+  //   if (isScan) {
+  //     const scanInterval = setInterval(() => {
+  //       scanQRCode()
+  //     }, 1500)
 
-      return () => {
-        clearInterval(scanInterval)
-      }
-    }
-  }, [isScan])
+  //     return () => {
+  //       clearInterval(scanInterval)
+  //     }
+  //   }
+  // }, [isScan])
 
   React.useEffect(() => {
     setIsLoading(true)
@@ -118,20 +118,26 @@ const InDelivery: React.FC = () => {
     )
   }, [selectedStore])
 
-  const handleScan = () => {
+  const handleScan = async () => {
     setIsAnomaly(false)
     if (navigator?.mediaDevices) {
-      navigator?.mediaDevices
-        ?.getUserMedia({ video: { facingMode: 'environment' } })
-        .then((stream) => {
-          videoStream = stream
-          videoRef.current!.srcObject = stream
-          videoRef.current!.play()
-          requestAnimationFrame(scanQRCode)
-          setIsScan(true)
-        })
-        .catch((error) => console.error('Error accessing camera:', error))
-    }
+        console.log(navigator?.mediaDevices)
+        setIsScan(true);
+        
+        console.log(videoStream)
+      try {
+        const stream = await navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } });
+        videoStream = stream;
+        videoRef.current!.srcObject = stream;
+        console.log(videoRef.current!.srcObject)
+        await videoRef.current!.play(); // Attendre la lecture vidéo
+        requestAnimationFrame(scanQRCode);
+        setIsScan(true);
+        console.log("success");
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+      }
+      }
   }
 
   const stopScan = () => {
@@ -290,6 +296,9 @@ const InDelivery: React.FC = () => {
           <>
             {isAnomaly ? (
               <Container fluid className='pb-5'>
+                <div className='col-12 pb-0 text-center font-75'>
+                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+                </div>
                 <Container className='my-2 px-0'>
                   <Container className='py-0 bg-secondary rounded-pill shadow my-auto mt-3'>
                     <Row>
@@ -307,7 +316,7 @@ const InDelivery: React.FC = () => {
                       </Col>
                       <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
                         <span className='fw-bold font-85'>
-                          {selectedOrder ? scanCode : 'Une anomalie est survenu : ' + scanCode}
+                          {selectedOrder ? scanCode : 'Une anomalie est survenu'}
                         </span>
                       </Col>
                       <Col
@@ -349,9 +358,7 @@ const InDelivery: React.FC = () => {
       </Container>
       {isScan && (
         <div className='video-container text-center'>
-          <video
-            ref={videoRef}
-          />
+          <video ref={videoRef} />
         </div>
       )}
       {!selectedOrder && (
