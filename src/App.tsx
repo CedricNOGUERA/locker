@@ -102,12 +102,8 @@ function App() {
     })
   }
   return (
-    <>
-      {/* <div className='warning-paysage text-center'>
-        <i className='ri-refresh-line text-dark fs-1'></i>
-        <p>Cette application ne prend pas en charge le mode paysage</p>
-      </div> */}
-
+   
+ 
       <div className='first-block'>
         {!isLogged && <Navigate to='/connexion' />}
         {isLoading ? (
@@ -144,7 +140,7 @@ function App() {
           setSelectedItem={setSelectedItem}
         />
       </div>
-    </>
+    
   )
 }
 

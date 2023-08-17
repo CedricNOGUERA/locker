@@ -17,11 +17,11 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
   const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
+  const authLogout = userDataStore((state: any) => state.authLogout)
 
-  const [isDetail, setIsDetail] = React.useState<boolean>(false)
+
   const [isErrorValid, setIsErrorValid] = React.useState<boolean>(false)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [isAmount, setIsAmount] = React.useState<boolean>(true)
   const [errorMsg, setErrorMsg] = React.useState<string>('')
 
   const [show, setShow] = React.useState<boolean>(false)
@@ -39,161 +39,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
     }, 2000)
   }
 
-  const myOrder = {
-    order: {
-      id: 114,
-
-      id_address_delivery: '5313',
-
-      id_address_invoice: '5313',
-
-      id_cart: '128',
-
-      id_currency: '3',
-
-      id_lang: '1',
-
-      id_customer: '2',
-
-      id_carrier: '64',
-
-      current_state: '0',
-
-      module: 'osb',
-
-      invoice_number: '0',
-
-      invoice_date: '0000-00-00 00:00:00',
-
-      delivery_number: '0',
-
-      delivery_date: '0000-00-00 00:00:00',
-
-      valid: '0',
-
-      date_add: '2023-07-28 09:37:25',
-
-      date_upd: '2023-07-28 09:37:25',
-
-      shipping_number: '',
-
-      id_shop_group: '1',
-
-      id_shop: '1',
-
-      secure_key: '5c9607ec1430704df19f452ce0a241e5',
-
-      payment: 'Carte bancaire',
-
-      recyclable: '0',
-
-      gift: '0',
-
-      gift_message: '',
-
-      mobile_theme: '0',
-
-      total_discounts: '0.000000',
-
-      total_discounts_tax_incl: '0.000000',
-
-      total_discounts_tax_excl: '0.000000',
-
-      total_paid: '42340.000000',
-
-      total_paid_tax_incl: '42340.000000',
-
-      total_paid_tax_excl: '36188.000000',
-
-      total_paid_real: '42340.000000',
-
-      total_products: '36188.000000',
-
-      total_products_wt: '42340.000000',
-
-      total_shipping: '0.000000',
-
-      total_shipping_tax_incl: '0.000000',
-
-      total_shipping_tax_excl: '0.000000',
-
-      carrier_tax_rate: '0.000',
-
-      total_wrapping: '0.000000',
-
-      total_wrapping_tax_incl: '0.000000',
-
-      total_wrapping_tax_excl: '0.000000',
-
-      round_mode: '3',
-
-      round_type: '1',
-
-      conversion_rate: '1.000000',
-
-      reference: '114',
-
-      associations: {
-        order_rows: [
-          {
-            id: '165',
-
-            product_id: '200',
-
-            product_attribute_id: '0',
-
-            product_quantity: '3',
-
-            product_name: 'Bouilloire Proline 1L',
-
-            product_reference: 'test63',
-
-            product_ean13: '5698845135421',
-
-            product_isbn: '',
-
-            product_upc: '16',
-
-            product_price: '2094.017093',
-
-            id_customization: '0',
-
-            unit_price_tax_incl: '2449.999999',
-
-            unit_price_tax_excl: '2094.017093',
-          },
-
-          {
-            id: '166',
-
-            product_id: '179',
-
-            product_attribute_id: '0',
-
-            product_quantity: '1',
-
-            product_name: 'Téléviseur QLED 48" 4K',
-
-            product_reference: 'test195',
-
-            product_ean13: '9876543219513',
-
-            product_isbn: '',
-
-            product_upc: '',
-
-            product_price: '29905.982906',
-
-            id_customization: '0',
-
-            unit_price_tax_incl: '34990.000000',
-
-            unit_price_tax_excl: '29905.982906',
-          },
-        ],
-      },
-    },
-  }
+ 
 
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token).then((response: any) => {
@@ -202,10 +48,14 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
       
       if(error?.response?.data?.message === 'Expired JWT Token'){
         alert('Session expirée, reconnectez-vous.')
+        authLogout()
         navigate('/connexion')
       }
       if(error?.response?.data?.message === 'Invalid JWT Token'){
+        alert('Session expirée, reconnectez-vous.')
+        authLogout()
         navigate('/connexion')
+        authLogout()
       }
       console.log(error)
     })
@@ -214,47 +64,44 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
   const changeStatus = () => {
     setIsLoading(true)
     console.log(selectedOrder)
-    if(selectedOrder?.status === 'picked_up'){
+    if (selectedOrder?.status === 'picked_up') {
       setIsErrorValid(true)
       setIsLoading(false)
-    setErrorMsg(
-    'Cette commande est déja prise en charge par ' +
-      selectedOrder?.shippedBy?.firstName +
-      ", rafraichissez l'application"
-)
-    }else{
+      setErrorMsg(
+        'Cette commande est déja prise en charge par ' +
+          selectedOrder?.shippedBy?.firstName +
+          ", rafraichissez l'application"
+      )
+    } else {
+      let data = {
+        status: newStatus,
+        shippedBy: 'api/users/' + dataStore.id,
+      }
+      let config = {
+        method: 'patch',
+        maxBodyLength: Infinity,
+        url: process.env.REACT_APP_END_POINT + 'orders/' + selectedOrder.id,
+        headers: {
+          'Content-Type': 'application/merge-patch+json',
+          Authorization: 'Bearer ' + dataStore.token,
+        },
+        data: data,
+      }
 
-    
-    let data = {
-      status: newStatus,
-      shippedBy: 'api/users/' + dataStore.id,
+      axios
+        .request(config)
+        .then((response: any) => {
+          console.log(response.data)
+          getallOrders(dataStore.token)
+          setIsLoading(false)
+          handleShowUpdateStatus()
+        })
+        .catch((error: any) => {
+          console.log(error)
+          setIsErrorValid(true)
+          setIsLoading(false)
+        })
     }
-    let config = {
-      method: 'patch',
-      maxBodyLength: Infinity,
-      url: process.env.REACT_APP_END_POINT + 'orders/' + selectedOrder.id,
-      headers: {
-        'Content-Type': 'application/merge-patch+json',
-        Authorization: 'Bearer ' + dataStore.token,
-      },
-      data: data,
-    }
-
-    axios
-      .request(config)
-      .then((response: any) => {
-        console.log(response.data)
-        getallOrders(dataStore.token)
-        setIsLoading(false)
-        handleShowUpdateStatus()
-      })
-      .catch((error: any) => {
-        console.log(error)
-        setIsErrorValid(true)
-        setIsLoading(false)
-      })
-    }
-
   }
 
   return (
@@ -292,58 +139,15 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
             <tr>
               <th className='text-center text-secondary'>Qté</th>
               <th className='text-center text-secondary'>Libellé produit</th>
-              {!isAmount && (
-
-                <th className='text-end text-secondary'>Montant</th>
-              )}
             </tr>
           </thead>
           <tbody>
-            {/* {myOrder?.order?.associations?.order_rows.map((prod: any, index: any) => ( */}
             {selectedOrder?.products?.map((prod: any, index: any) => (
               <tr key={index}>
                 <td className='text-center font-85'>{prod?.quantity}</td>
                 <td className='text-center font-85'>{prod?.name}</td>
-                {!isAmount && (
-                  <td className='text-end font-85'>
-                  {(
-                    parseFloat(prod?.price) * parseInt(prod?.quantity)
-                  ).toFixed(0)}
-                </td>
-                  )}
               </tr>
             ))}
-            {!isAmount && (
-              <>
-                <tr>
-                  <td colSpan={2} className='text-end font-85'>
-                    Total HT
-                  </td>
-                  <td className='text-end font-85'>
-                    {parseInt(myOrder.order.total_products).toFixed(0)}
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2} className='text-end font-85'>
-                    Montant TVA
-                  </td>
-                  <td className='text-end font-85'>
-                    {(
-                      parseInt(myOrder.order.total_products_wt) -
-                      parseInt(myOrder.order.total_products)
-                    ).toFixed(0)}
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={2} className='text-end font-85'>
-                    Total TTC
-                  </td>
-                  <td className='text-end font-85'>
-                    <b>{parseInt(myOrder.order.total_products_wt).toFixed(0)}</b>
-                  </td>
-                </tr>
-              </>
-            )}
           </tbody>
         </Table>
         <Container className='text-end mt-4'>
@@ -383,7 +187,6 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                 className=' rounded-pill border-warning text-light ms-3 px-4'
                 variant='warning'
                 onClick={() => {
-                  setIsDetail(false)
                   setSelectedOrder('')
                   handleClose()
                   setIsErrorValid(false)
@@ -395,9 +198,6 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
           </>
         ) : (
           <>
-            {/* <Modal.Header closeButton>
-              <Modal.Title>Préparation</Modal.Title>
-            </Modal.Header> */}
             <Modal.Body>
             <Container className='text-center text-danger py-0  m-auto opacity-75'>
         <span className='align-middle'>
@@ -449,14 +249,12 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
         </Alert>
       </Container>
             </Modal.Body>
-            {/* <Modal.Body>Voulez-vous déposer cette commande ?</Modal.Body> */}
             <Modal.Footer>
               <Button
                 size='lg'
                 className=' rounded-pill border-warning text-light ms-3 px-4'
                 variant='warning'
                 onClick={() => {
-                  setIsDetail(false)
                   setSelectedOrder('')
                   handleClose()
                 }}
@@ -470,6 +268,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                 onClick={() => {
                     getallOrders(dataStore.token)
                     setSelectedOrder(null)
+                    handleClose()
                 }}
                 
               >

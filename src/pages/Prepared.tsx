@@ -57,7 +57,6 @@ const Prepared: React.FC = () => {
   const [storeName, setStoreName] = React.useState<any>([])
 
   const [isScan, setIsScan] = React.useState<boolean>(false)
-  const [isScanning, setIsScanning] = React.useState<boolean>(false)
   let videoRef = useRef<any>(null)
   const [scanCode, SetScanCode] = React.useState<string>('')
 
@@ -81,18 +80,6 @@ const Prepared: React.FC = () => {
   //////////////////////////
   // UseEffect
   /////////////////////////
-  // React.useEffect(() => {
-  //   if (isScan) {
-  //     // const scanInterval = setInterval(() => {
-  //     //   scanQRCode();
-  //     // }, 1500);
-      
-  //     return () => {
-  //       // clearInterval(scanInterval);
-  //     };
-  //   }
-  // }, [isScan]);
-
 
   React.useEffect(() => {
     setIsLoading(true)
@@ -147,7 +134,6 @@ const Prepared: React.FC = () => {
       }
       }
   };
-  console.log(isScan)
 
   const stopScan = () => {
     console.log(videoStream)
@@ -372,7 +358,6 @@ const Prepared: React.FC = () => {
               stopScan()
             } else {
               handleScan()
-              setIsScanning(true)
               setIsScan(true)
             }
           }}

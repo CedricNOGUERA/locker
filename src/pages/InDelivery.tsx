@@ -53,7 +53,6 @@ const InDelivery: React.FC = () => {
   const [storeName, setStoreName] = React.useState<any>([])
 
   const [isScan, setIsScan] = React.useState<boolean>(false)
-  const [isScanning, setIsScanning] = React.useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [scanCode, SetScanCode] = React.useState<string>('')
 
@@ -72,21 +71,11 @@ const InDelivery: React.FC = () => {
       order?.shippedBy &&
       order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
+  console.log(selectedOrder)
 
   //////////////////////////
   // UseEffect
   /////////////////////////
-  // React.useEffect(() => {
-  //   if (isScan) {
-  //     const scanInterval = setInterval(() => {
-  //       scanQRCode()
-  //     }, 1500)
-
-  //     return () => {
-  //       clearInterval(scanInterval)
-  //     }
-  //   }
-  // }, [isScan])
 
   React.useEffect(() => {
     setIsLoading(true)
@@ -121,29 +110,31 @@ const InDelivery: React.FC = () => {
   const handleScan = async () => {
     setIsAnomaly(false)
     if (navigator?.mediaDevices) {
-        console.log(navigator?.mediaDevices)
-        setIsScan(true);
-        
-        console.log(videoStream)
+      console.log(navigator?.mediaDevices)
+      setIsScan(true)
+
+      console.log(videoStream)
       try {
-        const stream = await navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } });
-        videoStream = stream;
-        videoRef.current!.srcObject = stream;
+        const stream = await navigator?.mediaDevices?.getUserMedia({
+          video: { facingMode: 'environment' },
+        })
+        videoStream = stream
+        videoRef.current!.srcObject = stream
         console.log(videoRef.current!.srcObject)
-        await videoRef.current!.play(); // Attendre la lecture vidéo
-        requestAnimationFrame(scanQRCode);
-        setIsScan(true);
-        console.log("success");
+        await videoRef.current!.play() // Attendre la lecture vidéo
+        requestAnimationFrame(scanQRCode)
+        setIsScan(true)
+        console.log('success')
       } catch (error) {
-        console.error('Error accessing camera:', error);
+        console.error('Error accessing camera:', error)
       }
-      }
+    }
   }
 
   const stopScan = () => {
-      videoStream?.getTracks().forEach((track) => track.stop())
-      videoStream = null
-      setIsScan(false)
+    videoStream?.getTracks().forEach((track) => track.stop())
+    videoStream = null
+    setIsScan(false)
   }
 
   const scanQRCode = () => {
@@ -191,7 +182,7 @@ const InDelivery: React.FC = () => {
                       myScan?.shippedBy.firstName
                   )
                   setSelectedOrder(myScan)
-                } else  if (
+                } else if (
                   myScan.bookingSlot?.slot?.temperatureZone?.locker &&
                   myScan.bookingSlot?.slot?.temperatureZone?.locker['@id'] !== selectedStore
                 ) {
@@ -201,8 +192,7 @@ const InDelivery: React.FC = () => {
                       myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
                   )
                   setSelectedOrder(myScan)
-                }
-                else {
+                } else {
                   //OK
                   setSelectedOrder(myScan)
                 }
@@ -223,9 +213,7 @@ const InDelivery: React.FC = () => {
                   setSelectedOrder(myScan)
                 } else {
                   setIsAnomaly(true)
-                  setMsgAnomaly(
-                    'Cette commande est sur le quai des livraisons'
-                  )
+                  setMsgAnomaly('Cette commande est sur le quai des livraisons')
                   setSelectedOrder(myScan)
                 }
               }
@@ -241,7 +229,6 @@ const InDelivery: React.FC = () => {
       requestAnimationFrame(scanQRCode)
     }
   }
-
 
   //////////////////////////
   // Component Props
@@ -371,7 +358,6 @@ const InDelivery: React.FC = () => {
               stopScan()
             } else {
               handleScan()
-              setIsScanning(true)
               setIsScan(true)
             }
           }}

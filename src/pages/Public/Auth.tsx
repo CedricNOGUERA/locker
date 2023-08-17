@@ -127,7 +127,7 @@ const Auth = () => {
       handleClearCache()
     
   }, [authLogin, myData, token])
-console.log(myData)
+  
   useEffect(() => {
     if (myEmail) {
       setIsNotEmail(false)
