@@ -106,7 +106,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               <Row className='menu-link'>
                 <Col xs={2}>
                   {' '}
-                  <i className='ri-check-line fs-5'></i>
+                  <i className='ri-flask-line fs-5'></i>
                 </Col>{' '}
                 <Col className='m-auto user-name'>Test</Col>
               </Row>

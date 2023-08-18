@@ -108,7 +108,7 @@ const History = () => {
   console.log(selectedOrder)
 
   return (
-    <Container className='order-list pb- mb-'>
+    <Container className='order-list'>
       {selectedOrder && 
          <div className='col-12 pb-0 text-center font-75'>
         {' '}
