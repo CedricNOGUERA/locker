@@ -15,10 +15,10 @@ function App() {
   ////////////////////
   const isLogged = userDataStore((state: any) => state.isLogged)
   const authLogout = userDataStore((state: any) => state.authLogout)
+  const token = userDataStore((state: any) => state.token)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [expireToken, setExpireToken] = React.useState<boolean>(false)
 
-  const token = userDataStore((state: any) => state.token)
 
   const [selectedStore, setSelectedStore] = React.useState<any>('')
   const [allSlot, setAllSlot] = React.useState<any>([])
@@ -28,13 +28,32 @@ function App() {
 
   const [origin, setOrigin] = React.useState(window?.history?.state.key);
   const navigate = useNavigate();
+  const [isOnline, setIsOnline] = React.useState(window.navigator.onLine);
 
+  const handleOnline = () => {
+    setIsOnline(true);
+  };
+
+  const handleOffline = () => {
+    setIsOnline(false);
+    alert('Connexion perdue, reconnectez-vous')
+    authLogout()
+  };
+
+  
   /////////////////////
   //UseEffect
   ////////////////////
+  React.useEffect(() => {
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
-  // React.useEffect(() => 
-  // , [])
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
 
 
   React.useEffect(() => {

@@ -84,7 +84,31 @@ const Auth = () => {
   const isAndroid = /Android/i.test(navigator.userAgent);
 
   const [webInstallPrompt, handleWebInstallDeclined, handleWebInstallAccepted] = useWebInstallPrompt();
-   ////////////////////
+ 
+  const [isOnline, setIsOnline] = React.useState(window.navigator.onLine);
+
+  const handleOnline = () => {
+    setIsOnline(true);
+  };
+
+  const handleOffline = () => {
+    setIsOnline(false);
+    alert('Connexion perdue, reconnectez-vous')
+  };
+
+  React.useEffect(() => {
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+ 
+ 
+ 
+  ////////////////////
   //UseEffect
   ///////////////////
 
@@ -164,6 +188,16 @@ console.log(myData)
     setMsgError("Vous n'êtes affilié à aucune companie, contacté votre adminitrateur")
   }
 
+  const getMsgError = (msg: any) => {
+    if(msg === 'Invalid credentials.'){
+      setMsgError("Vos données sont érronées, réessayez.")
+    } else if(msg === 'Internal error server'){
+      setMsgError("Erreur interne du serveur, réessayez de vous connecter")
+    }
+  }
+
+
+
   const signUp: SubmitHandler<Inputs> = (dataz: any, e: any) => {
     e.preventDefault()
     setIsError(false)
@@ -174,7 +208,8 @@ console.log(myData)
       setMsgError,
       setIsError,
       setIsLoadingAuth,
-      setCodeError
+      setCodeError,
+      getMsgError
     )
 
     setIsLoading(false)
@@ -184,6 +219,7 @@ console.log(myData)
     UserService.me(token).then((response: any) => {
       setMyData(response.data)
     })
+   
   }
 
   const forgot = (e: any) => {

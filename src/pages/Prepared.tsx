@@ -116,19 +116,19 @@ const Prepared: React.FC = () => {
   const handleScan = async () => {
     setIsAnomaly(false)
     if (navigator?.mediaDevices) {
-        console.log(navigator?.mediaDevices)
         setIsScan(true);
         
         console.log(videoStream)
       try {
-        const stream = await navigator?.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } });
-        videoStream = stream;
-        videoRef.current!.srcObject = stream;
-        console.log(videoRef.current!.srcObject)
-        await videoRef.current!.play(); // Attendre la lecture vidéo
-        requestAnimationFrame(scanQRCode);
-        setIsScan(true);
-        console.log("success");
+        const stream = await navigator?.mediaDevices?.getUserMedia({
+          video: { facingMode: 'environment' },
+        })
+        videoStream = stream
+        videoRef.current.srcObject = stream
+        await videoRef.current!.play() // Attendre la lecture vidéo
+        requestAnimationFrame(scanQRCode)
+        setIsScan(true)
+        console.log('success')
       } catch (error) {
         console.error('Error accessing camera:', error);
       }
@@ -136,11 +136,12 @@ const Prepared: React.FC = () => {
   };
 
   const stopScan = () => {
-    console.log(videoStream)
-      videoStream?.getTracks().forEach((track) => track.stop());
+      videoStream?.getTracks()?.forEach((track: any) => track.stop());
       videoStream = null;
       setIsScan(false)
   };
+
+
 
   const scanQRCode = () => {
     if (videoRef.current && videoStream 
@@ -163,6 +164,7 @@ const Prepared: React.FC = () => {
           if(code.data === ''){
             setIsAnomalie(false)
             setIsScan(false)
+            stopScan()
           }else {
             const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === code?.data || order?.id === parseInt(code?.data)))[0]
             console.log(myScan)
@@ -174,6 +176,7 @@ const Prepared: React.FC = () => {
                     'Cette commande n\'est assignée à aucun livreur mais son statuts est "En livraison".'
                   )
                   setSelectedOrder(myScan)
+
                 } else if (myScan.shippedBy.firstName === dataStore?.firstname) {
                   setIsAnomaly(true)
                   setMsgAnomaly(
@@ -216,6 +219,7 @@ const Prepared: React.FC = () => {
               //no exist
               setMsgAnomaly("Cette commande n'existe pas.")
               setIsAnomaly(true)
+
             }
           }
            stopScan();
