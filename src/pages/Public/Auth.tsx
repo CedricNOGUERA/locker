@@ -88,6 +88,8 @@ const Auth = () => {
   //UseEffect
   ///////////////////
 
+console.log(myData)
+
   React.useEffect(() => {
     const handleBeforeInstallPrompt: any = (event:any) => {
       event.preventDefault();
@@ -127,7 +129,7 @@ const Auth = () => {
       handleClearCache()
     
   }, [authLogin, myData, token])
-console.log(myData)
+  
   useEffect(() => {
     if (myEmail) {
       setIsNotEmail(false)

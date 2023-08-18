@@ -1023,7 +1023,7 @@ const NewOrder = () => {
               </form>
             </div>
           ) : !trigger2 ? (
-            <div className='mt-4'>
+            <div className='order-list mt-4'>
               <form onSubmit={validOrder}>
                 <Accordion defaultActiveKey='0'>
                   {Array.from({ length: parseInt(qty) }).map((_, indx) => (

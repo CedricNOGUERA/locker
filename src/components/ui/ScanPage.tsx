@@ -1,42 +1,47 @@
-import { Container, Alert } from 'react-bootstrap'
+import { Container, Alert, Row, Col } from 'react-bootstrap'
 import QrCode from '../QrCode'
 import userDataStore from '../../store/userDataStore'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import BackBar from './BackBar'
-import { _refreshPage } from '../../utils/functions'
 import { useNavigate } from 'react-router-dom'
+import BackButton from './BackButton'
+import BadgedIcon from './BadgedIcon'
 
 const ScanPage = ({ scanPageProps }: any) => {
-
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   ////////////////////
   //Props & store
   ///////////////////
-    
-    const { selectedOrder, setOrderData, setSelectedOrder, newStatus, } = scanPageProps
+
+  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
+  const authLogout = userDataStore((state: any) => state.authLogout)
 
   //////////////////////////
   // Events
   /////////////////////////
   const getallOrders = (token: any) => {
-    OrdersService.allOrders(token).then((response: any) => {
-      setOrderData(response.data)
-     
-    }).catch((error: any) => {
-      if(error?.response?.data?.message === 'Expired JWT Token'){
-        navigate('/connexion')
-        alert('Session expirée, reconnectez-vous.')
-      }
-      if(error?.response?.data?.message === 'Invalid JWT Token'){
-        navigate('/connexion')
-        alert('Session expirée, reconnectez-vous.')
-      }
-      console.log(error?.response?.data?.message)
-    })
+    OrdersService.allOrders(token)
+      .then((response: any) => {
+        setOrderData(response.data)
+      })
+      .catch((error: any) => {
+        if (error?.response?.data?.message === 'Expired JWT Token') {
+          alert('Session expirée, reconnectez-vous.')
+          authLogout()
+          navigate('/connexion')
+        }
+        if (error?.response?.data?.message === 'Invalid JWT Token') {
+          alert('Session expirée, reconnectez-vous.')
+          authLogout()
+          navigate('/connexion')
+          authLogout()
+        }
+        console.log(error?.response?.data?.message)
+      })
   }
 
   const changeStatus = () => {
@@ -44,7 +49,7 @@ const ScanPage = ({ scanPageProps }: any) => {
       status: newStatus,
       // shippedBy: 'api/users/' + dataStore.id,
     }
-   
+
     let config = {
       method: 'patch',
       maxBodyLength: Infinity,
@@ -69,14 +74,36 @@ const ScanPage = ({ scanPageProps }: any) => {
       .catch((error: any) => {
         console.log(error)
       })
-   
   }
-  
 
   return (
     <Container fluid className='pb-5'>
-      <Container className='my-2 px-0'>
-        <BackBar setSelectedOrder={setSelectedOrder} selectedOrder={selectedOrder} getallOrders={getallOrders} />
+      <p className='col-12 mb-0 text-center font-75'> </p>
+
+      <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
+        <Row>
+          <Col
+            xs={2}
+            md={2}
+            lg={2}
+            className='m-auto py-0'
+            onClick={() => setSelectedOrder('')}
+          >
+            <BackButton />
+          </Col>
+          <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
+            <span className='fw-bold font-85'>
+              <span className='fw-bold font-85'>Présenter le qrcode au locker</span>
+            </span>
+          </Col>
+          <Col xs={2} md={2} lg={2} className='m-auto text-light text-start ps- me-3 py-0'>
+            <BadgedIcon
+              slot={selectedOrder?.bookingSlot}
+              borderColor='secondary'
+              imgSize='28px'
+            />
+          </Col>
+        </Row>
       </Container>
       <Container className='text-center text-danger py-0  m-auto opacity-75'>
         <span className='align-middle'>
@@ -92,11 +119,9 @@ const ScanPage = ({ scanPageProps }: any) => {
       <Container
         className='bg-light p-2 w-75  border  animate__animated animate__fadeInDown'
         onClick={() => {
-          if(selectedOrder?.status === "created"){
-
+          if (selectedOrder?.status === 'created') {
             changeStatus()
-          }else{
-
+          } else {
             getallOrders(dataStore.token)
             setSelectedOrder(null)
           }

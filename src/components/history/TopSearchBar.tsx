@@ -9,11 +9,8 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
   return (
     <Container fluid className='ps-2 py-0   bg-secondary rounded-pill  my-2 '>
       <Row>
-        {selectedOrder ? (
-          <Col xs={2} md={4} lg={4} className='m-auto mx-0 py-0 px-0 ps-2' onClick={() => setSelectedOrder('')}>
-            <BackButton />
-          </Col>
-        ) : (
+        {!selectedOrder && (
+      
           <Col xs={12} className=' text-start '>
             <div className='input-group'>
               <i className='ri-search-line ps-0 me-1 text-info '></i>
@@ -36,21 +33,31 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
             </div>
           </Col>
         )}
-          {selectedOrder && (
-            <>
-        <Col xs={2} md={1} className='m-auto mx-0 py-0 px-0 ps-2'>
-            <BadgedIcon slot={selectedOrder?.bookingSlot} borderColor="secondary" imgSize="30px" />
-           
-        </Col>
-       
-        <Col xs={8} md={4} lg={5} className='bar-tite m-auto ms-md-2 text-light text-center text-md-start ps-0 pe-2 py-0'>
+        {selectedOrder && (
+          <>
+          <Col
+            xs={2}
+            md={1}
+            lg={1}
+            className='m-auto py-0 text-center'
+            onClick={() => setSelectedOrder('')}
+          >
+            <BackButton />
+          </Col>
+            <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
               <span className='fw-bold font-75'>
-              {selectedOrder?.barcode} - {selectedOrder?.client?.email}
-            </span>
-        </Col>
-            </>
-          )
-        }
+                {selectedOrder?.barcode} - {selectedOrder?.client?.email}
+              </span>
+            </Col>
+            <Col xs={2} md={1} lg={1} className='m-auto text-light text-start  me-3 py-0'>
+              <BadgedIcon
+                slot={selectedOrder?.bookingSlot}
+                borderColor='secondary'
+                imgSize='30px'
+              />
+            </Col>
+          </>
+        )}
       </Row>
     </Container>
   )

@@ -3,7 +3,7 @@ import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import { _searchWithRegex } from '../utils/functions'
+import { _getStatus, _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
@@ -57,7 +57,6 @@ const Prepared: React.FC = () => {
   const [storeName, setStoreName] = React.useState<any>([])
 
   const [isScan, setIsScan] = React.useState<boolean>(false)
-  const [isScanning, setIsScanning] = React.useState<boolean>(false)
   let videoRef = useRef<any>(null)
   const [scanCode, SetScanCode] = React.useState<string>('')
 
@@ -81,18 +80,6 @@ const Prepared: React.FC = () => {
   //////////////////////////
   // UseEffect
   /////////////////////////
-  // React.useEffect(() => {
-  //   if (isScan) {
-  //     // const scanInterval = setInterval(() => {
-  //     //   scanQRCode();
-  //     // }, 1500);
-      
-  //     return () => {
-  //       // clearInterval(scanInterval);
-  //     };
-  //   }
-  // }, [isScan]);
-
 
   React.useEffect(() => {
     setIsLoading(true)
@@ -147,7 +134,6 @@ const Prepared: React.FC = () => {
       }
       }
   };
-  console.log(isScan)
 
   const stopScan = () => {
     console.log(videoStream)
@@ -221,6 +207,10 @@ const Prepared: React.FC = () => {
                   //OK
                   setSelectedOrder(myScan)
                 }
+              } else if (myScan?.status === 'operin' || myScan?.status === 'reminder' || myScan?.status === 'overtimedue' || myScan?.status === 'overtime') {
+                setIsAnomaly(true)
+                setMsgAnomaly("Cette commande est en status : " + _getStatus(myScan?.status) + ", consultez l'historique. Code barre : " + myScan?.barcode)
+                setSelectedOrder(myScan)
               }
             } else {
               //no exist
@@ -330,7 +320,7 @@ const Prepared: React.FC = () => {
 
                   <Container className='text-center mt-3'>
                     <p>{selectedOrder && 'Une anomalie est survenue ...'}</p>
-                    <p>
+                    <p className='font-85' >
                       <b>{msgAnomaly}</b>
                     </p>
                     <img src={noOrder} alt='no-order' style={{ height: '256px' }} />
@@ -372,7 +362,6 @@ const Prepared: React.FC = () => {
               stopScan()
             } else {
               handleScan()
-              setIsScanning(true)
               setIsScan(true)
             }
           }}

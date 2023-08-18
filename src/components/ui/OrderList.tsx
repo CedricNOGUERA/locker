@@ -35,7 +35,7 @@ const OrderList = ({ orderListProps }: any) => {
 
 
   return (
-    <Container className='px-0 animate__animated animate__backInLeft'>
+    <Container className='order-list px-0 animate__animated animate__backInLeft'>
       {(orderByStatus && orderByStatus?.length > 0 && orderList?.length > 0) ||
       (filteredOrder && filteredOrder?.length > 0) ? (
         orderList?.map((liv: any, indx: any) => (

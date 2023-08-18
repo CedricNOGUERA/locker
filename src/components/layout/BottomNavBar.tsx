@@ -67,7 +67,9 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
           >
             <i className='ri-checkbox-line fs-3'></i>
             {ready_for_delivery?.length > 0 && (
-              <span className='badge rounded-pill bg-info'>{ready_for_delivery?.length}</span>
+              <span className={`badge rounded-pill bg-${
+                selectedItem === 'preparations' ? 'warning' : 'info'
+              }`}>{ready_for_delivery?.length}</span>
             )}
             <p>Prérations </p>
           </Link>
@@ -81,7 +83,9 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
           >
             <i className='ri-truck-line fs-3 '></i>
             {progress?.length > 0 && (
-              <span className='badge rounded-pill bg-info'>{progress?.length}</span>
+              <span className={`badge rounded-pill bg-${
+                selectedItem === 'progress' ? 'warning' : 'info'
+              }`}>{progress?.length}</span>
             )}
             <p>Livraisons</p>
           </Link>
@@ -112,7 +116,9 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
           >
             <i className='ri-inbox-unarchive-line fs-3 text-center'></i>
             {retrieve?.length > 0 && (
-              <span className='badge rounded-pill bg-info'>{retrieve?.length}</span>
+              <span className={`badge rounded-pill bg-${
+                selectedItem === 'retrieve' ? 'warning' : 'info'
+              }`}>{retrieve?.length}</span>
             )}
             <p>Retraits</p>
           </Link>

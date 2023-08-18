@@ -100,7 +100,6 @@ const Delivered: React.FC = () => {
   };
 
 
-  console.log(orderByStatus)
 
   return (
     <Container fluid className="cde App px-0">
