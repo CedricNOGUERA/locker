@@ -38,7 +38,7 @@ const SearchBar = ({ searchBarProps }: any) => {
   }
 
   return (
-    <Container className='my-2 text-center'>
+    <Container className='mb-2 text-center sticky-top'>
       <Container
         fluid
         className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill  my-auto '

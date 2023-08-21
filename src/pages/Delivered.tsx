@@ -54,6 +54,15 @@ const Delivered: React.FC = () => {
   React.useEffect(() => {
     _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder);
   }, [searchOrder]);
+  
+  React.useEffect(() => {
+    setStoreName(
+      allSlot?.['hydra:member'] &&
+        allSlot?.['hydra:member']?.filter(
+          (locker: any) => locker?.slot?.temperatureZone?.locker['@id'] === selectedStore
+        )
+    )
+  }, [selectedStore])
 
 
   
@@ -104,6 +113,17 @@ const Delivered: React.FC = () => {
 
 
   return (
+    <>
+     {!selectedOrder && (
+        <>
+          <div className='col-12 pb-0 text-center font-75 '>
+            {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+          </div>
+          <div className='sticky-top pt-2 bg-light  '>
+            <SearchBar searchBarProps={searchBarProps} />
+          </div>
+        </>
+      )}
     <Container fluid className="cde App px-0">
       {contextHolder}
       {!isLogged && <Navigate to="/connexion" />}
@@ -123,7 +143,7 @@ const Delivered: React.FC = () => {
         <>
           {!selectedOrder ? (
             <>
-              <SearchBar searchBarProps={searchBarProps} />
+              {/* <SearchBar searchBarProps={searchBarProps} /> */}
               <OrderList orderListProps={orderListProps} />
             </>
           ) : (
@@ -132,6 +152,8 @@ const Delivered: React.FC = () => {
         </>
       )}
     </Container>
+    </>
+
   );
 };
 

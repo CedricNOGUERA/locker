@@ -118,8 +118,17 @@ console.log(orderData)
       </div>
       
       }
-      {!isLoading && <TopSearchBar topSearchBarProps={topSearchBarProps} />}
-      {selectedOrder && <DetailHistory selectedOrder={selectedOrder} />}
+      {!isLoading && 
+      <div className='sticky-top pt-2 bg-light '>
+      <TopSearchBar topSearchBarProps={topSearchBarProps} />
+      </div>
+      
+      }
+      {selectedOrder && 
+      
+
+      <DetailHistory selectedOrder={selectedOrder} />
+      }
       {isError ? (
         <div className='my-4'>
           <AlertIsError

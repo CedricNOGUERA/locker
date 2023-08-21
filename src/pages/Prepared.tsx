@@ -268,10 +268,19 @@ console.log(orderData)
 
   return (
     <>
+      {!selectedOrder && (
+        <>
+          <div className='col-12 pb-0 text-center font-75'>
+            {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+          </div>
+          <div className='sticky-top pt-2 bg-light '>
+            <SearchBar searchBarProps={searchBarProps} />
+          </div>
+        </>
+      )}
       <Container fluid className='cde App px-0'>
         {contextHolder}
         {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/connexion' />}
-
         {isError ? (
           <Container className='text-center mt-5'>
             <AlertIsError
@@ -324,7 +333,7 @@ console.log(orderData)
 
                   <Container className='text-center mt-3'>
                     <p>{selectedOrder && 'Une anomalie est survenue ...'}</p>
-                    <p className='font-85' >
+                    <p className='font-85'>
                       <b>{msgAnomaly}</b>
                     </p>
                     <img src={noOrder} alt='no-order' style={{ height: '256px' }} />
@@ -336,10 +345,10 @@ console.log(orderData)
               </Container>
             ) : !selectedOrder ? (
               <>
-                <div className='col-12 pb-0 text-center font-75'>
+                {/* <div className='col-12 pb-0 text-center font-75'>
                   {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
                 </div>
-                <SearchBar searchBarProps={searchBarProps} />
+                <SearchBar  searchBarProps={searchBarProps} /> */}
                 <OrderList orderListProps={orderListProps} />
               </>
             ) : (
@@ -350,9 +359,7 @@ console.log(orderData)
       </Container>
       {isScan && (
         <div className='video-container text-center'>
-          <video
-            ref={videoRef}
-          />
+          <video ref={videoRef} />
         </div>
       )}
 

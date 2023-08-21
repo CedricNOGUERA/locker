@@ -137,40 +137,46 @@ const ToRetrieve: React.FC = () => {
   }
 
   return (
-    <Container fluid className='cde App px-0'>
-      {contextHolder}
-      {(!isLogged || !dataStore.token || !dataStore.company_name) && (
-        <Navigate to='/connexion' />
-      )}
-
-      {isError ? (
-        <Container className='text-center mt-5'>
-          <AlertIsError
-            title="Une erreur s'est produite"
-            msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
-            colorIcon='danger'
-          />
-        </Container>
-      ) : isLoading ? (
-        <Container className='text-center mt-2'>
-          <PlaceHolder paddingYFirst='3' />
-        </Container>
-      ) : (
+    <>
+      {!selectedOrder && (
         <>
-          {!selectedOrder ? (
-            <>
-              <div className='col-12 pb-0 text-center font-75'>
-                {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-              </div>
-              <SearchBar searchBarProps={searchBarProps} />
-              <OrderList orderListProps={orderListProps} />
-            </>
-          ) : (
-            <ScanPage scanPageProps={scanPageProps} />
-          )}
+          <div className='col-12 pb-0 text-center font-75 '>
+            {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+          </div>
+          <div className='sticky-top pt-2 bg-light  '>
+            <SearchBar searchBarProps={searchBarProps} />
+          </div>
         </>
       )}
-    </Container>
+      <Container fluid className='cde App px-0'>
+        {contextHolder}
+        {(!isLogged || !dataStore.token || !dataStore.company_name) && (
+          <Navigate to='/connexion' />
+        )}
+
+        {isError ? (
+          <Container className='text-center mt-5'>
+            <AlertIsError
+              title="Une erreur s'est produite"
+              msg='Vérifiez votre connexion internet ou contactez votre administrateur.'
+              colorIcon='danger'
+            />
+          </Container>
+        ) : isLoading ? (
+          <Container className='text-center mt-2'>
+            <PlaceHolder paddingYFirst='3' />
+          </Container>
+        ) : (
+          <>
+            {!selectedOrder ? (
+              <OrderList orderListProps={orderListProps} />
+            ) : (
+              <ScanPage scanPageProps={scanPageProps} />
+            )}
+          </>
+        )}
+      </Container>
+    </>
   )
 }
 
