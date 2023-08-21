@@ -62,6 +62,11 @@ function App() {
       getBookingAllSlot(token)
     }
   }, [token])
+  // React.useEffect(() => {
+  //   if(orderData && orderData["hydra:totalItems"]){
+  //     getOrdersByPage(token, 2)
+  //   }
+  // }, [allSlot])
 
   React.useEffect(() => {
     setSelectedOrderCity(
@@ -76,6 +81,9 @@ function App() {
         : ''
     )
   }, [allSlot])
+
+
+
 
   /////////////////////
   //Events
@@ -111,6 +119,32 @@ function App() {
       })
   }
 
+
+  const getOrdersByPage = (token: any, page: any) => {
+    console.log("object")
+    OrdersService.ordersByPage(token, page)
+    .then((response: any) => {
+      setIsLoading(false)
+      const newTab: any = orderData
+      response.data["hydra:member"]?.map((order: any) => (
+        
+        newTab['hydra:member'].push(order)
+        
+        ))
+        console.log("object2")
+        setOrderData(newTab)
+        console.log(response.data["hydra:member"])
+      })
+      .catch((error: any) => {
+        console.log(error)
+
+        setIsLoading(false)
+      })
+  }
+
+
+
+
   const getBookingAllSlot = (token: any) => {
     BookingSlotservice.allSlot(token).then((response: any) => {
       setAllSlot(response.data)
@@ -120,6 +154,10 @@ function App() {
       console.log(error)
     })
   }
+
+
+
+
   return (
    
  

@@ -48,6 +48,7 @@ const History = () => {
     setIsLoading(true)
     setSelectedItem('history')
     // setOrderByStatus(orderData['hydra:member'])
+   
   }, [])
 
   React.useEffect(() => {
@@ -66,10 +67,10 @@ const History = () => {
       }
       setIsLoading(false)
     }
-    
+   
   }, [orderData])
   
- 
+console.log(orderData) 
 
 
   React.useEffect(() => {
@@ -88,7 +89,9 @@ const History = () => {
       .catch((error: any) => {
         setIsLoading(false)
       })
+
   }
+ 
 
   //////////////////////////
   // Components props
@@ -105,7 +108,6 @@ const History = () => {
     trigger
   }
 
-  console.log(selectedOrder)
 
   return (
     <Container className='order-list'>
@@ -131,7 +133,16 @@ const History = () => {
           <PlaceHolder paddingYFirst='3' />
         </Container>
       ) : (
-        !selectedOrder && <OrderList orderListProps={orderListProps} />
+        !selectedOrder && (
+        <>
+        <OrderList orderListProps={orderListProps} />
+        {/* {orderData && orderData["hydra:member"].length > 29 &&
+          
+          <p>pagination</p>
+          } */}
+        </>
+        
+        )
       )}
     </Container>
   )

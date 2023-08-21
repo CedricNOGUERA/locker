@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { getError } from '../../utils/errors/GetError'
 
 const API_URL = process.env.REACT_APP_END_POINT
 
@@ -39,7 +38,6 @@ class AuthService {
         setIsLoadingAuth(false)
       }).catch((error) => {
         console.log(error)
-        // setMsg(error?.response.data.message)
         getMsgError(error?.response?.data?.message ? error?.response?.data?.message : error?.message)
         setCodeError(error?.response?.data?.code !== undefined ? error?.response?.data?.code : "")
         setIsError(true)

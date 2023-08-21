@@ -76,7 +76,7 @@ const Prepared: React.FC = () => {
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
 
-
+console.log(orderData)
   //////////////////////////
   // UseEffect
   /////////////////////////

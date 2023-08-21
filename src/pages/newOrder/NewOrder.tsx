@@ -14,6 +14,7 @@ import {
   Modal,
   Row,
   Spinner,
+  Table,
 } from 'react-bootstrap'
 import Badge from 'react-bootstrap/Badge'
 import { Navigate, useNavigate, useOutletContext } from 'react-router-dom'
@@ -285,7 +286,8 @@ const NewOrder = () => {
     setClientPhone('')
     setAgeRestriction(false)
   }
-
+  
+  console.log(tempZones)
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
       return Math.floor(Math.random() * (max - min + 1)) + min
@@ -296,7 +298,6 @@ const NewOrder = () => {
     const receiveCode = entierAleatoire(10000000, 99999999)
 
     setIsOrderCreate(true)
-
     let dataOrder: any =
       parseInt(qty) === 1
         ? {
@@ -685,6 +686,8 @@ const NewOrder = () => {
     }
   }
 
+  console.log(productDetail)
+
   const borderClasses = ['border-info', 'border-warning', 'border-secondary']
 
   let rowClasses: any = []
@@ -1012,7 +1015,7 @@ const NewOrder = () => {
                   )}
                   <div className='text-end'>
                     <Button
-                    title='Valider la quantité'
+                      title='Valider la quantité'
                       className='bg-info rounded-pill border-info text-light'
                       type='submit'
                     >
@@ -1181,7 +1184,8 @@ const NewOrder = () => {
                             ))}
 
                           <Button
-                            aria-label="Aria Ajouter" title='Ajouter un produit'
+                            aria-label='Aria Ajouter'
+                            title='Ajouter un produit'
                             onClick={() => {
                               handleAddProduct(indx)
                             }}
@@ -1198,7 +1202,8 @@ const NewOrder = () => {
 
                 <div className='w-100 text-end mt-3'>
                   <Button
-                            aria-label="Aria Valider prod" title='Valider produit'
+                    aria-label='Aria Valider prod'
+                    title='Valider produit'
                     type='submit'
                     className={`bg-info rounded-pill border-info text-light 
                     `}
@@ -1457,7 +1462,8 @@ const NewOrder = () => {
                 </span>
                 <div className='w-100 text-end'>
                   <Button
-                  aria-label="Aria commande" title='Valider commande'
+                    aria-label='Aria commande'
+                    title='Valider commande'
                     type='submit'
                     className={`bg-info rounded-pill border-info text-light 
                     `}
@@ -1474,6 +1480,73 @@ const NewOrder = () => {
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Body>
           <div className='text-center my-3 animate__animated animate__jello'>
+            <p>Détail de commande</p>
+            {productDetail?.map((slot: any, indx: any) => (
+              <div key={indx} className={indx > 0 ? 'mt-5' : 'mt-1'}>
+                <div className='text-start text-secondary'>
+                  <b className='fs-2'>
+                    Panier n° {indx + 1} {''} :
+                  </b>
+                  {tempZones[indx] === 'MT'
+                    ? // ||
+                      // slot?.slot?.temperatureZone?.myKey === 'MT'
+                      '🍃 Zone Fraîche'
+                    : tempZones[indx] === 'LT'
+                    ? // ||
+                      //   slot?.slot?.temperatureZone?.myKey === 'LT'
+                      '❄ Zone Congelée'
+                    : tempZones[indx] === 'CA' &&
+                      // ||
+                      //     slot?.slot?.temperatureZone?.myKey === 'CA'
+                      '☀️ Zone Ambiante'}{' '}
+                  ({slotSizes[indx]})
+                </div>
+
+                <Table striped className='mt-3'>
+                  <thead>
+                    <tr>
+                      <th className='text-center text-secondary'>Qté</th>
+                      <th className='text-center text-secondary'>Libellé produit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {slot?.map((prod: any, index: any) => (
+                      <tr key={index}>
+                        <td className='text-center font-85'>{prod?.quantity}</td>
+                        <td className='text-center font-85'>{prod?.name}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            ))}
+            {/* <img src={interrogation} alt="point d'interrogation" width={150} /> */}
+          </div>
+          <p>Voulez-vous valider cette commande ?</p>
+          <div className='mt-3 text-end'>
+            <Button
+              aria-label='Aria annuler'
+              title='Annuler commande'
+              variant='warning'
+              onClick={cancelNewOrder}
+              className='me-3'
+            >
+              Annuler
+            </Button>
+            <Button
+              aria-label='Aria valider'
+              title='Valider la commande'
+              variant='info'
+              onClick={createNewOrder}
+            >
+              Valider
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* <Modal show={show} onHide={handleClose} centered>
+        <Modal.Body>
+          <div className='text-center my-3 animate__animated animate__jello'>
             <img src={interrogation} alt="point d'interrogation" width={150} />
           </div>
           <p>Voulez-vous valider cette commande ?</p>
@@ -1486,7 +1559,7 @@ const NewOrder = () => {
             </Button>
           </div>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
     </div>
   )
 }

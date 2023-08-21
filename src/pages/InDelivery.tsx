@@ -339,7 +339,7 @@ const InDelivery: React.FC = () => {
                 <div className='col-12 pb-0 text-center font-75'>
                   {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
                 </div>
-                <SearchBar searchBarProps={searchBarProps} />
+                <SearchBar  searchBarProps={searchBarProps} />
                 <OrderList orderListProps={orderListProps} />
               </>
             ) : (

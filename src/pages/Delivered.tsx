@@ -97,6 +97,8 @@ const Delivered: React.FC = () => {
     messageApi,
     setSelectedOrder,
      newStatus,
+     allSlot,
+     setAllSlot,
   };
 
 

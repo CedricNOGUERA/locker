@@ -7,6 +7,7 @@ import BackBar from './BackBar'
 import { useNavigate } from 'react-router-dom'
 import BackButton from './BackButton'
 import BadgedIcon from './BadgedIcon'
+import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 
 const ScanPage = ({ scanPageProps }: any) => {
   const navigate = useNavigate()
@@ -15,7 +16,8 @@ const ScanPage = ({ scanPageProps }: any) => {
   //Props & store
   ///////////////////
 
-  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
+  const { selectedOrder, setOrderData, setSelectedOrder, newStatus, allSlot,
+    setAllSlot, } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
   const authLogout = userDataStore((state: any) => state.authLogout)
@@ -42,6 +44,14 @@ const ScanPage = ({ scanPageProps }: any) => {
         }
         console.log(error?.response?.data?.message)
       })
+  }
+  const getBookingAllSlot = (token: any) => {
+    BookingSlotservice.allSlot(token).then((response: any) => {
+      setAllSlot(response.data)
+    })
+    .catch((error: any) => {
+      console.log(error)
+    })
   }
 
   const changeStatus = () => {
@@ -70,6 +80,7 @@ const ScanPage = ({ scanPageProps }: any) => {
         console.log(response.data)
         getallOrders(dataStore.token)
         setSelectedOrder(null)
+        getBookingAllSlot(dataStore.token)
       })
       .catch((error: any) => {
         console.log(error)

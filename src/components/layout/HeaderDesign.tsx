@@ -40,16 +40,16 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
   ////////////////////////
   //origin page
   ///////////////////////
-  const [origin, setOrigin] = React.useState(window?.history?.state.key);
+  // const [origin, setOrigin] = React.useState(window?.history?.state.key);
   
   /////////////////////////
   //Fonction de retour en arrière
   ////////////////////////
-  const rtn = () => {
-    if(window?.history?.state?.key !== origin){
-      window.history.back()
-    }
-  }
+  // const rtn = () => {
+  //   if(window?.history?.state?.key !== origin){
+  //     window.history.back()
+  //   }
+  // }
   function refreshPage() {
     window.location.reload()
   }

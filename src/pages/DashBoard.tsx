@@ -42,7 +42,7 @@ const DashBoard = () => {
   /////////////////////////
   React.useEffect(() => {
     setIsLoading(true)
-    setSelectedItem('home')
+    setSelectedItem('')
   }, [dataStore.token])
 
   React.useEffect(() => {
