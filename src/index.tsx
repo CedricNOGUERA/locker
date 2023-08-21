@@ -61,6 +61,16 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: 'testx',
+        element: (
+          <React.Fragment>
+            <HeaderDesign title='Livraisons' />
+            {/* <InDelivery /> */}
+            <InProgress />
+          </React.Fragment>
+        ),
+      },
+      {
         path: 'deposees',
         element: (
           <React.Fragment>
