@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
@@ -12,6 +12,7 @@ import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
 import OrdersService from '../service/Orders/OrdersService'
+import { BrowserMultiFormatReader } from '@zxing/library';
 
 
 const InProgress: React.FC = () => {
@@ -65,6 +66,48 @@ const InProgress: React.FC = () => {
       order?.shippedBy &&
       order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
+
+  const [isScanned, setIsScanned] = React.useState<boolean>(false)
+
+
+  const videoRef: any = useRef(null);
+
+  const startScan = async () => {
+    setIsScanned(true)
+    
+    try {
+      const codeReader = new BrowserMultiFormatReader();
+      const constraints = {
+        video: {
+          facingMode: 'environment', // Utilisation de la caméra arrière
+        },
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      videoRef.current.srcObject = stream;
+      codeReader?.decodeFromVideoDevice(null, videoRef.current, (result: any) => {
+        if(result?.text){
+          console.log('Code EAN-13 détecté:', result?.text);
+          videoRef.current.srcObject = null
+          stopScan()
+          setIsScanned(false)
+        }
+        // Faites quelque chose avec le code EAN-13 détecté ici
+      });
+    } catch (error) {
+      console.error('Erreur lors de la configuration de la caméra:', error);
+    }
+  };
+
+  const stopScan = () => {
+    const stream = videoRef.current.srcObject;
+    if (stream) {
+      const tracks = stream.getTracks();
+      tracks.forEach((track: any) => track.stop());
+      videoRef.current.srcObject = null;
+      setIsScanned(false)
+    }
+  };
+
 
   //////////////////////////
   // UseEffect
@@ -193,7 +236,24 @@ const InProgress: React.FC = () => {
         </Container>
       ) : (
         <>
-          {!selectedOrder ? (
+         <div>
+    <h1>Scanner de codes EAN-13</h1>
+    {!isScanned ? (
+
+      <button onClick={startScan}>Démarrer le scan</button>
+      ) : (
+
+        <button onClick={stopScan}>Arrêter le scan</button>
+      )}
+    <video
+      ref={videoRef}
+      style={{ width: '100%', height: 'auto', border: '1px solid #ccc' }}
+      autoPlay
+      playsInline
+      muted
+    ></video>
+  </div>
+          {/* {!selectedOrder ? (
             <>
               <div className='col-12 pb-0 text-center font-75'>{storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}</div>
               <SearchBar searchBarProps={searchBarProps} />
@@ -201,7 +261,7 @@ const InProgress: React.FC = () => {
             </>
           ) : (
             <ScanPage scanPageProps={scanPageProps} />
-          )}
+          )} */}
         </>
       )}
     </Container>

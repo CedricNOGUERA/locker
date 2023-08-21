@@ -268,7 +268,7 @@ const InDelivery: React.FC = () => {
 
   return (
     <>
-      {!selectedOrder && (
+      {!selectedOrder && !isAnomaly && (
         <>
           <div className='col-12 pb-0 text-center font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
