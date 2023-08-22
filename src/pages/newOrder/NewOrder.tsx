@@ -35,6 +35,7 @@ import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import InfoTopBar from './InfoTopBar'
 import interrogation from '../../styles/interrogation.png'
+import { BrowserMultiFormatReader } from '@zxing/library'
 
 const NewOrder = () => {
   const navigate = useNavigate()
@@ -118,6 +119,43 @@ const NewOrder = () => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
+
+  const [scanned, setScanned] = React.useState<boolean>(true);
+  const [indxScan, setIndxScan] = React.useState<any>('')
+  const [indexScan, setIndexScan] = React.useState<any>('')
+
+
+  const diversProd = [
+    {
+      "id": "984968",
+      "ean": "9300605113152",
+      "name": "200G Café NesCafé",
+      "price": 450,
+      "taxe": 16,
+    },
+    {
+      "id": "984969",
+      "ean": "3616474434639",
+      "name": "4 PILES AA CRF",
+      "price": 650,
+      "taxe": 16,
+    },
+    {
+      "id": "984970",
+      "ean": "5397184622001",
+      "name": "PORTABLE VOCTRO 3510 DELL",
+      "price": 120000,
+      "taxe": 16,
+    },
+    {
+      "id": "984971",
+      "ean": "8993242596993",
+      "name": "Ramette A4",
+      "price": 3500,
+      "taxe": 16,
+    },
+  ]
+
   ////////////////////////
   //Regex pour vérifier que le numéro de téléphone du client commence par 87 ou 88 ou 89
   ///////////////////////
@@ -197,6 +235,82 @@ const NewOrder = () => {
   //////////////////////////
   // Events
   /////////////////////////
+
+  const [isScanned, setIsScanned] = React.useState<boolean>(false)
+
+
+  const videoRef: any = React.useRef(null);
+
+  const startScan = async () => {
+    setIsScanned(true)
+    
+    try {
+      const codeReader = new BrowserMultiFormatReader();
+      const constraints = {
+        video: {
+          facingMode: 'environment', // Utilisation de la caméra arrière
+        },
+      };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      videoRef.current.srcObject = stream;
+      codeReader?.decodeFromVideoDevice(null, videoRef.current, (result: any) => {
+        if(result?.text){
+           const myScanData = diversProd?.filter((prod: any) => prod.ean === result?.text)[0]
+          if(myScanData){
+           console.log(myScanData)
+           console.log('Code EAN-13 détecté:', result?.text)
+           videoRef.current.srcObject = null
+           // stopScan()
+           // setIsScanned(false)
+           handleChangeProductScan(
+            myScanData,
+             indxScan,
+             indexScan,
+             productDetail,
+             setProductDetail
+           )
+         }
+        }
+        // Faites quelque chose avec le code EAN-13 détecté ici
+      });
+    } catch (error) {
+      console.error('Erreur lors de la configuration de la caméra:', error);
+    }
+  };
+
+  const stopScan = () => {
+    const stream = videoRef.current.srcObject;
+    if (stream) {
+      const tracks = stream.getTracks();
+      tracks.forEach((track: any) => track.stop());
+      videoRef.current.srcObject = null;
+      setIsScanned(false)
+    }
+  };
+  const handleChangeProductScan = (data: any, indx: any, index: any, productDetail: any, setProductDetail: any) => {
+    const newProductDetail2 = [...productDetail]
+    console.log(data)
+
+    if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
+      newProductDetail2[indx][index] = {
+        id: data?.id,
+        name: data?.name,
+        price: data?.price,
+        quantity: 1,
+      }
+      stopScan()
+          setIsScanned(false)
+      setProductDetail(newProductDetail2)
+    }
+    else {
+      stopScan()
+      setIsScanned(false)
+      console.log('object')
+    }
+  }
+
+
+
 
   const expiredToken = (error: any) => {
     if (!expireToken) {
@@ -1164,6 +1278,19 @@ const NewOrder = () => {
                                         />
                                       </InputGroup>
                                     </Col>
+                                    <Col
+                                      xs={1}
+                                      className='px-0 '
+                                      onClick={() => {
+                                        setIndxScan(indx)
+                                        setIndexScan(index)
+                                        startScan()
+                                        console.log(prod)
+                                      }}
+                                    >
+                                      <i className='ri-qr-scan-2-line fs-5 align-top text-secondary'></i>
+                                      {/* <i className='ri-close-circle-line align-top text-secondary'></i> */}
+                                    </Col>
                                     {productDetail[indx] &&
                                       productDetail[indx]?.length > 1 && (
                                         <Col
@@ -1475,6 +1602,18 @@ const NewOrder = () => {
               </form>
             </div>
           )}
+          {isScanned && 
+          <div className='video-container text-center'>
+            <video
+              ref={videoRef}
+              // style={{ width: '100%', height: 'auto', border: '1px solid #ccc' }}
+              autoPlay
+              playsInline
+              muted
+            ></video>
+            <Button onClick={stopScan} >Stop</Button>
+          </div>
+          }
         </Container>
       )}
       <Modal show={show} onHide={handleClose} centered>
