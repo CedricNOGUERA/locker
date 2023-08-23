@@ -120,9 +120,9 @@ const NewOrder = () => {
   const handleShow = () => setShow(true)
 
 
-  const [scanned, setScanned] = React.useState<boolean>(true);
   const [indxScan, setIndxScan] = React.useState<any>('')
   const [indexScan, setIndexScan] = React.useState<any>('')
+  const [isScanned, setIsScanned] = React.useState<boolean>(false)
 
 
   const diversProd = [
@@ -236,9 +236,8 @@ const NewOrder = () => {
   // Events
   /////////////////////////
 
-  const [isScanned, setIsScanned] = React.useState<boolean>(false)
 
-
+// Fonctions pour scanner les ean des produits (pas au point)
   const videoRef: any = React.useRef(null);
 
   const startScan = async () => {
@@ -248,7 +247,7 @@ const NewOrder = () => {
       const codeReader = new BrowserMultiFormatReader();
       const constraints = {
         video: {
-          facingMode: 'environment', // Utilisation de la caméra arrière
+          facingMode: 'environment',
         },
       };
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -260,8 +259,7 @@ const NewOrder = () => {
            console.log(myScanData)
            console.log('Code EAN-13 détecté:', result?.text)
            videoRef.current.srcObject = null
-           // stopScan()
-           // setIsScanned(false)
+         
            handleChangeProductScan(
             myScanData,
              indxScan,
@@ -269,9 +267,13 @@ const NewOrder = () => {
              productDetail,
              setProductDetail
            )
+         }else {
+          setIsScanned(false)
+          stopScan()
+          console.log('Pas de résultat')
          }
         }
-        // Faites quelque chose avec le code EAN-13 détecté ici
+ 
       });
     } catch (error) {
       console.error('Erreur lors de la configuration de la caméra:', error);
@@ -289,17 +291,16 @@ const NewOrder = () => {
   };
   const handleChangeProductScan = (data: any, indx: any, index: any, productDetail: any, setProductDetail: any) => {
     const newProductDetail2 = [...productDetail]
-    console.log(data)
 
     if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
       newProductDetail2[indx][index] = {
-        id: data?.id,
+        id: Math.random(),
         name: data?.name,
         price: data?.price,
         quantity: 1,
       }
       stopScan()
-          setIsScanned(false)
+      setIsScanned(false)
       setProductDetail(newProductDetail2)
     }
     else {
@@ -1278,7 +1279,7 @@ const NewOrder = () => {
                                         />
                                       </InputGroup>
                                     </Col>
-                                    <Col
+                                    {/* <Col
                                       xs={1}
                                       className='px-0 '
                                       onClick={() => {
@@ -1289,8 +1290,7 @@ const NewOrder = () => {
                                       }}
                                     >
                                       <i className='ri-qr-scan-2-line fs-5 align-top text-secondary'></i>
-                                      {/* <i className='ri-close-circle-line align-top text-secondary'></i> */}
-                                    </Col>
+                                    </Col> */}
                                     {productDetail[indx] &&
                                       productDetail[indx]?.length > 1 && (
                                         <Col
@@ -1602,18 +1602,17 @@ const NewOrder = () => {
               </form>
             </div>
           )}
-          {isScanned && 
+          {/* {isScanned && 
           <div className='video-container text-center'>
             <video
               ref={videoRef}
-              // style={{ width: '100%', height: 'auto', border: '1px solid #ccc' }}
               autoPlay
               playsInline
               muted
             ></video>
             <Button onClick={stopScan} >Stop</Button>
           </div>
-          }
+          } */}
         </Container>
       )}
       <Modal show={show} onHide={handleClose} centered>

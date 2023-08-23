@@ -16,6 +16,7 @@ import AlertIsError from "../components/ui/warning/AlertIsError";
 
 const Delivered: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged);
+  const dataStore = userDataStore((state: any) => state);
   const [selectedStore, setSelectedStore, orderData, setOrderData, selectedOrderCity, setSelectedOrderCity,  allSlot, setAllSlot] = useOutletContext<any>()
 
 
@@ -35,6 +36,11 @@ const Delivered: React.FC = () => {
   const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "created" && order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore );
 
 
+  React.useEffect(() => {
+    // getOrderByStatus(dataStore.token, "created")
+    // getOrderByPage(dataStore.token, 2)
+   
+  }, [])
   React.useEffect(() => {
   
     if(orderData && orderData["hydra:member"]?.length > 0){
@@ -66,6 +72,15 @@ const Delivered: React.FC = () => {
 
 
   
+  const getOrderByStatus = (token: any, status: any) => {
+    OrdersService.ordersByStatus(token, status).then((response: any) => {
+      setIsLoading(false)
+      setOrderData(response.data)
+    }).catch((error: any) => {
+      setIsLoading(false)
+      
+    })
+  }
   const getOrderByPage = (token: any, page: any) => {
     OrdersService.ordersByPage(token, page).then((response: any) => {
       setIsLoading(false)

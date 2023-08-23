@@ -8,7 +8,7 @@ import {
   Button,
 } from 'react-bootstrap'
 import axios from 'axios'
-import {  Navigate } from 'react-router-dom'
+import {  Link, Navigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import userDataStore from '../../store/userDataStore'
 import React, { useEffect, useRef, useState } from 'react'
@@ -288,16 +288,25 @@ console.log(myData)
         {isLoading ? (
           <Loading variant='info' />
         ) : (
+          <>
           <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
             <Card.Body className=''>
               <div className='logo-app text-center text-light animate__animated animate__rotateIn'></div>
               <div
                className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
+
                 OVER BOX
               </div>
               <AuthForm formProps={formProps} />
             </Card.Body>
           </Card>
+            <div className='back-to-home'>
+
+            <Button variant="" size="sm"><Link to='/accueil' className='text-decoration-none text-light '>
+            <i className='ri-arrow-left-line text-light fs-3'></i>
+             </Link></Button>
+            </div>
+          </>
         )}
         <Modal show={show} onHide={handleClose} centered className='rounded-0'>
           <Modal.Header className='border-bottom-0'>

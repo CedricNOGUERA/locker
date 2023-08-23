@@ -15,7 +15,8 @@ const OrderList = ({ orderListProps }: any) => {
     setSearchOrder,
     allSlot,
     orderByStatus,
-    trigger
+    trigger,
+    historyOrder
   } = orderListProps
 
   const [orderList, setOrderList] = React.useState([])
@@ -25,12 +26,17 @@ const OrderList = ({ orderListProps }: any) => {
   React.useEffect(() => {
     if (filteredOrder?.length > 0 && searchOrder?.length > 2) {
       setOrderList(filteredOrder)
-    } else if (filteredOrder?.length === 0 && searchOrder?.length > 2) {
-      setOrderList([])
-    } else {
+    } 
+    else if (filteredOrder?.length === 0 && searchOrder?.length > 2) {
+    setOrderList([])
+    } 
+    else if (trigger === "history") {
+    setOrderList(historyOrder)
+    } 
+    else {
       setOrderList(orderByStatus)
     }
-  }, [orderByStatus, filteredOrder, searchOrder])
+  }, [orderByStatus, filteredOrder, searchOrder, historyOrder])
 
 
 
