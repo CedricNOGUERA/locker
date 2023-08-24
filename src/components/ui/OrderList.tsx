@@ -30,9 +30,9 @@ const OrderList = ({ orderListProps }: any) => {
     else if (filteredOrder?.length === 0 && searchOrder?.length > 2) {
     setOrderList([])
     } 
-    else if (trigger === "history") {
-    setOrderList(historyOrder)
-    } 
+    // else if (trigger === "history") {
+    // setOrderList(historyOrder)
+    // } 
     else {
       setOrderList(orderByStatus)
     }

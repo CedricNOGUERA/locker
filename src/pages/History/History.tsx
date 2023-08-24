@@ -50,8 +50,8 @@ const History = () => {
   const [currentPage, setCurrentPage] = React.useState<number>();
 
   const trigger ="history"
-  let orderByStatus = allOrder
-  // let orderByStatus = orderData['hydra:member']
+  // let orderByStatus = allOrder
+  let orderByStatus = orderData['hydra:member']
 
 
   
@@ -128,20 +128,6 @@ console.log(currentPage)
   };
 
 
-
-
-  // const getallOrders = (token: any) => {
-  //   OrdersService.allOrders(token)
-  //     .then((response: any) => {
-  //       setIsLoading(false)
-  //       setOrderByStatus(response.data['hydra:member'])
-  //       console.log(response.data)
-  //     })
-  //     .catch((error: any) => {
-  //       setIsLoading(false)
-  //     })
-  //   }
-
   const getOrderByPage = (token: any, page: any, setData: any) => {
     OrdersService.ordersByPage(token, page)
       .then((response: any) => {
@@ -207,7 +193,8 @@ console.log(currentPage)
       ) : (
         !selectedOrder && (
           <>
-          <div className='pagination'>
+            {totalPages > 1 && (
+              <div className='pagination'>
                 {Array.from({ length: totalPages }).map((_, index) => (
                   <button
                     key={index}
@@ -218,8 +205,9 @@ console.log(currentPage)
                   </button>
                 ))}
               </div>
+            )}
             <OrderList orderListProps={orderListProps} />
-            {orderData && orderData['hydra:member']?.length > 29 && (
+            {totalPages > 1 && (
               <div className='pagination'>
                 {Array.from({ length: totalPages }).map((_, index) => (
                   <button

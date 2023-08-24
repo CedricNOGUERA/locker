@@ -109,7 +109,8 @@ console.log(formattedDate)
   }, [allSlot])
 
 
-const totalPages = Math.ceil(allOrder && allOrder?.length / itemsPerPage);
+// const totalPages = Math.ceil(allOrder && allOrder?.length / itemsPerPage);
+const totalPages = 1;
 
 
   /////////////////////
