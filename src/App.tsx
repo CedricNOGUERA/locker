@@ -28,6 +28,7 @@ function App() {
   const [orderReady, setOrderReady] = React.useState<any>([])
   const [orderPickedUp, setOrderPickedUp] = React.useState<any>([])
   const [orderExpired, setOrderExpired] = React.useState<any>([])
+  const [orderCreated, setOrderCreated] = React.useState<any>([])
 
 
   const [allOrder, setAllOrder] = React.useState<any>([])
@@ -78,10 +79,11 @@ console.log(formattedDate)
       getOrdersByStatus(token, "ready_for_delivery", setOrderReady)
       getOrdersByStatus(token, "picked_up", setOrderPickedUp)
       getOrdersByStatus(token, "overtime", setOrderExpired)
+      getOrdersByStatus(token, "created", setOrderCreated)
       getBookingAllSlot(token)
     }
   }, [token])
- console.log(orderExpired)
+ console.log(orderCreated)
   React.useEffect(() => {
    if(orderData['hydra:member']?.length > 29){
 
@@ -207,7 +209,11 @@ const totalPages = 2;
   }
 
 
-
+  const bottomProps = {
+    orderReady,
+    orderPickedUp,
+    orderExpired
+  }
 
   return (
    
@@ -242,6 +248,7 @@ const totalPages = 2;
                 orderReady,
                 orderPickedUp,
                 orderExpired,
+                orderCreated,
 
               ]}
             />
@@ -253,6 +260,7 @@ const totalPages = 2;
           selectedStore={selectedStore}
           selectedItem={selectedItem}
           setSelectedItem={setSelectedItem}
+          bottomProps={bottomProps}
         />
       </div>
     

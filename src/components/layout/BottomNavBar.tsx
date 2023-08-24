@@ -5,7 +5,13 @@ import UserQrcode from '../ui/modals/UserQrcode'
 import userDataStore from '../../store/userDataStore'
 import imag from '../../styles/imagePlus4.png'
 
-const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem }: any) => {
+const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem, bottomProps }: any) => {
+
+  const{
+    orderReady,
+    orderPickedUp,
+    orderExpired
+  } =  bottomProps
  //////////////////////////
   // Store 
   /////////////////////////
@@ -21,24 +27,24 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem 
   ///////////////////////
   //Filter by status
   ///////////////////////
-  const retrieve = orderData['hydra:member']?.filter(
+  const retrieve = orderExpired['hydra:member']?.filter(
     (order: any) =>
-      order?.status === 'overtime' &&
+      // order?.status === 'overtime' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker && 
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
-  const progress = orderData['hydra:member']?.filter(
+  const progress = orderPickedUp['hydra:member']?.filter(
     (order: any) =>
-      order?.status === 'picked_up' &&
+      // order?.status === 'picked_up' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] && 
       (order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore )
       &&
       order?.shippedBy &&
       (order?.shippedBy['@id'] === `/api/users/${dataStore.id}`)
   )
-  const ready_for_delivery = orderData['hydra:member']?.filter(
+  const ready_for_delivery = orderReady['hydra:member']?.filter(
     (order: any) =>
-      order?.status === 'ready_for_delivery' &&
+      // order?.status === 'ready_for_delivery' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker && 
       
       order?.bookingSlot.slot?.temperatureZone?.locker['@id'] === selectedStore

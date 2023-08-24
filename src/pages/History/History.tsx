@@ -208,7 +208,7 @@ console.log(currentPage)
             )}
             <OrderList orderListProps={orderListProps} />
             {totalPages > 1 && (
-              <div className='pagination'>
+              <div className='pagination mb-5'>
                 {Array.from({ length: totalPages }).map((_, index) => (
                   <button
                     key={index}
