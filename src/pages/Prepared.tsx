@@ -77,17 +77,17 @@ const Prepared: React.FC = () => {
   const trigger ="preparations"
   const newStatus = 'picked_up'
 
-  const orderByStatus = orderReady['hydra:member']?.filter(
-    (order: any) =>
-      order?.bookingSlot?.slot?.temperatureZone?.locker &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
-  )
-  // const orderByStatus = orderData['hydra:member']?.filter(
+  // const orderByStatus = orderReady['hydra:member']?.filter(
   //   (order: any) =>
-  //     order?.status === 'ready_for_delivery' &&
   //     order?.bookingSlot?.slot?.temperatureZone?.locker &&
   //     order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   // )
+  const orderByStatus = orderData['hydra:member']?.filter(
+    (order: any) =>
+      order?.status === 'ready_for_delivery' &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
+  )
 
 console.log(orderData)
   //////////////////////////
