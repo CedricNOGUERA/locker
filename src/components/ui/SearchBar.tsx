@@ -9,6 +9,7 @@ const SearchBar = ({ searchBarProps }: any) => {
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
+    
   } = searchBarProps
 
   const [uniqueTab, setUniqueTab] = React.useState([])

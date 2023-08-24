@@ -56,6 +56,13 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem,
   const handleSelect = (item: any) => {
     setSelectedItem(item)
   }
+
+  function hasDelivererRole(roles: any[]) {
+    return roles?.includes("ROLE_DELIVERER");
+  }
+
+  const userRoles = dataStore.roles;
+const hasDeliverer = hasDelivererRole(userRoles);
   
   return (
     <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
@@ -73,9 +80,13 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem,
           >
             <i className='ri-checkbox-line fs-3'></i>
             {ready_for_delivery?.length > 0 && (
-              <span className={`badge rounded-pill bg-${
-                selectedItem === 'preparations' ? 'warning' : 'info'
-              }`}>{ready_for_delivery?.length}</span>
+              <span
+                className={`badge rounded-pill bg-${
+                  selectedItem === 'preparations' ? 'warning' : 'info'
+                }`}
+              >
+                {ready_for_delivery?.length}
+              </span>
             )}
             <p>Prérations </p>
           </Link>
@@ -89,30 +100,38 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem,
           >
             <i className='ri-truck-line fs-3 '></i>
             {progress?.length > 0 && (
-              <span className={`badge rounded-pill bg-${
-                selectedItem === 'progress' ? 'warning' : 'info'
-              }`}>{progress?.length}</span>
+              <span
+                className={`badge rounded-pill bg-${
+                  selectedItem === 'progress' ? 'warning' : 'info'
+                }`}
+              >
+                {progress?.length}
+              </span>
             )}
             <p>Livraisons</p>
           </Link>
         </Nav.Item>
-        <Nav.Item
-          className='nav-item text-center '
-          style={{ position: 'absolute', bottom: '45px' }}
-          onClick={() => handleSelect('order')}
-          title="Nouvelle commande"
-        >
-          <Link
-            to='/nouvelle-commande'
-            className='text-info py-1 pb-5 mb-5 text-decoration-none'
-          >
-            <img alt='Plus icon' src={imag} width={52} height={52} />
-          </Link>
-        </Nav.Item>
-        <Nav.Item className='nav-item text-center'>
-          <div className='text-center '></div>
-        </Nav.Item>
+        {hasDeliverer && (
+          <>
+            <Nav.Item
+              className='nav-item text-center '
+              style={{ position: 'absolute', bottom: '45px' }}
+              onClick={() => handleSelect('order')}
+              title='Nouvelle commande'
+            >
+              <Link
+                to='/nouvelle-commande'
+                className='text-info py-1 pb-5 mb-5 text-decoration-none'
+              >
+                <img alt='Plus icon' src={imag} width={52} height={52} />
+              </Link>
+            </Nav.Item>
 
+            <Nav.Item className='nav-item text-center'>
+              <div className='text-center '></div>
+            </Nav.Item>
+          </>
+        )}
         <Nav.Item className='nav-item text-center' onClick={() => handleSelect('retrieve')}>
           <Link
             className={`nav-link px-0  text-${
@@ -122,9 +141,13 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem,
           >
             <i className='ri-inbox-unarchive-line fs-3 text-center'></i>
             {retrieve?.length > 0 && (
-              <span className={`badge rounded-pill bg-${
-                selectedItem === 'retrieve' ? 'warning' : 'info'
-              }`}>{retrieve?.length}</span>
+              <span
+                className={`badge rounded-pill bg-${
+                  selectedItem === 'retrieve' ? 'warning' : 'info'
+                }`}
+              >
+                {retrieve?.length}
+              </span>
             )}
             <p>Retraits</p>
           </Link>

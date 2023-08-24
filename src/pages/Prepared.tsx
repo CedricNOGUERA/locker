@@ -43,11 +43,12 @@ const Prepared: React.FC = () => {
     selectedItem,
     setSelectedItem,
     expireToken,
-                setExpireToken,
-                totalPages,
-                allOrder,
-                historyOrder, setHistoryOrder,
-                orderReady
+    setExpireToken,
+    totalPages,
+    allOrder,
+    historyOrder,
+    setHistoryOrder,
+    orderReady,
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -64,7 +65,8 @@ const Prepared: React.FC = () => {
 
   const [isScan, setIsScan] = React.useState<boolean>(false)
   let videoRef = useRef<any>(null)
-  const [scanCode, SetScanCode] = React.useState<string>('')
+  const [scanCode, setScanCode] = React.useState<string>('')
+  const [zebraScanCode, setZebraScan] = React.useState<string>('')
 
   const [isAnomalie, setIsAnomalie] = React.useState<boolean>(false)
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
@@ -77,7 +79,6 @@ const Prepared: React.FC = () => {
 
   const orderByStatus = orderReady['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'ready_for_delivery' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
@@ -96,6 +97,7 @@ console.log(orderData)
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('preparations')
+    handleButtonClick()
   }, [])
 
   React.useEffect(() => {
@@ -111,7 +113,61 @@ console.log(orderData)
   }, [orderData])
 
   React.useEffect(() => {
-    _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
+    const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === searchOrder || order?.id === parseInt(searchOrder)))[0]
+    if (myScan) {
+      setScanCode(searchOrder)
+      if (myScan?.status === 'picked_up') {
+        if (!myScan.shippedBy) {
+          setIsAnomaly(true)
+          setMsgAnomaly(
+            'Cette commande n\'est assignée à aucun livreur mais son statuts est "En livraison".'
+          )
+          setSelectedOrder(myScan)
+
+        } else if (myScan.shippedBy.firstName === dataStore?.firstname) {
+          setIsAnomaly(true)
+          setMsgAnomaly(
+            'Vous avez déjà prise en charge cette commande, vérifier la liste des commandes à livrer.'
+          )
+          setSelectedOrder(myScan)
+        } else {
+          setIsAnomaly(true)
+          setMsgAnomaly(
+            'Cette commande est déjà prise en charge par ' +
+              myScan?.shippedBy.firstName
+          )
+          setSelectedOrder(myScan)
+        }
+      } else if (myScan?.status === 'created') {
+        setIsAnomaly(true)
+        setMsgAnomaly('Cette commande est en cours de préparation')
+        setSelectedOrder(myScan)
+      } else if (myScan?.status === 'ready_for_delivery') {
+        if (
+          myScan.bookingSlot?.slot?.temperatureZone?.locker &&
+          myScan.bookingSlot?.slot?.temperatureZone?.locker['@id'] !== selectedStore
+        ) {
+          setIsAnomaly(true)
+          setMsgAnomaly(
+            'Commande pour : ' +
+              myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+          )
+          setSelectedOrder(myScan)
+        } else {
+          //OK
+          setSelectedOrder(myScan)
+        }
+      } else if (myScan?.status === 'operin' || myScan?.status === 'reminder' || myScan?.status === 'overtimedue' || myScan?.status === 'overtime') {
+        setIsAnomaly(true)
+        setMsgAnomaly("Cette commande est en status : " + _getStatus(myScan?.status) + ", consultez l'historique. Code barre : " + myScan?.barcode)
+        setSelectedOrder(myScan)
+      }
+    } else {
+      //no exist
+    
+
+      _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
+    }
   }, [searchOrder])
 
   React.useEffect(() => {
@@ -124,6 +180,13 @@ console.log(orderData)
         
     )
   }, [selectedStore])
+
+  const inputRef: any = useRef(null);
+
+  const handleButtonClick = () => {
+    // Focus on the input element when the button is clicked
+    inputRef?.current.focus();
+  };
 
   const handleScan = async () => {
     setIsAnomaly(false)
@@ -172,7 +235,7 @@ console.log(orderData)
 
         if (code) {
           console.log('QR Code detected:', code.data);
-          SetScanCode(code.data)
+          setScanCode(code.data)
           if(code.data === ''){
             setIsAnomalie(false)
             setIsScan(false)
@@ -242,7 +305,18 @@ console.log(orderData)
   };
 
 
+  const handleZebraScan = (data: any) => {
+    setZebraScan(data)
+    const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === data || order?.id === parseInt(data)))[0]
+    console.log(myScan)
+    if(myScan){
+      setSelectedOrder(myScan)
+    }
+    
+  }
 
+
+console.log(selectedOrder)
 
   //////////////////////////
   // Component Props
@@ -255,6 +329,7 @@ console.log(orderData)
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
+      inputRef,
   }
 
   const orderListProps = {
@@ -292,7 +367,7 @@ console.log(orderData)
       )}
       <Container fluid className='cde App px-0'>
         {contextHolder}
-        {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/accueil' />}
+        {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/connexion' />}
         {isError ? (
           <Container className='text-center mt-5'>
             <AlertIsError
@@ -365,7 +440,9 @@ console.log(orderData)
               </>
             ) : (
               <OrderDetail scanPageProps={scanPageProps} />
-            )}
+              )}
+                    
+              <input type='hidden' ref={inputRef}  value={zebraScanCode} onChange={(e) => handleZebraScan(e.currentTarget.value)} />
           </>
         )}
       </Container>

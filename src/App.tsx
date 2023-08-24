@@ -181,7 +181,7 @@ const totalPages = 2;
 
 
   const getOrdersByStatus = (token: any, status: any, setData: any) => {
-    console.log("object")
+    
     OrdersService.ordersByStatus(token, status)
     .then((response: any) => {
       setIsLoading(false)
@@ -219,7 +219,7 @@ const totalPages = 2;
    
  
       <div className='first-block'>
-        {!isLogged && <Navigate to='/accueil' />}
+        {!isLogged && <Navigate to='/connexion' />}
         {isLoading ? (
           <>
             <Container className='text-center pt-5 vh-100'>

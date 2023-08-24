@@ -139,10 +139,10 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: '/accueil',
-    element: <Home />,
-  },
+  // {
+  //   path: '/accueil',
+  //   element: <Home />,
+  // },
   {
     path: '/connexion',
     element: <Auth />,

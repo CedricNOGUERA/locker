@@ -793,11 +793,26 @@ const NewOrder = () => {
     const { value } = e.target
 
     const newProductDetail2 = [...productDetail]
-
-    if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
-      newProductDetail2[indx][index][key] =
-        key === 'quantity' || key === 'price' ? parseInt(value) : value
+    const myScanData = diversProd?.filter((prod: any) => prod.ean === value)[0]
+    if(myScanData){
+      if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
+        newProductDetail2[indx][index] = {
+          id: Math.random(),
+          name: myScanData?.name,
+          price: myScanData?.price,
+          quantity: 1,
+        }
+        
+      }
       setProductDetail(newProductDetail2)
+    } else{
+
+      
+      if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
+        newProductDetail2[indx][index][key] =
+        key === 'quantity' || key === 'price' ? parseInt(value) : value
+        setProductDetail(newProductDetail2)
+      }
     }
   }
 

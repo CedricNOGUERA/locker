@@ -84,7 +84,7 @@ console.log(allSlot)
   return (
     <Container className='cde App text-center mt-2'>
       {(!isLogged || !dataStore.token || !dataStore.company_name) && (
-        <Navigate to='/accueil' />
+        <Navigate to='/connexion' />
       )}
       <div className='ff-agency text-info bg-secondary rounded-pill  mt-2 mb-3'>
         <Row className='p'>

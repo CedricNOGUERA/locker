@@ -16,6 +16,7 @@ const userDataStore = create(
       token: null,
       subToken: null,
       apm_access_code: null,
+      roles: null,
 
 
       // methods for manipulating state
@@ -29,6 +30,7 @@ const userDataStore = create(
         token: any,
         subToken: any,
         apm_access_code: any,
+        roles: any,
         
       ) =>
         set((state: any) => ({
@@ -41,6 +43,7 @@ const userDataStore = create(
           token: token,
           subToken: subToken,
           apm_access_code: apm_access_code,
+          roles: roles,
 
         })),
       authLogout: () =>
@@ -54,6 +57,8 @@ const userDataStore = create(
           token: null,
           subToken: null,
           apm_access_code: null,
+      roles: null,
+
         })),
     }),
     {
