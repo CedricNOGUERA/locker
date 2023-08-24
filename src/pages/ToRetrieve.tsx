@@ -36,6 +36,15 @@ const ToRetrieve: React.FC = () => {
     setAllSlot,
     selectedItem,
     setSelectedItem,
+    expireToken,
+    setExpireToken,
+    totalPages,
+    allOrder,
+    historyOrder,
+    setHistoryOrder,
+    orderReady,
+    orderPickedUp,
+    orderExpired,
   ] = useOutletContext<any>()
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -49,11 +58,17 @@ const ToRetrieve: React.FC = () => {
 
   const newStatus = 'operout'
 
-  const orderByStatus = orderData['hydra:member']?.filter(
+  const orderByStatus = orderExpired['hydra:member']?.filter(
     (order: any) =>
-      order.status === 'overtime' &&
+      order.bookingSlot.slot.temperatureZone.locker &&
       order.bookingSlot.slot.temperatureZone.locker['@id'] === selectedStore
   )
+ 
+  // const orderByStatus = orderData['hydra:member']?.filter(
+  //   (order: any) =>
+  //     order.status === 'overtime' &&
+  //     order.bookingSlot.slot.temperatureZone.locker['@id'] === selectedStore
+  // )
 
   //////////////////////////
   // UseEffect

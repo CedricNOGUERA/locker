@@ -52,7 +52,7 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
           </Col>
             <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
               <span className='fw-bold font-75'>
-                {selectedOrder?.barcode} - {selectedOrder?.client?.email}
+                {selectedOrder?.barcode}
               </span>
             </Col>
             <Col xs={2} md={1} lg={1} className='m-auto text-light text-start  me-3 py-0'>

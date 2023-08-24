@@ -25,6 +25,9 @@ function App() {
   const [selectedOrderCity, setSelectedOrderCity] = React.useState<any>('')
   const [orderData, setOrderData] = React.useState<any>([])
   const [selectedItem, setSelectedItem] = React.useState<string>('home')
+  const [orderReady, setOrderReady] = React.useState<any>([])
+  const [orderPickedUp, setOrderPickedUp] = React.useState<any>([])
+  const [orderExpired, setOrderExpired] = React.useState<any>([])
 
 
   const [allOrder, setAllOrder] = React.useState<any>([])
@@ -72,11 +75,13 @@ console.log(formattedDate)
   React.useEffect(() => {
     if (token && token?.length > 0) {
       getallOrders(token)
-      // getOrdersByDate(token, formattedDate)
+      getOrdersByStatus(token, "ready_for_delivery", setOrderReady)
+      getOrdersByStatus(token, "picked_up", setOrderPickedUp)
+      getOrdersByStatus(token, "overtime", setOrderExpired)
       getBookingAllSlot(token)
     }
   }, [token])
- 
+ console.log(orderExpired)
   React.useEffect(() => {
    if(orderData['hydra:member']?.length > 29){
 
@@ -110,7 +115,7 @@ console.log(formattedDate)
 
 
 // const totalPages = Math.ceil(allOrder && allOrder?.length / itemsPerPage);
-const totalPages = 1;
+const totalPages = 2;
 
 
   /////////////////////
@@ -173,19 +178,12 @@ const totalPages = 1;
   }
 
 
-  const getOrdersByPage = (token: any, page: any) => {
+  const getOrdersByStatus = (token: any, status: any, setData: any) => {
     console.log("object")
-    OrdersService.ordersByPage(token, page)
+    OrdersService.ordersByStatus(token, status)
     .then((response: any) => {
       setIsLoading(false)
-      const newTab: any = orderData
-      response.data["hydra:member"]?.map((order: any) => (
-        
-        newTab['hydra:member'].push(order)
-        
-        ))
-        console.log("object2")
-        setOrderData(newTab)
+     setData(response.data)
         console.log(response.data["hydra:member"])
       })
       .catch((error: any) => {
@@ -240,7 +238,10 @@ const totalPages = 1;
                 setExpireToken,
                 totalPages,
                 allOrder,
-                historyOrder, setHistoryOrder
+                historyOrder, setHistoryOrder,
+                orderReady,
+                orderPickedUp,
+                orderExpired,
 
               ]}
             />

@@ -38,6 +38,14 @@ const InDelivery: React.FC = () => {
     setAllSlot,
     selectedItem,
     setSelectedItem,
+    expireToken,
+    setExpireToken,
+    totalPages,
+    allOrder,
+    historyOrder, setHistoryOrder,
+    orderReady,
+    orderPickedUp,
+    orderExpired,
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -63,14 +71,22 @@ const InDelivery: React.FC = () => {
 
   const newStatus = 'operin'
 
-  const orderByStatus = orderData['hydra:member']?.filter(
+  const orderByStatus = orderPickedUp['hydra:member']?.filter(
     (order: any) =>
-      order?.status === 'picked_up' &&
+      
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
       order?.shippedBy &&
       order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
+  // const orderByStatus = orderData['hydra:member']?.filter(
+  //   (order: any) =>
+  //     order?.status === 'picked_up' &&
+  //     order?.bookingSlot?.slot?.temperatureZone?.locker &&
+  //     order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
+  //     order?.shippedBy &&
+  //     order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
+  // )
   console.log(selectedOrder)
 
   //////////////////////////
