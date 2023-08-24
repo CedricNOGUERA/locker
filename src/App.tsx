@@ -214,7 +214,7 @@ const totalPages = Math.ceil(allOrder && allOrder?.length / itemsPerPage);
    
  
       <div className='first-block'>
-        {!isLogged && <Navigate to='/connexion' />}
+        {!isLogged && <Navigate to='/accueil' />}
         {isLoading ? (
           <>
             <Container className='text-center pt-5 vh-100'>

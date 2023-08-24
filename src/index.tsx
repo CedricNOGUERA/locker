@@ -26,6 +26,7 @@ import Test2 from './pages/Public/Test_copy'
 import Prepared from './pages/Prepared'
 import InDelivery from './pages/InDelivery'
 import Home from './pages/Home'
+import NotFound from './pages/NotFound'
 // import InDelivery from './pages/InDelivery'
 
 const router = createBrowserRouter([
@@ -33,7 +34,6 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-     
       {
         path: 'preparations',
         element: (
@@ -141,12 +141,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/accueil',
-    element: (
-     
-        
-        <Home />
-      
-    ),
+    element: <Home />,
   },
   {
     path: '/connexion',
@@ -168,7 +163,11 @@ const router = createBrowserRouter([
     path: '/test2',
     element: <Test2 />,
   },
-  // 
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+  //
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

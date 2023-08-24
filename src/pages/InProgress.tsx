@@ -220,7 +220,7 @@ const InProgress: React.FC = () => {
   return (
     <Container fluid className='cde App px-0'>
       {contextHolder}
-      {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/connexion' />}
+      {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/accueil' />}
 
       {isError ? (
         <Container className='text-center mt-5'>
