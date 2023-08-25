@@ -40,16 +40,16 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
   ////////////////////////
   //origin page
   ///////////////////////
-  const [origin, setOrigin] = React.useState(window?.history?.state.key);
+  // const [origin, setOrigin] = React.useState(window?.history?.state.key);
   
   /////////////////////////
   //Fonction de retour en arrière
   ////////////////////////
-  const rtn = () => {
-    if(window?.history?.state?.key !== origin){
-      window.history.back()
-    }
-  }
+  // const rtn = () => {
+  //   if(window?.history?.state?.key !== origin){
+  //     window.history.back()
+  //   }
+  // }
   function refreshPage() {
     window.location.reload()
   }
@@ -59,7 +59,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       <UserQrcode show={show} handleClose={handleClose} />
       <Container
         fluid={'lg'}
-        className='top-nav-design sticky-top pb-2 text-info shadow opacity-75'
+        className='top-nav-design sticky-to pb-2 text-info shadow opacity-75'
       >
         <Row className=' pe-0'>
           <Col xs={2} className='py-2 ff-agency m-auto text-center'>

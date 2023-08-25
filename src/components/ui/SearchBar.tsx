@@ -9,6 +9,7 @@ const SearchBar = ({ searchBarProps }: any) => {
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
+    
   } = searchBarProps
 
   const [uniqueTab, setUniqueTab] = React.useState([])
@@ -38,7 +39,7 @@ const SearchBar = ({ searchBarProps }: any) => {
   }
 
   return (
-    <Container className='my-2 text-center'>
+    <Container className='mb-2 text-center sticky-top'>
       <Container
         fluid
         className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill  my-auto '
@@ -75,7 +76,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   className='text-light'
                 >
                   <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
-                  <span className='font-85'>{selectedOrderCity}</span>
+                  <span className='font-85'>{selectedOrderCity}    </span>
                 </Dropdown.Toggle>
               </Col>
             </Row>

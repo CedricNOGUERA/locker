@@ -31,6 +31,11 @@ const History = () => {
     setAllSlot,
     selectedItem,
     setSelectedItem,
+    expireToken,
+    setExpireToken,
+    totalPages,
+    allOrder,
+    historyOrder, setHistoryOrder
   ] = useOutletContext<any>()
 
   const token = userDataStore((state: any) => state.token)
@@ -40,16 +45,47 @@ const History = () => {
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
-  // const [orderByStatus, setOrderByStatus] = React.useState<any>([])
+
+
+  const [currentPage, setCurrentPage] = React.useState<number>();
 
   const trigger ="history"
-  const orderByStatus = orderData['hydra:member']
+  // let orderByStatus = allOrder
+  let orderByStatus = orderData['hydra:member']
+
+
+  
+  React.useEffect(() => {
+    setCurrentPage(1)
+   
+  }, [])
+
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('history')
-    // setOrderByStatus(orderData['hydra:member'])
-  }, [])
+    // setOrderByStatus(orderData && orderData['hydra:member'])
+    
+  // if(orderData['hydra:member']?.length > 29){
 
+  //   getOrderByPage(token, 2, setOrderByPage)
+  
+  // }
+  
+   
+  }, [orderData])
+
+
+
+//   React.useEffect(() => {
+//     if(orders){
+//       Array.from({ length: orderByPage?.length }).map((_, index) =>
+//       orders?.push(orderByPage[index])
+      
+//       )
+     
+// }
+//   }, [orderByPage])
+  
   React.useEffect(() => {
     if (
       (orderData && orderData['hydra:member']?.length > 0) ||
@@ -66,29 +102,49 @@ const History = () => {
       }
       setIsLoading(false)
     }
-    
+   
   }, [orderData])
   
- 
 
 
   React.useEffect(() => {
     _searchWithRegex(searchOrder, orderData['hydra:member'], setFilteredOrder)
   }, [orderData, searchOrder])
 
+  React.useEffect(() => {
+
+    if(currentPage){
+
+      getOrderByPage(token, currentPage, setHistoryOrder)
+    }
+  }, [currentPage]);
 
 
-  const getallOrders = (token: any) => {
-    OrdersService.allOrders(token)
+console.log(currentPage)
+  // const totalPages = Math.ceil(orders && orders?.length / itemsPerPage);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+
+  const getOrderByPage = (token: any, page: any, setData: any) => {
+    OrdersService.ordersByPage(token, page)
       .then((response: any) => {
         setIsLoading(false)
-        setOrderData(response.data)
+        setData(response.data['hydra:member'])
+        
         console.log(response.data)
       })
       .catch((error: any) => {
         setIsLoading(false)
+        console.log(error)
       })
   }
+ 
+
+
+  
 
   //////////////////////////
   // Components props
@@ -102,21 +158,25 @@ const History = () => {
     setSearchOrder,
     orderByStatus,
     orderData,
-    trigger
+    trigger,
+    historyOrder
   }
 
-  console.log(selectedOrder)
+  console.log(historyOrder)
 
   return (
     <Container className='order-list'>
-      {selectedOrder && 
-         <div className='col-12 pb-0 text-center font-75'>
-        {' '}
-        {selectedOrder?.bookingSlot?.slot?.temperatureZone?.locker?.location}
-      </div>
-      
-      }
-      {!isLoading && <TopSearchBar topSearchBarProps={topSearchBarProps} />}
+      {selectedOrder && (
+        <div className='col-12 pb-0 text-center font-75'>
+          {' '}
+          {selectedOrder?.bookingSlot?.slot?.temperatureZone?.locker?.location}
+        </div>
+      )}
+      {!isLoading && (
+        <div className='sticky-top pt-2 bg-light '>
+          <TopSearchBar topSearchBarProps={topSearchBarProps} />
+        </div>
+      )}
       {selectedOrder && <DetailHistory selectedOrder={selectedOrder} />}
       {isError ? (
         <div className='my-4'>
@@ -131,7 +191,37 @@ const History = () => {
           <PlaceHolder paddingYFirst='3' />
         </Container>
       ) : (
-        !selectedOrder && <OrderList orderListProps={orderListProps} />
+        !selectedOrder && (
+          <>
+            {totalPages > 1 && (
+              <div className='pagination'>
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <button
+                    key={index}
+                    className={currentPage === index + 1 ? 'active' : ''}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            )}
+            <OrderList orderListProps={orderListProps} />
+            {totalPages > 1 && (
+              <div className='pagination mb-5'>
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <button
+                    key={index}
+                    className={currentPage === index + 1 ? 'active' : ''}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        )
       )}
     </Container>
   )
