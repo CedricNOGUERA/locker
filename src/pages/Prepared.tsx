@@ -68,28 +68,29 @@ const Prepared: React.FC = () => {
   const [scanCode, setScanCode] = React.useState<string>('')
   const [zebraScanCode, setZebraScan] = React.useState<string>('')
 
-  const [isAnomalie, setIsAnomalie] = React.useState<boolean>(false)
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>("")
+
+  const inputRef: any = useRef(null); //input de recherche
 
   let videoStream: MediaStream | null = null;
 
   const trigger ="preparations"
   const newStatus = 'picked_up'
 
-  // const orderByStatus = orderReady['hydra:member']?.filter(
-  //   (order: any) =>
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker &&
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
-  // )
-  const orderByStatus = orderData['hydra:member']?.filter(
+  const orderByStatus = orderReady['hydra:member']?.filter(
     (order: any) =>
-      order?.status === 'ready_for_delivery' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
+  // const orderByStatus = orderData['hydra:member']?.filter(
+  //   (order: any) =>
+  //     order?.status === 'ready_for_delivery' &&
+  //     order?.bookingSlot?.slot?.temperatureZone?.locker &&
+  //     order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
+  // )
 
-console.log(orderData)
+console.log(orderReady)
   //////////////////////////
   // UseEffect
   /////////////////////////
@@ -97,7 +98,6 @@ console.log(orderData)
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('preparations')
-    handleButtonClick()
   }, [])
 
   React.useEffect(() => {
@@ -181,12 +181,9 @@ console.log(orderData)
     )
   }, [selectedStore])
 
-  const inputRef: any = useRef(null);
+  
 
-  const handleButtonClick = () => {
-    // Focus on the input element when the button is clicked
-    inputRef?.current.focus();
-  };
+  
 
   const handleScan = async () => {
     setIsAnomaly(false)
@@ -237,7 +234,7 @@ console.log(orderData)
           console.log('QR Code detected:', code.data);
           setScanCode(code.data)
           if(code.data === ''){
-            setIsAnomalie(false)
+            setIsAnomaly(false)
             setIsScan(false)
             stopScan()
           }else {
@@ -305,15 +302,7 @@ console.log(orderData)
   };
 
 
-  const handleZebraScan = (data: any) => {
-    setZebraScan(data)
-    const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === data || order?.id === parseInt(data)))[0]
-    console.log(myScan)
-    if(myScan){
-      setSelectedOrder(myScan)
-    }
-    
-  }
+ 
 
 
 console.log(selectedOrder)
@@ -339,7 +328,6 @@ console.log(selectedOrder)
     setSearchOrder,
     orderByStatus,
     orderData,
-    // getOrderByPage,
     storeName,
     trigger
   }
@@ -442,7 +430,6 @@ console.log(selectedOrder)
               <OrderDetail scanPageProps={scanPageProps} />
               )}
                     
-              <input type='hidden' ref={inputRef}  value={zebraScanCode} onChange={(e) => handleZebraScan(e.currentTarget.value)} />
           </>
         )}
       </Container>

@@ -87,7 +87,7 @@ const InDelivery: React.FC = () => {
   //     order?.shippedBy &&
   //     order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   // )
-  console.log(selectedOrder)
+  console.log(orderPickedUp)
 
   //////////////////////////
   // UseEffect
@@ -171,8 +171,6 @@ const InDelivery: React.FC = () => {
       
     } else {
       //no exist
-    
-
       _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
     }
   }, [searchOrder])

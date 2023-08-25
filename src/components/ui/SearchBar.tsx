@@ -76,7 +76,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   className='text-light'
                 >
                   <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
-                  <span className='font-85'>{selectedOrderCity}</span>
+                  <span className='font-85'>{selectedOrderCity}    </span>
                 </Dropdown.Toggle>
               </Col>
             </Row>
