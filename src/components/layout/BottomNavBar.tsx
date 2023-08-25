@@ -58,7 +58,7 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem,
   }
 
   function hasDelivererRole(roles: any[]) {
-    return roles?.includes("ROLE_DELIVERER");
+    return roles?.includes("ROLE_ADMIN");
   }
 
   const userRoles = dataStore.roles;
