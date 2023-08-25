@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { getError } from '../../utils/errors/GetError'
 
 const API_URL = process.env.REACT_APP_END_POINT
 
@@ -12,7 +11,8 @@ class AuthService {
     setMsg: any,
     setIsError: any,
     setIsLoadingAuth: any,
-    setCodeError: any
+    setCodeError: any,
+    getMsgError: any
   ) {
     setIsLoadingAuth(true)
     let data = JSON.stringify({
@@ -34,16 +34,16 @@ class AuthService {
       .request(config)
       .then((response) => {
         setToken(response.data.token)
-        localStorage.setItem('user', response.data.token)
+        localStorage.setItem('user', response?.data?.token)
         setIsLoadingAuth(false)
-      })
-      .catch((error) => {
+      }).catch((error) => {
         console.log(error)
-        setMsg(getError(error))
+        getMsgError(error?.response?.data?.message ? error?.response?.data?.message : error?.message)
         setCodeError(error?.response?.data?.code !== undefined ? error?.response?.data?.code : "")
         setIsError(true)
         setIsLoadingAuth(false)
       })
+     
   }
 
   logout() {

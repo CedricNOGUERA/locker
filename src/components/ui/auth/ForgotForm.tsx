@@ -58,6 +58,7 @@ const ForgotForm = ({ formProps }: any) => {
             name='pass2'
             placeholder='Confirmez votre mot de passe'
             value={pass2}
+            min={8}
             onChange={(e) => setPass2(e.currentTarget.value)}
             required
           />

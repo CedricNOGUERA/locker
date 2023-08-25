@@ -25,6 +25,8 @@ import ReturnOrder from './pages/ReturnOrder'
 import Test2 from './pages/Public/Test_copy'
 import Prepared from './pages/Prepared'
 import InDelivery from './pages/InDelivery'
+import Home from './pages/Home'
+import NotFound from './pages/NotFound'
 // import InDelivery from './pages/InDelivery'
 
 const router = createBrowserRouter([
@@ -57,6 +59,16 @@ const router = createBrowserRouter([
             <HeaderDesign title='Livraisons' />
             <InDelivery />
             {/* <InProgress /> */}
+          </React.Fragment>
+        ),
+      },
+      {
+        path: 'testx',
+        element: (
+          <React.Fragment>
+            <HeaderDesign title='test' />
+            {/* <InDelivery /> */}
+            <InProgress />
           </React.Fragment>
         ),
       },
@@ -127,6 +139,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  // {
+  //   path: '/accueil',
+  //   element: <Home />,
+  // },
   {
     path: '/connexion',
     element: <Auth />,
@@ -147,7 +163,11 @@ const router = createBrowserRouter([
     path: '/test2',
     element: <Test2 />,
   },
-  // 
+  {
+    path: '*',
+    element: <NotFound />,
+  },
+  //
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)

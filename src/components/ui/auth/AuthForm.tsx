@@ -78,7 +78,13 @@ const AuthForm= ({ formProps }: any) => {
         )}
       </Form.Group>
       {isError && (
-        <AlertIsError title={`Erreur : ${codeError}`} msg={msgError} colorIcon='danger' />
+        codeError ?(
+
+         <AlertIsError title={`Erreur : ${codeError}`} msg={msgError} colorIcon='danger' />
+         ) : (
+           <AlertIsError title={`Erreur est survenue : `} msg="Vérifiez votre connexion interne" colorIcon='danger' />
+
+         )
       )}
       {/* todo: mettre en place l'envoi d'email */}
       

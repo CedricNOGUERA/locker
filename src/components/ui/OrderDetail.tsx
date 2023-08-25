@@ -198,7 +198,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
         ) : (
           <>
             <Modal.Header closeButton>
-              <Modal.Title>Préparation</Modal.Title>
+              <Modal.Title>Prise en charge</Modal.Title>
             </Modal.Header>
             <Modal.Body>Voulez-vous prendre en charge cette commande ?</Modal.Body>
             <Modal.Footer>

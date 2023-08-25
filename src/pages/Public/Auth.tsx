@@ -8,7 +8,7 @@ import {
   Button,
 } from 'react-bootstrap'
 import axios from 'axios'
-import {  Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import userDataStore from '../../store/userDataStore'
 import React, { useEffect, useRef, useState } from 'react'
@@ -84,11 +84,35 @@ const Auth = () => {
   const isAndroid = /Android/i.test(navigator.userAgent);
 
   const [webInstallPrompt, handleWebInstallDeclined, handleWebInstallAccepted] = useWebInstallPrompt();
-   ////////////////////
+ 
+  const [isOnline, setIsOnline] = React.useState(window.navigator.onLine);
+
+  const handleOnline = () => {
+    setIsOnline(true);
+  };
+
+  const handleOffline = () => {
+    setIsOnline(false);
+    alert('Connexion perdue, reconnectez-vous')
+  };
+
+  React.useEffect(() => {
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+ 
+ 
+ 
+  ////////////////////
   //UseEffect
   ///////////////////
 
-console.log(myData)
+console.log(myData.roles)
 
   React.useEffect(() => {
     const handleBeforeInstallPrompt: any = (event:any) => {
@@ -124,6 +148,7 @@ console.log(myData)
         token,
         null,
         myData.apmAccessCode,
+        myData.roles,
 
       )
       handleClearCache()
@@ -164,6 +189,16 @@ console.log(myData)
     setMsgError("Vous n'êtes affilié à aucune companie, contacté votre adminitrateur")
   }
 
+  const getMsgError = (msg: any) => {
+    if(msg === 'Invalid credentials.'){
+      setMsgError("Vos données sont érronées, réessayez.")
+    } else if(msg === 'Internal error server'){
+      setMsgError("Erreur interne du serveur, réessayez de vous connecter")
+    }
+  }
+
+
+
   const signUp: SubmitHandler<Inputs> = (dataz: any, e: any) => {
     e.preventDefault()
     setIsError(false)
@@ -174,7 +209,8 @@ console.log(myData)
       setMsgError,
       setIsError,
       setIsLoadingAuth,
-      setCodeError
+      setCodeError,
+      getMsgError
     )
 
     setIsLoading(false)
@@ -184,6 +220,7 @@ console.log(myData)
     UserService.me(token).then((response: any) => {
       setMyData(response.data)
     })
+   
   }
 
   const forgot = (e: any) => {
@@ -211,7 +248,7 @@ console.log(myData)
         .request(config)
         .then((response: any) => {
           console.log((response.data.token))
-          authLogin(false, null, null, null, null, null, null, response.data.token)
+          authLogin(false, null, null, null, null, null, null, response.data.token, null)
 
           Swal.fire({
             position: 'top-end',
@@ -257,11 +294,13 @@ console.log(myData)
               <div className='logo-app text-center text-light animate__animated animate__rotateIn'></div>
               <div
                className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
+
                 OVER BOX
               </div>
               <AuthForm formProps={formProps} />
             </Card.Body>
           </Card>
+           
         )}
         <Modal show={show} onHide={handleClose} centered className='rounded-0'>
           <Modal.Header className='border-bottom-0'>
