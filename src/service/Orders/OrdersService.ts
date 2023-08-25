@@ -10,11 +10,11 @@ class OrderService {
         return axios.get(API_URL + "orders/?createdAt[strictly_after]=" + date , {headers: {"Authorization": "Bearer " + token}})
     }
     ordersByStatus(token: any, status: any) {
-        return axios.get("https://backend-locker-itl.herokuapp.com/api/orders/?status=" + status , {headers: {"Authorization": "Bearer " + token}})
-        // return axios.get(API_URL + "orders/?status=" + status , {headers: {"Authorization": "Bearer " + token}})
+        // return axios.get("https://backend-locker-itl.herokuapp.com/api/orders?status=" + status , {headers: {"Authorization": "Bearer " + token}})
+        return axios.get(API_URL + "orders?status=" + status , {headers: {"Authorization": "Bearer " + token}})
     }
     ordersByPage(token: any, page: any) {
-        return axios.get(API_URL + "orders/?page=" + page , {headers: {"Authorization": "Bearer " + token}})
+        return axios.get(API_URL + "orders?page=" + page , {headers: {"Authorization": "Bearer " + token}})
     }
     create(token: any, data: any) {
         return axios.post(API_URL + "orders", {headers: {"Authorization": "Bearer " + token}, data: data})
