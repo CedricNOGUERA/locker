@@ -21,21 +21,18 @@ const History = () => {
   // Store & context state
   /////////////////////////
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
-    expireToken,
-    setExpireToken,
+    selectedStore,
+    setOrderData,
+    selectedOrderCity,
+    setAllSlot,
     totalPages,
-    allOrder,
-    historyOrder, setHistoryOrder
+    setHistoryOrder,
+    historyOrder,
   ] = useOutletContext<any>()
 
   const token = userDataStore((state: any) => state.token)
@@ -46,46 +43,38 @@ const History = () => {
   const [searchOrder, setSearchOrder] = React.useState<any>('')
   const [filteredOrder, setFilteredOrder] = React.useState<any>([])
 
+  const [currentPage, setCurrentPage] = React.useState<number>()
 
-  const [currentPage, setCurrentPage] = React.useState<number>();
-
-  const trigger ="history"
+  const trigger = 'history'
   // let orderByStatus = allOrder
   let orderByStatus = orderData['hydra:member']
 
-
-  
   React.useEffect(() => {
     setCurrentPage(1)
-   
   }, [])
 
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('history')
     // setOrderByStatus(orderData && orderData['hydra:member'])
-    
-  // if(orderData['hydra:member']?.length > 29){
 
-  //   getOrderByPage(token, 2, setOrderByPage)
-  
-  // }
-  
-   
+    // if(orderData['hydra:member']?.length > 29){
+
+    //   getOrderByPage(token, 2, setOrderByPage)
+
+    // }
   }, [orderData])
 
+  //   React.useEffect(() => {
+  //     if(orders){
+  //       Array.from({ length: orderByPage?.length }).map((_, index) =>
+  //       orders?.push(orderByPage[index])
 
+  //       )
 
-//   React.useEffect(() => {
-//     if(orders){
-//       Array.from({ length: orderByPage?.length }).map((_, index) =>
-//       orders?.push(orderByPage[index])
-      
-//       )
-     
-// }
-//   }, [orderByPage])
-  
+  // }
+  //   }, [orderByPage])
+
   React.useEffect(() => {
     if (
       (orderData && orderData['hydra:member']?.length > 0) ||
@@ -102,38 +91,31 @@ const History = () => {
       }
       setIsLoading(false)
     }
-   
   }, [orderData])
-  
-
 
   React.useEffect(() => {
     _searchWithRegex(searchOrder, orderData['hydra:member'], setFilteredOrder)
   }, [orderData, searchOrder])
 
   React.useEffect(() => {
-
-    if(currentPage){
-
+    if (currentPage) {
       getOrderByPage(token, currentPage, setHistoryOrder)
     }
-  }, [currentPage]);
+  }, [currentPage])
 
-
-console.log(currentPage)
+  console.log(currentPage)
   // const totalPages = Math.ceil(orders && orders?.length / itemsPerPage);
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
-
+    setCurrentPage(newPage)
+  }
 
   const getOrderByPage = (token: any, page: any, setData: any) => {
     OrdersService.ordersByPage(token, page)
       .then((response: any) => {
         setIsLoading(false)
         setData(response.data['hydra:member'])
-        
+
         console.log(response.data)
       })
       .catch((error: any) => {
@@ -141,10 +123,6 @@ console.log(currentPage)
         console.log(error)
       })
   }
- 
-
-
-  
 
   //////////////////////////
   // Components props
@@ -159,7 +137,7 @@ console.log(currentPage)
     orderByStatus,
     orderData,
     trigger,
-    historyOrder
+    historyOrder,
   }
 
   console.log(historyOrder)

@@ -5,18 +5,19 @@ import UserQrcode from '../ui/modals/UserQrcode'
 import userDataStore from '../../store/userDataStore'
 import imag from '../../styles/imagePlus4.png'
 
-const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem, bottomProps }: any) => {
-
-  const{
-    orderReady,
-    orderPickedUp,
-    orderExpired
-  } =  bottomProps
- //////////////////////////
-  // Store 
+const BottomNavBar = ({
+  orderData,
+  selectedStore,
+  selectedItem,
+  setSelectedItem,
+  bottomProps,
+}: any) => {
+  const { orderReady, orderPickedUp, orderExpired } = bottomProps
+  //////////////////////////
+  // Store
   /////////////////////////
   const dataStore = userDataStore((state: any) => state)
- 
+
   //////////////////////
   //Auth deliverer modal
   //////////////////////
@@ -30,23 +31,21 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem,
   const retrieve = orderExpired['hydra:member']?.filter(
     (order: any) =>
       // order?.status === 'overtime' &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker && 
+      order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
   const progress = orderPickedUp['hydra:member']?.filter(
     (order: any) =>
       // order?.status === 'picked_up' &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] && 
-      (order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore )
-      &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
       order?.shippedBy &&
-      (order?.shippedBy['@id'] === `/api/users/${dataStore.id}`)
+      order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
   const ready_for_delivery = orderReady['hydra:member']?.filter(
     (order: any) =>
       // order?.status === 'ready_for_delivery' &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker && 
-      
+      order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
 
@@ -58,12 +57,12 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem,
   }
 
   function hasDelivererRole(roles: any[]) {
-    return roles?.includes("ROLE_ADMIN");
+    return roles?.includes('ROLE_ADMIN')
   }
 
-  const userRoles = dataStore.roles;
-const hasDeliverer = hasDelivererRole(userRoles);
-  
+  const userRoles = dataStore.roles
+  const hasDeliverer = hasDelivererRole(userRoles)
+
   return (
     <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
       <UserQrcode show={show} handleClose={handleClose} />

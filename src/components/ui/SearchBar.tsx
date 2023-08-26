@@ -9,7 +9,7 @@ const SearchBar = ({ searchBarProps }: any) => {
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
-    
+    inputRef,
   } = searchBarProps
 
   const [uniqueTab, setUniqueTab] = React.useState([])
@@ -51,6 +51,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                 <div className='input-group '>
                   <i className='ri-search-line me-1 '></i>
                   <input
+                  ref={inputRef}
                     type='text'
                     className='form-control rounded-pill '
                     placeholder='N° Commande...'

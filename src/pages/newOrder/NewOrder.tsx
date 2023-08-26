@@ -34,21 +34,17 @@ import InfoAlert from '../../components/ui/warning/InfoAlert'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import InfoTopBar from './InfoTopBar'
-import interrogation from '../../styles/interrogation.png'
 import { BrowserMultiFormatReader } from '@zxing/library'
 
 const NewOrder = () => {
-  const navigate = useNavigate()
   //////////////////////////
   // booleans States
   /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isOrderCreate, setIsOrderCreate] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
-  const [isMsgErrorQty, setIsMsgErrorQty] = React.useState<boolean>(false)
   const [isMsgErrorName, setIsMsgErrorName] = React.useState<boolean>(false)
   const [isMsgErrorEmail, setIsMsgErrorEmail] = React.useState<boolean>(false)
-  const [isValid, setIsValid] = React.useState<boolean>(false)
   const [trigger, setTrigger] = React.useState<boolean>(false)
   const [trigger2, setTrigger2] = React.useState<boolean>(false)
   const [isValidPhone, setIsValidPhone] = React.useState<boolean>(true)
@@ -71,16 +67,27 @@ const NewOrder = () => {
   const now: any = Date.now()
 
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
+    selectedStore,
+    setOrderData,
+    selectedOrderCity,
+    setAllSlot,
+    totalPages,
+    setHistoryOrder,
+    historyOrder,
+    orderReady,
+    setOrderReady,
+    orderPickedUp,
+    setOrderPickedUp,
+    orderExpired,
+    setOrderExpired,
+    orderCreated,
+    setOrderCreated,
+    selectedItem,
     expireToken,
     setExpireToken,
   ] = useOutletContext<any>()
@@ -521,7 +528,6 @@ const NewOrder = () => {
           getallOrders(dataStore.token)
           getBookingAllSlot(dataStore.token)
           setIsOrderCreate(false)
-          setIsValid(false)
           setTrigger(false)
           setChosenLocker([])
           setClientName('')
@@ -547,12 +553,10 @@ const NewOrder = () => {
           console.log(error)
           handleClose()
           setMsgError(getError(error))
-          setIsValid(false)
           setQty('')
           setTrigger(false)
           setChosenLocker([])
           setIsOrderCreate(false)
-          setIsValid(false)
           setClientName('')
           setClientEmail('')
           setChoosedName('')
@@ -668,7 +672,6 @@ const NewOrder = () => {
     setChoosedPhone('')
     setChosenLocker([])
     setAgeRestriction(false)
-    setIsValid(false)
     setProductDetail([])
   }
 
@@ -676,16 +679,13 @@ const NewOrder = () => {
     e.preventDefault()
 
     if (!qty) {
-      setIsMsgErrorQty(true)
     }
 
     if (qty) {
       setIsError(false)
-      setIsMsgErrorQty(false)
       setIsMsgErrorName(false)
       setIsMsgErrorEmail(false)
 
-      setIsValid(true)
 
       newOrderRegister(
         orderStore.lockerId,

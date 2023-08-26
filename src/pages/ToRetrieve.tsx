@@ -26,25 +26,26 @@ const ToRetrieve: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
-    expireToken,
-    setExpireToken,
+     selectedStore,
+    setOrderData,
+     selectedOrderCity,
+     setAllSlot,
     totalPages,
-    allOrder,
-    historyOrder,
     setHistoryOrder,
-    orderReady,
-    orderPickedUp,
-    orderExpired,
+    historyOrder, 
+     orderReady,
+    setOrderReady,
+     orderPickedUp,
+    setOrderPickedUp,
+     orderExpired,
+   
+    
+             
   ] = useOutletContext<any>()
   const [messageApi, contextHolder] = message.useMessage()
 

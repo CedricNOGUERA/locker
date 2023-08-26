@@ -30,17 +30,30 @@ const InProgress: React.FC = () => {
   const authLogout = userDataStore((state: any) => state.authLogout)
   const dataStore = userDataStore((state: any) => state)
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
-    expireToken, setExpireToken,
+     selectedStore,
+    setOrderData,
+     selectedOrderCity,
+     setAllSlot,
+    totalPages,
+    setHistoryOrder,
+    historyOrder, 
+     orderReady,
+    setOrderReady,
+     orderPickedUp,
+    setOrderPickedUp,
+     orderExpired,
+    setOrderExpired,
+     orderCreated,
+     setOrderCreated,
+    selectedItem,
+    expireToken,
+    setExpireToken,
+    
 
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')

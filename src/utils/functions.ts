@@ -251,3 +251,20 @@ export const _refreshPage = () => {
   window.location.reload()
 }
 
+
+
+
+export const _getOrdersByStatus = (token: any, status: any, setData: any) => {
+    
+  OrdersService.ordersByStatus(token, status)
+  .then((response: any) => {
+    
+   setData(response.data)
+      console.log(response.data["hydra:member"])
+    })
+    .catch((error: any) => {
+      console.log(error)
+
+      
+    })
+}

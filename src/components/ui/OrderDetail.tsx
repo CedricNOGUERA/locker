@@ -6,13 +6,21 @@ import userDataStore from '../../store/userDataStore'
 import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { _refreshPage } from '../../utils/functions'
 const OrderDetail = ({ scanPageProps }: any) => {
   const navigate = useNavigate()
 
   ////////////////////
   //Props & store
   ///////////////////
-  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
+  const {
+    selectedOrder,
+    setOrderData,
+    setSelectedOrder,
+    newStatus,
+    handleButtonClick,
+    setOrderReady,
+  } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
   const authLogout = userDataStore((state: any) => state.authLogout)
@@ -89,6 +97,8 @@ const OrderDetail = ({ scanPageProps }: any) => {
         .then((response: any) => {
           console.log(response.data)
           getallOrders(dataStore.token)
+          _refreshPage()
+          // _getOrdersByStatus(dataStore.token, 'ready_for_delivery', setOrderReady)
           setIsLoading(false)
           handleShowUpdateStatus()
         })
@@ -111,7 +121,10 @@ const OrderDetail = ({ scanPageProps }: any) => {
               md={1}
               lg={1}
               className='m-auto py-0'
-              onClick={() => setSelectedOrder('')}
+              onClick={() => {
+                handleButtonClick()
+                setSelectedOrder('')
+              }}
             >
               <BackButton />
             </Col>

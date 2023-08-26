@@ -19,7 +19,6 @@ function App() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [expireToken, setExpireToken] = React.useState<boolean>(false)
 
-
   const [selectedStore, setSelectedStore] = React.useState<any>('')
   const [allSlot, setAllSlot] = React.useState<any>([])
   const [selectedOrderCity, setSelectedOrderCity] = React.useState<any>('')
@@ -30,76 +29,68 @@ function App() {
   const [orderExpired, setOrderExpired] = React.useState<any>([])
   const [orderCreated, setOrderCreated] = React.useState<any>([])
 
-
   const [allOrder, setAllOrder] = React.useState<any>([])
   const [historyOrder, setHistoryOrder] = React.useState<any>([])
   const [orderByPage, setOrderByPage] = React.useState<any>([])
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const itemsPerPage: number = 30; // Nombre d'éléments par page
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const itemsPerPage: number = 30 // Nombre d'éléments par page
 
-  const [origin, setOrigin] = React.useState(window?.history?.state.key);
-  const navigate = useNavigate();
-  const [isOnline, setIsOnline] = React.useState(window.navigator.onLine);
+  const [origin, setOrigin] = React.useState(window?.history?.state.key)
+  const navigate = useNavigate()
+  const [isOnline, setIsOnline] = React.useState(window.navigator.onLine)
 
   const handleOnline = () => {
-    setIsOnline(true);
-  };
+    setIsOnline(true)
+  }
 
   const handleOffline = () => {
-    setIsOnline(false);
+    setIsOnline(false)
     alert('Connexion perdue, reconnectez-vous')
     authLogout()
-  };
+  }
 
-  
   /////////////////////
   //UseEffect
   ////////////////////
   React.useEffect(() => {
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
 
-  const currentDate = new Date();
-  const sevenDaysAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-  
-  const formattedDate = `${sevenDaysAgo.getFullYear()}-${String(sevenDaysAgo.getMonth() + 1).padStart(2, '0')}-${String(sevenDaysAgo.getDate()).padStart(2, '0')}`;
+  const currentDate = new Date()
+  const sevenDaysAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000)
 
+  const formattedDate = `${sevenDaysAgo.getFullYear()}-${String(
+    sevenDaysAgo.getMonth() + 1
+  ).padStart(2, '0')}-${String(sevenDaysAgo.getDate()).padStart(2, '0')}`
 
-console.log(formattedDate)
+  console.log(formattedDate)
 
   React.useEffect(() => {
     if (token && token?.length > 0) {
       getallOrders(token)
-      getOrdersByStatus(token, "ready_for_delivery", setOrderReady)
-      getOrdersByStatus(token, "picked_up", setOrderPickedUp)
-      getOrdersByStatus(token, "overtime", setOrderExpired)
-      getOrdersByStatus(token, "created", setOrderCreated)
+      getOrdersByStatus(token, 'ready_for_delivery', setOrderReady)
+      getOrdersByStatus(token, 'picked_up', setOrderPickedUp)
+      getOrdersByStatus(token, 'overtime', setOrderExpired)
+      getOrdersByStatus(token, 'created', setOrderCreated)
       getBookingAllSlot(token)
     }
   }, [token])
- console.log(orderCreated)
+  console.log(orderCreated)
   React.useEffect(() => {
-   if(orderData['hydra:member']?.length > 29){
-
-    getOrderByPages(token, 2, setOrderByPage)
-  
-  }
-  
-
-
+    if (orderData['hydra:member']?.length > 29) {
+      getOrderByPages(token, 2, setOrderByPage)
+    }
   }, [orderData])
 
-
-    React.useEffect(() => {
+  React.useEffect(() => {
     setAllOrder(orderData['hydra:member']?.concat(orderByPage))
   }, [orderByPage])
-
 
   React.useEffect(() => {
     setSelectedOrderCity(
@@ -109,37 +100,35 @@ console.log(formattedDate)
     )
     setSelectedStore(
       allSlot?.['hydra:member']
-        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker && 
-        allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker['@id']
+        ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker &&
+            allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker['@id']
         : ''
     )
   }, [allSlot])
 
-
-// const totalPages = Math.ceil(allOrder && allOrder?.length / itemsPerPage);
-const totalPages = 2;
-
+  // const totalPages = Math.ceil(allOrder && allOrder?.length / itemsPerPage);
+  const totalPages = 2
 
   /////////////////////
   //Events
   ////////////////////
   const expiredToken = (error: any) => {
-    if(!expireToken){
-      if(error?.response?.data?.message === 'Expired JWT Token'){
+    if (!expireToken) {
+      if (error?.response?.data?.message === 'Expired JWT Token') {
         setExpireToken(true)
         alert('Session expirée, reconnectez-vous.')
         console.log('allOrder_app')
         authLogout()
         return
       }
-      if(error?.response?.data?.message === 'Invalid JWT Token'){
+      if (error?.response?.data?.message === 'Invalid JWT Token') {
         setExpireToken(true)
         alert('Token invalide, reconnectez-vous.')
         authLogout()
         return
       }
     }
-    }
+  }
 
   const getallOrders = (token: any) => {
     OrdersService.allOrders(token)
@@ -171,7 +160,7 @@ const totalPages = 2;
       .then((response: any) => {
         setIsLoading(false)
         setData(response.data['hydra:member'])
-        
+
         console.log(response.data)
       })
       .catch((error: any) => {
@@ -179,14 +168,12 @@ const totalPages = 2;
       })
   }
 
-
   const getOrdersByStatus = (token: any, status: any, setData: any) => {
-    
     OrdersService.ordersByStatus(token, status)
-    .then((response: any) => {
-      setIsLoading(false)
-     setData(response.data)
-        console.log(response.data["hydra:member"])
+      .then((response: any) => {
+        setIsLoading(false)
+        setData(response.data)
+        console.log(response.data['hydra:member'])
       })
       .catch((error: any) => {
         console.log(error)
@@ -195,75 +182,73 @@ const totalPages = 2;
       })
   }
 
-
-
-
   const getBookingAllSlot = (token: any) => {
-    BookingSlotservice.allSlot(token).then((response: any) => {
-      setAllSlot(response.data)
-    })
-    .catch((error: any) => {
-      setIsLoading(false)
-      console.log(error)
-    })
+    BookingSlotservice.allSlot(token)
+      .then((response: any) => {
+        setAllSlot(response.data)
+      })
+      .catch((error: any) => {
+        setIsLoading(false)
+        console.log(error)
+      })
   }
-
 
   const bottomProps = {
     orderReady,
     orderPickedUp,
-    orderExpired
+    orderExpired,
   }
 
   return (
-   
- 
-      <div className='first-block'>
-        {!isLogged && <Navigate to='/connexion' />}
-        {isLoading ? (
-          <>
-            <Container className='text-center pt-5 vh-100'>
-              <Loading vairant='warning' className='' />
-            </Container>
-          </>
-        ) : (
-          <>
-            <Outlet
-              context={[
-                selectedStore,
-                setSelectedStore,
-                orderData,
-                setOrderData,
-                selectedOrderCity,
-                setSelectedOrderCity,
-                allSlot,
-                setAllSlot,
-                selectedItem,
-                setSelectedItem,
-                expireToken,
-                setExpireToken,
-                totalPages,
-                allOrder,
-                historyOrder, setHistoryOrder,
-                orderReady,
-                orderPickedUp,
-                orderExpired,
-                orderCreated,
+    <div className='first-block'>
+      {!isLogged && <Navigate to='/connexion' />}
+      {isLoading ? (
+        <>
+          <Container className='text-center pt-5 vh-100'>
+            <Loading vairant='warning' className='' />
+          </Container>
+        </>
+      ) : (
+        <>
+          <Outlet
+            context={[
+              orderData,
+              setSelectedStore,
+              setSelectedOrderCity,
+              allSlot,
+              setSelectedItem,
+              selectedStore,
+              setOrderData,
+              selectedOrderCity,
+              setAllSlot,
+              totalPages,
+              setHistoryOrder,
+              historyOrder,
+              orderReady,
+              setOrderReady,
+              orderPickedUp,
+              setOrderPickedUp,
+              orderExpired,
+              setOrderExpired,
+              orderCreated,
+              setOrderCreated,
+              selectedItem,
+              expireToken,
+              setExpireToken,
+              allOrder,
+            ]}
+          />
+        </>
+      )}
 
-              ]}
-            />
-          </>
-        )}
-
-        <BottomNavBar
-          orderData={orderData}
-          selectedStore={selectedStore}
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
-          bottomProps={bottomProps}
-        />
-      </div>
-    
+      <BottomNavBar
+        orderData={orderData}
+        selectedStore={selectedStore}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        bottomProps={bottomProps}
+      />
+    </div>
   )
 }
 

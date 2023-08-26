@@ -28,24 +28,21 @@ const InDelivery: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
-    expireToken,
-    setExpireToken,
+    selectedStore,
+    setOrderData,
+    selectedOrderCity,
+    setAllSlot,
     totalPages,
-    allOrder,
-    historyOrder, setHistoryOrder,
+    setHistoryOrder,
+    historyOrder,
     orderReady,
+    setOrderReady,
     orderPickedUp,
-    orderExpired,
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -67,13 +64,14 @@ const InDelivery: React.FC = () => {
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
 
+  const inputRef: any = useRef(null) //input de recherche
+
   let videoStream: MediaStream | null = null
 
   const newStatus = 'operin'
 
   const orderByStatus = orderPickedUp['hydra:member']?.filter(
     (order: any) =>
-      
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
       order?.shippedBy &&
@@ -96,6 +94,7 @@ const InDelivery: React.FC = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('progress')
+    handleButtonClick()
   }, [])
 
   React.useEffect(() => {
@@ -111,8 +110,9 @@ const InDelivery: React.FC = () => {
   }, [orderData])
 
   React.useEffect(() => {
-
-    const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === searchOrder || order?.id === parseInt(searchOrder)))[0]
+    const myScan = orderData['hydra:member']?.filter(
+      (order: any) => order?.barcode === searchOrder || order?.id === parseInt(searchOrder)
+    )[0]
     if (myScan) {
       setScanCode(searchOrder)
       if (myScan?.status === 'picked_up') {
@@ -125,8 +125,7 @@ const InDelivery: React.FC = () => {
         } else if (myScan.shippedBy.firstName !== dataStore?.firstname) {
           setIsAnomaly(true)
           setMsgAnomaly(
-            'Cette commande est déjà prise en charge par ' +
-              myScan?.shippedBy.firstName
+            'Cette commande est déjà prise en charge par ' + myScan?.shippedBy.firstName
           )
           setSelectedOrder(myScan)
         } else if (
@@ -135,8 +134,7 @@ const InDelivery: React.FC = () => {
         ) {
           setIsAnomaly(true)
           setMsgAnomaly(
-            'Commande pour : ' +
-              myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+            'Commande pour : ' + myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
           )
           setSelectedOrder(myScan)
         } else {
@@ -154,8 +152,7 @@ const InDelivery: React.FC = () => {
         ) {
           setIsAnomaly(true)
           setMsgAnomaly(
-            'Commande pour : ' +
-              myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+            'Commande pour : ' + myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
           )
           setSelectedOrder(myScan)
         } else {
@@ -163,12 +160,21 @@ const InDelivery: React.FC = () => {
           setMsgAnomaly('Cette commande est sur le quai des livraisons')
           setSelectedOrder(myScan)
         }
-      } else if (myScan?.status === 'operin' || myScan?.status === 'reminder' || myScan?.status === 'overtimedue' || myScan?.status === 'overtime') {
+      } else if (
+        myScan?.status === 'operin' ||
+        myScan?.status === 'reminder' ||
+        myScan?.status === 'overtimedue' ||
+        myScan?.status === 'overtime'
+      ) {
         setIsAnomaly(true)
-        setMsgAnomaly("Cette commande est en status : " + _getStatus(myScan?.status) + ", consultez l'historique. Code barre : " + myScan?.barcode)
+        setMsgAnomaly(
+          'Cette commande est en status : ' +
+            _getStatus(myScan?.status) +
+            ", consultez l'historique. Code barre : " +
+            myScan?.barcode
+        )
         setSelectedOrder(myScan)
       }
-      
     } else {
       //no exist
       _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
@@ -183,6 +189,17 @@ const InDelivery: React.FC = () => {
         )
     )
   }, [selectedStore])
+
+  React.useEffect(() => {
+    if (selectedOrder === '') {
+      handleButtonClick()
+    }
+  }, [selectedOrder])
+
+  const handleButtonClick = () => {
+    // Focus on the input element when the button is clicked
+    inputRef?.current?.focus()
+  }
 
   const handleScan = async () => {
     setIsAnomaly(false)
@@ -293,12 +310,21 @@ const InDelivery: React.FC = () => {
                   setMsgAnomaly('Cette commande est sur le quai des livraisons')
                   setSelectedOrder(myScan)
                 }
-              } else if (myScan?.status === 'operin' || myScan?.status === 'reminder' || myScan?.status === 'overtimedue' || myScan?.status === 'overtime') {
+              } else if (
+                myScan?.status === 'operin' ||
+                myScan?.status === 'reminder' ||
+                myScan?.status === 'overtimedue' ||
+                myScan?.status === 'overtime'
+              ) {
                 setIsAnomaly(true)
-                setMsgAnomaly("Cette commande est en status : " + _getStatus(myScan?.status) + ", consultez l'historique. Code barre : " + myScan?.barcode)
+                setMsgAnomaly(
+                  'Cette commande est en status : ' +
+                    _getStatus(myScan?.status) +
+                    ", consultez l'historique. Code barre : " +
+                    myScan?.barcode
+                )
                 setSelectedOrder(myScan)
               }
-              
             } else {
               //no exist
               setMsgAnomaly("Cette commande n'existe pas.")
@@ -323,6 +349,7 @@ const InDelivery: React.FC = () => {
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
+    inputRef,
   }
 
   const orderListProps = {
@@ -341,6 +368,8 @@ const InDelivery: React.FC = () => {
     messageApi,
     setSelectedOrder,
     newStatus,
+    handleButtonClick,
+
   }
 
   return (
@@ -389,6 +418,7 @@ const InDelivery: React.FC = () => {
                         onClick={() => {
                           setSelectedOrder('')
                           setIsAnomaly(false)
+                          handleButtonClick()
                         }}
                       >
                         <BackButton />

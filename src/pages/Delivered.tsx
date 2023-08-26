@@ -7,7 +7,6 @@ import { message } from "antd";
 import { _searchWithRegex } from "../utils/functions";
 import SearchBar from "../components/ui/SearchBar";
 import OrderList from "../components/ui/OrderList";
-// import ScanPage from "../components/ui/ScanPage";
 import { Container } from "react-bootstrap";
 import ScanPage from "../components/ui/ScanPage";
 import OrdersService from "../service/Orders/OrdersService";
@@ -16,27 +15,25 @@ import AlertIsError from "../components/ui/warning/AlertIsError";
 
 const Delivered: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged)
-  const dataStore = userDataStore((state: any) => state)
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
-    expireToken,
-    setExpireToken,
+    selectedStore,
+    setOrderData,
+    selectedOrderCity,
+    setAllSlot,
     totalPages,
-    allOrder,
-    historyOrder,
     setHistoryOrder,
+    historyOrder,
     orderReady,
+    setOrderReady,
     orderPickedUp,
+    setOrderPickedUp,
     orderExpired,
+    setOrderExpired,
     orderCreated,
   ] = useOutletContext<any>()
 
@@ -138,8 +135,7 @@ const Delivered: React.FC = () => {
     messageApi,
     setSelectedOrder,
     newStatus,
-    allSlot,
-    setAllSlot,
+  
   }
 
   return (
@@ -172,10 +168,7 @@ const Delivered: React.FC = () => {
         ) : (
           <>
             {!selectedOrder ? (
-              <>
-                {/* <SearchBar searchBarProps={searchBarProps} /> */}
                 <OrderList orderListProps={orderListProps} />
-              </>
             ) : (
               <ScanPage scanPageProps={scanPageProps} />
             )}
