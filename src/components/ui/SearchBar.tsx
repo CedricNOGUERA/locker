@@ -51,13 +51,19 @@ const SearchBar = ({ searchBarProps }: any) => {
                 <div className='input-group '>
                   <i className='ri-search-line me-1 '></i>
                   <input
-                  ref={inputRef}
+                    // ref={inputRef}
                     type='text'
                     className='form-control rounded-pill '
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
                     aria-describedby='search-order'
                     style={{ height: '25px' }}
+                    value={searchOrder}
+                    onChange={(e) => setSearchOrder(e.currentTarget.value)}
+                  />
+                  <input
+                    ref={inputRef}
+                    type='hidden'
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
@@ -77,12 +83,12 @@ const SearchBar = ({ searchBarProps }: any) => {
                   className='text-light'
                 >
                   <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
-                  <span className='font-85'>{selectedOrderCity}    </span>
+                  <span className='font-85'>{selectedOrderCity} </span>
                 </Dropdown.Toggle>
               </Col>
             </Row>
           </Container>
-          <Dropdown.Menu  className='shadow ' style={{width:360}} >
+          <Dropdown.Menu className='shadow ' style={{ width: 360 }}>
             {uniqueTab?.map((locker: any, indx: any) => (
               <Dropdown.Item
                 key={Math.random()}
@@ -98,7 +104,10 @@ const SearchBar = ({ searchBarProps }: any) => {
                     {' '}
                     <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '}
                   </Col>{' '}
-                  <Col xs={10} className='m-auto my-0 user-name ps-0 pb-0 ms- font-85  text-dark'>
+                  <Col
+                    xs={10}
+                    className='m-auto my-0 user-name ps-0 pb-0 ms- font-85  text-dark'
+                  >
                     {locker}
                   </Col>
                 </Row>
