@@ -21,8 +21,6 @@ const SearchBar = ({ searchBarProps }: any) => {
     const unique: any = [...new Set(bookingLocker?.map((locker: any) => locker?.location))]
 
     setUniqueTab(unique)
-
-   
   }, [allSlot])
 
   const filteredCity = (place: any) => {
@@ -51,7 +49,6 @@ const SearchBar = ({ searchBarProps }: any) => {
                 <div className='input-group '>
                   <i className='ri-search-line me-1 '></i>
                   <input
-                    // ref={inputRef}
                     type='text'
                     className='form-control rounded-pill '
                     placeholder='N° Commande...'
@@ -61,31 +58,36 @@ const SearchBar = ({ searchBarProps }: any) => {
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
-                  <input
+                  {/* <input
                     ref={inputRef}
                     type='hidden'
+                    aria-label='searchOrder'
+                    aria-describedby='search-order'
+                    style={{ height: '25px' }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
-                  />
-                  {searchOrder !== '' && (
+                  /> */}
+                    {searchOrder !== '' && (
                     <i
-                      className='ri-close-circle-fill text-warning delete-button'
+                      className='ri-close-circle-fill text-warning delete-button fs-3'
                       onClick={() => setSearchOrder('')}
                     ></i>
                   )}
                 </div>
               </Col>
-              <Col xs={4} md={2} className='text- p-0 m-auto'>
-                <Dropdown.Toggle
-                  as='div'
-                  variant=''
-                  id='dropdown-basic'
-                  className='text-light'
-                >
-                  <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
-                  <span className='font-85'>{selectedOrderCity} </span>
-                </Dropdown.Toggle>
-              </Col>
+              {allSlot?.['hydra:member']?.length > 0 && (
+                <Col xs={4} md={2} className='text- p-0 m-auto'>
+                  <Dropdown.Toggle
+                    as='div'
+                    variant=''
+                    id='dropdown-basic'
+                    className='text-light'
+                  >
+                    <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
+                    <span className='font-85'>{selectedOrderCity} </span>
+                  </Dropdown.Toggle>
+                </Col>
+              )}
             </Row>
           </Container>
           <Dropdown.Menu className='shadow ' style={{ width: 360 }}>

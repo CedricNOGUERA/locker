@@ -42,6 +42,8 @@ const Prepared: React.FC = () => {
     historyOrder,
     orderReady,
     setOrderReady,
+    orderPickedUp,
+    setOrderPickedUp
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -82,7 +84,6 @@ const Prepared: React.FC = () => {
   //     order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   // )
 
-  console.log(orderReady)
   //////////////////////////
   // UseEffect
   /////////////////////////
@@ -106,9 +107,10 @@ const Prepared: React.FC = () => {
   }, [orderData])
 
   React.useEffect(() => {
-    const myScan = orderData['hydra:member']?.filter(
+    const myScan = orderReady['hydra:member']?.filter(
       (order: any) => order?.barcode === searchOrder || order?.id === parseInt(searchOrder)
     )[0]
+    console.log(myScan)
     if (myScan) {
       setScanCode(searchOrder)
       if (myScan?.status === 'picked_up') {
@@ -166,7 +168,7 @@ const Prepared: React.FC = () => {
       }
     } else {
       //no exist
-
+      console.log('object')
       _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
     }
   }, [searchOrder])
@@ -319,7 +321,6 @@ const Prepared: React.FC = () => {
     }
   }
 
-  console.log(selectedOrder)
 
   //////////////////////////
   // Component Props
@@ -354,15 +355,18 @@ const Prepared: React.FC = () => {
     newStatus,
     handleButtonClick,
     setOrderReady,
+    setOrderPickedUp
   }
 
   return (
     <>
       {!selectedOrder && !isAnomaly && (
-        <>
+        <>{allSlot?.['hydra:member']?.length > 0 && (
+
           <div className='col-12 pb-0 text-center font-75'>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
+            )}
           <div className='sticky-top pt-2 bg-light '>
             <SearchBar searchBarProps={searchBarProps} />
           </div>

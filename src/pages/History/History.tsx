@@ -94,8 +94,9 @@ const History = () => {
   }, [orderData])
 
   React.useEffect(() => {
-    _searchWithRegex(searchOrder, orderData['hydra:member'], setFilteredOrder)
-  }, [orderData, searchOrder])
+    _searchWithRegex(searchOrder, historyOrder, setFilteredOrder)
+    // _searchWithRegex(searchOrder, historyOrder['hydra:member'], setFilteredOrder)
+  }, [historyOrder, searchOrder])
 
   React.useEffect(() => {
     if (currentPage) {
@@ -151,7 +152,7 @@ const History = () => {
         </div>
       )}
       {!isLoading && (
-        <div className='sticky-top pt-2 bg-light '>
+        <div className='sticky-top pt-2 bg-light mb-4 '>
           <TopSearchBar topSearchBarProps={topSearchBarProps} />
         </div>
       )}
@@ -172,7 +173,7 @@ const History = () => {
         !selectedOrder && (
           <>
             {totalPages > 1 && (
-              <div className='pagination'>
+              <div className='pagination  mb-4'>
                 {Array.from({ length: totalPages }).map((_, index) => (
                   <button
                     key={index}
@@ -186,7 +187,7 @@ const History = () => {
             )}
             <OrderList orderListProps={orderListProps} />
             {totalPages > 1 && (
-              <div className='pagination mb-5'>
+              <div className='pagination'>
                 {Array.from({ length: totalPages }).map((_, index) => (
                   <button
                     key={index}

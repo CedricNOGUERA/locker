@@ -83,7 +83,7 @@ console.log(allSlot)
       {(!isLogged || !dataStore.token || !dataStore.company_name) && (
         <Navigate to='/connexion' />
       )}
-      <div className='ff-agency text-info bg-secondary rounded-pill  mt-2 mb-3'>
+      <div className='ff-agency text-warning bg-secondary rounded-pill  mt-2 mb-3'>
         <Row className='p'>
           <Col className='text-center ps-0'>Visualisation générale</Col>
         </Row>
@@ -112,57 +112,69 @@ console.log(allSlot)
             <Link to='/livraisons' className=' text-decoration-none'>
               {' '}
               <Row className='pe-0 ps-1 w-100'>
-                <Col xs={1} className='m-auto ms-0 me-2 text-start'>
+                <Col xs={2} className='m-auto text-start'>
                  <BadgedIcon slot={slot} borderColor="secondary" imgSize="40px" />
                 </Col>
-                <Col xs={7} className='m-auto ms-3 text-light text-start'>
+                <Col xs={9} className='m-auto text-light text-start'>
                   <span className='dash-location font-7'>
                     {slot?.slot?.temperatureZone?.locker?.location}{' '}
                   </span>{' '}
                 </Col>
-                <Col xs={3} className=' text-start ps-0 pe-0'>
-                  <Row>
-                    <Col xs={12} className='mb-1 py-0 text-light px-0'>
-                      <i className='ri-checkbox-line text-info me-1 align-bottom'></i>
+              </Row>
+
+                <Col xs={12} className=' text-start ps-0 pe-0'>
+                  <Row className='pe-0 ps-1 ms-2' >
+                    <Col xs={4} className='mb-1 py-0 text-light px-0'>
+                      <i className='ri-checkbox-line text-warning align-bottom fs-1'  ></i>
                       <span className='dash-city font-65'>
                         {' '}
                         Préparation :{' '}
+                       <b className='font-85'>
+
                         {
                           orderData['hydra:member']?.filter(
                             (order: any) =>
-                              order?.status === 'ready_for_delivery' &&
-                              order?.bookingSlot.slot?.temperatureZone.locker.location ===
-                                slot?.slot?.temperatureZone.locker.location &&
-                              order?.bookingSlot.slot?.temperatureZone.keyTemp ===
-                                slot?.slot?.temperatureZone?.keyTemp &&
-                              order?.bookingSlot.slot?.size === slot?.slot?.size
-                          )?.length
-                        }
+                            order?.status === 'ready_for_delivery' &&
+                            order?.bookingSlot.slot?.temperatureZone.locker.location ===
+                            slot?.slot?.temperatureZone.locker.location &&
+                            order?.bookingSlot.slot?.temperatureZone.keyTemp ===
+                            slot?.slot?.temperatureZone?.keyTemp &&
+                            order?.bookingSlot.slot?.size === slot?.slot?.size
+                            )?.length
+                          }
+                          </b>
                       </span>
                     </Col>
-                    <Col xs={12} className='mb-1 py-0 text-light px-0'>
-                      <i className='ri-truck-line text-info me-1 align-bottom'></i>
+                    <Col xs={4} className='mb-1 py-0 text-light px-0'>
+                      <i className='ri-truck-line text-warning align-bottom fs-1'></i>
                       <span className='dash-city font-65'>
                         {' '}
                         A livrer :{' '}
+                       <b className='font-85'>
+
+
                         {
                           orderData['hydra:member']?.filter(
                             (order: any) =>
-                              order?.status === 'picked_up' &&
-                              order?.bookingSlot.slot?.temperatureZone.locker.location ===
-                                slot?.slot?.temperatureZone.locker.location &&
+                            order?.status === 'picked_up' &&
+                            order?.bookingSlot.slot?.temperatureZone.locker.location ===
+                            slot?.slot?.temperatureZone.locker.location &&
                               order?.bookingSlot.slot?.temperatureZone.keyTemp ===
                                 slot?.slot?.temperatureZone?.keyTemp &&
-                              order?.bookingSlot.slot?.size === slot?.slot?.size
+                                order?.bookingSlot.slot?.size === slot?.slot?.size
                           )?.length
                         }
+                                </b>
                       </span>
                     </Col>
                     <Col className='py-0 text-light px-0'>
-                      <i className='ri-inbox-unarchive-line text-info  me-1 align-bottom'></i>
+                      <i className='ri-inbox-unarchive-line text-warning align-bottom fs-1'></i>
                       <span className='dash-city font-65'>
                         {' '}
                         A récupérer :{' '}
+                       <b className='font-85'>
+
+                        
                         {
                           orderData['hydra:member']?.filter(
                             (order: any) =>
@@ -174,11 +186,11 @@ console.log(allSlot)
                               order?.bookingSlot.slot?.size === slot?.slot?.size
                           )?.length
                         }
+                        </b>
                       </span>
                     </Col>
                   </Row>
                 </Col>
-              </Row>
             </Link>
           </Card>
         ))

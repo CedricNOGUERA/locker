@@ -6,7 +6,7 @@ import userDataStore from '../../store/userDataStore'
 import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { _refreshPage } from '../../utils/functions'
+import { _getOrdersByStatus, _refreshPage } from '../../utils/functions'
 const OrderDetail = ({ scanPageProps }: any) => {
   const navigate = useNavigate()
 
@@ -20,6 +20,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
     newStatus,
     handleButtonClick,
     setOrderReady,
+    setOrderPickedUp,
   } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
@@ -96,9 +97,10 @@ const OrderDetail = ({ scanPageProps }: any) => {
         .request(config)
         .then((response: any) => {
           console.log(response.data)
-          getallOrders(dataStore.token)
-          _refreshPage()
-          // _getOrdersByStatus(dataStore.token, 'ready_for_delivery', setOrderReady)
+          // getallOrders(dataStore.token)
+          // _refreshPage()
+          _getOrdersByStatus(dataStore.token, 'ready_for_delivery', setOrderReady)
+          _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
           setIsLoading(false)
           handleShowUpdateStatus()
         })

@@ -69,7 +69,6 @@ function App() {
     sevenDaysAgo.getMonth() + 1
   ).padStart(2, '0')}-${String(sevenDaysAgo.getDate()).padStart(2, '0')}`
 
-  console.log(formattedDate)
 
   React.useEffect(() => {
     if (token && token?.length > 0) {
@@ -81,7 +80,7 @@ function App() {
       getBookingAllSlot(token)
     }
   }, [token])
-  console.log(orderCreated)
+
   React.useEffect(() => {
     if (orderData['hydra:member']?.length > 29) {
       getOrderByPages(token, 2, setOrderByPage)
@@ -173,7 +172,6 @@ function App() {
       .then((response: any) => {
         setIsLoading(false)
         setData(response.data)
-        console.log(response.data['hydra:member'])
       })
       .catch((error: any) => {
         console.log(error)

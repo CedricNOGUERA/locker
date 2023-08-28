@@ -22,6 +22,7 @@ const BottomNavBar = ({
   //Auth deliverer modal
   //////////////////////
   const [show, setShow] = React.useState(false)
+  const [isScroll, setIsScroll] = React.useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
@@ -63,8 +64,25 @@ const BottomNavBar = ({
   const userRoles = dataStore.roles
   const hasDeliverer = hasDelivererRole(userRoles)
 
+
+  React.useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.scrollY > 100) {
+        setIsScroll(true)
+      } else {
+        setIsScroll(false)
+      }
+    }
+
+    window.addEventListener('scroll', toggleVisibility)
+
+    return () => window.removeEventListener('scroll', toggleVisibility)
+  }, [])
+
+
+
   return (
-    <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
+    <Container fluid className={`bottom-navbar ${isScroll ?  'animate__animated animate__fadeOutDown' :  'animate__animated animate__fadeInUp'} py-1 shadow bg-secondary px-0 mt-auto`}>
       <UserQrcode show={show} handleClose={handleClose} />
       <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>
         <Nav.Item

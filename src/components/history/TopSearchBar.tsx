@@ -10,50 +10,43 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
     <Container fluid className='ps-2 sticky-top bg-secondary rounded-pill  mb-2 '>
       <Row>
         {!selectedOrder && (
-      <>
-          <Col xs={12} className=' text-start '>
-            <div className='input-group'>
-              <i className='ri-search-line ps-0 me-1 text-info '></i>
-              <input
-                type='text'
-                className='form-control rounded-pill'
-                placeholder='N° Commande...'
-                aria-label='search'
-                aria-describedby='search-order'
-                style={{ height: '25px' }}
-                value={searchOrder}
-                onChange={(e) => setSearchOrder(e.currentTarget.value)}
+          <>
+            <Col xs={12} className=' text-start '>
+              <div className='input-group'>
+                <i className='ri-search-line ps-0 me-1 text-info '></i>
+                <input
+                  type='text'
+                  className='form-control rounded-pill'
+                  placeholder='N° Commande...'
+                  aria-label='search'
+                  aria-describedby='search-order'
+                  style={{ height: '25px' }}
+                  value={searchOrder}
+                  onChange={(e) => setSearchOrder(e.currentTarget.value)}
                 />
-              {searchOrder !== '' && (
-                <i
-                className='ri-close-circle-fill text-warning delete-button'
-                onClick={() => setSearchOrder('')}
-                ></i>
+                {searchOrder !== '' && (
+                  <i
+                    className='ri-close-circle-fill text-warning delete-button fs-3'
+                    onClick={() => setSearchOrder('')}
+                  ></i>
                 )}
-              
-            </div>
-          </Col>
-          {/* <Col>
-          :
-          </Col> */}
-                </>
-
+              </div>
+            </Col>
+          </>
         )}
         {selectedOrder && (
           <>
-          <Col
-            xs={2}
-            md={1}
-            lg={1}
-            className='m-auto py-0 text-center'
-            onClick={() => setSelectedOrder('')}
-          >
-            <BackButton />
-          </Col>
+            <Col
+              xs={2}
+              md={1}
+              lg={1}
+              className='m-auto py-0 text-center'
+              onClick={() => setSelectedOrder('')}
+            >
+              <BackButton />
+            </Col>
             <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
-              <span className='fw-bold font-75'>
-                {selectedOrder?.barcode}
-              </span>
+              <span className='fw-bold font-75'>{selectedOrder?.barcode}</span>
             </Col>
             <Col xs={2} md={1} lg={1} className='m-auto text-light text-start  me-3 py-0'>
               <BadgedIcon

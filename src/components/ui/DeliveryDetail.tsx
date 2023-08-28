@@ -7,6 +7,7 @@ import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import QrCode from '../QrCode'
+import { _getOrdersByStatus } from '../../utils/functions'
 const DeliveryDetail = ({ scanPageProps }: any) => {
 
   const navigate = useNavigate();
@@ -14,7 +15,14 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
   ////////////////////
   //Props & store
   ///////////////////
-  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
+    
+  const {
+    selectedOrder,
+    setOrderData,
+    setSelectedOrder,
+    newStatus,
+    setOrderPickedUp,
+  } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
   const authLogout = userDataStore((state: any) => state.authLogout)
@@ -91,8 +99,8 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
       axios
         .request(config)
         .then((response: any) => {
-          console.log(response.data)
           getallOrders(dataStore.token)
+          _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
           setIsLoading(false)
           handleShowUpdateStatus()
         })
@@ -217,7 +225,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
 
             changeStatus()
           }else{
-
+            _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
             getallOrders(dataStore.token)
             setSelectedOrder(null)
           }

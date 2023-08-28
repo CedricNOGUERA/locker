@@ -47,6 +47,12 @@
   background-color: #2e3338;
   width: 100% !important;
 }
+@media (max-height: 350px) {
+  .bottom-navbar {
+    display: none;
+  }
+
+}
 
 
 .button-auth {
@@ -350,7 +356,8 @@
 .back-to-top {
   position: fixed;
   width: 100%;
-  bottom: 12%;
+  bottom: 8%;
+  /* bottom: 12%; */
   z-index: 9;
 }
 
@@ -512,8 +519,8 @@ ul.tl li .timestamp-current {
 
 .delete-button {
   position: absolute;
-  right: 3%;
-  top: 5%;
+  right: 1%;
+  top: -18%;
   z-index: 100;
 }
 

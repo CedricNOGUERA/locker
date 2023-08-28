@@ -43,6 +43,8 @@ const InDelivery: React.FC = () => {
     orderReady,
     setOrderReady,
     orderPickedUp,
+    setOrderPickedUp,
+
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -110,7 +112,7 @@ const InDelivery: React.FC = () => {
   }, [orderData])
 
   React.useEffect(() => {
-    const myScan = orderData['hydra:member']?.filter(
+    const myScan = orderPickedUp['hydra:member']?.filter(
       (order: any) => order?.barcode === searchOrder || order?.id === parseInt(searchOrder)
     )[0]
     if (myScan) {
@@ -192,7 +194,7 @@ const InDelivery: React.FC = () => {
 
   React.useEffect(() => {
     if (selectedOrder === '') {
-      handleButtonClick()
+      // handleButtonClick()
     }
   }, [selectedOrder])
 
@@ -368,7 +370,8 @@ const InDelivery: React.FC = () => {
     messageApi,
     setSelectedOrder,
     newStatus,
-    handleButtonClick,
+    // handleButtonClick,
+    setOrderPickedUp,
 
   }
 
