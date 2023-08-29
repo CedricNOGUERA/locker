@@ -32,9 +32,9 @@
   margin: auto;
   width: 160px;
   height: 160px;
-  background-image: url('../src/styles/logo512.png');
+  /* background-image: url('../src/styles/logo512.png');
   background-repeat: no-repeat;
-  background-size: 160px;
+  background-size: 160px; */
 }
 
 .top-nav-design,
@@ -91,12 +91,11 @@
 @media (max-height: 515px) {
   .logo-app {
     display: none;
-    margin-left: 0%;
-    float: left;
-    width: 80px;
-    height: 80px;
-    background-size: 80px;
-    background-position: 90% 0px;
+    /* float: left; */
+    /* width: 80px; */
+    /* height: 180px; */
+    /* background-size: 80px; */
+    /* background-position: 90% 0px; */
 
   }
 
@@ -112,7 +111,7 @@
   .teko {
     width: 90%;
     font-size: 1.5rem !important;
-    margin-top: 1%;
+    margin-top: 30%;
     margin-right: 42%;
   }
 

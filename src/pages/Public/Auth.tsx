@@ -22,6 +22,7 @@ import { _strRandom } from '../../utils/functions'
 import AuthForm from '../../components/ui/auth/AuthForm'
 import useWebInstallPrompt from '../../hooks/useWebInstallPrompt';
 import PwaInstallModal from '../../components/ui/modals/PwaInstallModal'
+import logo from '../../styles/logo512.png'
 // @ts-ignore
 import PWAPrompt from 'react-ios-pwa-prompt'
 
@@ -291,7 +292,9 @@ console.log(myData.roles)
         ) : (
           <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
             <Card.Body className=''>
-              <div className='logo-app text-center text-light animate__animated animate__rotateIn'></div>
+              <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
+                <img src={logo} alt='logo' width={160} />
+              </div>
               <div
                className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
 
