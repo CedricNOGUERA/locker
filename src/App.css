@@ -32,9 +32,9 @@
   margin: auto;
   width: 160px;
   height: 160px;
-  /* background-image: url('../src/styles/logo512.png');
+  background-image: url('../src/styles/logo512.png');
   background-repeat: no-repeat;
-  background-size: 160px; */
+  background-size: 160px;
 }
 
 .top-nav-design,
@@ -53,7 +53,6 @@
   }
 
 }
-
 
 .button-auth {
   background-color: rgb(61, 165, 184) !important;
@@ -90,12 +89,9 @@
 
 @media (max-height: 515px) {
   .logo-app {
-    display: none;
-    /* float: left; */
-    /* width: 80px; */
-    /* height: 180px; */
-    /* background-size: 80px; */
-    /* background-position: 90% 0px; */
+    height: 120px;
+    background-size: 120px;
+    background-position: 50% 0px;
 
   }
 
@@ -103,16 +99,9 @@
     background-color: #8b8c94 !important;
   }
 
-  .auth-cont {
-    /* width: 60% !important; */
-
-  }
-
   .teko {
-    width: 90%;
     font-size: 1.5rem !important;
-    margin-top: 30%;
-    margin-right: 42%;
+    margin-bottom: 2%;
   }
 
   .auth-form {
@@ -236,7 +225,6 @@
 }
 
 .list-item:active {
-  /* border-radius: 50px; */
   background-color: #9b9b9b !important;
 }
 
@@ -261,7 +249,6 @@
 }
 
 @media (min-width: 915px) {
-
   .menu-right {
 
     width: 25% !important;
@@ -319,7 +306,6 @@
 }
 
 .dash-placeholder {
-
   height: 80px;
 }
 
@@ -331,9 +317,7 @@
 }
 
 .manual {
-
   opacity: 100%;
-
 }
 
 .item-menu {
@@ -356,7 +340,6 @@
   position: fixed;
   width: 100%;
   bottom: 8%;
-  /* bottom: 12%; */
   z-index: 9;
 }
 
@@ -368,7 +351,6 @@
 .history-tl-container {
   font-family: "Roboto", sans-serif;
   margin: auto;
-
   position: relative;
 }
 
@@ -416,9 +398,7 @@
   }
 
   .history-tl-container ul.tl li {
-
     margin-left: 45% !important;
-
   }
 
 }
@@ -430,7 +410,6 @@
   }
 
   ul.tl li .timestamp-current {
-
     color: #272727;
     position: absolute;
     left: -53%;
@@ -607,13 +586,11 @@ video{
 
 
 .pagination {
-
   justify-content: flex-end;
   z-index: 2;
 }
 
 .pagination button {
- 
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -635,7 +612,6 @@ video{
 }
 
 #notfound-image{
-
 width: 70%;
 margin-bottom: 30%;
 }
