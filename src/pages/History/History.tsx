@@ -95,7 +95,6 @@ const History = () => {
 
   React.useEffect(() => {
     _searchWithRegex(searchOrder, historyOrder, setFilteredOrder)
-    // _searchWithRegex(searchOrder, historyOrder['hydra:member'], setFilteredOrder)
   }, [historyOrder, searchOrder])
 
   React.useEffect(() => {
@@ -104,7 +103,7 @@ const History = () => {
     }
   }, [currentPage])
 
-  console.log(currentPage)
+  // console.log(currentPage)
   // const totalPages = Math.ceil(orders && orders?.length / itemsPerPage);
 
   const handlePageChange = (newPage: number) => {
@@ -141,7 +140,7 @@ const History = () => {
     historyOrder,
   }
 
-  console.log(historyOrder)
+  // console.log(historyOrder)
 
   return (
     <Container className='order-list'>

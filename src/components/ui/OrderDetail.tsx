@@ -21,6 +21,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
     handleButtonClick,
     setOrderReady,
     setOrderPickedUp,
+    setSearchOrder,
   } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
@@ -126,6 +127,8 @@ const OrderDetail = ({ scanPageProps }: any) => {
               onClick={() => {
                 handleButtonClick()
                 setSelectedOrder('')
+                setSearchOrder('')
+                
               }}
             >
               <BackButton />

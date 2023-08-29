@@ -77,12 +77,6 @@ const Prepared: React.FC = () => {
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
-  // const orderByStatus = orderData['hydra:member']?.filter(
-  //   (order: any) =>
-  //     order?.status === 'ready_for_delivery' &&
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker &&
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
-  // )
 
   //////////////////////////
   // UseEffect
@@ -334,6 +328,7 @@ const Prepared: React.FC = () => {
     setSelectedOrderCity,
     allSlot,
     inputRef,
+    handleButtonClick,
   }
 
   const orderListProps = {
@@ -355,7 +350,8 @@ const Prepared: React.FC = () => {
     newStatus,
     handleButtonClick,
     setOrderReady,
-    setOrderPickedUp
+    setOrderPickedUp,
+    setSearchOrder
   }
 
   return (
@@ -406,6 +402,7 @@ const Prepared: React.FC = () => {
                           setSelectedOrder('')
                           setIsAnomaly(false)
                           handleButtonClick()
+                          
                         }}
                       >
                         <BackButton />
@@ -439,13 +436,8 @@ const Prepared: React.FC = () => {
                 </Container>
               </Container>
             ) : !selectedOrder ? (
-              <>
-                {/* <div className='col-12 pb-0 text-center font-75'>
-                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-                </div>
-                <SearchBar  searchBarProps={searchBarProps} /> */}
+           
                 <OrderList orderListProps={orderListProps} />
-              </>
             ) : (
               <OrderDetail scanPageProps={scanPageProps} />
             )}

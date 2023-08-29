@@ -10,6 +10,7 @@ const SearchBar = ({ searchBarProps }: any) => {
     setSelectedOrderCity,
     allSlot,
     inputRef,
+    handleButtonClick,
   } = searchBarProps
 
   const [uniqueTab, setUniqueTab] = React.useState([])
@@ -58,19 +59,22 @@ const SearchBar = ({ searchBarProps }: any) => {
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
-                  {/* <input
+                  <input
                     ref={inputRef}
                     type='hidden'
                     aria-label='searchOrder'
+                    className='form-control rounded-pill '
                     aria-describedby='search-order'
                     style={{ height: '25px' }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
-                  /> */}
+                  />
                     {searchOrder !== '' && (
                     <i
                       className='ri-close-circle-fill text-warning delete-button fs-3'
-                      onClick={() => setSearchOrder('')}
+                      onClick={() => {
+                        handleButtonClick()
+                        setSearchOrder('')}}
                     ></i>
                   )}
                 </div>

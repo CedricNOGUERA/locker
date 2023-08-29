@@ -93,7 +93,7 @@ const BottomNavBar = ({
             to='/preparations'
             className={`nav-link  text-${
               selectedItem === 'preparations' ? 'light' : 'info'
-            } py-1 pb-2 text-decoration-none`}
+            } py-1 pb-2 px-0 text-decoration-none`}
           >
             <i className='ri-checkbox-line fs-3'></i>
             {ready_for_delivery?.length > 0 && (
@@ -172,7 +172,7 @@ const BottomNavBar = ({
         <Nav.Item className='nav-item text-center ' onClick={() => handleSelect('history')}>
           <Link
             to='/historique'
-            className={`nav-link  text-${
+            className={`nav-link px-0 text-${
               selectedItem === 'history' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
           >

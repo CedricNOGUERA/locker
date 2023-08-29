@@ -352,6 +352,7 @@ const InDelivery: React.FC = () => {
     setSelectedOrderCity,
     allSlot,
     inputRef,
+    handleButtonClick
   }
 
   const orderListProps = {
@@ -370,8 +371,9 @@ const InDelivery: React.FC = () => {
     messageApi,
     setSelectedOrder,
     newStatus,
-    // handleButtonClick,
+    handleButtonClick,
     setOrderPickedUp,
+    setSearchOrder,
 
   }
 
