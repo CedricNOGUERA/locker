@@ -552,6 +552,10 @@ ul.tl li .timestamp-current {
   width: 100%;
 }
 
+.search-bar{
+  z-index: 399;
+}
+
 .video-container {
   width: 100%;
   position: fixed;

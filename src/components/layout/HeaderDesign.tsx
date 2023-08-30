@@ -80,8 +80,10 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
         placement='end'
         className='menu-right bg-secondary border-0'
       >
-        <Offcanvas.Header closeButton closeVariant='white'></Offcanvas.Header>
-        <Offcanvas.Body className='text-light pe-0'>
+        <Offcanvas.Header
+        className='pb-0'
+        closeButton closeVariant='white'></Offcanvas.Header>
+        <Offcanvas.Body className='text-light pe-0 pt-0'>
           <Container className='mb-2'>
             <Row
               className=' menu-link'

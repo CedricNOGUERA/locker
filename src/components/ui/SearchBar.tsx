@@ -13,7 +13,12 @@ const SearchBar = ({ searchBarProps }: any) => {
     handleButtonClick,
   } = searchBarProps
 
-  const [uniqueTab, setUniqueTab] = React.useState([])
+  const [uniqueTab, setUniqueTab] = React.useState<any>([])
+  const [readOnlyInput, setReadOnlyInput] = React.useState<boolean>(true)
+
+  React.useEffect(() => {
+    // setReadOnlyInput(true)
+  }, [])
 
   React.useEffect(() => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
@@ -36,9 +41,13 @@ const SearchBar = ({ searchBarProps }: any) => {
       .filter((lockerCity: any) => lockerCity?.location === place)
     return city && city[0]['@id']
   }
+  console.log(searchOrder)
+
+
+
 
   return (
-    <Container className='mb-2 text-center sticky-top'>
+    <Container className='mb-2 text-center sticky-top search-bar'>
       <Container
         fluid
         className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill  my-auto '
@@ -51,6 +60,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   <i className='ri-search-line me-1 '></i>
                   <input
                     type='text'
+                    // ref={inputRef}
                     className='form-control rounded-pill '
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
@@ -59,22 +69,14 @@ const SearchBar = ({ searchBarProps }: any) => {
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
-                  <input
-                    ref={inputRef}
-                    type='hidden'
-                    aria-label='searchOrder'
-                    className='form-control rounded-pill '
-                    aria-describedby='search-order'
-                    style={{ height: '25px' }}
-                    value={searchOrder}
-                    onChange={(e) => setSearchOrder(e.currentTarget.value)}
-                  />
-                    {searchOrder !== '' && (
+               
+                  {searchOrder !== '' && (
                     <i
                       className='ri-close-circle-fill text-warning delete-button fs-3'
                       onClick={() => {
                         handleButtonClick()
-                        setSearchOrder('')}}
+                        setSearchOrder('')
+                      }}
                     ></i>
                   )}
                 </div>

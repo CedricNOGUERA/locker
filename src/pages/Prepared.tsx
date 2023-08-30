@@ -165,6 +165,7 @@ const Prepared: React.FC = () => {
       console.log('object')
       _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
     }
+  
   }, [searchOrder])
 
   React.useEffect(() => {
@@ -182,9 +183,11 @@ const Prepared: React.FC = () => {
     }
   }, [selectedOrder])
 
+ 
+
   const handleButtonClick = () => {
     // Focus on the input element when the button is clicked
-    inputRef?.current?.focus()
+    // inputRef?.current?.focus()
   }
 
   const handleScan = async () => {
