@@ -30,13 +30,18 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
             <small className='font-65'> - {formattedDate(liv?.createdAt)}</small>
           )}
           <p className='font-75 mb-0'>
-            {/* {liv?.client?.email} */}
             {trigger === 'history' ? (
-              <span className='text-info fw-bold'>{_getStatus(liv?.status)}</span>
+              <>
+                <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span> - {''}
+                <span className='text-info fw-bold'>{_getStatus(liv?.status)}</span>
+              </>
             ) : (
-              <span className='text-info fw-bold'>
-                {liv?.bookingSlot?.slot?.temperatureZone?.locker?.city}
-              </span>
+              <>
+                <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span> - {''}
+                <span className='text-info fw-bold'>
+                  {liv?.bookingSlot?.slot?.temperatureZone?.locker?.city}
+                </span>
+              </>
             )}
           </p>
         </Col>

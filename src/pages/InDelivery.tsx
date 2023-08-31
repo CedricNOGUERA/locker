@@ -72,6 +72,9 @@ const InDelivery: React.FC = () => {
 
   const newStatus = 'operin'
 
+///////////////////////////////////////////////////
+////Filtrage des données par locker et par livreur
+//////////////////////////////////////////////////
   const orderByStatus = orderPickedUp['hydra:member']?.filter(
     (order: any) =>
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
@@ -79,15 +82,7 @@ const InDelivery: React.FC = () => {
       order?.shippedBy &&
       order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
-  // const orderByStatus = orderData['hydra:member']?.filter(
-  //   (order: any) =>
-  //     order?.status === 'picked_up' &&
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker &&
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
-  //     order?.shippedBy &&
-  //     order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
-  // )
-  console.log(orderPickedUp)
+
 
   //////////////////////////
   // UseEffect
@@ -260,9 +255,9 @@ const InDelivery: React.FC = () => {
           } else {
             const myScan: any = orderData['hydra:member']?.filter(
               (order: any) =>
-                order?.barcode === code?.data || order?.id === parseInt(code?.data)
+                order?.barcode === code?.data || order?.externalOrderId === code?.data
             )[0]
-            console.log(myScan)
+
             if (myScan) {
               if (myScan?.status === 'picked_up') {
                 if (!myScan.shippedBy) {

@@ -102,7 +102,7 @@ const Prepared: React.FC = () => {
 
   React.useEffect(() => {
     const myScan = orderReady['hydra:member']?.filter(
-      (order: any) => order?.barcode === searchOrder || order?.id === parseInt(searchOrder)
+      (order: any) => order?.barcode === searchOrder || order?.externalOrderId === searchOrder
     )[0]
     console.log(myScan)
     if (myScan) {
@@ -248,7 +248,7 @@ const Prepared: React.FC = () => {
               (order: any) =>
                 order?.barcode === code?.data || order?.externalOrderId === code?.data
             )[0]
-            console.log(myScan)
+            
             if (myScan) {
               if (myScan?.status === 'picked_up') {
                 if (!myScan.shippedBy) {
@@ -356,6 +356,8 @@ const Prepared: React.FC = () => {
     setOrderPickedUp,
     setSearchOrder
   }
+
+  console.log(selectedOrder)
 
   return (
     <>

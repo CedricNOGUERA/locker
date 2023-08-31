@@ -30,10 +30,12 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
     }
   
     const escapedSearchOrder = escapeRegExp(searchOrder);
+    console.log(escapedSearchOrder)
+    console.log(escapedSearchOrder?.length)
   
     setFilteredOrder(orderByStatus?.filter((order: any) => {
-      if (escapedSearchOrder.length > 2) {
-        return order?.barcode?.match(new RegExp(escapedSearchOrder, "i"));
+      if (escapedSearchOrder.length > 1) {
+        return order?.barcode?.match(new RegExp(escapedSearchOrder, "i")) || order?.externalOrderId?.match(new RegExp(escapedSearchOrder, "i"));
       }
         return undefined;
       

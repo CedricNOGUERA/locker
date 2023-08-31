@@ -714,6 +714,7 @@ const NewOrder = () => {
       )
     )
   }
+  console.log(chosenLocker)
   const handleChangeSelect = (e: any, indx: any) => {
     //conditions si "e.currentTarget.value" est vide
     if (e.currentTarget.value.trim() !== '') {
@@ -1179,32 +1180,26 @@ const NewOrder = () => {
                                 key={index}
                                 value={JSON.stringify(lockers)}
                                 className={`text-light ${
-                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH'
-                                    ? // ||
-                                      // lockers?.slot?.temperatureZone?.myKey === 'MT'
-                                      'bg-succes'
-                                    : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE'
-                                    ? // ||
-                                      // lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                      'bg-inf'
-                                    : lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' &&
-                                      // ||
-                                      //     lockers?.slot?.temperatureZone?.myKey === 'HT'
+                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                                  lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                    ? 'bg-succes'
+                                    : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                                      lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                    ? 'bg-inf'
+                                    : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                        lockers?.slot?.temperatureZone?.myKey === 'HT') &&
                                       'bg-warnin'
                                 }`}
                                 disabled={lockers.available < 1 ? true : false}
                               >
-                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH'
-                                  ? // ||
-                                    // lockers?.slot?.temperatureZone?.myKey === 'MT'
-                                    '🍃 Zone Fraîche'
-                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE'
-                                  ? // ||
-                                    //   lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                    '❄ Zone Congelée'
-                                  : lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' &&
-                                    // ||
-                                    //     lockers?.slot?.temperatureZone?.myKey === 'HT'
+                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                                lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                  ? '🍃 Zone Fraîche'
+                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                                    lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                  ? '❄ Zone Congelée'
+                                  : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                      lockers?.slot?.temperatureZone?.myKey === 'HT') &&
                                     '☀️ Zone Ambiante'}{' '}
                                 ({lockers?.slot.size}) - {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
@@ -1640,17 +1635,12 @@ const NewOrder = () => {
                   <b className='fs-2'>
                     Panier n° {indx + 1} {''} :
                   </b>
-                  {tempZones[indx] === 'MT'
-                    ? // ||
-                      // slot?.slot?.temperatureZone?.myKey === 'MT'
-                      '🍃 Zone Fraîche'
-                    : tempZones[indx] === 'LT'
-                    ? // ||
-                      //   slot?.slot?.temperatureZone?.myKey === 'LT'
-                      '❄ Zone Congelée'
-                    : tempZones[indx] === 'HT' &&
-                      // ||
-                      //     slot?.slot?.temperatureZone?.myKey === 'CA'
+                  {tempZones[indx] === 'MT' || slot?.slot?.temperatureZone?.myKey === 'MT'
+                    ? '🍃 Zone Fraîche'
+                    : tempZones[indx] === 'LT' || slot?.slot?.temperatureZone?.myKey === 'LT'
+                    ? '❄ Zone Congelée'
+                    : (tempZones[indx] === 'HT' ||
+                        slot?.slot?.temperatureZone?.myKey === 'CA') &&
                       '☀️ Zone Ambiante'}{' '}
                   ({slotSizes[indx]})
                 </div>

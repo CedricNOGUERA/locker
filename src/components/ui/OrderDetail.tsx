@@ -98,8 +98,6 @@ const OrderDetail = ({ scanPageProps }: any) => {
         .request(config)
         .then((response: any) => {
           console.log(response.data)
-          // getallOrders(dataStore.token)
-          // _refreshPage()
           _getOrdersByStatus(dataStore.token, 'ready_for_delivery', setOrderReady)
           _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
           setIsLoading(false)
@@ -128,7 +126,6 @@ const OrderDetail = ({ scanPageProps }: any) => {
                 handleButtonClick()
                 setSelectedOrder('')
                 setSearchOrder('')
-                
               }}
             >
               <BackButton />
