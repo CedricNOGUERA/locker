@@ -560,7 +560,7 @@ ul.tl li .timestamp-current {
   width: 100%;
   position: fixed;
   bottom: 10%;
-  z-index: 2400;
+  z-index: 400;
 }
 video{
   width: 100%;
@@ -572,7 +572,7 @@ video{
   position: fixed;
   bottom: 13%;
   right: 20px;
-  z-index: 2500;
+  z-index: 500;
   box-shadow: 2px 5px 5px rgb(160, 160, 160);
 }
 
@@ -580,7 +580,7 @@ video{
   position: fixed;
   bottom: 23%;
   right: 25px;
-  z-index: 2501;
+  z-index: 501;
 }
 
 

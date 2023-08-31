@@ -246,7 +246,7 @@ const Prepared: React.FC = () => {
           } else {
             const myScan = orderData['hydra:member']?.filter(
               (order: any) =>
-                order?.barcode === code?.data || order?.id === parseInt(code?.data)
+                order?.barcode === code?.data || order?.externalOrderId === code?.data
             )[0]
             console.log(myScan)
             if (myScan) {

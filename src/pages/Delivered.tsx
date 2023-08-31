@@ -138,6 +138,9 @@ const Delivered: React.FC = () => {
   
   }
 
+
+  console.log(selectedOrder)
+
   return (
     <>
       {!selectedOrder && (

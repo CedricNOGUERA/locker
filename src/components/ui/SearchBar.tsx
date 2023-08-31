@@ -43,9 +43,6 @@ const SearchBar = ({ searchBarProps }: any) => {
   }
   console.log(searchOrder)
 
-
-
-
   return (
     <Container className='mb-2 text-center sticky-top search-bar'>
       <Container
@@ -69,7 +66,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
-               
+
                   {searchOrder !== '' && (
                     <i
                       className='ri-close-circle-fill text-warning delete-button fs-3'

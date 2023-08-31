@@ -106,7 +106,7 @@ function App() {
   }, [allSlot])
 
   // const totalPages = Math.ceil(allOrder && allOrder?.length / itemsPerPage);
-  const totalPages = 2
+  const totalPages = 1
 
   /////////////////////
   //Events

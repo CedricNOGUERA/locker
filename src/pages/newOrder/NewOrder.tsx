@@ -1189,7 +1189,7 @@ const NewOrder = () => {
                                       'bg-inf'
                                     : lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' &&
                                       // ||
-                                      //     lockers?.slot?.temperatureZone?.myKey === 'CA'
+                                      //     lockers?.slot?.temperatureZone?.myKey === 'HT'
                                       'bg-warnin'
                                 }`}
                                 disabled={lockers.available < 1 ? true : false}
@@ -1204,7 +1204,7 @@ const NewOrder = () => {
                                     '❄ Zone Congelée'
                                   : lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' &&
                                     // ||
-                                    //     lockers?.slot?.temperatureZone?.myKey === 'CA'
+                                    //     lockers?.slot?.temperatureZone?.myKey === 'HT'
                                     '☀️ Zone Ambiante'}{' '}
                                 ({lockers?.slot.size}) - {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
@@ -1648,7 +1648,7 @@ const NewOrder = () => {
                     ? // ||
                       //   slot?.slot?.temperatureZone?.myKey === 'LT'
                       '❄ Zone Congelée'
-                    : tempZones[indx] === 'CA' &&
+                    : tempZones[indx] === 'HT' &&
                       // ||
                       //     slot?.slot?.temperatureZone?.myKey === 'CA'
                       '☀️ Zone Ambiante'}{' '}
