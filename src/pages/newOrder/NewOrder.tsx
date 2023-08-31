@@ -35,6 +35,7 @@ import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import InfoTopBar from './InfoTopBar'
 import { BrowserMultiFormatReader } from '@zxing/library'
+import interrogation from '../../styles/interrogation.png'
 
 const NewOrder = () => {
   //////////////////////////
@@ -126,40 +127,38 @@ const NewOrder = () => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
-
   const [indxScan, setIndxScan] = React.useState<any>('')
   const [indexScan, setIndexScan] = React.useState<any>('')
   const [isScanned, setIsScanned] = React.useState<boolean>(false)
 
-
   const diversProd = [
     {
-      "id": "984968",
-      "ean": "9300605113152",
-      "name": "200G Café NesCafé",
-      "price": 450,
-      "taxe": 16,
+      id: '984968',
+      ean: '9300605113152',
+      name: '200G Café NesCafé',
+      price: 450,
+      taxe: 16,
     },
     {
-      "id": "984969",
-      "ean": "3616474434639",
-      "name": "4 PILES AA CRF",
-      "price": 650,
-      "taxe": 16,
+      id: '984969',
+      ean: '3616474434639',
+      name: '4 PILES AA CRF',
+      price: 650,
+      taxe: 16,
     },
     {
-      "id": "984970",
-      "ean": "5397184622001",
-      "name": "PORTABLE VOCTRO 3510 DELL",
-      "price": 120000,
-      "taxe": 16,
+      id: '984970',
+      ean: '5397184622001',
+      name: 'PORTABLE VOCTRO 3510 DELL',
+      price: 120000,
+      taxe: 16,
     },
     {
-      "id": "984971",
-      "ean": "8993242596993",
-      "name": "Ramette A4",
-      "price": 3500,
-      "taxe": 16,
+      id: '984971',
+      ean: '8993242596993',
+      name: 'Ramette A4',
+      price: 3500,
+      taxe: 16,
     },
   ]
 
@@ -243,60 +242,64 @@ const NewOrder = () => {
   // Events
   /////////////////////////
 
-
-// Fonctions pour scanner les ean des produits (pas au point)
-  const videoRef: any = React.useRef(null);
+  // Fonctions pour scanner les ean des produits (pas au point)
+  const videoRef: any = React.useRef(null)
 
   const startScan = async () => {
     setIsScanned(true)
-    
+
     try {
-      const codeReader = new BrowserMultiFormatReader();
+      const codeReader = new BrowserMultiFormatReader()
       const constraints = {
         video: {
           facingMode: 'environment',
         },
-      };
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      videoRef.current.srcObject = stream;
+      }
+      const stream = await navigator.mediaDevices.getUserMedia(constraints)
+      videoRef.current.srcObject = stream
       codeReader?.decodeFromVideoDevice(null, videoRef.current, (result: any) => {
-        if(result?.text){
-           const myScanData = diversProd?.filter((prod: any) => prod.ean === result?.text)[0]
-          if(myScanData){
-           console.log(myScanData)
-           console.log('Code EAN-13 détecté:', result?.text)
-           videoRef.current.srcObject = null
-         
-           handleChangeProductScan(
-            myScanData,
-             indxScan,
-             indexScan,
-             productDetail,
-             setProductDetail
-           )
-         }else {
-          setIsScanned(false)
-          stopScan()
-          console.log('Pas de résultat')
-         }
+        if (result?.text) {
+          const myScanData = diversProd?.filter((prod: any) => prod.ean === result?.text)[0]
+          if (myScanData) {
+            console.log(myScanData)
+            console.log('Code EAN-13 détecté:', result?.text)
+            videoRef.current.srcObject = null
+
+            handleChangeProductScan(
+              myScanData,
+              indxScan,
+              indexScan,
+              productDetail,
+              setProductDetail
+            )
+          } else {
+            setIsScanned(false)
+            stopScan()
+            console.log('Pas de résultat')
+          }
         }
- 
-      });
+      })
     } catch (error) {
-      console.error('Erreur lors de la configuration de la caméra:', error);
+      console.error('Erreur lors de la configuration de la caméra:', error)
     }
-  };
+  }
 
   const stopScan = () => {
-    const stream = videoRef.current.srcObject;
+    const stream = videoRef.current.srcObject
     if (stream) {
-      const tracks = stream.getTracks();
-      tracks.forEach((track: any) => track.stop());
-      videoRef.current.srcObject = null;
+      const tracks = stream.getTracks()
+      tracks.forEach((track: any) => track.stop())
+      videoRef.current.srcObject = null
       setIsScanned(false)
     }
-  };
-  const handleChangeProductScan = (data: any, indx: any, index: any, productDetail: any, setProductDetail: any) => {
+  }
+  const handleChangeProductScan = (
+    data: any,
+    indx: any,
+    index: any,
+    productDetail: any,
+    setProductDetail: any
+  ) => {
     const newProductDetail2 = [...productDetail]
 
     if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
@@ -309,16 +312,12 @@ const NewOrder = () => {
       stopScan()
       setIsScanned(false)
       setProductDetail(newProductDetail2)
-    }
-    else {
+    } else {
       stopScan()
       setIsScanned(false)
       console.log('object')
     }
   }
-
-
-
 
   const expiredToken = (error: any) => {
     if (!expireToken) {
@@ -408,7 +407,7 @@ const NewOrder = () => {
     setClientPhone('')
     setAgeRestriction(false)
   }
-  
+
   console.log(tempZones)
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
@@ -686,7 +685,6 @@ const NewOrder = () => {
       setIsMsgErrorName(false)
       setIsMsgErrorEmail(false)
 
-
       newOrderRegister(
         orderStore.lockerId,
         orderStore.location,
@@ -795,7 +793,7 @@ const NewOrder = () => {
 
     const newProductDetail2 = [...productDetail]
     const myScanData = diversProd?.filter((prod: any) => prod.ean === value)[0]
-    if(myScanData){
+    if (myScanData) {
       if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
         newProductDetail2[indx][index] = {
           id: Math.random(),
@@ -803,15 +801,12 @@ const NewOrder = () => {
           price: myScanData?.price,
           quantity: 1,
         }
-        
       }
       setProductDetail(newProductDetail2)
-    } else{
-
-      
+    } else {
       if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
         newProductDetail2[indx][index][key] =
-        key === 'quantity' || key === 'price' ? parseInt(value) : value
+          key === 'quantity' || key === 'price' ? parseInt(value) : value
         setProductDetail(newProductDetail2)
       }
     }
@@ -1633,7 +1628,7 @@ const NewOrder = () => {
               <div key={indx} className={indx > 0 ? 'mt-5' : 'mt-1'}>
                 <div className='text-start text-secondary'>
                   <b className='fs-2'>
-                    Panier n° {indx + 1} {''} :
+                    Panier n° {indx + 1} {''} : {''}
                   </b>
                   {tempZones[indx] === 'MT' || slot?.slot?.temperatureZone?.myKey === 'MT'
                     ? '🍃 Zone Fraîche'
@@ -1663,16 +1658,18 @@ const NewOrder = () => {
                 </Table>
               </div>
             ))}
-            {/* <img src={interrogation} alt="point d'interrogation" width={150} /> */}
           </div>
-          <p>Voulez-vous valider cette commande ?</p>
+          <p>
+          {/* <img src={interrogation} alt="point d'interrogation" width={40} />{' '} */}
+            Voulez-vous valider cette commande ?
+          </p>
           <div className='mt-3 text-end'>
             <Button
               aria-label='Aria annuler'
               title='Annuler commande'
               variant='warning'
               onClick={cancelNewOrder}
-              className='me-3'
+              className='me-3  text-light'
             >
               Annuler
             </Button>
@@ -1681,6 +1678,8 @@ const NewOrder = () => {
               title='Valider la commande'
               variant='info'
               onClick={createNewOrder}
+              className='text-light'
+
             >
               Valider
             </Button>

@@ -24,7 +24,7 @@ const OrderList = ({ orderListProps }: any) => {
     filteredOrder?.length === 0 && orderList?.length === 0 && searchOrder?.length > 2
 
   React.useEffect(() => {
-    if (filteredOrder?.length > 0 && searchOrder?.length > 2) {
+    if (filteredOrder?.length > 0 && searchOrder?.length > 1) {
       setOrderList(filteredOrder)
     } 
     else if (filteredOrder?.length === 0 && searchOrder?.length > 2) {

@@ -95,7 +95,7 @@ const History = () => {
 
   React.useEffect(() => {
     _searchWithRegex(searchOrder, historyOrder, setFilteredOrder)
-  }, [historyOrder, searchOrder])
+  }, [searchOrder])
 
   React.useEffect(() => {
     if (currentPage) {

@@ -109,7 +109,7 @@ console.log(allSlot)
               setSelectedOrderCity(slot?.slot?.temperatureZone?.locker?.city)
             }}
           >
-            <Link to='/livraisons' className=' text-decoration-none'>
+            <Link to='/preparations' className=' text-decoration-none'>
               {' '}
               <Row className='pe-0 ps-1 w-100'>
                 <Col xs={2} className='m-auto text-start'>
@@ -122,10 +122,10 @@ console.log(allSlot)
                 </Col>
               </Row>
 
-                <Col xs={12} className=' text-start ps-0 pe-0'>
-                  <Row className='pe-0 ps-1 ms-2' >
+                <Col xs={12} className=' text-start'>
+                  <Row className='pe-3 ps-3' >
                     <Col xs={4} className='mb-1 py-0 text-light px-0'>
-                      <i className='ri-checkbox-line text-warning align-bottom fs-1'  ></i>
+                      <i className='ri-checkbox-line text-warning align-bottom fs-2'  ></i>
                       <span className='dash-city font-65'>
                         {' '}
                         Préparation :{' '}
@@ -146,7 +146,7 @@ console.log(allSlot)
                       </span>
                     </Col>
                     <Col xs={4} className='mb-1 py-0 text-light px-0'>
-                      <i className='ri-truck-line text-warning align-bottom fs-1'></i>
+                      <i className='ri-truck-line text-warning align-bottom fs-2'></i>
                       <span className='dash-city font-65'>
                         {' '}
                         A livrer :{' '}
@@ -168,7 +168,7 @@ console.log(allSlot)
                       </span>
                     </Col>
                     <Col className='py-0 text-light px-0'>
-                      <i className='ri-inbox-unarchive-line text-warning align-bottom fs-1'></i>
+                      <i className='ri-inbox-unarchive-line text-warning align-bottom fs-2'></i>
                       <span className='dash-city font-65'>
                         {' '}
                         A récupérer :{' '}
