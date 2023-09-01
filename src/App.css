@@ -553,15 +553,16 @@ ul.tl li .timestamp-current {
 }
 
 .search-bar{
-  z-index: 399 !important;
+  z-index: 190 !important;
 }
 
 .video-container {
   width: 100%;
   position: fixed;
   bottom: 10%;
-  z-index: 400;
+  z-index: 450;
 }
+
 video{
   width: 100%;
   
@@ -626,4 +627,14 @@ margin-bottom: 30%;
     width: 30%;
     margin-bottom: 5%;
     }
+}
+
+.scan-control{
+  height: 5px;
+  width:105px;
+    /* visibility: hidden; */
+    position: fixed;
+    top: 0px;
+
+
 }

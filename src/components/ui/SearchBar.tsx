@@ -10,7 +10,9 @@ const SearchBar = ({ searchBarProps }: any) => {
     setSelectedOrderCity,
     allSlot,
     inputRef,
+    inputRefSearch,
     handleButtonClick,
+    setIsFocus,
   } = searchBarProps
 
   const [uniqueTab, setUniqueTab] = React.useState<any>([])
@@ -57,7 +59,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   <i className='ri-search-line me-1 '></i>
                   <input
                     type='text'
-                    // ref={inputRef}
+                    ref={inputRefSearch}
                     className='form-control rounded-pill '
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
@@ -65,7 +67,20 @@ const SearchBar = ({ searchBarProps }: any) => {
                     style={{ height: '25px' }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
+                    onClick={() => setIsFocus(true)}
                   />
+                  {/* <input
+                    type='text'
+                    ref={inputRef}
+                    // readOnly=
+                    className='scan-control rounded-pill '
+                    placeholder='N° Commande...'
+                    aria-label='searchOrder'
+                    aria-describedby='search-order'
+                    style={{ height: '25px' }}
+                    value={searchOrder}
+                    onChange={(e) => setSearchOrder(e.currentTarget.value)}
+                  /> */}
 
                   {searchOrder !== '' && (
                     <i
