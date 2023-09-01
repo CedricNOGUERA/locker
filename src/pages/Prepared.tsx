@@ -87,7 +87,7 @@ const Prepared: React.FC = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('preparations')
-    handleButtonClick()
+    // handleButtonClick()
   
     
   }, [])
@@ -190,13 +190,13 @@ console.log(isFocus)
     }
   }, [selectedOrder])
 
-  React.useEffect(() => {
-    if(isFocus === false){
-      setInterval(handleButtonClick, 2000)
-    }else{
-      handleFocusSearch()
-    }
-  }, [isFocus])
+  // React.useEffect(() => {
+  //   if(isFocus === false){
+  //     setInterval(handleButtonClick, 2000)
+  //   }else{
+  //     handleFocusSearch()
+  //   }
+  // }, [isFocus])
   // React.useEffect(() => {
   //     const scannerr = new scanner(); // Remplacez ceci par le code approprié pour initialiser le scanner
   
@@ -214,6 +214,7 @@ console.log(isFocus)
   
   const handleButtonClick = () => {
     // Focus on the input element when the button is clicked
+    // event.preventDefault();
     inputRef?.current?.focus()
   }
   const handleFocusSearch = () => {

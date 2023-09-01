@@ -76,7 +76,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   <input
                   type='text'
                     ref={inputRef}
-                    readOnly
+                    readOnly={false}
                     className='scan-control rounded-pill '
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
