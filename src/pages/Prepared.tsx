@@ -14,6 +14,7 @@ import OrderDetail from '../components/ui/OrderDetail'
 import jsQR from 'jsqr'
 import noOrder from '../styles/astro.png'
 import BackButton from '../components/ui/BackButton'
+import useScanDetection from 'use-scan-detection';
 
 const Prepared: React.FC = () => {
   //////////////////////////
@@ -68,6 +69,7 @@ const Prepared: React.FC = () => {
   const inputRef: any = useRef(null) //input de recherche
   const inputRefSearch: any = useRef(null) //input de recherche
   const [isFocus, setIsFocus] = React.useState<boolean>(false)
+  // const [value, setValue] = useState("");
 
   let videoStream: MediaStream | null = null
 
@@ -79,6 +81,11 @@ const Prepared: React.FC = () => {
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
+
+  useScanDetection({
+    onComplete: (code: any) => setSearchOrder(code),
+    minLength: 8 // EAN13
+});
 
   //////////////////////////
   // UseEffect
