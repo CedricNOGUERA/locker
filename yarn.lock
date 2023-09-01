@@ -10187,11 +10187,6 @@ url-parse@^1.5.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-use-scan-detection@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/use-scan-detection/-/use-scan-detection-0.2.3.tgz#1a19930f69f714107b30950282ed575bc14e5b6c"
-  integrity sha512-GbtTTovqPkoTCJeoFNcazTIgELZYobNS7bmBV1cuMVsIcpZ3QYMQ/YNgyShtMxrJUqbNctWjMrKxW0hWeDKUEA==
-
 use-sync-external-store@1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz"

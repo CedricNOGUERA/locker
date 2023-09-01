@@ -14,7 +14,6 @@ import OrderDetail from '../components/ui/OrderDetail'
 import jsQR from 'jsqr'
 import noOrder from '../styles/astro.png'
 import BackButton from '../components/ui/BackButton'
-import useScanDetection from 'use-scan-detection';
 
 const Prepared: React.FC = () => {
   //////////////////////////
@@ -69,7 +68,6 @@ const Prepared: React.FC = () => {
   const inputRef: any = useRef(null) //input de recherche
   const inputRefSearch: any = useRef(null) //input de recherche
   const [isFocus, setIsFocus] = React.useState<boolean>(false)
-  // const [value, setValue] = useState("");
 
   let videoStream: MediaStream | null = null
 
@@ -82,10 +80,6 @@ const Prepared: React.FC = () => {
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
 
-  useScanDetection({
-    onComplete: (code: any) => setSearchOrder(code),
-    minLength: 8 // EAN13
-});
 
   //////////////////////////
   // UseEffect
@@ -94,9 +88,7 @@ const Prepared: React.FC = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('preparations')
-    // handleButtonClick()
   
-    
   }, [])
   
 
@@ -190,54 +182,13 @@ console.log(isFocus)
         )
     )
   }, [selectedStore])
-
-  React.useEffect(() => {
-    if (selectedOrder === '') {
-      // handleButtonClick()
-    }
-  }, [selectedOrder])
-
-  // React.useEffect(() => {
-  //   if(isFocus === false){
-  //     setInterval(handleButtonClick, 2000)
-  //   }else{
-  //     handleFocusSearch()
-  //   }
-  // }, [isFocus])
-  // React.useEffect(() => {
-  //     const scannerr = new scanner(); // Remplacez ceci par le code approprié pour initialiser le scanner
-  
-  //     scannerr.on('scan', (barcode: any) => {
-  //       // Faire quelque chose avec le barcode scanné, par exemple l'afficher dans un champ de texte
-  //       inputRefSearch.value = barcode;
-  //     });
-  
-  //     return () => {
-  //       scannerr.off('scan');
-  //     };
-  //   }, []);
-  
-  
-  
-  const handleButtonClick = () => {
-    // Focus on the input element when the button is clicked
-    // event.preventDefault();
-    inputRef?.current?.focus()
-  }
-  const handleFocusSearch = () => {
-    // Focus on the input element when the button is clicked
-    inputRefSearch?.current?.focus()
-  }
-  // if(!isFocus){
-  //   setInterval(handleButtonClick, 2000)
-  // }
+ 
 
   const handleScan = async () => {
     setIsAnomaly(false)
     if (navigator?.mediaDevices) {
       setIsScan(true)
 
-      console.log(videoStream)
       try {
         const stream = await navigator?.mediaDevices?.getUserMedia({
           video: { facingMode: 'environment' },
@@ -372,12 +323,7 @@ console.log(isFocus)
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
-    inputRef,
-    inputRefSearch,
-    handleButtonClick,
-    setIsFocus,
-    isFocus,
-    isScan,
+  
   }
 
   const orderListProps = {
@@ -397,7 +343,6 @@ console.log(isFocus)
     messageApi,
     setSelectedOrder,
     newStatus,
-    handleButtonClick,
     setOrderReady,
     setOrderPickedUp,
     setSearchOrder
@@ -414,7 +359,7 @@ console.log(isFocus)
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
             )}
-          <div className={`${!isScan ? 'sticky-top pt-2 bg-light ' : 'd-none'}`} >
+          <div className={`${!isScan ? 'sticky-top pt-2 search-bar' : 'd-none'}`} >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>
@@ -452,8 +397,6 @@ console.log(isFocus)
                         onClick={() => {
                           setSelectedOrder('')
                           setIsAnomaly(false)
-                          handleButtonClick()
-                          
                         }}
                       >
                         <BackButton />
