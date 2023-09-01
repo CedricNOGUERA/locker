@@ -191,7 +191,7 @@ console.log(isFocus)
   }, [selectedOrder])
 
   React.useEffect(() => {
-    if(!isFocus){
+    if(isFocus === false){
       setInterval(handleButtonClick, 2000)
     }else{
       handleFocusSearch()
@@ -406,7 +406,6 @@ console.log(isFocus)
           </div>
             )}
           <div className={`${!isScan ? 'sticky-top pt-2 bg-light ' : 'd-none'}`} >
-          {/* <div className='sticky-top pt-2 bg-light '> */}
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>
