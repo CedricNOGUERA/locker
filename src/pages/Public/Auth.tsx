@@ -161,6 +161,7 @@ console.log(myData.roles)
       setIsNotEmail(false)
     }
   }, [myEmail])
+  console.log(myData)
   
    ////////////////////
   //events

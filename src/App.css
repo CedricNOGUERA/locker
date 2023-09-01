@@ -630,8 +630,8 @@ margin-bottom: 30%;
 }
 
 .scan-control{
-  height: 5px;
-  width:105px;
+    height: 5px;
+    width: 105px;
     /* visibility: hidden; */
     position: fixed;
     top: -30px;
