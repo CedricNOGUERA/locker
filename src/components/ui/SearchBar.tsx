@@ -13,6 +13,7 @@ const SearchBar = ({ searchBarProps }: any) => {
     inputRefSearch,
     handleButtonClick,
     setIsFocus,
+    isFocus,
     isScan,
   } = searchBarProps
 
@@ -71,10 +72,11 @@ const SearchBar = ({ searchBarProps }: any) => {
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                   />
+                  {!isFocus && 
                   <input
-                    type='text'
+                  type='text'
                     ref={inputRef}
-                    // readOnly=
+                    readOnly
                     className='scan-control rounded-pill '
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
@@ -83,6 +85,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
+                }
 
                   {searchOrder !== '' && (
                     <i
@@ -90,6 +93,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                       onClick={() => {
                         handleButtonClick()
                         setSearchOrder('')
+                        setIsFocus(false)
                       }}
                     ></i>
                   )}

@@ -368,6 +368,7 @@ console.log(isFocus)
     inputRefSearch,
     handleButtonClick,
     setIsFocus,
+    isFocus,
     isScan,
   }
 

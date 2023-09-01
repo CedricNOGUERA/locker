@@ -385,7 +385,7 @@ const InDelivery: React.FC = () => {
           <div className='col-12 pb-0 text-center font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
-          <div className='sticky-top pt-2 bg-light  '>
+          <div className={`${!isScan ? 'sticky-top pt-2 bg-light ' : 'd-none'}`} >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>

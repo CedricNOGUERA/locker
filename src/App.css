@@ -633,9 +633,9 @@ margin-bottom: 30%;
     height: 5px;
     width: 105px;
     /* visibility: hidden; */
-    display: none;
+    /* display: none; */
     position: fixed;
-    /* top: -30px; */
+    top: 0px;
 
 
 }
