@@ -190,7 +190,13 @@ console.log(isFocus)
     }
   }, [selectedOrder])
 
-  
+  React.useEffect(() => {
+    if(!isFocus){
+      setInterval(handleButtonClick, 2000)
+    }else{
+      handleFocusSearch()
+    }
+  }, [isFocus])
   // React.useEffect(() => {
   //     const scannerr = new scanner(); // Remplacez ceci par le code approprié pour initialiser le scanner
   
@@ -203,13 +209,20 @@ console.log(isFocus)
   //       scannerr.off('scan');
   //     };
   //   }, []);
-
- 
-
+  
+  
+  
   const handleButtonClick = () => {
     // Focus on the input element when the button is clicked
     inputRef?.current?.focus()
   }
+  const handleFocusSearch = () => {
+    // Focus on the input element when the button is clicked
+    inputRefSearch?.current?.focus()
+  }
+  // if(!isFocus){
+  //   setInterval(handleButtonClick, 2000)
+  // }
 
   const handleScan = async () => {
     setIsAnomaly(false)
@@ -355,6 +368,7 @@ console.log(isFocus)
     inputRefSearch,
     handleButtonClick,
     setIsFocus,
+    isScan,
   }
 
   const orderListProps = {

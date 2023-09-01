@@ -13,6 +13,7 @@ const SearchBar = ({ searchBarProps }: any) => {
     inputRefSearch,
     handleButtonClick,
     setIsFocus,
+    isScan,
   } = searchBarProps
 
   const [uniqueTab, setUniqueTab] = React.useState<any>([])
@@ -46,7 +47,7 @@ const SearchBar = ({ searchBarProps }: any) => {
   console.log(searchOrder)
 
   return (
-    <Container className='mb-2 text-center sticky-top search-bar'>
+    <Container className={`mb-2 text-center sticky-top ${!isScan ? "" : 'd-none'} search-bar `}>
       <Container
         fluid
         className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill  my-auto '
@@ -59,7 +60,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   <i className='ri-search-line me-1 '></i>
                   <input
                     type='text'
-                    ref={inputRefSearch}
+                    // ref={inputRefSearch}
                     className='form-control rounded-pill '
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
@@ -67,9 +68,10 @@ const SearchBar = ({ searchBarProps }: any) => {
                     style={{ height: '25px' }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
-                    onClick={() => setIsFocus(true)}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
                   />
-                  {/* <input
+                  <input
                     type='text'
                     ref={inputRef}
                     // readOnly=
@@ -80,7 +82,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                     style={{ height: '25px' }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
-                  /> */}
+                  />
 
                   {searchOrder !== '' && (
                     <i

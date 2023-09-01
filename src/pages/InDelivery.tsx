@@ -67,6 +67,9 @@ const InDelivery: React.FC = () => {
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
 
   const inputRef: any = useRef(null) //input de recherche
+  const inputRefSearch: any = useRef(null) //input de recherche
+  const [isFocus, setIsFocus] = React.useState<boolean>(false)
+
 
   let videoStream: MediaStream | null = null
 
@@ -192,11 +195,12 @@ const InDelivery: React.FC = () => {
       // handleButtonClick()
     }
   }, [selectedOrder])
-
+  
   const handleButtonClick = () => {
     // Focus on the input element when the button is clicked
     inputRef?.current?.focus()
   }
+ 
 
   const handleScan = async () => {
     setIsAnomaly(false)
@@ -347,7 +351,9 @@ const InDelivery: React.FC = () => {
     setSelectedOrderCity,
     allSlot,
     inputRef,
-    handleButtonClick
+    inputRefSearch,
+    handleButtonClick,
+    setIsFocus
   }
 
   const orderListProps = {
