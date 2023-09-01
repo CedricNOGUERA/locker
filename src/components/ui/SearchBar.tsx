@@ -47,7 +47,7 @@ const SearchBar = ({ searchBarProps }: any) => {
   console.log(searchOrder)
 
   return (
-    <Container className={`mb-2 text-center sticky-top ${!isScan ? "" : 'd-none'} search-bar `}>
+    <Container className={` ${!isScan ? "mb-2 text-center sticky-" : 'd-none'} search-bar `}>
       <Container
         fluid
         className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill  my-auto '

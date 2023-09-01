@@ -405,7 +405,8 @@ console.log(isFocus)
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
             )}
-          <div className='sticky-top pt-2 bg-light '>
+          <div className={`${!isScan ? 'sticky-top pt-2 bg-light ' : 'd-none'}`} >
+          {/* <div className='sticky-top pt-2 bg-light '> */}
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>
