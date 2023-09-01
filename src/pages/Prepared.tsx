@@ -64,8 +64,10 @@ const Prepared: React.FC = () => {
 
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
-
+  
   const inputRef: any = useRef(null) //input de recherche
+  const inputRefSearch: any = useRef(null) //input de recherche
+  const [isFocus, setIsFocus] = React.useState<boolean>(false)
 
   let videoStream: MediaStream | null = null
 
@@ -86,7 +88,12 @@ const Prepared: React.FC = () => {
     setIsLoading(true)
     setSelectedItem('preparations')
     handleButtonClick()
+  
+    
   }, [])
+  
+
+console.log(isFocus)
 
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
@@ -179,15 +186,29 @@ const Prepared: React.FC = () => {
 
   React.useEffect(() => {
     if (selectedOrder === '') {
-      handleButtonClick()
+      // handleButtonClick()
     }
   }, [selectedOrder])
+
+  
+  // React.useEffect(() => {
+  //     const scannerr = new scanner(); // Remplacez ceci par le code approprié pour initialiser le scanner
+  
+  //     scannerr.on('scan', (barcode: any) => {
+  //       // Faire quelque chose avec le barcode scanné, par exemple l'afficher dans un champ de texte
+  //       inputRefSearch.value = barcode;
+  //     });
+  
+  //     return () => {
+  //       scannerr.off('scan');
+  //     };
+  //   }, []);
 
  
 
   const handleButtonClick = () => {
     // Focus on the input element when the button is clicked
-    // inputRef?.current?.focus()
+    inputRef?.current?.focus()
   }
 
   const handleScan = async () => {
@@ -331,7 +352,9 @@ const Prepared: React.FC = () => {
     setSelectedOrderCity,
     allSlot,
     inputRef,
+    inputRefSearch,
     handleButtonClick,
+    setIsFocus,
   }
 
   const orderListProps = {
