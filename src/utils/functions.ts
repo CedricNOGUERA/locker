@@ -1,4 +1,8 @@
 import OrdersService from "../service/Orders/OrdersService";
+import freeze from '../styles/Fatcow-Farm-Fresh-Temperature-cold.32.png'
+import fresh from '../styles/Fatcow-Farm-Fresh-Temperature-normal.32.png'
+// import normal from '../styles/Fatcow-Farm-Fresh-Temperature-warm.32.png'
+import normal from '../styles/Fatcow-Farm-Fresh-Temperature-hot.32.png'
 
 export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) => {
     messageApi.open({
@@ -30,17 +34,12 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
     }
   
     const escapedSearchOrder = escapeRegExp(searchOrder);
-    console.log(escapedSearchOrder)
-    console.log(escapedSearchOrder?.length)
   
     setFilteredOrder(orderByStatus?.filter((order: any) => {
       if (escapedSearchOrder.length > 1) {
         return order?.barcode?.match(new RegExp(escapedSearchOrder, "i")) || order?.externalOrderId?.match(new RegExp(escapedSearchOrder, "i"));
       }
         return false;
-        // return undefined;
-      
-
     }))
   }
   /********************************
@@ -244,6 +243,35 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
       : 'nada'
   return imge
 }
+/********************************
+   * filtre icon en fonction de la zone de température (keyTemp)
+   *******************************/
+ export const _iconFilter = (data: any) => {
+  const imge =
+    data === 'FRESH'
+      ? fresh
+      : data === 'FREEZE'
+      ? freeze
+      : data === 'NORMAL'
+      ? normal
+      : 'nada'
+  return imge
+}
+
+/********************************
+   * filtre nom de la zone en fonction du keyTemp
+   *******************************/
+ export const _tempFilter = (data: any) => {
+  const imge =
+    data === 'FRESH'
+      ? 'fraîche'
+      : data === 'FREEZE'
+      ? 'congelée'
+      : data === 'NORMAL'
+      ? 'Ambiante'
+      : 'nada'
+  return imge
+}
 
 
 /////////////////////////////////
@@ -256,6 +284,10 @@ export const _refreshPage = () => {
 
 
 
+
+/////////////////////////////////
+// tri les commandes en fonction de leur status
+/////////////////////////////////
 
 export const _getOrdersByStatus = (token: any, status: any, setData: any) => {
     

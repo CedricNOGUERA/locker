@@ -553,7 +553,7 @@ ul.tl li .timestamp-current {
 }
 
 .search-bar{
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 
 .video-container {
@@ -586,7 +586,9 @@ video{
 
 
 .order-list{
-  padding-bottom: 30%;
+
+  padding-top: 3%;
+  padding-bottom: 20%;
 }
 
 

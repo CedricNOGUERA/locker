@@ -39,7 +39,7 @@ const SearchBar = ({ searchBarProps }: any) => {
       .filter((lockerCity: any) => lockerCity?.location === place)
     return city && city[0]['@id']
   }
-  console.log(searchOrder)
+ 
 
   return (
     <Container className={`mb-2 text-center`}>
@@ -55,7 +55,6 @@ const SearchBar = ({ searchBarProps }: any) => {
                   <i className='ri-search-line me-1 '></i>
                   <input
                     type='text'
-                    // ref={inputRefSearch}
                     className='form-control rounded-pill '
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
@@ -63,8 +62,6 @@ const SearchBar = ({ searchBarProps }: any) => {
                     style={{ height: '25px' }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
-                    // onFocus={() => setIsFocus(true)}
-                    // onBlur={() => setIsFocus(false)}
                   />
                   {searchOrder !== '' && (
                     <i

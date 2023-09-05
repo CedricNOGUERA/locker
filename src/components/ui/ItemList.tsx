@@ -21,7 +21,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
       >
         <Col xs={2} md={1} className='m-auto py-0 '>
           <span key={Math.random()}>
-            <BadgedIcon slot={liv?.bookingSlot} borderColor='light' imgSize='40px' />
+            <BadgedIcon slot={liv?.bookingSlot} borderColor='light' imgSize='30px' />
           </span>
         </Col>
         <Col className='text-secondary text-start align-bottom m-auto py-0 pe-0 ps-3 ps-md-4  my-0'>

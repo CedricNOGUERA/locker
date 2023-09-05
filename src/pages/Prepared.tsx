@@ -65,10 +65,6 @@ const Prepared: React.FC = () => {
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
   
-  const inputRef: any = useRef(null) //input de recherche
-  const inputRefSearch: any = useRef(null) //input de recherche
-  const [isFocus, setIsFocus] = React.useState<boolean>(false)
-
   let videoStream: MediaStream | null = null
 
   const trigger = 'preparations'
@@ -92,7 +88,6 @@ const Prepared: React.FC = () => {
   }, [])
   
 
-console.log(isFocus)
 
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
@@ -110,7 +105,7 @@ console.log(isFocus)
     const myScan = orderReady['hydra:member']?.filter(
       (order: any) => order?.barcode === searchOrder || order?.externalOrderId === searchOrder
     )[0]
-    console.log(myScan)
+
     if (myScan) {
       setScanCode(searchOrder)
       if (myScan?.status === 'picked_up') {
@@ -348,7 +343,6 @@ console.log(isFocus)
     setSearchOrder
   }
 
-  console.log(selectedOrder)
 
   return (
     <>
@@ -359,7 +353,7 @@ console.log(isFocus)
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
             )}
-          <div className={`${!isScan ? 'sticky-top pt-2 search-bar' : 'd-none'}`} >
+          <div className={`${!isScan ? 'sticky-top pt-2' : 'd-none'}`} >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>

@@ -31,13 +31,11 @@ const BottomNavBar = ({
   ///////////////////////
   const retrieve = orderExpired['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'overtime' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
   const progress = orderPickedUp['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'picked_up' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
       order?.shippedBy &&
@@ -45,7 +43,6 @@ const BottomNavBar = ({
   )
   const ready_for_delivery = orderReady['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'ready_for_delivery' &&
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot.slot?.temperatureZone?.locker['@id'] === selectedStore
   )

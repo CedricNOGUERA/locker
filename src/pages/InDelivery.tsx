@@ -105,8 +105,9 @@ const InDelivery: React.FC = () => {
 
   React.useEffect(() => {
     const myScan = orderPickedUp['hydra:member']?.filter(
-      (order: any) => order?.barcode === searchOrder || order?.id === parseInt(searchOrder)
+      (order: any) => order?.barcode === searchOrder || order?.externalOrderId === searchOrder
     )[0]
+   
     if (myScan) {
       setScanCode(searchOrder)
       if (myScan?.status === 'picked_up') {
@@ -370,7 +371,7 @@ const InDelivery: React.FC = () => {
           <div className='col-12 pb-0 text-center font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
-          <div className={`${!isScan ? 'sticky-top pt-2 bg-light ' : 'd-none'}`} >
+          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'}`} >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>
@@ -442,13 +443,7 @@ const InDelivery: React.FC = () => {
                 </Container>
               </Container>
             ) : !selectedOrder ? (
-              <>
-                {/* <div className='col-12 pb-0 text-center font-75'>
-                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-                </div>
-                <SearchBar  searchBarProps={searchBarProps} /> */}
                 <OrderList orderListProps={orderListProps} />
-              </>
             ) : (
               <DeliveryDetail scanPageProps={scanPageProps} />
             )}
