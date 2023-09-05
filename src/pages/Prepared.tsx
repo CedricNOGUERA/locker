@@ -65,10 +65,6 @@ const Prepared: React.FC = () => {
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
   
-  const inputRef: any = useRef(null) //input de recherche
-  const inputRefSearch: any = useRef(null) //input de recherche
-  const [isFocus, setIsFocus] = React.useState<boolean>(false)
-
   let videoStream: MediaStream | null = null
 
   const trigger = 'preparations'
@@ -80,6 +76,7 @@ const Prepared: React.FC = () => {
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
 
+
   //////////////////////////
   // UseEffect
   /////////////////////////
@@ -87,13 +84,10 @@ const Prepared: React.FC = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('preparations')
-    // handleButtonClick()
   
-    
   }, [])
   
 
-console.log(isFocus)
 
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
@@ -111,7 +105,7 @@ console.log(isFocus)
     const myScan = orderReady['hydra:member']?.filter(
       (order: any) => order?.barcode === searchOrder || order?.externalOrderId === searchOrder
     )[0]
-    console.log(myScan)
+
     if (myScan) {
       setScanCode(searchOrder)
       if (myScan?.status === 'picked_up') {
@@ -183,54 +177,13 @@ console.log(isFocus)
         )
     )
   }, [selectedStore])
-
-  React.useEffect(() => {
-    if (selectedOrder === '') {
-      // handleButtonClick()
-    }
-  }, [selectedOrder])
-
-  // React.useEffect(() => {
-  //   if(isFocus === false){
-  //     setInterval(handleButtonClick, 2000)
-  //   }else{
-  //     handleFocusSearch()
-  //   }
-  // }, [isFocus])
-  // React.useEffect(() => {
-  //     const scannerr = new scanner(); // Remplacez ceci par le code approprié pour initialiser le scanner
-  
-  //     scannerr.on('scan', (barcode: any) => {
-  //       // Faire quelque chose avec le barcode scanné, par exemple l'afficher dans un champ de texte
-  //       inputRefSearch.value = barcode;
-  //     });
-  
-  //     return () => {
-  //       scannerr.off('scan');
-  //     };
-  //   }, []);
-  
-  
-  
-  const handleButtonClick = () => {
-    // Focus on the input element when the button is clicked
-    // event.preventDefault();
-    inputRef?.current?.focus()
-  }
-  const handleFocusSearch = () => {
-    // Focus on the input element when the button is clicked
-    inputRefSearch?.current?.focus()
-  }
-  // if(!isFocus){
-  //   setInterval(handleButtonClick, 2000)
-  // }
+ 
 
   const handleScan = async () => {
     setIsAnomaly(false)
     if (navigator?.mediaDevices) {
       setIsScan(true)
 
-      console.log(videoStream)
       try {
         const stream = await navigator?.mediaDevices?.getUserMedia({
           video: { facingMode: 'environment' },
@@ -365,12 +318,7 @@ console.log(isFocus)
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
-    inputRef,
-    inputRefSearch,
-    handleButtonClick,
-    setIsFocus,
-    isFocus,
-    isScan,
+  
   }
 
   const orderListProps = {
@@ -390,13 +338,11 @@ console.log(isFocus)
     messageApi,
     setSelectedOrder,
     newStatus,
-    handleButtonClick,
     setOrderReady,
     setOrderPickedUp,
     setSearchOrder
   }
 
-  console.log(selectedOrder)
 
   return (
     <>
@@ -407,7 +353,7 @@ console.log(isFocus)
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
             )}
-          <div className={`${!isScan ? 'sticky-top pt-2 bg-light ' : 'd-none'}`} >
+          <div className={`${!isScan ? 'sticky-top pt-2' : 'd-none'}`} >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>
@@ -445,8 +391,6 @@ console.log(isFocus)
                         onClick={() => {
                           setSelectedOrder('')
                           setIsAnomaly(false)
-                          handleButtonClick()
-                          
                         }}
                       >
                         <BackButton />

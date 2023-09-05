@@ -18,7 +18,6 @@ const OrderDetail = ({ scanPageProps }: any) => {
     setOrderData,
     setSelectedOrder,
     newStatus,
-    handleButtonClick,
     setOrderReady,
     setOrderPickedUp,
     setSearchOrder,
@@ -123,7 +122,6 @@ const OrderDetail = ({ scanPageProps }: any) => {
               lg={1}
               className='m-auto py-0'
               onClick={() => {
-                handleButtonClick()
                 setSelectedOrder('')
                 setSearchOrder('')
               }}

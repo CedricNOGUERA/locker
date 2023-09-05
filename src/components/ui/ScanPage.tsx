@@ -14,8 +14,7 @@ const ScanPage = ({ scanPageProps }: any) => {
   //Props & store
   ///////////////////
 
-  const { selectedOrder, setOrderData, setSelectedOrder, newStatus
-     } = scanPageProps
+  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
   const authLogout = userDataStore((state: any) => state.authLogout)
@@ -43,7 +42,6 @@ const ScanPage = ({ scanPageProps }: any) => {
         console.log(error?.response?.data?.message)
       })
   }
-  
 
   const changeStatus = () => {
     let data = {
@@ -106,23 +104,23 @@ const ScanPage = ({ scanPageProps }: any) => {
           </Col>
         </Row>
       </Container>
-<p className='text-center font-75'>Détail de la commande</p>
+      <p className='text-center font-75'>Détail de la commande</p>
       <Table striped className='mt-3'>
-          <thead>
-            <tr>
-              <th className='text-center text-secondary'>Qté</th>
-              <th className='text-center text-secondary'>Libellé produit</th>
+        <thead>
+          <tr>
+            <th className='text-center text-secondary'>Qté</th>
+            <th className='text-center text-secondary'>Libellé produit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {selectedOrder?.products?.map((prod: any, index: any) => (
+            <tr key={index}>
+              <td className='text-center font-85'>{prod?.quantity}</td>
+              <td className='text-center font-85'>{prod?.name}</td>
             </tr>
-          </thead>
-          <tbody>
-            {selectedOrder?.products?.map((prod: any, index: any) => (
-              <tr key={index}>
-                <td className='text-center font-85'>{prod?.quantity}</td>
-                <td className='text-center font-85'>{prod?.name}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+          ))}
+        </tbody>
+      </Table>
       <Container className='text-center text-danger py-0  m-auto opacity-75'>
         <span className='align-middle'>
           <i className='ri-error-warning-line fs-5'></i>

@@ -66,11 +66,6 @@ const InDelivery: React.FC = () => {
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
 
-  const inputRef: any = useRef(null) //input de recherche
-  const inputRefSearch: any = useRef(null) //input de recherche
-  const [isFocus, setIsFocus] = React.useState<boolean>(false)
-
-
   let videoStream: MediaStream | null = null
 
   const newStatus = 'operin'
@@ -94,7 +89,6 @@ const InDelivery: React.FC = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('progress')
-    handleButtonClick()
   }, [])
 
   React.useEffect(() => {
@@ -111,8 +105,9 @@ const InDelivery: React.FC = () => {
 
   React.useEffect(() => {
     const myScan = orderPickedUp['hydra:member']?.filter(
-      (order: any) => order?.barcode === searchOrder || order?.id === parseInt(searchOrder)
+      (order: any) => order?.barcode === searchOrder || order?.externalOrderId === searchOrder
     )[0]
+   
     if (myScan) {
       setScanCode(searchOrder)
       if (myScan?.status === 'picked_up') {
@@ -192,14 +187,9 @@ const InDelivery: React.FC = () => {
 
   React.useEffect(() => {
     if (selectedOrder === '') {
-      // handleButtonClick()
     }
   }, [selectedOrder])
   
-  const handleButtonClick = () => {
-    // Focus on the input element when the button is clicked
-    inputRef?.current?.focus()
-  }
  
 
   const handleScan = async () => {
@@ -350,10 +340,7 @@ const InDelivery: React.FC = () => {
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
-    inputRef,
-    inputRefSearch,
-    handleButtonClick,
-    setIsFocus
+    
   }
 
   const orderListProps = {
@@ -372,7 +359,6 @@ const InDelivery: React.FC = () => {
     messageApi,
     setSelectedOrder,
     newStatus,
-    handleButtonClick,
     setOrderPickedUp,
     setSearchOrder,
 
@@ -385,7 +371,7 @@ const InDelivery: React.FC = () => {
           <div className='col-12 pb-0 text-center font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
-          <div className={`${!isScan ? 'sticky-top pt-2 bg-light ' : 'd-none'}`} >
+          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'}`} >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>
@@ -424,7 +410,6 @@ const InDelivery: React.FC = () => {
                         onClick={() => {
                           setSelectedOrder('')
                           setIsAnomaly(false)
-                          handleButtonClick()
                         }}
                       >
                         <BackButton />
@@ -458,13 +443,7 @@ const InDelivery: React.FC = () => {
                 </Container>
               </Container>
             ) : !selectedOrder ? (
-              <>
-                {/* <div className='col-12 pb-0 text-center font-75'>
-                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-                </div>
-                <SearchBar  searchBarProps={searchBarProps} /> */}
                 <OrderList orderListProps={orderListProps} />
-              </>
             ) : (
               <DeliveryDetail scanPageProps={scanPageProps} />
             )}

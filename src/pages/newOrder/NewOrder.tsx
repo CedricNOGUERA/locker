@@ -796,7 +796,7 @@ const NewOrder = () => {
     if (myScanData) {
       if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
         newProductDetail2[indx][index] = {
-          id: Math.random(),
+          // id: Math.random(),
           name: myScanData?.name,
           price: myScanData?.price,
           quantity: 1,
@@ -1622,7 +1622,7 @@ const NewOrder = () => {
       )}
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Body>
-          <div className='text-center my-3 animate__animated animate__jello'>
+          <div className='text-center my-3'>
             <p>Détail de commande</p>
             {productDetail?.map((slot: any, indx: any) => (
               <div key={indx} className={indx > 0 ? 'mt-5' : 'mt-1'}>
