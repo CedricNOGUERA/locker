@@ -1,12 +1,11 @@
 import React from 'react'
 import { Container, Row, Col, Button, Table, Modal, Spinner } from 'react-bootstrap'
-import BackButton from './BackButton'
 import BadgedIcon from './BadgedIcon'
 import userDataStore from '../../store/userDataStore'
 import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { _getOrdersByStatus, _refreshPage } from '../../utils/functions'
+import { _getOrdersByStatus } from '../../utils/functions'
 const OrderDetail = ({ scanPageProps }: any) => {
   const navigate = useNavigate()
 
@@ -120,13 +119,13 @@ const OrderDetail = ({ scanPageProps }: any) => {
               xs={2}
               md={1}
               lg={1}
-              className='m-auto py-0'
+              className='back-to m-auto py-0 '
               onClick={() => {
                 setSelectedOrder('')
                 setSearchOrder('')
               }}
             >
-              <BackButton />
+               <i className='ri-arrow-left-line text-info fs-3 bg-secondary rounded-pill back-to'></i>
             </Col>
             <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
               <span className='fw-bold font-85'>

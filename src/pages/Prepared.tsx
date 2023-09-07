@@ -163,7 +163,6 @@ const Prepared: React.FC = () => {
       }
     } else {
       //no exist
-      console.log('object')
       _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
     }
   

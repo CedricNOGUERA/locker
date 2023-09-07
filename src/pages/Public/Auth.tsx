@@ -22,7 +22,6 @@ import { _strRandom } from '../../utils/functions'
 import AuthForm from '../../components/ui/auth/AuthForm'
 import useWebInstallPrompt from '../../hooks/useWebInstallPrompt';
 import PwaInstallModal from '../../components/ui/modals/PwaInstallModal'
-import logo from '../../styles/logo512.png'
 // @ts-ignore
 import PWAPrompt from 'react-ios-pwa-prompt'
 
@@ -33,7 +32,7 @@ type Inputs = {
 
 const Auth = () => {
   ////////////////////
-  //form States
+  //Form States
   ///////////////////
   const {
     register,
@@ -167,12 +166,12 @@ console.log(myData.roles)
   //events
   ///////////////////
 
-      /////
-      //Fonction qui vide le cache
-      ////
+      ///////////////
+      //Vide le cache du navigateur
+      ///////////////
     const handleClearCache = () => {
       if ('caches' in window) {
-        // Vider le cache du navigateur
+
         caches.keys().then(cacheNames => {
           cacheNames.forEach(cacheName => {
             caches.delete(cacheName);
