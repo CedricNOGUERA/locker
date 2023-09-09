@@ -824,7 +824,7 @@ const NewOrder = () => {
   const dataOrderFormat = () => {
    
 
-    settest(productDetail?.map((item: any) => {
+    setProductOrder(productDetail?.map((item: any) => {
       // Pour chaque tableau, créer un nouveau tableau sans le champ "id"
       return item?.map(({ id, ...rest }: any) => rest);
   }))
