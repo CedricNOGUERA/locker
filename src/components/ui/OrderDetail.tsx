@@ -141,7 +141,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
             </Col>
           </Row>
         </Container>
-        <Table striped className='mt-3'>
+        <Table striped className='mt-3 border-1'>
           <thead>
             <tr>
               <th className='text-center text-secondary'>Qté</th>

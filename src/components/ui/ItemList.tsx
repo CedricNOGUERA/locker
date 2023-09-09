@@ -3,6 +3,7 @@ import { Button, Col, Row } from 'react-bootstrap'
 import { _getStatus } from '../../utils/functions'
 import BadgedIcon from '../ui/BadgedIcon'
 import 'moment/locale/fr'
+import age18 from '../../styles/age_18.png'
 
 const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
   const formattedDate = (dateStr: any) => {
@@ -34,13 +35,20 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
               <>
                 <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span> - {''}
                 <span className='text-info fw-bold'>{_getStatus(liv?.status)}</span>
+                {liv?.ageRestriction === 18 && (
+                  <img src={age18} alt='+18ans' width={24} /> 
+                )}
               </>
             ) : (
               <>
                 <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span> - {''}
                 <span className='text-info fw-bold'>
                   {liv?.bookingSlot?.slot?.temperatureZone?.locker?.city}
-                </span>
+                  
+                </span> {''}
+                {liv?.ageRestriction === 18 && (
+                  <img src={age18} alt='+18ans' width={24} />
+                )}
               </>
             )}
           </p>

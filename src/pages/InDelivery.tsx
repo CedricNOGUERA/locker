@@ -363,6 +363,7 @@ const InDelivery: React.FC = () => {
     setSearchOrder,
 
   }
+  console.log(selectedOrder)
 
   return (
     <>

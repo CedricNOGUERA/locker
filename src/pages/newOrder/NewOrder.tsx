@@ -24,7 +24,7 @@ import userDataStore from '../../store/userDataStore'
 import Swal from 'sweetalert2'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
-import { _imgFilter, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
+import { _iconFilter, _imgFilter, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
@@ -115,6 +115,7 @@ const NewOrder = () => {
   const [tempZones, setTempZones] = React.useState<any>([])
   const [slotSizes, setSlotSizes] = React.useState<any>([])
   const [productDetail, setProductDetail] = React.useState<any>([])
+  const [productOrder, setProductOrder] = React.useState<any>([])
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
   const [availableSelect, setAvailableSelect] = React.useState<any>([])
 
@@ -199,6 +200,7 @@ const NewOrder = () => {
     if (qty === 0 || qty === null || qty === undefined || qty === '') {
       setAvailableSelect([])
     }
+    
   }, [qty])
 
   React.useEffect(() => {
@@ -218,6 +220,7 @@ const NewOrder = () => {
       setFilteredName,
       'name'
     )
+    
   }, [clientName])
 
   React.useEffect(() => {
@@ -237,7 +240,6 @@ const NewOrder = () => {
       'phone'
     )
   }, [clientPhone])
-
   //////////////////////////
   // Events
   /////////////////////////
@@ -408,7 +410,6 @@ const NewOrder = () => {
     setAgeRestriction(false)
   }
 
-  console.log(tempZones)
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
       return Math.floor(Math.random() * (max - min + 1)) + min
@@ -423,6 +424,8 @@ const NewOrder = () => {
       parseInt(qty) === 1
         ? {
             service: 'B2C',
+            ageRestriction: ageRestriction === true ? 18 : 0,
+            externalOrderId: "" + entierAleatoire(100, 999) + "",
             barcode: chosenLocker[0]?.company?.cleveronCompanyId + '-' + randomCode,
             bookingSlot: bookingSlotIds[0],
             destination: {
@@ -450,11 +453,12 @@ const NewOrder = () => {
               : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty),
-            products: productDetail[0],
+            products: productOrder[0],
           }
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
-
+            ageRestriction: ageRestriction === true ? 18 : 0,
+            externalOrderId: entierAleatoire(100, 999),
             barcode:
               chosenLocker[0]?.company?.cleveronCompanyId +
               '-' +
@@ -490,18 +494,19 @@ const NewOrder = () => {
               : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty) / parseInt(qty),
-            products: productDetail[indx],
+            products: productOrder[indx],
+            // products: productDetail[indx],
           }))
 
-    if (ageRestriction === true) {
-      if (parseInt(qty) === 1) {
-        dataOrder.ageRestriction = 18
-      } else {
-        Array.from({ length: parseInt(qty) }).map(
-          (_, indx) => (dataOrder[indx].ageRestriction = 18)
-        )
-      }
-    }
+    // if (ageRestriction === true) {
+    //   if (parseInt(qty) === 1) {
+    //     dataOrder.ageRestriction = 18
+    //   } else {
+    //     Array.from({ length: parseInt(qty) }).map(
+    //       (_, indx) => (dataOrder[indx].ageRestriction = 18)
+    //     )
+    //   }
+    // }
 
     if (parseInt(qty) === 1) {
       let config = {
@@ -536,7 +541,7 @@ const NewOrder = () => {
           setTrigger2(false)
           setClientPhone('')
           setChoosedPhone('')
-          setAgeRestriction(false)
+          // setAgeRestriction(false)
           Swal.fire({
             position: 'top-end',
             toast: true,
@@ -605,7 +610,7 @@ const NewOrder = () => {
           setClientEmail('')
           setChoosedName('')
           setChoosedEmail('')
-          setAgeRestriction(false)
+          // setAgeRestriction(false)
           setTrigger(false)
           setChosenLocker([])
           Swal.fire({
@@ -676,7 +681,7 @@ const NewOrder = () => {
 
   const validOrder = (e: any) => {
     e.preventDefault()
-
+    dataOrderFormat()
     if (!qty) {
     }
 
@@ -704,6 +709,8 @@ const NewOrder = () => {
       setTrigger2(true)
     }
   }
+
+  console.log(ageRestriction)
 
   const filteredLocker = (locker: any) => {
     setChosenLocker(
@@ -812,8 +819,22 @@ const NewOrder = () => {
     }
   }
 
-  console.log(productDetail)
 
+
+  const dataOrderFormat = () => {
+   
+
+    settest(productDetail?.map((item: any) => {
+      // Pour chaque tableau, créer un nouveau tableau sans le champ "id"
+      return item?.map(({ id, ...rest }: any) => rest);
+  }))
+
+
+  }
+
+  // dataOrderFormat()
+
+  console.log(productDetail)
   const borderClasses = ['border-info', 'border-warning', 'border-secondary']
 
   let rowClasses: any = []
@@ -1059,6 +1080,7 @@ const NewOrder = () => {
                         >
                           <img
                             alt='Temp icon'
+                          //src={_iconFilter(slots)}
                             src={
                               'https://img.icons8.com/color/512/' + _imgFilter(slots) + '.png'
                             }
@@ -1097,6 +1119,7 @@ const NewOrder = () => {
                   e.preventDefault()
                   setTrigger(true)
                   handleAddStartProduct()
+                  setAgeRestriction(false)
                 }}
                 className='m-auto'
               >
