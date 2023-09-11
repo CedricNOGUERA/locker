@@ -7,29 +7,36 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
   const { selectedOrder, setSelectedOrder, searchOrder, setSearchOrder } = topSearchBarProps
 
   return (
-    <Container fluid className='ps-2 sticky-top bg-secondary rounded-pill  mb-2 '>
+    <Container fluid className={`text-inf ps-2 sticky-top bg-secondar rounded-pill  mb-2`}>
       <Row>
         {!selectedOrder && (
           <>
             <Col xs={12} className=' text-start '>
               <div className='input-group'>
-                <i className='ri-search-line ps-0 me-1 text-info '></i>
+                {/* <i className='ri-search-line ps-0 me-1 text-info '></i> */}
                 <input
                   type='text'
                   className='form-control rounded-pill'
                   placeholder='N° Commande...'
                   aria-label='search'
                   aria-describedby='search-order'
-                  style={{ height: '25px' }}
+                  style={{ height: '40px', 
+                backgroundColor: '#ddd',
+                }}
+                  // style={{ height: '25px' }}
                   value={searchOrder}
                   onChange={(e) => setSearchOrder(e.currentTarget.value)}
                 />
-                {searchOrder !== '' && (
-                  <i
-                    className='ri-close-circle-fill text-warning delete-button fs-3'
-                    onClick={() => setSearchOrder('')}
-                  ></i>
-                )}
+                 {searchOrder !== '' ? (
+                    <i
+                      className='ri-close-circle-fill text-warning delete-button fs-3'
+                      onClick={() => {
+                        setSearchOrder('')
+                      }}
+                    ></i>
+                  ) : (
+                    <i className='ri-search-line fs-5 input-button  text-secondary'></i>
+                  )}
               </div>
             </Col>
           </>

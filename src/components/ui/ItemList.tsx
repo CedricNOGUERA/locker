@@ -41,11 +41,11 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
               </>
             ) : (
               <>
-                <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span> - {''}
+                <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span>{' '}{liv?.externalOrderId && "-" } {' '}
                 <span className='text-info fw-bold'>
                   {liv?.bookingSlot?.slot?.temperatureZone?.locker?.city}
                   
-                </span> {''}
+                </span>{' '}
                 {liv?.ageRestriction === 18 && (
                   <img src={age18} alt='+18ans' width={24} />
                 )}

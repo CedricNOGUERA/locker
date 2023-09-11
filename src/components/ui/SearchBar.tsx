@@ -52,24 +52,27 @@ const SearchBar = ({ searchBarProps }: any) => {
             <Row className='align-middle'>
               <Col className='text-start'>
                 <div className='input-group '>
-                  <i className='ri-search-line me-1 '></i>
+                  {/* <i className='ri-search-line me-1 '></i> */}
                   <input
                     type='text'
                     className='form-control rounded-pill '
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
                     aria-describedby='search-order'
-                    style={{ height: '25px' }}
+                    style={{ height: '40px' }}
+                    // style={{ height: '25px' }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
-                  {searchOrder !== '' && (
+                  {searchOrder !== '' ? (
                     <i
                       className='ri-close-circle-fill text-warning delete-button fs-3'
                       onClick={() => {
                         setSearchOrder('')
                       }}
                     ></i>
+                  ) : (
+                    <i className='ri-search-line fs-5 input-button'></i>
                   )}
                 </div>
               </Col>
@@ -79,7 +82,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                     as='div'
                     variant=''
                     id='dropdown-basic'
-                    className='text-light'
+                    className='text-ligh'
                   >
                     <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
                     <span className='font-85'>{selectedOrderCity} </span>

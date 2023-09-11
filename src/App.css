@@ -497,8 +497,14 @@ ul.tl li .timestamp-current {
 
 .delete-button {
   position: absolute;
-  right: 1%;
-  top: -18%;
+  right: 5%;
+  top: 9%;
+  z-index: 100;
+}
+.input-button {
+  position: absolute;
+  right: 3%;
+  top: 14%;
   z-index: 100;
 }
 
@@ -586,7 +592,7 @@ video{
 
 .order-list{
 
-  padding-top: 3%;
+  /* padding-top: 3%; */
   padding-bottom: 20%;
 }
 

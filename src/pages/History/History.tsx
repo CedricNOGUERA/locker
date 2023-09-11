@@ -151,7 +151,9 @@ const History = () => {
         </div>
       )}
       {!isLoading && (
-        <div className='sticky-top pt-2 bg-light mb-4 '>
+        <div className='sticky-top pt-2 bg-ligh mb-4 ' 
+        style={{backgroundColor : '#fff'}}
+        >
           <TopSearchBar topSearchBarProps={topSearchBarProps} />
         </div>
       )}
