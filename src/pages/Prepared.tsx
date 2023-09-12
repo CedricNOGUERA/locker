@@ -84,7 +84,10 @@ const Prepared: React.FC = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('preparations')
-  
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
   }, [])
   
 
@@ -353,7 +356,9 @@ const Prepared: React.FC = () => {
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
             )}
-          <div className={`${!isScan ? 'sticky-top pt-2' : 'd-none'}`} >
+          <div className={`${!isScan ? 'sticky-top pt-2' : 'd-none'}`} 
+           style={{backgroundColor : '#fff'}}
+          >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>

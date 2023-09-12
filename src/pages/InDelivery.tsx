@@ -89,6 +89,10 @@ const InDelivery: React.FC = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('progress')
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
   }, [])
 
   React.useEffect(() => {
@@ -372,7 +376,9 @@ const InDelivery: React.FC = () => {
           <div className='col-12 pb-0 text-center font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
-          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'}`} >
+          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'}`}
+          style={{backgroundColor : '#fff'}}
+          >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>

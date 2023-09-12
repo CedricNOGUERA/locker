@@ -59,8 +59,9 @@ const SearchBar = ({ searchBarProps }: any) => {
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
                     aria-describedby='search-order'
-                    style={{ height: '40px' }}
-                    // style={{ height: '25px' }}
+                    style={{ height: '40px',
+                    backgroundColor: '#ddd',
+                  }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
