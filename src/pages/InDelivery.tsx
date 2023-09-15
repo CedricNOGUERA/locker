@@ -53,6 +53,8 @@ const InDelivery: React.FC = () => {
   /////////////////////////
 
   const [messageApi, contextHolder] = message.useMessage()
+  const [uniqueTab, setUniqueTab] = React.useState<any>([])
+
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
@@ -95,6 +97,16 @@ const InDelivery: React.FC = () => {
     })
   }, [])
 
+    React.useEffect(() => {
+    const bookingLocker: any = allSlot?.['hydra:member']?.map(
+      (locker: any) => locker?.slot?.temperatureZone?.locker
+    )
+    const deduplicate: any = [
+      ...new Set(bookingLocker?.map((locker: any) => locker?.location)),
+    ]
+    setUniqueTab(deduplicate)
+  }, [allSlot])
+  
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
       setIsLoading(false)
@@ -373,9 +385,11 @@ const InDelivery: React.FC = () => {
     <>
       {!selectedOrder && !isAnomaly && (
         <>
+        {uniqueTab?.length > 1 && (
           <div className='col-12 pb-0 text-center font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
+        )}
           <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'}`}
           style={{backgroundColor : '#fff'}}
           >
