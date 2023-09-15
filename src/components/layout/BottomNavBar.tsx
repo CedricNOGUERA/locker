@@ -102,7 +102,7 @@ const BottomNavBar = ({
                 {ready_for_delivery?.length}
               </span>
             )}
-            <p>Prérations </p>
+            <p>Préparations</p>
           </Link>
         </Nav.Item>
         <Nav.Item className='nav-item text-center' onClick={() => handleSelect('progress')}>

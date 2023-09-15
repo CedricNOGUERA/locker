@@ -13,7 +13,6 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
           <>
             <Col xs={12} className=' text-start '>
               <div className='input-group'>
-                {/* <i className='ri-search-line ps-0 me-1 text-info '></i> */}
                 <input
                   type='text'
                   className='form-control rounded-pill'
@@ -23,7 +22,6 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
                   style={{ height: '40px', 
                 backgroundColor: '#ddd',
                 }}
-                  // style={{ height: '25px' }}
                   value={searchOrder}
                   onChange={(e) => setSearchOrder(e.currentTarget.value)}
                 />

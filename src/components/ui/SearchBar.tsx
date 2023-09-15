@@ -45,7 +45,7 @@ const SearchBar = ({ searchBarProps }: any) => {
     <Container className={`mb-2 text-center`}>
       <Container
         fluid
-        className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill  my-auto '
+        className={`text-info ps-2 py-0 rounded-pill  my-auto  ${allSlot?.['hydra:member']?.length > 0 && "bg-secondary pe-4"}`} 
       >
         <Dropdown>
           <Container fluid className='px-0 py-0'>
@@ -73,7 +73,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                       }}
                     ></i>
                   ) : (
-                    <i className='ri-search-line fs-5 input-button'></i>
+                    <i className='text-secondary ri-search-line fs-5 input-button'></i>
                   )}
                 </div>
               </Col>
