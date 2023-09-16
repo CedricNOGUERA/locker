@@ -5,22 +5,24 @@ import UserQrcode from '../ui/modals/UserQrcode'
 import userDataStore from '../../store/userDataStore'
 import imag from '../../styles/imagePlus4.png'
 
-const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem, bottomProps }: any) => {
-
-  const{
-    orderReady,
-    orderPickedUp,
-    orderExpired
-  } =  bottomProps
- //////////////////////////
-  // Store 
+const BottomNavBar = ({
+  orderData,
+  selectedStore,
+  selectedItem,
+  setSelectedItem,
+  bottomProps,
+}: any) => {
+  const { orderReady, orderPickedUp, orderExpired } = bottomProps
+  //////////////////////////
+  // Store
   /////////////////////////
   const dataStore = userDataStore((state: any) => state)
- 
+
   //////////////////////
   //Auth deliverer modal
   //////////////////////
   const [show, setShow] = React.useState(false)
+  const [isScroll, setIsScroll] = React.useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
@@ -29,24 +31,19 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem,
   ///////////////////////
   const retrieve = orderExpired['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'overtime' &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker && 
+      order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
   const progress = orderPickedUp['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'picked_up' &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] && 
-      (order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore )
-      &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] &&
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
       order?.shippedBy &&
-      (order?.shippedBy['@id'] === `/api/users/${dataStore.id}`)
+      order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
   const ready_for_delivery = orderReady['hydra:member']?.filter(
     (order: any) =>
-      // order?.status === 'ready_for_delivery' &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker && 
-      
+      order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
 
@@ -58,14 +55,31 @@ const BottomNavBar = ({ orderData, selectedStore, selectedItem, setSelectedItem,
   }
 
   function hasDelivererRole(roles: any[]) {
-    return roles?.includes("ROLE_ADMIN");
+    return roles?.includes('ROLE_ADMIN')
   }
 
-  const userRoles = dataStore.roles;
-const hasDeliverer = hasDelivererRole(userRoles);
-  
+  const userRoles = dataStore.roles
+  const hasDeliverer = hasDelivererRole(userRoles)
+
+
+  React.useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.scrollY > 100) {
+        setIsScroll(true)
+      } else {
+        setIsScroll(false)
+      }
+    }
+
+    window.addEventListener('scroll', toggleVisibility)
+
+    return () => window.removeEventListener('scroll', toggleVisibility)
+  }, [])
+
+
+
   return (
-    <Container fluid className='bottom-navbar py-1 shadow bg-secondary px-0 mt-auto'>
+    <Container fluid className={`bottom-navbar ${isScroll ?  'animate__animated animate__fadeOutDown' :  'animate__animated animate__fadeInUp'} py-1 shadow bg-secondary px-0 mt-auto`}>
       <UserQrcode show={show} handleClose={handleClose} />
       <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>
         <Nav.Item
@@ -76,7 +90,7 @@ const hasDeliverer = hasDelivererRole(userRoles);
             to='/preparations'
             className={`nav-link  text-${
               selectedItem === 'preparations' ? 'light' : 'info'
-            } py-1 pb-2 text-decoration-none`}
+            } py-1 pb-2 px-0 text-decoration-none`}
           >
             <i className='ri-checkbox-line fs-3'></i>
             {ready_for_delivery?.length > 0 && (
@@ -88,7 +102,7 @@ const hasDeliverer = hasDelivererRole(userRoles);
                 {ready_for_delivery?.length}
               </span>
             )}
-            <p>Prérations </p>
+            <p>Préparations</p>
           </Link>
         </Nav.Item>
         <Nav.Item className='nav-item text-center' onClick={() => handleSelect('progress')}>
@@ -155,7 +169,7 @@ const hasDeliverer = hasDelivererRole(userRoles);
         <Nav.Item className='nav-item text-center ' onClick={() => handleSelect('history')}>
           <Link
             to='/historique'
-            className={`nav-link  text-${
+            className={`nav-link px-0 text-${
               selectedItem === 'history' ? 'light' : 'info'
             } py-1 pb-2 text-decoration-none`}
           >

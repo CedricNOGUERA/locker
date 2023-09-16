@@ -28,24 +28,23 @@ const InDelivery: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
-    expireToken,
-    setExpireToken,
+    selectedStore,
+    setOrderData,
+    selectedOrderCity,
+    setAllSlot,
     totalPages,
-    allOrder,
-    historyOrder, setHistoryOrder,
+    setHistoryOrder,
+    historyOrder,
     orderReady,
+    setOrderReady,
     orderPickedUp,
-    orderExpired,
+    setOrderPickedUp,
+
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -54,6 +53,8 @@ const InDelivery: React.FC = () => {
   /////////////////////////
 
   const [messageApi, contextHolder] = message.useMessage()
+  const [uniqueTab, setUniqueTab] = React.useState<any>([])
+
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
@@ -71,23 +72,17 @@ const InDelivery: React.FC = () => {
 
   const newStatus = 'operin'
 
+///////////////////////////////////////////////////
+////Filtrage des données par locker et par livreur
+//////////////////////////////////////////////////
   const orderByStatus = orderPickedUp['hydra:member']?.filter(
     (order: any) =>
-      
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
       order?.shippedBy &&
       order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
-  // const orderByStatus = orderData['hydra:member']?.filter(
-  //   (order: any) =>
-  //     order?.status === 'picked_up' &&
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker &&
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
-  //     order?.shippedBy &&
-  //     order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
-  // )
-  console.log(orderPickedUp)
+
 
   //////////////////////////
   // UseEffect
@@ -96,8 +91,22 @@ const InDelivery: React.FC = () => {
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('progress')
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
   }, [])
 
+    React.useEffect(() => {
+    const bookingLocker: any = allSlot?.['hydra:member']?.map(
+      (locker: any) => locker?.slot?.temperatureZone?.locker
+    )
+    const deduplicate: any = [
+      ...new Set(bookingLocker?.map((locker: any) => locker?.location)),
+    ]
+    setUniqueTab(deduplicate)
+  }, [allSlot])
+  
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
       setIsLoading(false)
@@ -111,8 +120,10 @@ const InDelivery: React.FC = () => {
   }, [orderData])
 
   React.useEffect(() => {
-
-    const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === searchOrder || order?.id === parseInt(searchOrder)))[0]
+    const myScan = orderPickedUp['hydra:member']?.filter(
+      (order: any) => order?.barcode === searchOrder || order?.externalOrderId === searchOrder
+    )[0]
+   
     if (myScan) {
       setScanCode(searchOrder)
       if (myScan?.status === 'picked_up') {
@@ -125,8 +136,7 @@ const InDelivery: React.FC = () => {
         } else if (myScan.shippedBy.firstName !== dataStore?.firstname) {
           setIsAnomaly(true)
           setMsgAnomaly(
-            'Cette commande est déjà prise en charge par ' +
-              myScan?.shippedBy.firstName
+            'Cette commande est déjà prise en charge par ' + myScan?.shippedBy.firstName
           )
           setSelectedOrder(myScan)
         } else if (
@@ -135,8 +145,7 @@ const InDelivery: React.FC = () => {
         ) {
           setIsAnomaly(true)
           setMsgAnomaly(
-            'Commande pour : ' +
-              myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+            'Commande pour : ' + myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
           )
           setSelectedOrder(myScan)
         } else {
@@ -154,8 +163,7 @@ const InDelivery: React.FC = () => {
         ) {
           setIsAnomaly(true)
           setMsgAnomaly(
-            'Commande pour : ' +
-              myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+            'Commande pour : ' + myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
           )
           setSelectedOrder(myScan)
         } else {
@@ -163,12 +171,21 @@ const InDelivery: React.FC = () => {
           setMsgAnomaly('Cette commande est sur le quai des livraisons')
           setSelectedOrder(myScan)
         }
-      } else if (myScan?.status === 'operin' || myScan?.status === 'reminder' || myScan?.status === 'overtimedue' || myScan?.status === 'overtime') {
+      } else if (
+        myScan?.status === 'operin' ||
+        myScan?.status === 'reminder' ||
+        myScan?.status === 'overtimedue' ||
+        myScan?.status === 'overtime'
+      ) {
         setIsAnomaly(true)
-        setMsgAnomaly("Cette commande est en status : " + _getStatus(myScan?.status) + ", consultez l'historique. Code barre : " + myScan?.barcode)
+        setMsgAnomaly(
+          'Cette commande est en status : ' +
+            _getStatus(myScan?.status) +
+            ", consultez l'historique. Code barre : " +
+            myScan?.barcode
+        )
         setSelectedOrder(myScan)
       }
-      
     } else {
       //no exist
       _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
@@ -183,6 +200,13 @@ const InDelivery: React.FC = () => {
         )
     )
   }, [selectedStore])
+
+  React.useEffect(() => {
+    if (selectedOrder === '') {
+    }
+  }, [selectedOrder])
+  
+ 
 
   const handleScan = async () => {
     setIsAnomaly(false)
@@ -241,9 +265,9 @@ const InDelivery: React.FC = () => {
           } else {
             const myScan: any = orderData['hydra:member']?.filter(
               (order: any) =>
-                order?.barcode === code?.data || order?.id === parseInt(code?.data)
+                order?.barcode === code?.data || order?.externalOrderId === code?.data
             )[0]
-            console.log(myScan)
+
             if (myScan) {
               if (myScan?.status === 'picked_up') {
                 if (!myScan.shippedBy) {
@@ -293,12 +317,21 @@ const InDelivery: React.FC = () => {
                   setMsgAnomaly('Cette commande est sur le quai des livraisons')
                   setSelectedOrder(myScan)
                 }
-              } else if (myScan?.status === 'operin' || myScan?.status === 'reminder' || myScan?.status === 'overtimedue' || myScan?.status === 'overtime') {
+              } else if (
+                myScan?.status === 'operin' ||
+                myScan?.status === 'reminder' ||
+                myScan?.status === 'overtimedue' ||
+                myScan?.status === 'overtime'
+              ) {
                 setIsAnomaly(true)
-                setMsgAnomaly("Cette commande est en status : " + _getStatus(myScan?.status) + ", consultez l'historique. Code barre : " + myScan?.barcode)
+                setMsgAnomaly(
+                  'Cette commande est en status : ' +
+                    _getStatus(myScan?.status) +
+                    ", consultez l'historique. Code barre : " +
+                    myScan?.barcode
+                )
                 setSelectedOrder(myScan)
               }
-              
             } else {
               //no exist
               setMsgAnomaly("Cette commande n'existe pas.")
@@ -323,6 +356,7 @@ const InDelivery: React.FC = () => {
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
+    
   }
 
   const orderListProps = {
@@ -341,16 +375,24 @@ const InDelivery: React.FC = () => {
     messageApi,
     setSelectedOrder,
     newStatus,
+    setOrderPickedUp,
+    setSearchOrder,
+
   }
+  console.log(selectedOrder)
 
   return (
     <>
       {!selectedOrder && !isAnomaly && (
         <>
+        {uniqueTab?.length > 1 && (
           <div className='col-12 pb-0 text-center font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
-          <div className='sticky-top pt-2 bg-light  '>
+        )}
+          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'}`}
+          style={{backgroundColor : '#fff'}}
+          >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>
@@ -422,13 +464,7 @@ const InDelivery: React.FC = () => {
                 </Container>
               </Container>
             ) : !selectedOrder ? (
-              <>
-                {/* <div className='col-12 pb-0 text-center font-75'>
-                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-                </div>
-                <SearchBar  searchBarProps={searchBarProps} /> */}
                 <OrderList orderListProps={orderListProps} />
-              </>
             ) : (
               <DeliveryDetail scanPageProps={scanPageProps} />
             )}

@@ -59,7 +59,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       <UserQrcode show={show} handleClose={handleClose} />
       <Container
         fluid={'lg'}
-        className='top-nav-design sticky-to pb-2 text-info shadow opacity-75'
+        className='top-nav-design sticky-to pb-2 text-info shado opacity-75'
       >
         <Row className=' pe-0'>
           <Col xs={2} className='py-2 ff-agency m-auto text-center'>
@@ -80,8 +80,10 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
         placement='end'
         className='menu-right bg-secondary border-0'
       >
-        <Offcanvas.Header closeButton closeVariant='white'></Offcanvas.Header>
-        <Offcanvas.Body className='text-light pe-0'>
+        <Offcanvas.Header
+        className='pb-0'
+        closeButton closeVariant='white'></Offcanvas.Header>
+        <Offcanvas.Body className='text-light pe-0 pt-0'>
           <Container className='mb-2'>
             <Row
               className=' menu-link'

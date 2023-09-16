@@ -9,10 +9,14 @@ const SearchBar = ({ searchBarProps }: any) => {
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
-    
+  
   } = searchBarProps
 
-  const [uniqueTab, setUniqueTab] = React.useState([])
+  const [uniqueTab, setUniqueTab] = React.useState<any>([])
+
+  React.useEffect(() => {
+    // setReadOnlyInput(true)
+  }, [])
 
   React.useEffect(() => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
@@ -21,8 +25,6 @@ const SearchBar = ({ searchBarProps }: any) => {
     const unique: any = [...new Set(bookingLocker?.map((locker: any) => locker?.location))]
 
     setUniqueTab(unique)
-
-   
   }, [allSlot])
 
   const filteredCity = (place: any) => {
@@ -37,51 +39,61 @@ const SearchBar = ({ searchBarProps }: any) => {
       .filter((lockerCity: any) => lockerCity?.location === place)
     return city && city[0]['@id']
   }
+ 
 
   return (
-    <Container className='mb-2 text-center sticky-top'>
+    <Container className={`search-bar mb-2 text-center`}>
       <Container
         fluid
-        className=' text-info ps-2 pe-4 py-0 bg-secondary rounded-pill  my-auto '
+        className={` text-info ps-2 rounded-pill  my-auto  ${uniqueTab?.length > 1 && "bg-secondary pe-4"}`} 
       >
         <Dropdown>
-          <Container fluid className='px-0 py-0'>
+          <Container fluid className='px-0'>
             <Row className='align-middle'>
               <Col className='text-start'>
                 <div className='input-group '>
-                  <i className='ri-search-line me-1 '></i>
+                  {/* <i className='ri-search-line me-1 '></i> */}
                   <input
                     type='text'
                     className='form-control rounded-pill '
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
                     aria-describedby='search-order'
-                    style={{ height: '25px' }}
+
+                    style={{ height: uniqueTab?.length > 1 ? '35px' : '40px',
+                    backgroundColor: '#ddd',
+                  }}
                     value={searchOrder}
                     onChange={(e) => setSearchOrder(e.currentTarget.value)}
                   />
-                  {searchOrder !== '' && (
+                  {searchOrder !== '' ? (
                     <i
-                      className='ri-close-circle-fill text-warning delete-button'
-                      onClick={() => setSearchOrder('')}
+                      className='ri-close-circle-fill text-warning delete-button fs-3'
+                      onClick={() => {
+                        setSearchOrder('')
+                      }}
                     ></i>
+                  ) : (
+                    <i className='text-secondary ri-search-line fs-5 input-button'></i>
                   )}
                 </div>
               </Col>
-              <Col xs={4} md={2} className='text- p-0 m-auto'>
-                <Dropdown.Toggle
-                  as='div'
-                  variant=''
-                  id='dropdown-basic'
-                  className='text-light'
-                >
-                  <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
-                  <span className='font-85'>{selectedOrderCity}    </span>
-                </Dropdown.Toggle>
-              </Col>
+              {uniqueTab?.length > 1 && (
+                <Col xs={4} md={2} className='text- p-0 m-auto'>
+                  <Dropdown.Toggle
+                    as='div'
+                    variant=''
+                    id='dropdown-basic'
+                    className='text-ligh'
+                  >
+                    <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
+                    <span className='font-85'>{selectedOrderCity} </span>
+                  </Dropdown.Toggle>
+                </Col>
+              )}
             </Row>
           </Container>
-          <Dropdown.Menu  className='shadow ' style={{width:360}} >
+          <Dropdown.Menu className='shadow' style={{ width: 360 }}>
             {uniqueTab?.map((locker: any, indx: any) => (
               <Dropdown.Item
                 key={Math.random()}
@@ -97,7 +109,10 @@ const SearchBar = ({ searchBarProps }: any) => {
                     {' '}
                     <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '}
                   </Col>{' '}
-                  <Col xs={10} className='m-auto my-0 user-name ps-0 pb-0 ms- font-85  text-dark'>
+                  <Col
+                    xs={10}
+                    className='m-auto my-0 user-name ps-0 pb-0 ms- font-85  text-dark'
+                  >
                     {locker}
                   </Col>
                 </Row>

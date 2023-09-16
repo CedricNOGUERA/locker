@@ -24,7 +24,7 @@ import userDataStore from '../../store/userDataStore'
 import Swal from 'sweetalert2'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
-import { _imgFilter, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
+import { _iconFilter, _imgFilter, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
@@ -34,21 +34,18 @@ import InfoAlert from '../../components/ui/warning/InfoAlert'
 import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import InfoTopBar from './InfoTopBar'
-import interrogation from '../../styles/interrogation.png'
 import { BrowserMultiFormatReader } from '@zxing/library'
+import interrogation from '../../styles/interrogation.png'
 
 const NewOrder = () => {
-  const navigate = useNavigate()
   //////////////////////////
   // booleans States
   /////////////////////////
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isOrderCreate, setIsOrderCreate] = React.useState<boolean>(false)
   const [isError, setIsError] = React.useState<boolean>(false)
-  const [isMsgErrorQty, setIsMsgErrorQty] = React.useState<boolean>(false)
   const [isMsgErrorName, setIsMsgErrorName] = React.useState<boolean>(false)
   const [isMsgErrorEmail, setIsMsgErrorEmail] = React.useState<boolean>(false)
-  const [isValid, setIsValid] = React.useState<boolean>(false)
   const [trigger, setTrigger] = React.useState<boolean>(false)
   const [trigger2, setTrigger2] = React.useState<boolean>(false)
   const [isValidPhone, setIsValidPhone] = React.useState<boolean>(true)
@@ -71,16 +68,27 @@ const NewOrder = () => {
   const now: any = Date.now()
 
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
+    selectedStore,
+    setOrderData,
+    selectedOrderCity,
+    setAllSlot,
+    totalPages,
+    setHistoryOrder,
+    historyOrder,
+    orderReady,
+    setOrderReady,
+    orderPickedUp,
+    setOrderPickedUp,
+    orderExpired,
+    setOrderExpired,
+    orderCreated,
+    setOrderCreated,
+    selectedItem,
     expireToken,
     setExpireToken,
   ] = useOutletContext<any>()
@@ -107,6 +115,7 @@ const NewOrder = () => {
   const [tempZones, setTempZones] = React.useState<any>([])
   const [slotSizes, setSlotSizes] = React.useState<any>([])
   const [productDetail, setProductDetail] = React.useState<any>([])
+  const [productOrder, setProductOrder] = React.useState<any>([])
   const [ageRestriction, setAgeRestriction] = React.useState<boolean>(false)
   const [availableSelect, setAvailableSelect] = React.useState<any>([])
 
@@ -119,40 +128,38 @@ const NewOrder = () => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
-
   const [indxScan, setIndxScan] = React.useState<any>('')
   const [indexScan, setIndexScan] = React.useState<any>('')
   const [isScanned, setIsScanned] = React.useState<boolean>(false)
 
-
   const diversProd = [
     {
-      "id": "984968",
-      "ean": "9300605113152",
-      "name": "200G Café NesCafé",
-      "price": 450,
-      "taxe": 16,
+      id: '984968',
+      ean: '9300605113152',
+      name: '200G Café NesCafé',
+      price: 450,
+      taxe: 16,
     },
     {
-      "id": "984969",
-      "ean": "3616474434639",
-      "name": "4 PILES AA CRF",
-      "price": 650,
-      "taxe": 16,
+      id: '984969',
+      ean: '3616474434639',
+      name: '4 PILES AA CRF',
+      price: 650,
+      taxe: 16,
     },
     {
-      "id": "984970",
-      "ean": "5397184622001",
-      "name": "PORTABLE VOCTRO 3510 DELL",
-      "price": 120000,
-      "taxe": 16,
+      id: '984970',
+      ean: '5397184622001',
+      name: 'PORTABLE VOCTRO 3510 DELL',
+      price: 120000,
+      taxe: 16,
     },
     {
-      "id": "984971",
-      "ean": "8993242596993",
-      "name": "Ramette A4",
-      "price": 3500,
-      "taxe": 16,
+      id: '984971',
+      ean: '8993242596993',
+      name: 'Ramette A4',
+      price: 3500,
+      taxe: 16,
     },
   ]
 
@@ -193,6 +200,7 @@ const NewOrder = () => {
     if (qty === 0 || qty === null || qty === undefined || qty === '') {
       setAvailableSelect([])
     }
+    
   }, [qty])
 
   React.useEffect(() => {
@@ -212,6 +220,7 @@ const NewOrder = () => {
       setFilteredName,
       'name'
     )
+    
   }, [clientName])
 
   React.useEffect(() => {
@@ -231,65 +240,68 @@ const NewOrder = () => {
       'phone'
     )
   }, [clientPhone])
-
   //////////////////////////
   // Events
   /////////////////////////
 
-
-// Fonctions pour scanner les ean des produits (pas au point)
-  const videoRef: any = React.useRef(null);
+  // Fonctions pour scanner les ean des produits (pas au point)
+  const videoRef: any = React.useRef(null)
 
   const startScan = async () => {
     setIsScanned(true)
-    
+
     try {
-      const codeReader = new BrowserMultiFormatReader();
+      const codeReader = new BrowserMultiFormatReader()
       const constraints = {
         video: {
           facingMode: 'environment',
         },
-      };
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      videoRef.current.srcObject = stream;
+      }
+      const stream = await navigator.mediaDevices.getUserMedia(constraints)
+      videoRef.current.srcObject = stream
       codeReader?.decodeFromVideoDevice(null, videoRef.current, (result: any) => {
-        if(result?.text){
-           const myScanData = diversProd?.filter((prod: any) => prod.ean === result?.text)[0]
-          if(myScanData){
-           console.log(myScanData)
-           console.log('Code EAN-13 détecté:', result?.text)
-           videoRef.current.srcObject = null
-         
-           handleChangeProductScan(
-            myScanData,
-             indxScan,
-             indexScan,
-             productDetail,
-             setProductDetail
-           )
-         }else {
-          setIsScanned(false)
-          stopScan()
-          console.log('Pas de résultat')
-         }
+        if (result?.text) {
+          const myScanData = diversProd?.filter((prod: any) => prod.ean === result?.text)[0]
+          if (myScanData) {
+            console.log(myScanData)
+            console.log('Code EAN-13 détecté:', result?.text)
+            videoRef.current.srcObject = null
+
+            handleChangeProductScan(
+              myScanData,
+              indxScan,
+              indexScan,
+              productDetail,
+              setProductDetail
+            )
+          } else {
+            setIsScanned(false)
+            stopScan()
+            console.log('Pas de résultat')
+          }
         }
- 
-      });
+      })
     } catch (error) {
-      console.error('Erreur lors de la configuration de la caméra:', error);
+      console.error('Erreur lors de la configuration de la caméra:', error)
     }
-  };
+  }
 
   const stopScan = () => {
-    const stream = videoRef.current.srcObject;
+    const stream = videoRef.current.srcObject
     if (stream) {
-      const tracks = stream.getTracks();
-      tracks.forEach((track: any) => track.stop());
-      videoRef.current.srcObject = null;
+      const tracks = stream.getTracks()
+      tracks.forEach((track: any) => track.stop())
+      videoRef.current.srcObject = null
       setIsScanned(false)
     }
-  };
-  const handleChangeProductScan = (data: any, indx: any, index: any, productDetail: any, setProductDetail: any) => {
+  }
+  const handleChangeProductScan = (
+    data: any,
+    indx: any,
+    index: any,
+    productDetail: any,
+    setProductDetail: any
+  ) => {
     const newProductDetail2 = [...productDetail]
 
     if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
@@ -302,16 +314,12 @@ const NewOrder = () => {
       stopScan()
       setIsScanned(false)
       setProductDetail(newProductDetail2)
-    }
-    else {
+    } else {
       stopScan()
       setIsScanned(false)
       console.log('object')
     }
   }
-
-
-
 
   const expiredToken = (error: any) => {
     if (!expireToken) {
@@ -401,8 +409,7 @@ const NewOrder = () => {
     setClientPhone('')
     setAgeRestriction(false)
   }
-  
-  console.log(tempZones)
+
   const createNewOrder = () => {
     function entierAleatoire(min: any, max: any) {
       return Math.floor(Math.random() * (max - min + 1)) + min
@@ -417,6 +424,8 @@ const NewOrder = () => {
       parseInt(qty) === 1
         ? {
             service: 'B2C',
+            ageRestriction: ageRestriction === true ? 18 : 0,
+            externalOrderId: "" + entierAleatoire(100, 999) + "",
             barcode: chosenLocker[0]?.company?.cleveronCompanyId + '-' + randomCode,
             bookingSlot: bookingSlotIds[0],
             destination: {
@@ -444,11 +453,12 @@ const NewOrder = () => {
               : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty),
-            products: productDetail[0],
+            products: productOrder[0],
           }
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
-
+            ageRestriction: ageRestriction === true ? 18 : 0,
+            externalOrderId: entierAleatoire(100, 999),
             barcode:
               chosenLocker[0]?.company?.cleveronCompanyId +
               '-' +
@@ -484,18 +494,19 @@ const NewOrder = () => {
               : clientPhone,
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty) / parseInt(qty),
-            products: productDetail[indx],
+            products: productOrder[indx],
+            // products: productDetail[indx],
           }))
 
-    if (ageRestriction === true) {
-      if (parseInt(qty) === 1) {
-        dataOrder.ageRestriction = 18
-      } else {
-        Array.from({ length: parseInt(qty) }).map(
-          (_, indx) => (dataOrder[indx].ageRestriction = 18)
-        )
-      }
-    }
+    // if (ageRestriction === true) {
+    //   if (parseInt(qty) === 1) {
+    //     dataOrder.ageRestriction = 18
+    //   } else {
+    //     Array.from({ length: parseInt(qty) }).map(
+    //       (_, indx) => (dataOrder[indx].ageRestriction = 18)
+    //     )
+    //   }
+    // }
 
     if (parseInt(qty) === 1) {
       let config = {
@@ -521,7 +532,6 @@ const NewOrder = () => {
           getallOrders(dataStore.token)
           getBookingAllSlot(dataStore.token)
           setIsOrderCreate(false)
-          setIsValid(false)
           setTrigger(false)
           setChosenLocker([])
           setClientName('')
@@ -531,7 +541,7 @@ const NewOrder = () => {
           setTrigger2(false)
           setClientPhone('')
           setChoosedPhone('')
-          setAgeRestriction(false)
+          // setAgeRestriction(false)
           Swal.fire({
             position: 'top-end',
             toast: true,
@@ -547,12 +557,10 @@ const NewOrder = () => {
           console.log(error)
           handleClose()
           setMsgError(getError(error))
-          setIsValid(false)
           setQty('')
           setTrigger(false)
           setChosenLocker([])
           setIsOrderCreate(false)
-          setIsValid(false)
           setClientName('')
           setClientEmail('')
           setChoosedName('')
@@ -602,7 +610,7 @@ const NewOrder = () => {
           setClientEmail('')
           setChoosedName('')
           setChoosedEmail('')
-          setAgeRestriction(false)
+          // setAgeRestriction(false)
           setTrigger(false)
           setChosenLocker([])
           Swal.fire({
@@ -668,24 +676,19 @@ const NewOrder = () => {
     setChoosedPhone('')
     setChosenLocker([])
     setAgeRestriction(false)
-    setIsValid(false)
     setProductDetail([])
   }
 
   const validOrder = (e: any) => {
     e.preventDefault()
-
+    dataOrderFormat()
     if (!qty) {
-      setIsMsgErrorQty(true)
     }
 
     if (qty) {
       setIsError(false)
-      setIsMsgErrorQty(false)
       setIsMsgErrorName(false)
       setIsMsgErrorEmail(false)
-
-      setIsValid(true)
 
       newOrderRegister(
         orderStore.lockerId,
@@ -707,6 +710,8 @@ const NewOrder = () => {
     }
   }
 
+  console.log(ageRestriction)
+
   const filteredLocker = (locker: any) => {
     setChosenLocker(
       allSlot['hydra:member'].filter(
@@ -714,6 +719,7 @@ const NewOrder = () => {
       )
     )
   }
+  console.log(chosenLocker)
   const handleChangeSelect = (e: any, indx: any) => {
     //conditions si "e.currentTarget.value" est vide
     if (e.currentTarget.value.trim() !== '') {
@@ -794,30 +800,41 @@ const NewOrder = () => {
 
     const newProductDetail2 = [...productDetail]
     const myScanData = diversProd?.filter((prod: any) => prod.ean === value)[0]
-    if(myScanData){
+    if (myScanData) {
       if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
         newProductDetail2[indx][index] = {
-          id: Math.random(),
+          // id: Math.random(),
           name: myScanData?.name,
           price: myScanData?.price,
           quantity: 1,
         }
-        
       }
       setProductDetail(newProductDetail2)
-    } else{
-
-      
+    } else {
       if (newProductDetail2[indx] && newProductDetail2[indx][index]) {
         newProductDetail2[indx][index][key] =
-        key === 'quantity' || key === 'price' ? parseInt(value) : value
+          key === 'quantity' || key === 'price' ? parseInt(value) : value
         setProductDetail(newProductDetail2)
       }
     }
   }
 
-  console.log(productDetail)
 
+
+  const dataOrderFormat = () => {
+   
+
+    setProductOrder(productDetail?.map((item: any) => {
+      // Pour chaque tableau, créer un nouveau tableau sans le champ "id"
+      return item?.map(({ id, ...rest }: any) => rest);
+  }))
+
+
+  }
+
+  // dataOrderFormat()
+
+  console.log(productDetail)
   const borderClasses = ['border-info', 'border-warning', 'border-secondary']
 
   let rowClasses: any = []
@@ -1063,6 +1080,7 @@ const NewOrder = () => {
                         >
                           <img
                             alt='Temp icon'
+                          //src={_iconFilter(slots)}
                             src={
                               'https://img.icons8.com/color/512/' + _imgFilter(slots) + '.png'
                             }
@@ -1101,6 +1119,7 @@ const NewOrder = () => {
                   e.preventDefault()
                   setTrigger(true)
                   handleAddStartProduct()
+                  setAgeRestriction(false)
                 }}
                 className='m-auto'
               >
@@ -1179,32 +1198,26 @@ const NewOrder = () => {
                                 key={index}
                                 value={JSON.stringify(lockers)}
                                 className={`text-light ${
-                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH'
-                                    ? // ||
-                                      // lockers?.slot?.temperatureZone?.myKey === 'MT'
-                                      'bg-succes'
-                                    : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE'
-                                    ? // ||
-                                      // lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                      'bg-inf'
-                                    : lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' &&
-                                      // ||
-                                      //     lockers?.slot?.temperatureZone?.myKey === 'CA'
+                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                                  lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                    ? 'bg-succes'
+                                    : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                                      lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                    ? 'bg-inf'
+                                    : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                        lockers?.slot?.temperatureZone?.myKey === 'HT') &&
                                       'bg-warnin'
                                 }`}
                                 disabled={lockers.available < 1 ? true : false}
                               >
-                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH'
-                                  ? // ||
-                                    // lockers?.slot?.temperatureZone?.myKey === 'MT'
-                                    '🍃 Zone Fraîche'
-                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE'
-                                  ? // ||
-                                    //   lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                    '❄ Zone Congelée'
-                                  : lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' &&
-                                    // ||
-                                    //     lockers?.slot?.temperatureZone?.myKey === 'CA'
+                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
+                                lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                  ? '🍃 Zone Fraîche'
+                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
+                                    lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                  ? '❄ Zone Congelée'
+                                  : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
+                                      lockers?.slot?.temperatureZone?.myKey === 'HT') &&
                                     '☀️ Zone Ambiante'}{' '}
                                 ({lockers?.slot.size}) - {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
@@ -1632,25 +1645,20 @@ const NewOrder = () => {
       )}
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Body>
-          <div className='text-center my-3 animate__animated animate__jello'>
+          <div className='text-center my-3'>
             <p>Détail de commande</p>
             {productDetail?.map((slot: any, indx: any) => (
               <div key={indx} className={indx > 0 ? 'mt-5' : 'mt-1'}>
                 <div className='text-start text-secondary'>
                   <b className='fs-2'>
-                    Panier n° {indx + 1} {''} :
+                    Panier n° {indx + 1} {''} : {''}
                   </b>
-                  {tempZones[indx] === 'MT'
-                    ? // ||
-                      // slot?.slot?.temperatureZone?.myKey === 'MT'
-                      '🍃 Zone Fraîche'
-                    : tempZones[indx] === 'LT'
-                    ? // ||
-                      //   slot?.slot?.temperatureZone?.myKey === 'LT'
-                      '❄ Zone Congelée'
-                    : tempZones[indx] === 'CA' &&
-                      // ||
-                      //     slot?.slot?.temperatureZone?.myKey === 'CA'
+                  {tempZones[indx] === 'MT' || slot?.slot?.temperatureZone?.myKey === 'MT'
+                    ? '🍃 Zone Fraîche'
+                    : tempZones[indx] === 'LT' || slot?.slot?.temperatureZone?.myKey === 'LT'
+                    ? '❄ Zone Congelée'
+                    : (tempZones[indx] === 'HT' ||
+                        slot?.slot?.temperatureZone?.myKey === 'CA') &&
                       '☀️ Zone Ambiante'}{' '}
                   ({slotSizes[indx]})
                 </div>
@@ -1673,16 +1681,18 @@ const NewOrder = () => {
                 </Table>
               </div>
             ))}
-            {/* <img src={interrogation} alt="point d'interrogation" width={150} /> */}
           </div>
-          <p>Voulez-vous valider cette commande ?</p>
+          <p>
+          {/* <img src={interrogation} alt="point d'interrogation" width={40} />{' '} */}
+            Voulez-vous valider cette commande ?
+          </p>
           <div className='mt-3 text-end'>
             <Button
               aria-label='Aria annuler'
               title='Annuler commande'
               variant='warning'
               onClick={cancelNewOrder}
-              className='me-3'
+              className='me-3  text-light'
             >
               Annuler
             </Button>
@@ -1691,6 +1701,8 @@ const NewOrder = () => {
               title='Valider la commande'
               variant='info'
               onClick={createNewOrder}
+              className='text-light'
+
             >
               Valider
             </Button>

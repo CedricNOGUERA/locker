@@ -26,16 +26,16 @@ const ReturnOrder: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
-    setSelectedOrderCity,
-    allSlot,
-    setAllSlot,
-    selectedItem,
-    setSelectedItem,
+setSelectedStore,
+setSelectedOrderCity,
+allSlot,
+setSelectedItem,
+ selectedStore,
+setOrderData,
+ selectedOrderCity,
+
+
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 

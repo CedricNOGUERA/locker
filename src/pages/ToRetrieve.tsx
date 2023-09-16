@@ -26,27 +26,30 @@ const ToRetrieve: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
-    expireToken,
-    setExpireToken,
+     selectedStore,
+    setOrderData,
+     selectedOrderCity,
+     setAllSlot,
     totalPages,
-    allOrder,
-    historyOrder,
     setHistoryOrder,
-    orderReady,
-    orderPickedUp,
-    orderExpired,
+    historyOrder, 
+     orderReady,
+    setOrderReady,
+     orderPickedUp,
+    setOrderPickedUp,
+     orderExpired,
+   
+    
+             
   ] = useOutletContext<any>()
   const [messageApi, contextHolder] = message.useMessage()
+  const [uniqueTab, setUniqueTab] = React.useState<any>([])
+
 
   //////////////////////////
   // States
@@ -78,6 +81,15 @@ const ToRetrieve: React.FC = () => {
     setIsLoading(true)
     setSelectedItem('retrieve')
   }, [])
+  React.useEffect(() => {
+    const bookingLocker: any = allSlot?.['hydra:member']?.map(
+      (locker: any) => locker?.slot?.temperatureZone?.locker
+    )
+    const deduplicate: any = [
+      ...new Set(bookingLocker?.map((locker: any) => locker?.location)),
+    ]
+    setUniqueTab(deduplicate)
+  }, [allSlot])
 
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
@@ -155,10 +167,12 @@ const ToRetrieve: React.FC = () => {
     <>
       {!selectedOrder && (
         <>
+        {uniqueTab?.length > 1 && (
           <div className='col-12 pb-0 text-center font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
-          <div className='sticky-top pt-2 bg-light  '>
+            )}
+          <div className='sticky-top pt-2'>
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>

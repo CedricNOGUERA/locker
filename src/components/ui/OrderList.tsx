@@ -24,7 +24,7 @@ const OrderList = ({ orderListProps }: any) => {
     filteredOrder?.length === 0 && orderList?.length === 0 && searchOrder?.length > 2
 
   React.useEffect(() => {
-    if (filteredOrder?.length > 0 && searchOrder?.length > 2) {
+    if (filteredOrder?.length > 0 && searchOrder?.length > 1) {
       setOrderList(filteredOrder)
     } 
     else if (filteredOrder?.length === 0 && searchOrder?.length > 2) {
@@ -41,7 +41,7 @@ const OrderList = ({ orderListProps }: any) => {
 
 
   return (
-    <Container className='order-list px-0 animate__animated animate__backInLeft'>
+    <Container className='order-list px-0 '>
       {(orderByStatus && orderByStatus?.length > 0 && orderList?.length > 0) ||
       (filteredOrder && filteredOrder?.length > 0) ? (
         orderList?.map((liv: any, indx: any) => (

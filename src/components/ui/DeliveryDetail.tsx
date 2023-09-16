@@ -7,6 +7,7 @@ import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import QrCode from '../QrCode'
+import { _getOrdersByStatus, _iconFilter, _tempFilter } from '../../utils/functions'
 const DeliveryDetail = ({ scanPageProps }: any) => {
 
   const navigate = useNavigate();
@@ -14,7 +15,14 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
   ////////////////////
   //Props & store
   ///////////////////
-  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
+    
+  const {
+    selectedOrder,
+    setOrderData,
+    setSelectedOrder,
+    newStatus,
+    setOrderPickedUp,
+  } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
   const authLogout = userDataStore((state: any) => state.authLogout)
@@ -91,8 +99,8 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
       axios
         .request(config)
         .then((response: any) => {
-          console.log(response.data)
           getallOrders(dataStore.token)
+          _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
           setIsLoading(false)
           handleShowUpdateStatus()
         })
@@ -124,8 +132,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                 <span className='fw-bold font-85'>n° {selectedOrder?.barcode}</span>
               </span>
             </Col>
-            <Col xs={2}  md={1}
-              lg={1} className='m-auto text-light text-start ps- me-3 py-0'>
+            <Col xs={2} md={1} lg={1} className='m-auto text-light text-start ps- me-3 py-0'>
               <BadgedIcon
                 slot={selectedOrder?.bookingSlot}
                 borderColor='secondary'
@@ -134,7 +141,8 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
             </Col>
           </Row>
         </Container>
-        <Table striped className='mt-3'>
+        
+        <Table striped className='mt-3 border-1'>
           <thead>
             <tr>
               <th className='text-center text-secondary'>Qté</th>
@@ -178,9 +186,13 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
         {isErrorValid ? (
           <>
             <Modal.Header closeButton>
-              <Modal.Title><i className="ri-error-warning-line fs-2 text-warning"></i>Attention</Modal.Title>
+              <Modal.Title>
+                <i className='ri-error-warning-line fs-2 text-warning'></i>Attention
+              </Modal.Title>
             </Modal.Header>
-            <Modal.Body>{errorMsg ? errorMsg : 'Une anomalie est survenue... Rafraichissez la page'}</Modal.Body>
+            <Modal.Body>
+              {errorMsg ? errorMsg : 'Une anomalie est survenue... Rafraichissez la page'}
+            </Modal.Body>
             <Modal.Footer>
               <Button
                 size='lg'
@@ -199,55 +211,56 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
         ) : (
           <>
             <Modal.Body>
-            <Container className='text-center text-danger py-0  m-auto opacity-75'>
-        <span className='align-middle'>
-          <i className='ri-error-warning-line fs-5'></i>
-        </span>{' '}
-        <small className='fw-bold align-middle '>haut du qrcode</small>{' '}
-        <div className='bounced-arrow justify-content-around'>
-          <i className='ri-arrow-up-fill '></i>
-          <i className='ri-arrow-up-fill '></i>
-          <i className='ri-arrow-up-fill '></i>
-        </div>
-      </Container>
-      <Container
-        className='bg-light p-2 border  animate__animated animate__fadeInDown'
-        onClick={() => {
-          if(selectedOrder?.status === "created"){
-
-            changeStatus()
-          }else{
-
-            getallOrders(dataStore.token)
-            setSelectedOrder(null)
-          }
-        }}
-      >
-        <div className='m-auto'>
-          {newStatus === 'receive' && selectedOrder.multiOrderCode ? (
-            <QrCode data={`${selectedOrder?.multiOrderCode}`} />
-          ) : newStatus === 'receive' && !selectedOrder.multiOrderCode ? (
-            <QrCode data={`${selectedOrder?.receiveCode}`} />
-          ) : (
-            <QrCode data={`${selectedOrder?.barcode}`} />
-          )}
-        </div>
-      </Container>
-      <Container className='text-center text-dark font-85'>
-        <small>Respectez le sens du qrcode lors du scan</small>
-      </Container>
-      <Container className='text-center mt-4 px-0'>
-        <Alert variant='secondary' className='border-2 border-secondary'>
-          Saisie manuelle :
-          <p className='text-info fw-bold m-0'>
-            {newStatus === 'receive' && selectedOrder.multiOrderCode
-              ? selectedOrder?.multiOrderCode
-              : newStatus === 'receive' && !selectedOrder.multiOrderCode
-              ? selectedOrder?.receiveCode
-              : selectedOrder?.barcode}
-          </p>
-        </Alert>
-      </Container>
+              <Container className='text-center text-dange py-0  m-auto opacity-75'>
+                <p>
+                  {' '}
+                  <img
+                    alt='température de la commande'
+                    src={_iconFilter(
+                      selectedOrder?.bookingSlot?.slot?.temperatureZone?.keyTemp
+                    )}
+                    style={{ width: '35px', height: `35px` }}
+                  />
+                  <b>Zone {selectedOrder?.bookingSlot?.slot?.temperatureZone?.name}</b>
+               </p>
+              </Container>
+              <Container
+                className='bg-light p-2 border  animate__animated animate__fadeInDown'
+                onClick={() => {
+                  if (selectedOrder?.status === 'created') {
+                    changeStatus()
+                  } else {
+                    _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
+                    getallOrders(dataStore.token)
+                    setSelectedOrder(null)
+                  }
+                }}
+              >
+                <div className='m-auto'>
+                  {newStatus === 'receive' && selectedOrder.multiOrderCode ? (
+                    <QrCode data={`${selectedOrder?.multiOrderCode}`} />
+                  ) : newStatus === 'receive' && !selectedOrder.multiOrderCode ? (
+                    <QrCode data={`${selectedOrder?.receiveCode}`} />
+                  ) : (
+                    <QrCode data={`${selectedOrder?.barcode}`} />
+                  )}
+                </div>
+              </Container>
+              <Container className='text-center text-dark font-85'>
+                <small>Respectez le sens du qrcode lors du scan</small>
+              </Container>
+              <Container className='text-center mt-4 px-0'>
+                <Alert variant='secondary' className='border-2 border-secondary'>
+                  Saisie manuelle :
+                  <p className='text-info fw-bold m-0'>
+                    {newStatus === 'receive' && selectedOrder.multiOrderCode
+                      ? selectedOrder?.multiOrderCode
+                      : newStatus === 'receive' && !selectedOrder.multiOrderCode
+                      ? selectedOrder?.receiveCode
+                      : selectedOrder?.barcode}
+                  </p>
+                </Alert>
+              </Container>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -266,11 +279,11 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                 type='submit'
                 className='bg-info rounded-pill border-info text-light ms-3 px-4 '
                 onClick={() => {
-                    getallOrders(dataStore.token)
-                    setSelectedOrder(null)
-                    handleClose()
+                  _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
+                  getallOrders(dataStore.token)
+                  setSelectedOrder(null)
+                  handleClose()
                 }}
-                
               >
                 {isLoading ? <Spinner size='sm' as='span' /> : 'Déposer'}
               </Button>

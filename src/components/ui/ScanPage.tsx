@@ -1,4 +1,4 @@
-import { Container, Alert, Row, Col } from 'react-bootstrap'
+import { Container, Alert, Row, Col, Table } from 'react-bootstrap'
 import QrCode from '../QrCode'
 import userDataStore from '../../store/userDataStore'
 import axios from 'axios'
@@ -6,7 +6,6 @@ import OrdersService from '../../service/Orders/OrdersService'
 import { useNavigate } from 'react-router-dom'
 import BackButton from './BackButton'
 import BadgedIcon from './BadgedIcon'
-import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 
 const ScanPage = ({ scanPageProps }: any) => {
   const navigate = useNavigate()
@@ -15,8 +14,7 @@ const ScanPage = ({ scanPageProps }: any) => {
   //Props & store
   ///////////////////
 
-  const { selectedOrder, setOrderData, setSelectedOrder, newStatus, allSlot,
-    setAllSlot, } = scanPageProps
+  const { selectedOrder, setOrderData, setSelectedOrder, newStatus } = scanPageProps
 
   const dataStore: any = userDataStore((states: any) => states)
   const authLogout = userDataStore((state: any) => state.authLogout)
@@ -43,14 +41,6 @@ const ScanPage = ({ scanPageProps }: any) => {
         }
         console.log(error?.response?.data?.message)
       })
-  }
-  const getBookingAllSlot = (token: any) => {
-    BookingSlotservice.allSlot(token).then((response: any) => {
-      setAllSlot(response.data)
-    })
-    .catch((error: any) => {
-      console.log(error)
-    })
   }
 
   const changeStatus = () => {
@@ -79,7 +69,6 @@ const ScanPage = ({ scanPageProps }: any) => {
         console.log(response.data)
         getallOrders(dataStore.token)
         setSelectedOrder(null)
-        getBookingAllSlot(dataStore.token)
       })
       .catch((error: any) => {
         console.log(error)
@@ -115,6 +104,23 @@ const ScanPage = ({ scanPageProps }: any) => {
           </Col>
         </Row>
       </Container>
+      <p className='text-center font-75'>Détail de la commande</p>
+      <Table striped className='mt-3'>
+        <thead>
+          <tr>
+            <th className='text-center text-secondary'>Qté</th>
+            <th className='text-center text-secondary'>Libellé produit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {selectedOrder?.products?.map((prod: any, index: any) => (
+            <tr key={index}>
+              <td className='text-center font-85'>{prod?.quantity}</td>
+              <td className='text-center font-85'>{prod?.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
       <Container className='text-center text-danger py-0  m-auto opacity-75'>
         <span className='align-middle'>
           <i className='ri-error-warning-line fs-5'></i>

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef } from 'react'
 import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
@@ -9,17 +9,13 @@ import AlertIsError from '../components/ui/warning/AlertIsError'
 import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
-import OrderList from '../components/ui/OrderList';
-import OrderDetail from '../components/ui/OrderDetail';
-import jsQR from 'jsqr';
+import OrderList from '../components/ui/OrderList'
+import OrderDetail from '../components/ui/OrderDetail'
+import jsQR from 'jsqr'
 import noOrder from '../styles/astro.png'
-import BackButton from '../components/ui/BackButton';
-
-
-
+import BackButton from '../components/ui/BackButton'
 
 const Prepared: React.FC = () => {
-   
   //////////////////////////
   // booleans States
   /////////////////////////
@@ -32,23 +28,22 @@ const Prepared: React.FC = () => {
   const isLogged = userDataStore((state: any) => state.isLogged)
   const dataStore = userDataStore((state: any) => state)
   const [
-    selectedStore,
-    setSelectedStore,
     orderData,
-    setOrderData,
-    selectedOrderCity,
+    setSelectedStore,
     setSelectedOrderCity,
     allSlot,
-    setAllSlot,
-    selectedItem,
     setSelectedItem,
-    expireToken,
-    setExpireToken,
+    selectedStore,
+    setOrderData,
+    selectedOrderCity,
+    setAllSlot,
     totalPages,
-    allOrder,
-    historyOrder,
     setHistoryOrder,
+    historyOrder,
     orderReady,
+    setOrderReady,
+    orderPickedUp,
+    setOrderPickedUp
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -57,6 +52,8 @@ const Prepared: React.FC = () => {
   /////////////////////////
 
   const [messageApi, contextHolder] = message.useMessage()
+  const [uniqueTab, setUniqueTab] = React.useState<any>([])
+
 
   const [selectedOrder, setSelectedOrder] = React.useState<any>('')
   const [searchOrder, setSearchOrder] = React.useState<any>('')
@@ -66,16 +63,13 @@ const Prepared: React.FC = () => {
   const [isScan, setIsScan] = React.useState<boolean>(false)
   let videoRef = useRef<any>(null)
   const [scanCode, setScanCode] = React.useState<string>('')
-  const [zebraScanCode, setZebraScan] = React.useState<string>('')
 
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
-  const [msgAnomaly, setMsgAnomaly] = React.useState<any>("")
+  const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
+  
+  let videoStream: MediaStream | null = null
 
-  const inputRef: any = useRef(null); //input de recherche
-
-  let videoStream: MediaStream | null = null;
-
-  const trigger ="preparations"
+  const trigger = 'preparations'
   const newStatus = 'picked_up'
 
   const orderByStatus = orderReady['hydra:member']?.filter(
@@ -83,14 +77,8 @@ const Prepared: React.FC = () => {
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
   )
-  // const orderByStatus = orderData['hydra:member']?.filter(
-  //   (order: any) =>
-  //     order?.status === 'ready_for_delivery' &&
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker &&
-  //     order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
-  // )
 
-console.log(orderReady)
+
   //////////////////////////
   // UseEffect
   /////////////////////////
@@ -98,8 +86,22 @@ console.log(orderReady)
   React.useEffect(() => {
     setIsLoading(true)
     setSelectedItem('preparations')
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
   }, [])
+  React.useEffect(() => {
+    const bookingLocker: any = allSlot?.['hydra:member']?.map(
+      (locker: any) => locker?.slot?.temperatureZone?.locker
+    )
+    const deduplicate: any = [
+      ...new Set(bookingLocker?.map((locker: any) => locker?.location)),
+    ]
+    setUniqueTab(deduplicate)
+  }, [allSlot])
 
+console.log(allSlot)
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
       setIsLoading(false)
@@ -113,7 +115,10 @@ console.log(orderReady)
   }, [orderData])
 
   React.useEffect(() => {
-    const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === searchOrder || order?.id === parseInt(searchOrder)))[0]
+    const myScan = orderReady['hydra:member']?.filter(
+      (order: any) => order?.barcode === searchOrder || order?.externalOrderId === searchOrder
+    )[0]
+
     if (myScan) {
       setScanCode(searchOrder)
       if (myScan?.status === 'picked_up') {
@@ -123,7 +128,6 @@ console.log(orderReady)
             'Cette commande n\'est assignée à aucun livreur mais son statuts est "En livraison".'
           )
           setSelectedOrder(myScan)
-
         } else if (myScan.shippedBy.firstName === dataStore?.firstname) {
           setIsAnomaly(true)
           setMsgAnomaly(
@@ -133,8 +137,7 @@ console.log(orderReady)
         } else {
           setIsAnomaly(true)
           setMsgAnomaly(
-            'Cette commande est déjà prise en charge par ' +
-              myScan?.shippedBy.firstName
+            'Cette commande est déjà prise en charge par ' + myScan?.shippedBy.firstName
           )
           setSelectedOrder(myScan)
         }
@@ -149,48 +152,54 @@ console.log(orderReady)
         ) {
           setIsAnomaly(true)
           setMsgAnomaly(
-            'Commande pour : ' +
-              myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+            'Commande pour : ' + myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
           )
           setSelectedOrder(myScan)
         } else {
           //OK
           setSelectedOrder(myScan)
         }
-      } else if (myScan?.status === 'operin' || myScan?.status === 'reminder' || myScan?.status === 'overtimedue' || myScan?.status === 'overtime') {
+      } else if (
+        myScan?.status === 'operin' ||
+        myScan?.status === 'reminder' ||
+        myScan?.status === 'overtimedue' ||
+        myScan?.status === 'overtime'
+      ) {
         setIsAnomaly(true)
-        setMsgAnomaly("Cette commande est en status : " + _getStatus(myScan?.status) + ", consultez l'historique. Code barre : " + myScan?.barcode)
+        setMsgAnomaly(
+          'Cette commande est en status : ' +
+            _getStatus(myScan?.status) +
+            ", consultez l'historique. Code barre : " +
+            myScan?.barcode
+        )
         setSelectedOrder(myScan)
       }
     } else {
       //no exist
-    
-
       _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
     }
+  
   }, [searchOrder])
 
   React.useEffect(() => {
     setStoreName(
-      allSlot?.['hydra:member']
-        && allSlot?.['hydra:member']?.filter((locker: any)=> 
-        
-        locker?.slot?.temperatureZone?.locker['@id'] === selectedStore
+      allSlot?.['hydra:member'] &&
+        allSlot?.['hydra:member']?.filter(
+          (locker: any) => locker?.slot?.temperatureZone?.locker['@id'] === selectedStore
         )
-        
     )
   }, [selectedStore])
 
-  
 
-  
+
+
+ 
 
   const handleScan = async () => {
     setIsAnomaly(false)
     if (navigator?.mediaDevices) {
-        setIsScan(true);
-        
-        console.log(videoStream)
+      setIsScan(true)
+
       try {
         const stream = await navigator?.mediaDevices?.getUserMedia({
           video: { facingMode: 'environment' },
@@ -202,44 +211,48 @@ console.log(orderReady)
         setIsScan(true)
         console.log('success')
       } catch (error) {
-        console.error('Error accessing camera:', error);
+        console.error('Error accessing camera:', error)
       }
-      }
-  };
+    }
+  }
 
   const stopScan = () => {
-      videoStream?.getTracks()?.forEach((track: any) => track.stop());
-      videoStream = null;
-      setIsScan(false)
-  };
-
-
+    videoStream?.getTracks()?.forEach((track: any) => track.stop())
+    videoStream = null
+    setIsScan(false)
+  }
 
   const scanQRCode = () => {
-    if (videoRef.current && videoStream 
-      && videoRef.current.videoWidth && videoRef.current.videoHeight
-      ) {
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
+    if (
+      videoRef.current &&
+      videoStream &&
+      videoRef.current.videoWidth &&
+      videoRef.current.videoHeight
+    ) {
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('2d')
 
-      canvas.width = videoRef.current.videoWidth;
-      canvas.height = videoRef.current.videoHeight;
-      context?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      canvas.width = videoRef.current.videoWidth
+      canvas.height = videoRef.current.videoHeight
+      context?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height)
 
-      const imageData = context?.getImageData(0, 0, canvas.width, canvas.height);
+      const imageData = context?.getImageData(0, 0, canvas.width, canvas.height)
       if (imageData) {
-        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height)
 
         if (code) {
-          console.log('QR Code detected:', code.data);
+          console.log('QR Code detected:', code.data)
           setScanCode(code.data)
-          if(code.data === ''){
+          if (code.data === '') {
             setIsAnomaly(false)
             setIsScan(false)
             stopScan()
-          }else {
-            const myScan = orderData["hydra:member"]?.filter((order: any) => (order?.barcode === code?.data || order?.id === parseInt(code?.data)))[0]
-            console.log(myScan)
+          } else {
+            const myScan = orderData['hydra:member']?.filter(
+              (order: any) =>
+                order?.barcode === code?.data || order?.externalOrderId === code?.data
+            )[0]
+            
             if (myScan) {
               if (myScan?.status === 'picked_up') {
                 if (!myScan.shippedBy) {
@@ -248,7 +261,6 @@ console.log(orderReady)
                     'Cette commande n\'est assignée à aucun livreur mais son statuts est "En livraison".'
                   )
                   setSelectedOrder(myScan)
-
                 } else if (myScan.shippedBy.firstName === dataStore?.firstname) {
                   setIsAnomaly(true)
                   setMsgAnomaly(
@@ -282,30 +294,34 @@ console.log(orderReady)
                   //OK
                   setSelectedOrder(myScan)
                 }
-              } else if (myScan?.status === 'operin' || myScan?.status === 'reminder' || myScan?.status === 'overtimedue' || myScan?.status === 'overtime') {
+              } else if (
+                myScan?.status === 'operin' ||
+                myScan?.status === 'reminder' ||
+                myScan?.status === 'overtimedue' ||
+                myScan?.status === 'overtime'
+              ) {
                 setIsAnomaly(true)
-                setMsgAnomaly("Cette commande est en status : " + _getStatus(myScan?.status) + ", consultez l'historique. Code barre : " + myScan?.barcode)
+                setMsgAnomaly(
+                  'Cette commande est en status : ' +
+                    _getStatus(myScan?.status) +
+                    ", consultez l'historique. Code barre : " +
+                    myScan?.barcode
+                )
                 setSelectedOrder(myScan)
               }
             } else {
               //no exist
               setMsgAnomaly("Cette commande n'existe pas.")
               setIsAnomaly(true)
-
             }
           }
-           stopScan();
+          stopScan()
         }
       }
-      requestAnimationFrame(scanQRCode);
+      requestAnimationFrame(scanQRCode)
     }
-  };
+  }
 
-
- 
-
-
-console.log(selectedOrder)
 
   //////////////////////////
   // Component Props
@@ -318,7 +334,7 @@ console.log(selectedOrder)
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
-      inputRef,
+  
   }
 
   const orderListProps = {
@@ -329,7 +345,7 @@ console.log(selectedOrder)
     orderByStatus,
     orderData,
     storeName,
-    trigger
+    trigger,
   }
 
   const scanPageProps = {
@@ -338,17 +354,25 @@ console.log(selectedOrder)
     messageApi,
     setSelectedOrder,
     newStatus,
+    setOrderReady,
+    setOrderPickedUp,
+    setSearchOrder
   }
 
+  console.log(selectedOrder)
 
   return (
     <>
       {!selectedOrder && !isAnomaly && (
-        <>
+        <>{uniqueTab?.length > 1 && (
+
           <div className='col-12 pb-0 text-center font-75'>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
-          <div className='sticky-top pt-2 bg-light '>
+            )}
+          <div className={`${!isScan ? 'sticky-top pt-2' : 'd-none'}`} 
+           style={{backgroundColor : '#fff'}}
+          >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>
@@ -419,17 +443,11 @@ console.log(selectedOrder)
                 </Container>
               </Container>
             ) : !selectedOrder ? (
-              <>
-                {/* <div className='col-12 pb-0 text-center font-75'>
-                  {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-                </div>
-                <SearchBar  searchBarProps={searchBarProps} /> */}
+           
                 <OrderList orderListProps={orderListProps} />
-              </>
             ) : (
               <OrderDetail scanPageProps={scanPageProps} />
-              )}
-                    
+            )}
           </>
         )}
       </Container>

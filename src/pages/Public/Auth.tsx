@@ -32,7 +32,7 @@ type Inputs = {
 
 const Auth = () => {
   ////////////////////
-  //form States
+  //Form States
   ///////////////////
   const {
     register,
@@ -160,17 +160,18 @@ console.log(myData.roles)
       setIsNotEmail(false)
     }
   }, [myEmail])
+  console.log(myData)
   
    ////////////////////
   //events
   ///////////////////
 
-      /////
-      //Fonction qui vide le cache
-      ////
+      ///////////////
+      //Vide le cache du navigateur
+      ///////////////
     const handleClearCache = () => {
       if ('caches' in window) {
-        // Vider le cache du navigateur
+
         caches.keys().then(cacheNames => {
           cacheNames.forEach(cacheName => {
             caches.delete(cacheName);
@@ -291,7 +292,8 @@ console.log(myData.roles)
         ) : (
           <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
             <Card.Body className=''>
-              <div className='logo-app text-center text-light animate__animated animate__rotateIn'></div>
+              <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
+              </div>
               <div
                className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
 
