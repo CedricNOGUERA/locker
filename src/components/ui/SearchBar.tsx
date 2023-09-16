@@ -42,13 +42,13 @@ const SearchBar = ({ searchBarProps }: any) => {
  
 
   return (
-    <Container className={`mb-2 text-center`}>
+    <Container className={`search-bar mb-2 text-center`}>
       <Container
         fluid
-        className={`text-info ps-2 py-0 rounded-pill  my-auto  ${uniqueTab?.length > 1 && "bg-secondary pe-4"}`} 
+        className={` text-info ps-2 rounded-pill  my-auto  ${uniqueTab?.length > 1 && "bg-secondary pe-4"}`} 
       >
         <Dropdown>
-          <Container fluid className='px-0 py-0'>
+          <Container fluid className='px-0'>
             <Row className='align-middle'>
               <Col className='text-start'>
                 <div className='input-group '>
@@ -59,7 +59,8 @@ const SearchBar = ({ searchBarProps }: any) => {
                     placeholder='N° Commande...'
                     aria-label='searchOrder'
                     aria-describedby='search-order'
-                    style={{ height: '40px',
+
+                    style={{ height: uniqueTab?.length > 1 ? '35px' : '40px',
                     backgroundColor: '#ddd',
                   }}
                     value={searchOrder}
@@ -92,7 +93,7 @@ const SearchBar = ({ searchBarProps }: any) => {
               )}
             </Row>
           </Container>
-          <Dropdown.Menu className='shadow ' style={{ width: 360 }}>
+          <Dropdown.Menu className='shadow' style={{ width: 360 }}>
             {uniqueTab?.map((locker: any, indx: any) => (
               <Dropdown.Item
                 key={Math.random()}

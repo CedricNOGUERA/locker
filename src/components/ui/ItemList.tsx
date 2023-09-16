@@ -3,7 +3,7 @@ import { Button, Col, Row } from 'react-bootstrap'
 import { _getStatus } from '../../utils/functions'
 import BadgedIcon from '../ui/BadgedIcon'
 import 'moment/locale/fr'
-import age18 from '../../styles/age_18.png'
+import age18 from '../../styles/alcool.png'
 
 const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
   const formattedDate = (dateStr: any) => {
