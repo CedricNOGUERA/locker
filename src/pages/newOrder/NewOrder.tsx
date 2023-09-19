@@ -24,7 +24,7 @@ import userDataStore from '../../store/userDataStore'
 import Swal from 'sweetalert2'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
-import { _iconFilter, _imgFilter, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
+import { _iconFilter, _imgFilter, _imgFilter2, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
@@ -889,7 +889,8 @@ const NewOrder = () => {
   const uniqueTempTab = (locker: any) => {
     const newTab = [
       ...new Set(
-        slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.keyTemp)
+        slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.myKey)
+        // slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.keyTemp)
       ),
     ]
     return newTab
@@ -912,6 +913,8 @@ const NewOrder = () => {
     handleSecondStepClick,
     handleThirdStepClick,
   }
+
+  console.log(tempZones)
 
   return (
     <div>
@@ -1082,7 +1085,7 @@ const NewOrder = () => {
                             alt='Temp icon'
                           //src={_iconFilter(slots)}
                             src={
-                              'https://img.icons8.com/color/512/' + _imgFilter(slots) + '.png'
+                              'https://img.icons8.com/color/512/' + _imgFilter2(slots) + '.png'
                             }
                             style={{ width: '32px' }}
                           />
@@ -1091,7 +1094,8 @@ const NewOrder = () => {
                           </span>
                           {slotLocationTab(locker)
                             ?.filter(
-                              (lock: any) => lock?.slot?.temperatureZone?.keyTemp === slots
+                              // (lock: any) => lock?.slot?.temperatureZone?.keyTemp === slots
+                              (lock: any) => lock?.slot?.temperatureZone?.myKey === slots
                             )
                             ?.map((temp: any) => (
                               <div key={Math.random()} className='badge-hoster px-0 ms-1 pt-1'>
@@ -1198,26 +1202,41 @@ const NewOrder = () => {
                                 key={index}
                                 value={JSON.stringify(lockers)}
                                 className={`text-light ${
-                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                                  lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' 
+                                  // ||
+                                  // lockers?.slot?.temperatureZone?.myKey === 'MT'
                                     ? 'bg-succes'
-                                    : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                      lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                    : 
+                                    lockers?.slot?.temperatureZone.keyTemp === 'FREEZE'
+                                    //  ||
+                                      // lockers?.slot?.temperatureZone?.myKey === 'LT'
                                     ? 'bg-inf'
-                                    : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                        lockers?.slot?.temperatureZone?.myKey === 'HT') &&
+                                    : (
+                                      // lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' 
+                                    // ||
+                                        lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                        ) &&
                                       'bg-warnin'
                                 }`}
                                 disabled={lockers.available < 1 ? true : false}
                               >
-                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                                lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                {
+                                // lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' 
+                                // ||
+                                lockers?.slot?.temperatureZone?.myKey === 'LT'
                                   ? '🍃 Zone Fraîche'
-                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                    lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                  ? '❄ Zone Congelée'
-                                  : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                      lockers?.slot?.temperatureZone?.myKey === 'HT') &&
+                                  : 
+                                  // lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' 
+                                  // ||
+                                  //   lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                  // ? '❄ Zone Congelée'
+                                  // // 
+                                  // : 
+                                  
+                                    // lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' 
+                                  // ||
+                                      // lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                      //  &&
                                     '☀️ Zone Ambiante'}{' '}
                                 ({lockers?.slot.size}) - {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
@@ -1653,12 +1672,12 @@ const NewOrder = () => {
                   <b className='fs-2'>
                     Panier n° {indx + 1} {''} : {''}
                   </b>
-                  {tempZones[indx] === 'MT' || slot?.slot?.temperatureZone?.myKey === 'MT'
+                  {tempZones[indx] === 'MT' || slot?.slot?.temperatureZone?.keyTemp === 'FRESH'
                     ? '🍃 Zone Fraîche'
-                    : tempZones[indx] === 'LT' || slot?.slot?.temperatureZone?.myKey === 'LT'
+                    : tempZones[indx] === 'LT' || slot?.slot?.temperatureZone?.keyTemp === 'FREEZE'
                     ? '❄ Zone Congelée'
                     : (tempZones[indx] === 'HT' ||
-                        slot?.slot?.temperatureZone?.myKey === 'CA') &&
+                        slot?.slot?.temperatureZone?.keyTemp === 'NORMAL') &&
                       '☀️ Zone Ambiante'}{' '}
                   ({slotSizes[indx]})
                 </div>

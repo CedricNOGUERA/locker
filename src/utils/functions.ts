@@ -234,11 +234,27 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
    *******************************/
  export const _imgFilter = (data: any) => {
   const imge =
+    // data === 'LT'
     data === 'FRESH'
+      ? 'organic-food'
+      // : data === 'FREEZE'
+      // ? 'winter'
+      : data === 'NORMAL'
+      ? 'dry'
+      : 'nada'
+  return imge
+}
+ /********************************
+   * filtre image en fonction de la zone de température
+   *******************************/
+ export const _imgFilter2 = (data: any) => {
+  const imge =
+    data === 'LT'
+    // data === 'FRESH'
       ? 'organic-food'
       : data === 'FREEZE'
       ? 'winter'
-      : data === 'NORMAL'
+      : data === 'MT'
       ? 'dry'
       : 'nada'
   return imge
