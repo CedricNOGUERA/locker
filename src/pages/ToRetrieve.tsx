@@ -43,9 +43,6 @@ const ToRetrieve: React.FC = () => {
      orderPickedUp,
     setOrderPickedUp,
      orderExpired,
-   
-    
-             
   ] = useOutletContext<any>()
   const [messageApi, contextHolder] = message.useMessage()
   const [uniqueTab, setUniqueTab] = React.useState<any>([])

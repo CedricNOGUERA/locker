@@ -249,16 +249,17 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
    *******************************/
  export const _imgFilter2 = (data: any) => {
   const imge =
-    data === 'LT'
+    data === 'MT'
     // data === 'FRESH'
       ? 'organic-food'
-      : data === 'FREEZE'
+      : data === 'LT'
       ? 'winter'
-      : data === 'MT'
+      : data === 'HT'
       ? 'dry'
       : 'nada'
   return imge
 }
+ 
 /********************************
    * filtre icon en fonction de la zone de température (keyTemp)
    *******************************/
@@ -269,6 +270,28 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
       : data === 'FREEZE'
       ? freeze
       : data === 'NORMAL'
+      ? normal
+      : 'nada'
+  return imge
+}
+ export const _iconFilter2 = (data: any) => {
+  const imge =
+    data === 'LT'
+      ? fresh
+      : data === 'LT'
+      ? freeze
+      : data === 'MT'
+      ? normal
+      : 'nada'
+  return imge
+}
+ export const _iconFilter3 = (data: any) => {
+  const imge =
+    data === 'Froid positif'
+      ? fresh
+      : data === 'Froid négatif'
+      ? freeze
+      : data === 'Ambiant'
       ? normal
       : 'nada'
   return imge

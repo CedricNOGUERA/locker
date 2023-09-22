@@ -71,7 +71,7 @@ const UpdatePassword = () => {
             timerProgressBar: true,
             didOpen: () => {
               setTimeout(() => {
-                navigate('/dashboard')
+                navigate('/preparations')
               }, 3000)
             },
           })

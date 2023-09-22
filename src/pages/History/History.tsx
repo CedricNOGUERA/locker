@@ -92,7 +92,7 @@ const History = () => {
       setIsLoading(false)
     }
   }, [orderData])
-
+console.log(orderData)
   React.useEffect(() => {
     _searchWithRegex(searchOrder, historyOrder, setFilteredOrder)
   }, [searchOrder])
