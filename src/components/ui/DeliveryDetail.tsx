@@ -7,7 +7,7 @@ import OrdersService from '../../service/Orders/OrdersService'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import QrCode from '../QrCode'
-import { _getOrdersByStatus, _iconFilter, _tempFilter } from '../../utils/functions'
+import { _getOrdersByStatus, _iconFilter, _iconFilter2, _iconFilter3, _tempFilter } from '../../utils/functions'
 const DeliveryDetail = ({ scanPageProps }: any) => {
 
   const navigate = useNavigate();
@@ -216,8 +216,8 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                   {' '}
                   <img
                     alt='température de la commande'
-                    src={_iconFilter(
-                      selectedOrder?.bookingSlot?.slot?.temperatureZone?.keyTemp
+                    src={_iconFilter3(
+                      selectedOrder?.bookingSlot?.slot?.temperatureZone?.name
                     )}
                     style={{ width: '35px', height: `35px` }}
                   />
