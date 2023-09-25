@@ -89,14 +89,14 @@ const BottomNavBar = ({
           <Link
             to='/preparations'
             className={`nav-link  text-${
-              selectedItem === 'preparations' ? 'light' : 'info'
+              selectedItem === 'preparations' ? 'light' : 'green'
             } py-1 pb-2 px-0 text-decoration-none`}
           >
             <i className='ri-checkbox-line fs-3'></i>
             {ready_for_delivery?.length > 0 && (
               <span
                 className={`badge rounded-pill bg-${
-                  selectedItem === 'preparations' ? 'warning' : 'info'
+                  selectedItem === 'preparations' ? 'warning' : 'green'
                 }`}
               >
                 {ready_for_delivery?.length}

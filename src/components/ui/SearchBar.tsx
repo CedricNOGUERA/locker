@@ -5,6 +5,7 @@ const SearchBar = ({ searchBarProps }: any) => {
   const {
     searchOrder,
     setSearchOrder,
+    selectedStore,
     setSelectedStore,
     selectedOrderCity,
     setSelectedOrderCity,
@@ -39,7 +40,7 @@ const SearchBar = ({ searchBarProps }: any) => {
       .filter((lockerCity: any) => lockerCity?.location === place)
     return city && city[0]['@id']
   }
- 
+ console.log(selectedStore)
 
   return (
     <Container className={`search-bar mb-2 text-center`}>
@@ -87,7 +88,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                     className='text-ligh'
                   >
                     <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
-                    <span className='font-85'>{uniqueTab?.length > 1 && selectedOrderCity === 'Parking Carrefour Punaauia - Côté mer' ? 'Côté mer' : 'Côté mont'} </span>
+                    <span className='font-85'>{uniqueTab?.length > 1 && selectedStore === '/api/lockers/3' ? 'Côté mer' : selectedStore === '/api/lockers/6' ? 'Côté mont.' : 'Arue'} </span>
                   </Dropdown.Toggle>
                 </Col>
               )}
