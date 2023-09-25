@@ -34,7 +34,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
             {trigger === 'history' ? (
               <>
                 <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span> - {''}
-                <span className='text-info fw-bold'>{_getStatus(liv?.status)}</span>
+                <span className='text-green fw-bold'>{_getStatus(liv?.status)}</span>
                 {liv?.ageRestriction === 18 && (
                   <img src={age18} alt='+18ans' width={24} /> 
                 )}
@@ -42,7 +42,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
             ) : (
               <>
                 <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span>{' '}{liv?.externalOrderId && "-" } {' '}
-                <span className='text-info fw-bold'>
+                <span className='text-green fw-bold'>
                   {liv?.bookingSlot?.slot?.temperatureZone?.locker?.city}
                   
                 </span>{' '}
@@ -63,7 +63,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
           </Col>
         ) : (
           <Col xs={2} className='m-auto  py-0 text-end'>
-            <span className='rounded  px-2 py-1 border border-info border-2'>
+            <span className='rounded  px-2 py-1 border border-green border-2'>
               <i className='ri-qr-code-line text-secondary align-bottom'></i>
             </span>
           </Col>

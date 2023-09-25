@@ -285,17 +285,17 @@ console.log(myData.roles)
         copyClosePrompt='Close'
         permanentlyHideOnDismiss={false}
       />
-      <Container fluid className='auth-cont col-12 col-md-12 col-lg-6 px-0 bg-secondary'>
+      <Container fluid className='auth-cont col-12 col-md-12 col-lg-6 px-0 bg-secondar'>
         {dataStore.token && dataStore.company_name && <Navigate to='/preparations' />}
         {isLoading ? (
           <Loading variant='info' />
         ) : (
-          <Card className='auth-form  bg-secondary shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
+          <Card className='auth-form  bg-warning shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
             <Card.Body className=''>
               <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
               </div>
               <div
-               className='teko text-center mb-5 text-light animate__animated animate__fadeInUp'>
+               className='teko text-center mb-5 text-green animate__animated animate__fadeInUp'>
 
                 OVER BOX
               </div>

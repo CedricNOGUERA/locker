@@ -125,7 +125,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
                 setSearchOrder('')
               }}
             >
-               <i className='ri-arrow-left-line text-info fs-3 bg-secondary rounded-pill back-to'></i>
+               <i className='ri-arrow-left-line text-light fs-3 bg-secondary rounded-pill back-to'></i>
             </Col>
             <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
               <span className='fw-bold font-85'>
@@ -159,7 +159,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
         </Table>
         <Container className='text-end mt-4'>
           <Button
-            className='bg-info rounded-pill border-info text-light ms-3'
+            className='bg-green rounded-pill border-green text-light ms-3'
             type='submit'
             onClick={handleShow}
           >
@@ -228,7 +228,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
               <Button
                 size='lg'
                 type='submit'
-                className='bg-info rounded-pill border-info text-light ms-3 px-4 '
+                className='bg-green rounded-pill border-green text-light ms-3 px-4 '
                 onClick={changeStatus}
               >
                 {isLoading ? <Spinner size='sm' as='span' /> : 'Oui'}

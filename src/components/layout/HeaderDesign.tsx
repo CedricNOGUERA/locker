@@ -59,7 +59,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       <UserQrcode show={show} handleClose={handleClose} />
       <Container
         fluid={'lg'}
-        className='top-nav-design sticky-to pb-2 text-info shado opacity-75'
+        className='top-nav-design sticky-to pb-2 text-light bg-warning shado opacity-7'
       >
         <Row className=' pe-0'>
           <Col xs={2} className='py-2 ff-agency m-auto text-center'>
@@ -69,7 +69,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
           </Col>
           <Col xs={2} className='py-2 m-auto  align-bottom  text-end'>
             <Button aria-label="Aria Menu" title='Menu' variant='' onClick={handleShowOffcanvas}>
-              <i className='ri-more-2-fill text-info fs-4'></i>
+              <i className='ri-more-2-fill text-green fs-4'></i>
             </Button>
           </Col>
         </Row>

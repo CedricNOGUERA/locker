@@ -46,7 +46,7 @@ const UserQrcode = ({show, handleClose, setSelectedOrder}: any) => {
         </Container>
       </Modal.Body>
       <Container className='text-end'>
-        <Button variant='info' className='text-light w-25 m-3 mt-1' onClick={handleClose}>
+        <Button className='bg-green border-green text-light w-25 m-3 mt-1' onClick={handleClose}>
           Fermer
         </Button>
       </Container>

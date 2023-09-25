@@ -364,14 +364,15 @@ console.log(allSlot)
   return (
     <>
       {!selectedOrder && !isAnomaly && (
-        <>{uniqueTab?.length > 1 && (
-
-          <div className='col-12 pb-0 text-center font-75'>
-            {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-          </div>
-            )}
-          <div className={`${!isScan ? 'sticky-top pt-2' : 'd-none'}`} 
-           style={{backgroundColor : '#fff'}}
+        <>
+          {uniqueTab?.length > 1 && (
+            <div className='col-12 pb-0 text-center font-75'>
+              {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+            </div>
+          )}
+          <div
+            className={`${!isScan ? 'sticky-top pt-2' : 'd-none'}`}
+            style={{ backgroundColor: '#fff' }}
           >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
@@ -443,8 +444,7 @@ console.log(allSlot)
                 </Container>
               </Container>
             ) : !selectedOrder ? (
-           
-                <OrderList orderListProps={orderListProps} />
+              <OrderList orderListProps={orderListProps} />
             ) : (
               <OrderDetail scanPageProps={scanPageProps} />
             )}
@@ -461,7 +461,7 @@ console.log(allSlot)
         <Button
           aria-label='Aria Scan'
           title='scan'
-          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-info'} border-0`}
+          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-green'} border-0`}
           onClick={() => {
             if (isScan) {
               stopScan()

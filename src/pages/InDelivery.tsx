@@ -480,7 +480,7 @@ const InDelivery: React.FC = () => {
         <Button
           aria-label='Aria Scan'
           title='scan'
-          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-info'} border-0`}
+          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-green'} border-0`}
           onClick={() => {
             if (isScan) {
               stopScan()

@@ -27,13 +27,13 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
                 />
                  {searchOrder !== '' ? (
                     <i
-                      className='ri-close-circle-fill text-warning delete-button fs-3'
+                      className='ri-close-circle-fill text-green delete-history-button fs-2'
                       onClick={() => {
                         setSearchOrder('')
                       }}
                     ></i>
                   ) : (
-                    <i className='ri-search-line fs-5 input-button  text-secondary'></i>
+                    <i className='ri-search-line fs-5 input-history-button  text-secondary'></i>
                   )}
               </div>
             </Col>

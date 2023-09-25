@@ -160,7 +160,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
         </Table>
         <Container className='text-end mt-4'>
           <Button
-            className='bg-info rounded-pill border-info text-light ms-3'
+            className='bg-green rounded-pill border-green text-light ms-3'
             type='submit'
             onClick={handleShow}
           >
@@ -277,7 +277,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
               <Button
                 size='lg'
                 type='submit'
-                className='bg-info rounded-pill border-info text-light ms-3 px-4 '
+                className='bg-green rounded-pill border-green text-light ms-3 px-4 '
                 onClick={() => {
                   _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
                   getallOrders(dataStore.token)

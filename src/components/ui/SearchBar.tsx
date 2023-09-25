@@ -46,7 +46,7 @@ const SearchBar = ({ searchBarProps }: any) => {
     <Container className={`search-bar mb-2 text-center`}>
       <Container
         fluid
-        className={` text-info ps-2 rounded-pill  my-auto  ${uniqueTab?.length > 1 && "bg-secondary pe-4"}`} 
+        className={` text-light ps-2 rounded-pill  my-auto  ${uniqueTab?.length > 1 && "bg-warning pe-4"}`} 
       >
         <Dropdown>
           <Container fluid className='px-0'>
@@ -69,13 +69,15 @@ const SearchBar = ({ searchBarProps }: any) => {
                   />
                   {searchOrder !== '' ? (
                     <i
-                      className='ri-close-circle-fill text-warning delete-button fs-3'
+                      className={`ri-close-circle-fill text-green ${uniqueTab?.length > 1 ? "delete-button fs-2" : "delete-history-button fs-2"} 
+                      
+                      `}
                       onClick={() => {
                         setSearchOrder('')
                       }}
                     ></i>
                   ) : (
-                    <i className='text-secondary ri-search-line fs-5 input-button'></i>
+                    <i className={`text-secondary ri-search-line fs-5 ${uniqueTab?.length > 1 ? "input-button" : "input-history-button"} `}></i>
                   )}
                 </div>
               </Col>
@@ -87,7 +89,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                     id='dropdown-basic'
                     className='text-ligh'
                   >
-                    <i className='ri-store-2-line fs-5 align-middle text-info me-2'></i>{' '}
+                    <i className='ri-store-2-line fs-5 align-middle text-light me-2'></i>{' '}
                     <span className='font-85'>{uniqueTab?.length > 1 && selectedStore === '/api/lockers/3' ? 'Côté mer' : selectedStore === '/api/lockers/6' ? 'Côté mont.' : 'Arue'} </span>
                   </Dropdown.Toggle>
                 </Col>
@@ -108,7 +110,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                 <Row className='item-menu text-secondary align-middle pe-3 w-100'>
                   <Col xs={2} className='ms-0 ps-1'>
                     {' '}
-                    <i className='ri-store-2-line fs-5 align-bottom text-info me-2'></i>{' '}
+                    <i className='ri-store-2-line fs-5 align-bottom text-green me-2'></i>{' '}
                   </Col>{' '}
                   <Col
                     xs={10}

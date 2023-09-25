@@ -104,7 +104,7 @@ const DetailHistory = ({ selectedOrder }: any) => {
       </div>
       {!isDetail && (
         <Button
-          className='fab bg-info rounded-pill border-info text-light ms-3'
+          className='fab bg-green rounded-pill border-green text-light ms-3'
           onClick={() => setIsDetail(true)}
         >
           Voir Détail

@@ -3,7 +3,7 @@
 }
 
 .bg-secondary {
-  background-color: #0a5a64 !important;
+  /* background-color: #0a5a64 !important; */
 }
 
 .bg-succes {
@@ -22,13 +22,16 @@
   width: 100%;
 }
 
-/* .text-green{
+.text-green{
   color: #43B02A !important;
 }
+
 .bg-green {
   background-color: #43B02A !important;
-} */
-
+}
+.border-green {
+  border-color: #43B02A !important;
+}
 
 .main {
   overflow: hidden;
@@ -49,46 +52,43 @@
   height: 70px;
 }
 
-
 .top-nav-design,
 .bottom-navbar {
-  background-color: #2e3338;
+  /* background-color: #FFE900ff; */
+  /* background-color: #2e3338; */
   width: 100% !important;
 }
 @media (max-height: 350px) {
   .bottom-navbar {
     display: none;
   }
-
 }
 
 .button-auth {
-  background-color: rgb(61, 165, 184) !important;
-  border: 2px solid rgb(15, 158, 184);
-}
+  background-color: #43B02A;
+  border: 2px solid #43B02A;
+} 
 
 .button-auth:active,
 .button-auth:hover {
-  background-color: rgb(37, 195, 223);
-  border: 2px solid rgb(15, 158, 184);
+  background-color: #43B02A;
+  border: 2px solid #43B02A;
 }
 
 .auth-cont-sup {
-  background-color: #8b8c94 !important;
+  background-color: #FFE900 !important;
   height: 100vh;
 }
 
 .auth-cont {
   height: 100vh;
   overflow-y: hidden;
-
 }
 
 .auth-form {
   padding-top: 10%;
   overflow-y: hidden;
   margin-bottom: 10%;
-
 }
 
 .card-body {
@@ -124,7 +124,6 @@
   }
 }
 
-
 .menu-link {
   padding: 10px 0;
 }
@@ -155,7 +154,6 @@
   overflow: auto;
   min-height: 100vh;
   background-color: #fff;
-  /* padding-bottom: 100px; */
 }
 
 @media (max-height: 374px) {
@@ -173,8 +171,6 @@
 }
 
 
-
-
 /*-------------------------
   Font
 --------------------------*/
@@ -187,7 +183,6 @@
 
 .font-75 {
   font-size: 0.75rem;
-
 }
 
 .font-weight-300 {
@@ -196,7 +191,6 @@
 
 .font-85 {
   font-size: 0.85rem;
-
 }
 
 
@@ -205,8 +199,6 @@
   font-weight: 800;
   font-family: 'Bruno Ace SC', sans-serif;
 }
-
-
 
 /*-------------------------
     Menu
@@ -220,7 +212,6 @@
 
 .nav-item {
   width: 20%;
-
 }
 
 .nav-link {
@@ -229,7 +220,6 @@
 
 .nav-link:active {
   border-radius: 50px;
-  background-color: #9b9b9b;
 }
 
 .list-item:active {
@@ -242,13 +232,10 @@
 }
 
 @media (min-width: 768px) {
-
-
   .ff-agency {
     letter-spacing: 0.07rem;
     font-size: 1.2rem;
   }
-
 
   .menu-right {
 
@@ -291,7 +278,6 @@
 .item-locker-list,
 .font-65 {
   font-size: 0.65rem;
-
 }
 
 .dash-location {
@@ -304,7 +290,6 @@
 
 @media (max-width: 719px) {
   .dash-location {
-
     font-size: 0.75rem;
   }
 
@@ -371,7 +356,6 @@
     margin: 20px 15% !important;
 
   }
-
 }
 
 
@@ -384,7 +368,6 @@
     margin: 20px 20% !important;
 
   }
-
 }
 
 @media (min-width: 915px) {
@@ -430,7 +413,6 @@
   margin: 20px 0;
   padding: 0;
   display: inline-block;
-
 }
 
 .history-tl-container ul.tl li {
@@ -459,7 +441,6 @@
   height: 20px;
   width: 20px;
   transition: all 500ms ease-in-out;
-
 }
 
 .history-tl-container ul.tl li:hover::before {
@@ -505,14 +486,28 @@ ul.tl li .timestamp-current {
 
 .delete-button {
   position: absolute;
-  right: 5%;
-  top: 9%;
+  right: 4%;
   z-index: 100;
 }
+
+.delete-history-button {
+  position: absolute;
+  right: 3%;
+  top: 4%;
+  z-index: 100;
+}
+
 .input-button {
   position: absolute;
   right: 3%;
-  top: 14%;
+  top: 5%;
+  z-index: 100;
+}
+
+.input-history-button {
+  position: absolute;
+  right: 3%;
+  top: 10%;
   z-index: 100;
 }
 
@@ -522,8 +517,26 @@ ul.tl li .timestamp-current {
   }
 }
 
+@media (min-width: 767px) {
+  .delete-button {
+    right: 1%;
+    top: -5%;
+  }
+  .delete-history-button {
+    right: 1%;
+    top: -3%;
+  }
+}
+@media (min-width: 970px) {
+  .delete-history-button {
+    right: 0.8%;
+    top: -5%;
+  }
+}
+
 .badge {
   margin-left: -5%;
+  border-color: #FFE900;
 }
 
 .badge2 {
@@ -539,13 +552,10 @@ ul.tl li .timestamp-current {
   width: auto;
 }
 
-
 .my-badge {
   position: absolute;
   left: 25px;
   top: -5px;
-
-
 }
 
 .size-indicator {
@@ -566,9 +576,6 @@ ul.tl li .timestamp-current {
   width: 100%;
 }
 
-
-
-
 .video-container {
   width: 100%;
   position: fixed;
@@ -580,7 +587,6 @@ video{
   width: 100%;
   
 }
-
 
 .fab {
   position: fixed;
@@ -597,13 +603,10 @@ video{
   z-index: 501;
 }
 
-
 .order-list{
 
-  /* padding-top: 3%; */
   padding-bottom: 20%;
 }
-
 
 .pagination {
   justify-content: flex-end;
@@ -637,21 +640,9 @@ width: 70%;
 margin-bottom: 30%;
 }
 
-
 @media (min-width: 769px) {
   #notfound-image{
     width: 30%;
     margin-bottom: 5%;
     }
 }
-
-/* .scan-control{
-    height: 5px;
-    width: 105px;
-    visibility: hidden;
-    display: none;
-    position: fixed;
-    top: 0px;
- 
-
-}*/
