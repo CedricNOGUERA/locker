@@ -892,6 +892,15 @@ const NewOrder = () => {
     ]
     return newTab
   }
+  const uniqueTempTab2 = (locker: any) => {
+    const newTab = [
+      ...new Set(
+        slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.name)
+        // slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.keyTemp)
+      ),
+    ]
+    return newTab
+  }
 
   const lockerAvailability = allSlot?.['hydra:member']
     ?.filter(
@@ -1072,7 +1081,7 @@ const NewOrder = () => {
                           : 4
                       }
                     >
-                      {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
+                      {uniqueTempTab2(locker)?.map((slots: any, indx: any) => (
                         <div
                           key={indx}
                           className='pb-1'
@@ -1080,10 +1089,10 @@ const NewOrder = () => {
                         >
                           <img
                             alt='Temp icon'
-                            //src={_iconFilter(slots)}
-                            src={
-                              'https://img.icons8.com/color/512/' + _imgFilter2(slots) + '.png'
-                            }
+                            src={_iconFilter3(slots)}
+                            // src={
+                            //   'https://img.icons8.com/color/512/' + _imgFilter2(slots) + '.png'
+                            // }
                             style={{ width: '32px' }}
                           />
                           <span className='font-65 pt-2 ms-1 '>
@@ -1091,8 +1100,7 @@ const NewOrder = () => {
                           </span>
                           {slotLocationTab(locker)
                             ?.filter(
-                              // (lock: any) => lock?.slot?.temperatureZone?.keyTemp === slots
-                              (lock: any) => lock?.slot?.temperatureZone?.myKey === slots
+                              (lock: any) => lock?.slot?.temperatureZone?.name === slots
                             )
                             ?.map((temp: any) => (
                               <div key={Math.random()} className='badge-hoster px-0 ms-1 pt-1'>

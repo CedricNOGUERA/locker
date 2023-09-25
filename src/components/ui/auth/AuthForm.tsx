@@ -51,7 +51,6 @@ const AuthForm= ({ formProps }: any) => {
           </InputGroup.Text>
           <Form.Control
             className='shadow border-0'
-            style={{ position: 'relative' }}
             type={!isView ? 'password' : 'text'}
             placeholder='Mot de passe'
             {...register('pass', { required: true })}
