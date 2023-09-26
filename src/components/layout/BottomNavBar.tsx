@@ -85,7 +85,7 @@ const BottomNavBar = ({
         isScroll
           ? 'animate__animated animate__fadeOutDown'
           : 'animate__animated animate__fadeInUp'
-      } py-1 shadow bg-secondar bg-warning px-0 mt-auto`}
+      } py-1 shadow bg-yellow bg-warni px-0 mt-auto`}
     >
       <UserQrcode show={show} handleClose={handleClose} />
       <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>

@@ -59,7 +59,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       <UserQrcode show={show} handleClose={handleClose} />
       <Container
         fluid={'lg'}
-        className='top-nav-design sticky-to pb-2 text-light bg-warning shado opacity-7'
+        className='top-nav-design sticky-to pb-2 text-green bg-yellow shado opacity-7'
       >
         <Row className=' pe-0'>
           <Col xs={2} className='py-2 ff-agency m-auto text-center'>

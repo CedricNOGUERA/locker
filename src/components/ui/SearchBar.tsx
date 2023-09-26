@@ -46,7 +46,7 @@ const SearchBar = ({ searchBarProps }: any) => {
     <Container className={`search-bar mb-2 text-center`}>
       <Container
         fluid
-        className={` text-light ps-2 rounded-pill  my-auto  ${uniqueTab?.length > 1 && "bg-warning pe-4"}`} 
+        className={` text-green ps-2 rounded-pill  my-auto  ${uniqueTab?.length > 1 && "bg-yellow pe-4"}`} 
       >
         <Dropdown>
           <Container fluid className='px-0'>

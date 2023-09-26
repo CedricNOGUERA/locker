@@ -32,6 +32,9 @@
 .border-green {
   border-color: #43B02A !important;
 }
+.bg-yellow {
+  background-color: #FFE900 !important;
+}
 
 .main {
   overflow: hidden;
@@ -86,6 +89,7 @@
 }
 
 .auth-form {
+    /* background-color: #FFE900 !important; */
   padding-top: 10%;
   overflow-y: hidden;
   margin-bottom: 10%;
