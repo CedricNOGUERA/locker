@@ -461,7 +461,7 @@ console.log(allSlot)
         <Button
           aria-label='Aria Scan'
           title='scan'
-          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-green'} border-0`}
+          className={`fab rounded-circle ${isScan ? 'bg-yellow' : 'bg-green'}  border-0`}
           onClick={() => {
             if (isScan) {
               stopScan()
@@ -475,7 +475,7 @@ console.log(allSlot)
           <i
             className={`ri-${
               isScan ? 'close-line' : 'qr-code-line'
-            } text-light align-bottom fs-2`}
+            }  align-bottom fs-2`}
           ></i>
         </Button>
       )}

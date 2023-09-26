@@ -85,7 +85,7 @@ const BottomNavBar = ({
         isScroll
           ? 'animate__animated animate__fadeOutDown'
           : 'animate__animated animate__fadeInUp'
-      } py-1 shadow bg-yellow bg-warni px-0 mt-auto`}
+      } py-1 shadow bg-yello px-0 mt-auto`}
     >
       <UserQrcode show={show} handleClose={handleClose} />
       <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>
@@ -103,8 +103,8 @@ const BottomNavBar = ({
             <i className='ri-checkbox-line fs-3'></i>
             {ready_for_delivery?.length > 0 && (
               <span
-                className={`badge border-1 border-warning rounded-pill text-${
-                  selectedItem === 'preparations' ? 'success' : 'light'
+                className={`badge border-1 border-yellow rounded-pill text-${
+                  selectedItem === 'preparations' ? 'green' : 'light'
                 } bg-${selectedItem === 'preparations' ? 'light' : 'green'}`}
               >
                 {ready_for_delivery?.length}
@@ -123,8 +123,8 @@ const BottomNavBar = ({
             <i className='ri-truck-line fs-3 '></i>
             {progress?.length > 0 && (
               <span
-                className={`badge border-1 border-warning rounded-pill text-${
-                  selectedItem === 'progress' ? 'success' : 'light'
+                className={`badge border-1 border-yellow rounded-pill text-${
+                  selectedItem === 'progress' ? 'green' : 'light'
                 }  bg-${selectedItem === 'progress' ? 'light' : 'green'}`}
               >
                 {progress?.length}
@@ -164,10 +164,10 @@ const BottomNavBar = ({
             <i className='ri-inbox-unarchive-line fs-3 text-center'></i>
             {retrieve?.length > 0 && (
               <span
-                className={`badge border-1 border-warning rounded-pill text-${
-                  selectedItem === 'retrieve' ? 'success' : 'light'
+                className={`badge border-1 border-yellow rounded-pill text-${
+                  selectedItem === 'retrieve' ? 'green' : 'light'
                 } bg-${
-                  selectedItem === 'retrieve' ? 'warning' : 'green'
+                  selectedItem === 'retrieve' ? 'light' : 'green'
                 }`}
               >
                 {retrieve?.length}

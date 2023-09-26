@@ -290,14 +290,14 @@ console.log(myData.roles)
         {isLoading ? (
           <Loading variant='info' />
         ) : (
-          <Card className='auth-form  bg-warning shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
+          <Card className='auth-form  bg-warni shadow animate__animated animate__fadeIn rounded-0 border-0 vh-100'>
             <Card.Body className=''>
               <div className='logo-app text-center text-light animate__animated animate__rotateIn'>
               </div>
               <div
                className='teko text-center mb-5 text-green animate__animated animate__fadeInUp'>
-
-                OVER BOX
+                Easy Box
+                {/* EASY BOX */}
               </div>
               <AuthForm formProps={formProps} />
             </Card.Body>

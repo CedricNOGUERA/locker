@@ -113,7 +113,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
     <Container fluid className='order-list  pb-5'>
       <div className='text-center'>
         <p className='col-12 mb-0 text-center font-75'>Détail de la commande</p>
-        <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
+        <Container className='py-0 bg-gray rounded-pill shadow my-auto '>
           <Row>
             <Col
               xs={2}
@@ -125,7 +125,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
                 setSearchOrder('')
               }}
             >
-               <i className='ri-arrow-left-line text-light fs-3 bg-secondary rounded-pill back-to'></i>
+               <i className='ri-arrow-left-line text-light fs-3 bg-gray rounded-pill back-to'></i>
             </Col>
             <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
               <span className='fw-bold font-85'>
