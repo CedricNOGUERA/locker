@@ -60,7 +60,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
       <Container
         fluid={'lg'}
         // className='top-nav-design sticky-to pb-2 text-yellow bg-green shado opacity-7'
-        className='top-nav-design sticky-to pb-2 text-green bg-yello shado opacity-7'
+        className='top-nav-design pb-2 text-green'
       >
         <Row className=' pe-0'>
           <Col xs={2} className='py-2 ff-agency m-auto text-center'>
