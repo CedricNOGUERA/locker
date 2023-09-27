@@ -69,7 +69,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   />
                   {searchOrder !== '' ? (
                     <i
-                      className={`ri-close-circle-fill text-green ${uniqueTab?.length > 1 ? "delete-button fs-2" : "delete-history-button fs-2"} 
+                      className={`ri-close-circle-fill text-warning ${uniqueTab?.length > 1 ? "delete-button fs-2" : "delete-history-button fs-2"} 
                       
                       `}
                       onClick={() => {
