@@ -90,7 +90,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                     className='text-ligh'
                   >
                     <i className='ri-store-2-line fs-5 align-middle text-light me-2'></i>{' '}
-                    <span className='font-85'>{uniqueTab?.length > 1 && selectedStore === '/api/lockers/3' ? 'Côté mer' : selectedStore === '/api/lockers/6' ? 'Côté mont.' : 'Arue'} </span>
+                    <span className='font-85'>{uniqueTab?.length > 1 && selectedStore === '/api/lockers/3' ? 'Côté mer' : selectedStore === '/api/lockers/6' ? 'Côté mont.' : selectedStore === '/api/lockers/7' ? "Faa'a" : 'Arue'} </span>
                   </Dropdown.Toggle>
                 </Col>
               )}
