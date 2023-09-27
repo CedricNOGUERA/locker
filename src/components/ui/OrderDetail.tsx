@@ -216,8 +216,8 @@ const OrderDetail = ({ scanPageProps }: any) => {
             <Modal.Footer>
               <Button
                 size='lg'
-                className=' rounded-pill border-warning text-light ms-3 px-4'
-                variant='warning'
+                className=' rounded-pill border-yellow bg-yellow text-light ms-3 px-4'
+                // variant='warning'
                 onClick={() => {
                   setSelectedOrder('')
                   handleClose()

@@ -246,18 +246,11 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                   )}
                 </div>
               </Container>
-              <Container className='text-center text-dark font-85'>
-                <small>Respectez le sens du qrcode lors du scan</small>
-              </Container>
               <Container className='text-center mt-4 px-0'>
                 <Alert variant='secondary' className='border-2 border-secondary'>
                   Saisie manuelle :
-                  <p className='text-info fw-bold m-0'>
-                    {newStatus === 'receive' && selectedOrder.multiOrderCode
-                      ? selectedOrder?.multiOrderCode
-                      : newStatus === 'receive' && !selectedOrder.multiOrderCode
-                      ? selectedOrder?.receiveCode
-                      : selectedOrder?.barcode}
+                  <p className='text-secondary fw-bold m-0'>
+                    {selectedOrder?.barcode}
                   </p>
                 </Alert>
               </Container>
