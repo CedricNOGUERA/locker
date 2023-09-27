@@ -3,6 +3,7 @@ import {
   Accordion,
   Alert,
   Button,
+  Card,
   Col,
   Container,
   Dropdown,
@@ -11,6 +12,7 @@ import {
   FormCheck,
   FormGroup,
   InputGroup,
+  ListGroup,
   Modal,
   Row,
   Spinner,
@@ -36,6 +38,7 @@ import ClientService from '../../service/Client/ClientService'
 import InfoTopBar from './InfoTopBar'
 import { BrowserMultiFormatReader } from '@zxing/library'
 import interrogation from '../../styles/interrogation.png'
+import { KeyBoard } from '../../components/ui/KeyBoard/KeyBoard'
 
 const NewOrder = () => {
   //////////////////////////
@@ -123,10 +126,18 @@ const NewOrder = () => {
   const [msgError, setMsgError] = React.useState<any>()
   const [codeError, setCodeError] = React.useState<any>()
 
-  const [show, setShow] = React.useState(false)
+  const [show, setShow] = React.useState<boolean>(false)
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
+
+  const [showProd, setShowProd] = React.useState<boolean>(false);
+
+  const handleCloseProd = () => setShowProd(false);
+  const handleShowProd = () => setShowProd(true);
+
+
+
 
   const [indxScan, setIndxScan] = React.useState<any>('')
   const [indexScan, setIndexScan] = React.useState<any>('')
@@ -967,7 +978,7 @@ const NewOrder = () => {
               {uniqueTab?.map((locker: any, indx: any) => (
                 <Container
                   key={indx * Math.random()}
-                  className='text-light pt-1 pe-4 pe-sm-2 pe-md-2 mb-3 border-0 rounded bg-secondary animate__animated'
+                  className='text-light pt-1 pe-4 pe-sm-2 pe-md-2 mb-3 border-2 border-secondary rounded bg-gray animate__animated'
                   onClick={() => {
                     filteredLocker(locker)
                     setAvailableSlot(locker?.available)
@@ -1144,6 +1155,7 @@ const NewOrder = () => {
                       aria-label='panier'
                       aria-describedby='basic-addon1'
                       className='border-start-0'
+                      style={{height: '80px'}}
                       type='number'
                       max={allSlot?.['hydra:member']
                         ?.filter(
@@ -1192,7 +1204,28 @@ const NewOrder = () => {
                       <Accordion.Item eventKey={`${indx}`}>
                         <Accordion.Header>Panier n°{indx + 1}</Accordion.Header>
                         <Accordion.Body>
-                          <Form.Select
+                          <Row className='g-1' >
+
+                          {chosenLocker?.map((lockers: any, index: any) => (
+                            <Col className='' 
+                            
+                            key={index}
+                              onClick={handleShowProd}
+                            >
+                            <Card
+                             style={{ width: '100%', height:'100%' }}>
+                              <div> {lockers?.slot?.temperatureZone?.name === 'Froid positif'
+                                  ? '🍃 Zone Fraîche'
+                                  : lockers?.slot?.temperatureZone?.name === 'Froid négatif'
+                                  ? '❄ Zone Congelée'
+                                  : lockers?.slot?.temperatureZone?.name === 'Ambiant' &&
+                                    '☀️ Zone Ambiante'}</div>
+                            </Card>
+                            {/* <KeyBoard/> */}
+                            </Col>
+                          ))}
+                          </Row>
+                          {/* <Form.Select
                             onChange={(e) => {
                               handleChangeSelect(e, indx)
                             }}
@@ -1226,7 +1259,7 @@ const NewOrder = () => {
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
                               </option>
                             ))}
-                          </Form.Select>
+                          </Form.Select> */}
                           <Row>
                             <Col xs={2} className='font-75 my-0 py-0'>
                               Qté
@@ -1710,22 +1743,20 @@ const NewOrder = () => {
           </div>
         </Modal.Body>
       </Modal>
-      {/* <Modal show={show} onHide={handleClose} centered>
-        <Modal.Body>
-          <div className='text-center my-3 animate__animated animate__jello'>
-            <img src={interrogation} alt="point d'interrogation" width={150} />
-          </div>
-          <p>Voulez-vous valider cette commande ?</p>
-          <div className='mt-3 text-end'>
-            <Button aria-label="Aria annuler" title='Annuler commande' variant='warning' onClick={cancelNewOrder} className='me-3'>
-              Annuler
-            </Button>
-            <Button aria-label="Aria valider" title='Valider la commande' variant='info' onClick={createNewOrder}>
-              Valider
-            </Button>
-          </div>
-        </Modal.Body>
-      </Modal> */}
+      <Modal size='lg' show={showProd} onHide={handleCloseProd}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ajouter un produit</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseProd}>
+            Annuler
+          </Button>
+          <Button variant="primary" onClick={handleCloseProd}>
+            Valider
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   )
 }
