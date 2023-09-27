@@ -41,7 +41,7 @@ const UserQrcode = ({show, handleClose, setSelectedOrder}: any) => {
             <small>Respectez le sens du qrcode lors du scan</small>
             
             <Alert variant='info' className='border-2 border-info py-1'>
-              APM acces code : {dataStore?.apm_access_code}</Alert>
+              Code pin : {dataStore?.apm_access_code}</Alert>
           </Container>
         </Container>
       </Modal.Body>
