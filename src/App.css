@@ -52,6 +52,10 @@
   border-color: #ffd900 !important;
 }
 
+.border-gray {
+  border-color: #bababa !important;
+}
+
 
 .main {
   overflow: hidden;

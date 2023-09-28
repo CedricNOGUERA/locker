@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { _getStatus } from '../../utils/functions'
 import BadgedIcon from '../ui/BadgedIcon'
 import 'moment/locale/fr'
@@ -34,7 +34,8 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
             {trigger === 'history' ? (
               <>
                 <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span> - {''}
-                <span className='text-green fw-bold'>{_getStatus(liv?.status)}</span>
+                <span className='text-green fw-bold'>{_getStatus(liv?.status)}</span> - {''}
+                <span className='text-secondary fw-bold'>{liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === '/api/lockers/3' ? 'Côté mer' : liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === '/api/lockers/6' ? 'Côté mont.' : liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === '/api/lockers/7' ? "Faa'a" : 'Arue'}</span>
                 {liv?.ageRestriction === 18 && (
                   <img src={age18} alt='+18ans' width={24} /> 
                 )}
@@ -43,8 +44,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
               <>
                 <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span>{' '}{liv?.externalOrderId && "-" } {' '}
                 <span className='text-green fw-bold'>
-                  {liv?.bookingSlot?.slot?.temperatureZone?.locker?.city}
-                  
+                  {liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === '/api/lockers/3' ? 'Côté mer' : liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === '/api/lockers/6' ? 'Côté mont.' : liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === '/api/lockers/7' ? "Faa'a" : 'Arue'}
                 </span>{' '}
                 {liv?.ageRestriction === 18 && (
                   <img src={age18} alt='+18ans' width={24} />

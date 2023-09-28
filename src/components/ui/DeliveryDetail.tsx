@@ -135,7 +135,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
             <Col xs={2} md={1} lg={1} className='m-auto text-light text-start ps- me-3 py-0'>
               <BadgedIcon
                 slot={selectedOrder?.bookingSlot}
-                borderColor='secondary'
+                borderColor='gray'
                 imgSize='28px'
               />
             </Col>
