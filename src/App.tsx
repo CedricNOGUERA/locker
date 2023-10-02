@@ -200,7 +200,9 @@ function App() {
 
 
   return (
-    <div className='first-block'>
+    <div className='first-block 
+    bg-darkGray
+    '>
       {!isLogged && <Navigate to='/connexion' />}
       {isLoading ? (
         <>

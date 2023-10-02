@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Row, Col, Dropdown } from 'react-bootstrap'
+import { _shortLocation } from '../../utils/functions'
 
 const SearchBar = ({ searchBarProps }: any) => {
   const {
@@ -40,7 +41,7 @@ const SearchBar = ({ searchBarProps }: any) => {
       .filter((lockerCity: any) => lockerCity?.location === place)
     return city && city[0]['@id']
   }
- console.log(selectedStore)
+ console.log(uniqueTab)
 
   return (
     <Container className={`search-bar mb-2 text-center`}>
@@ -90,13 +91,13 @@ const SearchBar = ({ searchBarProps }: any) => {
                     className='text-ligh'
                   >
                     <i className='ri-store-2-line fs-5 align-middle text-light me-2'></i>{' '}
-                    <span className='font-85'>{uniqueTab?.length > 1 && selectedStore === '/api/lockers/3' ? 'Côté mer' : selectedStore === '/api/lockers/6' ? 'Côté mont.' : selectedStore === '/api/lockers/7' ? "Faa'a" : 'Arue'} </span>
+                    <span className='font-85'>{uniqueTab?.length > 1 && _shortLocation(selectedStore)} </span>
                   </Dropdown.Toggle>
                 </Col>
               )}
             </Row>
           </Container>
-          <Dropdown.Menu className='shadow' style={{ width: 360 }}>
+          <Dropdown.Menu className ='shadow' style={{ width: 360 }}>
             {uniqueTab?.map((locker: any, indx: any) => (
               <Dropdown.Item
                 key={Math.random()}

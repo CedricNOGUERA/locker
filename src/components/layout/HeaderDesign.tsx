@@ -58,8 +58,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
     <>
       <UserQrcode show={show} handleClose={handleClose} />
       <Container
-        fluid={'lg'}
-        // className='top-nav-design sticky-to pb-2 text-yellow bg-green shado opacity-7'
+        fluid
         className='top-nav-design pb-2 text-green'
       >
         <Row className=' pe-0'>

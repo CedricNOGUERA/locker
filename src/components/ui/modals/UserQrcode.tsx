@@ -21,7 +21,7 @@ const UserQrcode = ({show, handleClose, setSelectedOrder}: any) => {
               </span>
             </Alert>
           </Container>
-          <Container className='text-center text-danger py-0  m-auto opacity-75'>
+          {/* <Container className='text-center text-danger py-0  m-auto opacity-75'>
             <span className='align-middle'>
               <i className='ri-error-warning-line fs-5'></i>
             </span>{' '}
@@ -31,21 +31,20 @@ const UserQrcode = ({show, handleClose, setSelectedOrder}: any) => {
               <i className='ri-arrow-up-fill '></i>
               <i className='ri-arrow-up-fill '></i>
             </div>
-          </Container>
+          </Container> */}
           <Container className='m-auto bg-light p-2    animate__animated animate__fadeInDown'>
             <div  className=' text-cente'>
               <QrCode data={`${dataStore.apm_access_code}`} />
             </div>
           </Container>
-          <Container className='text-center text-warning font-85'>
+          {/* <Container className='text-center text-warning font-85'>
             <small>Respectez le sens du qrcode lors du scan</small>
-            
             <Alert variant='info' className='border-2 border-info py-1'>
               Code pin : {dataStore?.apm_access_code}</Alert>
-          </Container>
+          </Container> */}
         </Container>
       </Modal.Body>
-      <Container className='text-end'>
+      <Container className='mt-3 text-end'>
         <Button className='bg-green border-green text-light w-25 m-3 mt-1' onClick={handleClose}>
           Fermer
         </Button>

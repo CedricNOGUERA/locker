@@ -7,7 +7,7 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
   const { selectedOrder, setSelectedOrder, searchOrder, setSearchOrder } = topSearchBarProps
 
   return (
-    <Container fluid className={`ps- sticky-top rounded-pill ${selectedOrder && "bg-gray"}  mb-2`}>
+    <Container fluid className={`ps- sticky-top rounded-pill ${selectedOrder && "bg-darkGray"}  mb-2`}>
       <Row>
         {!selectedOrder && (
           <>
@@ -56,7 +56,7 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
             <Col xs={2} md={1} lg={1} className='m-auto text-light text-start  me-3 py-0'>
               <BadgedIcon
                 slot={selectedOrder?.bookingSlot}
-                borderColor='secondary'
+                borderColor='gray'
                 imgSize='30px'
               />
             </Col>

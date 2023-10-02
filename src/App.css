@@ -12,6 +12,9 @@
 .bg-gray {
   background-color: #bababa !important;
 }
+.border-gray {
+  border-color: #bababa !important;
+}
 
 .bg-succes {
   background-color: #1a800c !important;
@@ -23,6 +26,9 @@
 
 .bg-warnin {
   /* background-color: #cfa417 !important; */
+}
+.bg-darkGray {
+  background-color: #555 !important;
 }
 
 .dropButt {
@@ -41,11 +47,9 @@
 }
 .bg-yellow {
   background-color: #ffd900 !important;
-  /* background-color: #FFE900 !important; */
 }
 .text-yellow{
   color: #ffd900 !important;
-  /* color: #ffcc00 !important; */
 }
 
 .border-yellow {
@@ -176,7 +180,8 @@
   position: relative;
   overflow: auto;
   min-height: 100vh;
-  background-color: #fff;
+  /* background-color: #555; */
+  /* background-color: #fff; */
 }
 
 @media (max-height: 374px) {

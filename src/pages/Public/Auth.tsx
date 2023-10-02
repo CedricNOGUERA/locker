@@ -298,13 +298,6 @@ console.log(myData.roles)
                className='teko text-center mb-5 text-green animate__animated animate__fadeInUp'>
                 Easy Box
               </div>
-              <div
-               className='teko text-center mb-5 text-yellow animate__animated animate__fadeInUp '
-               style={{position: 'fixed', top: '225px', left: '105px', zIndex: '-2' }}
-              //  style={{position: 'fixed', top: '220px', left: '100px'}}
-               >
-                Easy Box
-              </div>
               <AuthForm formProps={formProps} />
             </Card.Body>
           </Card>

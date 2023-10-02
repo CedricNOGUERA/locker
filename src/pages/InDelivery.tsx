@@ -386,12 +386,12 @@ const InDelivery: React.FC = () => {
       {!selectedOrder && !isAnomaly && (
         <>
         {uniqueTab?.length > 1 && (
-          <div className='col-12 pb-0 text-center font-75 '>
+          <div className='col-12 pb-0 text-center text-light font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
         )}
-          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'}`}
-          style={{backgroundColor : '#fff'}}
+          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'} bg-darkGray`}
+          // style={{backgroundColor : '#fff'}}
           >
             <SearchBar searchBarProps={searchBarProps} />
           </div>

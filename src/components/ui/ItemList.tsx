@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { Button, Col, Row } from 'react-bootstrap'
-import { _getStatus } from '../../utils/functions'
+import { _getStatus, _shortLocation } from '../../utils/functions'
 import BadgedIcon from '../ui/BadgedIcon'
 import 'moment/locale/fr'
 import age18 from '../../styles/alcool.png'
@@ -33,19 +33,21 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
           <p className='font-75 mb-0'>
             {trigger === 'history' ? (
               <>
-                <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span> - {''}
-                <span className='text-green fw-bold'>{_getStatus(liv?.status)}</span>
+                <span className='text-green fw-bold'>{_getStatus(liv?.status)}</span> - {''}
+                <span className='text-secondary'>
+                  {_shortLocation(liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"])}
+                </span>{' '}
                 {liv?.ageRestriction === 18 && (
                   <img src={age18} alt='+18ans' width={24} /> 
                 )}
               </>
             ) : (
               <>
-                <span className='text-secondary fw-bold'>{liv?.externalOrderId}</span>{' '}{liv?.externalOrderId && "-" } {' '}
                 <span className='text-green fw-bold'>
-                  {liv?.bookingSlot?.slot?.temperatureZone?.locker?.city}
-                  
-                </span>{' '}
+                  {liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === '/api/lockers/1' ? 'Côté mer' : liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === '/api/lockers/2' ? 'Côté mont.' : liv?.bookingSlot?.slot?.temperatureZone?.locker["@id"] === '/api/lockers/4' ? "Faa'a" : 'Arue'}
+                </span>
+                
+                {' '}
                 {liv?.ageRestriction === 18 && (
                   <img src={age18} alt='+18ans' width={24} />
                 )}

@@ -341,3 +341,14 @@ export const _getOrdersByStatus = (token: any, status: any, setData: any) => {
       
     })
 }
+
+
+/////////////////////////////////
+// Localisation courte
+/////////////////////////////////
+
+export const _shortLocation = (location: any) => {
+const short =   location === '/api/lockers/1' ? 'Côté mer' : location === '/api/lockers/2' ? 'Côté mont.' : location === '/api/lockers/4' ? "Faa'a" : 'Arue'
+
+return short
+}
