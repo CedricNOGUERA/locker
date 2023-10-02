@@ -92,6 +92,7 @@ const SearchBar = ({ searchBarProps }: any) => {
                   >
                     <i className='ri-store-2-line fs-5 align-middle text-light me-2'></i>{' '}
                     <span className='font-85'>{uniqueTab?.length > 1 && _shortLocation(selectedStore)} </span>
+                    {/* <span className='font-85'>{uniqueTab?.length > 1 && shortLocation} </span> */}
                   </Dropdown.Toggle>
                 </Col>
               )}

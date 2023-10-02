@@ -9,8 +9,11 @@ interface placeHolderProps{
 const PlaceHolder: React.FC<placeHolderProps> = ({paddingYFirst} ) => {
   return (
     <>
+      <Placeholder as='p' animation='glow' >
+        <Placeholder xs={12} className='py-4 rounded'/>
+      </Placeholder>
       <Placeholder as='p' animation='glow'>
-        <Placeholder xs={12} className={`py-${paddingYFirst} rounded-pill`} />
+        <Placeholder xs={12} className='py-4 rounded' />
       </Placeholder>
       <Placeholder as='p' animation='glow'>
         <Placeholder xs={12} className='py-4 rounded' />

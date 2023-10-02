@@ -89,9 +89,10 @@ const History = () => {
         setIsError(true)
         setIsLoading(false)
       }
-      setIsLoading(false)
+      setIsLoading(true)
     }
   }, [orderData])
+
 console.log(orderData)
   React.useEffect(() => {
     _searchWithRegex(searchOrder, historyOrder, setFilteredOrder)
@@ -113,8 +114,13 @@ console.log(orderData)
   const getOrderByPage = (token: any, page: any, setData: any) => {
     OrdersService.ordersByPage(token, page)
       .then((response: any) => {
-        setIsLoading(false)
-        setData(response.data['hydra:member'])
+        if(response.data['hydra:member']?.length> 0){
+
+          setIsLoading(false)
+          setData(response.data['hydra:member'])
+        }else{
+          setIsLoading(true)
+        }
 
         console.log(response.data)
       })
@@ -145,18 +151,18 @@ console.log(orderData)
   return (
     <Container className='order-list'>
       {selectedOrder && (
-        <div className='col-12 pb-0 text-center font-75'>
+        <div className='col-12 pb-0 text-center text-light font-75'>
           {' '}
           {selectedOrder?.bookingSlot?.slot?.temperatureZone?.locker?.location}
         </div>
       )}
-      {!isLoading && (
-        <div className='sticky-top pt-2 bg-darkGray mb-4 ' 
-        style={{backgroundColor : '#fff'}}
+      {/* {!isLoading && ( */}
+        <div className='sticky-top pt-2 mb-4 bg-darkGray  ' 
+        // style={{backgroundColor : '#fff'}}
         >
           <TopSearchBar topSearchBarProps={topSearchBarProps} />
         </div>
-      )}
+      {/* // )} */}
       {selectedOrder && <DetailHistory selectedOrder={selectedOrder} />}
       {isError ? (
         <div className='my-4'>

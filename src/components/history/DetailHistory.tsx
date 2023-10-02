@@ -15,7 +15,7 @@ const DetailHistory = ({ selectedOrder }: any) => {
   console.log(sortedHistory)
   return (
     <>
-      <div className='history-tl-container animate__animated animate__backInLeft pb-5'>
+      <div className='history-tl-container animate__animated animate__backInLeft pb-5 pe-0'>
         {isDetail ? (
           <Table striped className='mt-3'>
             <thead>

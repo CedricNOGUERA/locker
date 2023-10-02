@@ -165,7 +165,7 @@ const ToRetrieve: React.FC = () => {
       {!selectedOrder && (
         <>
         {uniqueTab?.length > 1 && (
-          <div className='col-12 pb-0 text-center font-75 '>
+          <div className='col-12 pb-0 text-center text-light font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
             )}

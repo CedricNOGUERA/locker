@@ -110,7 +110,7 @@ console.log(allSlot)
         setIsError(true)
         setIsLoading(false)
       }
-      setIsLoading(false)
+      setIsLoading(true)
     }
   }, [orderData])
 
@@ -373,7 +373,6 @@ console.log(allSlot)
           <div
     
             className={`${!isScan ? 'sticky-top pt-2' : 'd-none'} bg-darkGray`}
-            // style={{ backgroundColor: '#fff' }}
           >
             <SearchBar searchBarProps={searchBarProps} />
           </div>

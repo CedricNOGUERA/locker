@@ -100,6 +100,7 @@ function App() {
     setSelectedStore(
       allSlot?.['hydra:member']
         ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker &&
+            // allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker?.shortLocation
             allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker['@id']
         : ''
     )

@@ -115,7 +115,7 @@ const InDelivery: React.FC = () => {
         setIsError(true)
         setIsLoading(false)
       }
-      setIsLoading(false)
+      setIsLoading(true)
     }
   }, [orderData])
 
@@ -391,7 +391,6 @@ const InDelivery: React.FC = () => {
           </div>
         )}
           <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'} bg-darkGray`}
-          // style={{backgroundColor : '#fff'}}
           >
             <SearchBar searchBarProps={searchBarProps} />
           </div>

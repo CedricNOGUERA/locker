@@ -7,7 +7,7 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
   const { selectedOrder, setSelectedOrder, searchOrder, setSearchOrder } = topSearchBarProps
 
   return (
-    <Container fluid className={`ps- sticky-top rounded-pill ${selectedOrder && "bg-darkGray"}  mb-2`}>
+    <Container fluid className={`ps- sticky-top rounded-pill ${selectedOrder && "bg-gray"}  mb-2`}>
       <Row>
         {!selectedOrder && (
           <>

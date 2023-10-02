@@ -135,11 +135,8 @@ const Delivered: React.FC = () => {
     messageApi,
     setSelectedOrder,
     newStatus,
-  
   }
 
-
-  console.log(selectedOrder)
 
   return (
     <>
@@ -148,7 +145,7 @@ const Delivered: React.FC = () => {
           <div className='col-12 pb-0 text-center font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
-          <div className='sticky-top pt-2 bg-light  '>
+          <div className='sticky-top pt-2 bg-  '>
             <SearchBar searchBarProps={searchBarProps} />
           </div>
         </>

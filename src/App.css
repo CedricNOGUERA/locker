@@ -5,6 +5,9 @@
   font-weight: normal;
   font-style: normal;
 }
+html{
+  background-color: #555 !important;
+}
 .text-inf {
   color: #11ffd4 !important;
 }
@@ -29,6 +32,9 @@
 }
 .bg-darkGray {
   background-color: #555 !important;
+}
+.border-darkGray {
+  border-color: #555 !important;
 }
 
 .dropButt {
@@ -431,7 +437,8 @@
   }
 
   ul.tl li .timestamp-current {
-    color: #272727;
+    color: #999999;
+    /* color: #272727; */
     position: absolute;
     left: -53%;
     text-align: right;
@@ -450,7 +457,8 @@
   margin: auto;
   margin-left: 150px;
   min-height: 50px;
-  border-left: 1px dashed #86D6FF;
+  border-left: 1px dashed #43B02A;
+  /* border-left: 1px dashed #86D6FF; */
   margin-bottom: 5px;
   padding: 0 0 50px 30px;
   position: relative;
@@ -467,38 +475,44 @@
   content: " ";
   border: 8px solid rgba(255, 255, 255, 0.74);
   border-radius: 500%;
-  background: #258CC7;
+  background: #43B02A;
+  /* background: #258CC7; */
   height: 20px;
   width: 20px;
   transition: all 500ms ease-in-out;
 }
 
 .history-tl-container ul.tl li:hover::before {
-  border-color: #258CC7;
+  border-color: #43B02A;
+  /* border-color: #258CC7; */
   transition: all 1000ms ease-in-out;
 }
 
 ul.tl li .item-title-current {
-  color: #e7bd33be;
+  color: #ffc400be;
   font-weight: 600;
 }
 
 ul.tl li .item-title {
-  color: rgba(32, 31, 31, 0.842);
+  color: rgba(255, 247, 247, 0.932);
+  /* color: rgba(32, 31, 31, 0.842); */
 }
 
 ul.tl li .item-detail-current {
-  color: rgba(4, 127, 143, 0.719);
+  /* color: rgba(4, 127, 143, 0.719); */
+  color: #43B02A;
   font-size: 12px;
 }
 
 ul.tl li .item-detail {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 248, 248, 0.767);
+  /* color: rgba(0, 0, 0, 0.5); */
   font-size: 12px;
 }
 
 ul.tl li .timestamp {
-  color: #8D8D8D;
+  /* color: #8D8D8D; */
+  color: #c7c7c7;
   position: absolute;
   left: -53%;
   text-align: right;
@@ -507,7 +521,7 @@ ul.tl li .timestamp {
 }
 
 ul.tl li .timestamp-current {
-  color: #504f4f;
+  color: #FFD900;
   position: absolute;
   left: -53%;
   text-align: right;
@@ -616,7 +630,6 @@ ul.tl li .timestamp-current {
 
 video{
   width: 100%;
-  
 }
 
 .fab {
@@ -624,7 +637,8 @@ video{
   bottom: 13%;
   right: 20px;
   z-index: 500;
-  box-shadow: 2px 5px 5px rgb(160, 160, 160);
+  box-shadow: 2px 5px 5px rgb(66, 66, 66);
+  /* box-shadow: 2px 5px 5px rgb(160, 160, 160); */
 }
 
 .fab2 {
@@ -635,7 +649,6 @@ video{
 }
 
 .order-list{
-
   padding-bottom: 20%;
 }
 
