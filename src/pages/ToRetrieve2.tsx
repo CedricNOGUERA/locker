@@ -76,7 +76,7 @@ const InDelivery: React.FC = () => {
 ///////////////////////////////////////////////////
 ////Filtrage des données par locker et par livreur
 //////////////////////////////////////////////////
-  const orderByStatus = orderPickedUp['hydra:member']?.filter(
+  const orderByStatus = orderExpired['hydra:member']?.filter(
     (order: any) =>
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
       order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
