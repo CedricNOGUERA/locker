@@ -111,6 +111,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
         })
     }
   }
+  console.log(newStatus)
 
   return (
     <Container fluid className='order-list pb-5'>
@@ -278,7 +279,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                   handleClose()
                 }}
               >
-                {isLoading ? <Spinner size='sm' as='span' /> : 'Déposer'}
+                {isLoading ? <Spinner size='sm' as='span' /> : newStatus === "operin" ? 'Déposer' : 'Retirer'}
               </Button>
             </Modal.Footer>
           </>

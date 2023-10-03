@@ -44,6 +44,7 @@ const InDelivery: React.FC = () => {
     setOrderReady,
     orderPickedUp,
     setOrderPickedUp,
+    orderExpired,
 
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
@@ -70,8 +71,7 @@ const InDelivery: React.FC = () => {
 
   let videoStream: MediaStream | null = null
 
-  const trigger = 'livraisons'
-  const newStatus = 'operin'
+  const newStatus = 'operout'
 
 ///////////////////////////////////////////////////
 ////Filtrage des données par locker et par livreur
@@ -91,7 +91,7 @@ const InDelivery: React.FC = () => {
 
   React.useEffect(() => {
     setIsLoading(true)
-    setSelectedItem('progress')
+    setSelectedItem('retrieve')
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -368,7 +368,6 @@ const InDelivery: React.FC = () => {
     orderByStatus,
     orderData,
     storeName,
-    trigger,
   }
 
   const scanPageProps = {
@@ -472,7 +471,7 @@ const InDelivery: React.FC = () => {
           </>
         )}
       </Container>
-      {isScan && (
+      {/* {isScan && (
         <div className='video-container text-center'>
           <video ref={videoRef} />
         </div>
@@ -498,7 +497,7 @@ const InDelivery: React.FC = () => {
             } text-light align-bottom fs-2`}
           ></i>
         </Button>
-      )}
+      )} */}
     </>
   )
 }

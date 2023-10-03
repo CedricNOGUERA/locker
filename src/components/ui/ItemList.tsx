@@ -63,10 +63,16 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
           <Col xs={2} className='m-auto py-0 text-end'>
             <i className='ri-checkbox-line fs-2 text-light'></i>
           </Col>
+        ) : trigger === 'livraisons' ? (
+          <Col xs={2} className='m-auto  py-0 text-end'>
+            <span className='rounded  px-2 py-1 border border-green border-2'>
+              <i className='ri-truck-line text-light align-bottom'></i>
+            </span>
+          </Col>
         ) : (
           <Col xs={2} className='m-auto  py-0 text-end'>
             <span className='rounded  px-2 py-1 border border-green border-2'>
-              <i className='ri-qr-code-line text-light align-bottom'></i>
+              <i className='ri-inbox-unarchive-line text-light align-bottom'></i>
             </span>
           </Col>
         )}
