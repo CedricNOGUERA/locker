@@ -5,8 +5,13 @@
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64",
+      "sizes": "48x48",
       "type": "image/x-icon"
+    },
+    {
+      "src": "logo128.png",
+      "type": "image/png",
+      "sizes": "128x128"
     },
     {
       "src": "logo192.png",
@@ -29,6 +34,6 @@
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#ffd900",
-  "background_color": "#ffd900"
+  "theme_color": "#555",
+  "background_color": "#555"
 }

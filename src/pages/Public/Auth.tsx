@@ -296,7 +296,7 @@ console.log(myData.roles)
               </div>
               <div
                className='teko text-center mb-5 text-green animate__animated animate__fadeInUp'>
-                Easy Box
+                {/* Easy Box */}
               </div>
               <AuthForm formProps={formProps} />
             </Card.Body>
