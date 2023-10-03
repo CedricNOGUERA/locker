@@ -113,7 +113,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
     <Container fluid className='order-list  pb-5'>
       <div className='text-center'>
         <p className='col-12 mb-0 text-center font-75'>Détail de la commande</p>
-        <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
+        <Container className='py-0 bg-gray rounded-pill shadow my-auto '>
           <Row>
             <Col
               xs={2}
@@ -125,7 +125,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
                 setSearchOrder('')
               }}
             >
-               <i className='ri-arrow-left-line text-info fs-3 bg-secondary rounded-pill back-to'></i>
+               <i className='ri-arrow-left-line text-light fs-3 bg-gray rounded-pill back-to'></i>
             </Col>
             <Col className='m-auto text-light text-center ps-1 pe-2 py-0'>
               <span className='fw-bold font-85'>
@@ -135,7 +135,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
             <Col xs={2} md={1} lg={1} className='m-auto text-light text-start me-3 py-0'>
               <BadgedIcon
                 slot={selectedOrder?.bookingSlot}
-                borderColor='secondary'
+                borderColor='gray'
                 imgSize='28px'
               />
             </Col>
@@ -159,7 +159,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
         </Table>
         <Container className='text-end mt-4'>
           <Button
-            className='bg-info rounded-pill border-info text-light ms-3'
+            className='bg-green rounded-pill border-green text-light ms-3'
             type='submit'
             onClick={handleShow}
           >
@@ -216,8 +216,8 @@ const OrderDetail = ({ scanPageProps }: any) => {
             <Modal.Footer>
               <Button
                 size='lg'
-                className=' rounded-pill border-warning text-light ms-3 px-4'
-                variant='warning'
+                className=' rounded-pill border-yellow bg-yellow text-light ms-3 px-4'
+                // variant='warning'
                 onClick={() => {
                   setSelectedOrder('')
                   handleClose()
@@ -228,7 +228,7 @@ const OrderDetail = ({ scanPageProps }: any) => {
               <Button
                 size='lg'
                 type='submit'
-                className='bg-info rounded-pill border-info text-light ms-3 px-4 '
+                className='bg-green rounded-pill border-green text-light ms-3 px-4 '
                 onClick={changeStatus}
               >
                 {isLoading ? <Spinner size='sm' as='span' /> : 'Oui'}

@@ -100,6 +100,7 @@ function App() {
     setSelectedStore(
       allSlot?.['hydra:member']
         ? allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker &&
+            // allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker?.shortLocation
             allSlot?.['hydra:member'][0]?.slot?.temperatureZone?.locker['@id']
         : ''
     )
@@ -200,7 +201,9 @@ function App() {
 
 
   return (
-    <div className='first-block'>
+    <div className='first-block 
+    bg-darkGray
+    '>
       {!isLogged && <Navigate to='/connexion' />}
       {isLoading ? (
         <>

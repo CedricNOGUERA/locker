@@ -10,12 +10,12 @@ import PlaceHolder from '../components/ui/loading/PlaceHolder'
 import '../App.css'
 import 'animate.css'
 import OrderList from '../components/ui/OrderList'
-import OrderDetail from '../components/ui/OrderDetail'
 import jsQR from 'jsqr'
 import noOrder from '../styles/astro.png'
 import BackButton from '../components/ui/BackButton'
+import DeliveryDetail from '../components/ui/DeliveryDetail'
 
-const Prepared: React.FC = () => {
+const InDelivery: React.FC = () => {
   //////////////////////////
   // booleans States
   /////////////////////////
@@ -43,7 +43,9 @@ const Prepared: React.FC = () => {
     orderReady,
     setOrderReady,
     orderPickedUp,
-    setOrderPickedUp
+    setOrderPickedUp,
+    orderExpired,
+
   ] = useOutletContext<any>()
   const userToken = localStorage.getItem('user')
 
@@ -61,21 +63,25 @@ const Prepared: React.FC = () => {
   const [storeName, setStoreName] = React.useState<any>([])
 
   const [isScan, setIsScan] = React.useState<boolean>(false)
-  let videoRef = useRef<any>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const [scanCode, setScanCode] = React.useState<string>('')
 
   const [isAnomaly, setIsAnomaly] = React.useState<boolean>(false)
   const [msgAnomaly, setMsgAnomaly] = React.useState<any>('')
-  
+
   let videoStream: MediaStream | null = null
 
-  const trigger = 'preparations'
-  const newStatus = 'picked_up'
+  const newStatus = 'operout'
 
-  const orderByStatus = orderReady['hydra:member']?.filter(
+///////////////////////////////////////////////////
+////Filtrage des données par locker et par livreur
+//////////////////////////////////////////////////
+  const orderByStatus = orderExpired['hydra:member']?.filter(
     (order: any) =>
       order?.bookingSlot?.slot?.temperatureZone?.locker &&
-      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore
+      order?.bookingSlot?.slot?.temperatureZone?.locker['@id'] === selectedStore &&
+      order?.shippedBy &&
+      order?.shippedBy['@id'] === `/api/users/${dataStore.id}`
   )
 
 
@@ -85,13 +91,14 @@ const Prepared: React.FC = () => {
 
   React.useEffect(() => {
     setIsLoading(true)
-    setSelectedItem('preparations')
+    setSelectedItem('retrieve')
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     })
   }, [])
-  React.useEffect(() => {
+
+    React.useEffect(() => {
     const bookingLocker: any = allSlot?.['hydra:member']?.map(
       (locker: any) => locker?.slot?.temperatureZone?.locker
     )
@@ -100,8 +107,7 @@ const Prepared: React.FC = () => {
     ]
     setUniqueTab(deduplicate)
   }, [allSlot])
-
-console.log(allSlot)
+  
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
       setIsLoading(false)
@@ -115,10 +121,10 @@ console.log(allSlot)
   }, [orderData])
 
   React.useEffect(() => {
-    const myScan = orderReady['hydra:member']?.filter(
+    const myScan = orderPickedUp['hydra:member']?.filter(
       (order: any) => order?.barcode === searchOrder || order?.externalOrderId === searchOrder
     )[0]
-
+   
     if (myScan) {
       setScanCode(searchOrder)
       if (myScan?.status === 'picked_up') {
@@ -128,17 +134,23 @@ console.log(allSlot)
             'Cette commande n\'est assignée à aucun livreur mais son statuts est "En livraison".'
           )
           setSelectedOrder(myScan)
-        } else if (myScan.shippedBy.firstName === dataStore?.firstname) {
-          setIsAnomaly(true)
-          setMsgAnomaly(
-            'Vous avez déjà prise en charge cette commande, vérifier la liste des commandes à livrer.'
-          )
-          setSelectedOrder(myScan)
-        } else {
+        } else if (myScan.shippedBy.firstName !== dataStore?.firstname) {
           setIsAnomaly(true)
           setMsgAnomaly(
             'Cette commande est déjà prise en charge par ' + myScan?.shippedBy.firstName
           )
+          setSelectedOrder(myScan)
+        } else if (
+          myScan.bookingSlot?.slot?.temperatureZone?.locker &&
+          myScan.bookingSlot?.slot?.temperatureZone?.locker['@id'] !== selectedStore
+        ) {
+          setIsAnomaly(true)
+          setMsgAnomaly(
+            'Commande pour : ' + myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+          )
+          setSelectedOrder(myScan)
+        } else {
+          //OK
           setSelectedOrder(myScan)
         }
       } else if (myScan?.status === 'created') {
@@ -156,7 +168,8 @@ console.log(allSlot)
           )
           setSelectedOrder(myScan)
         } else {
-          //OK
+          setIsAnomaly(true)
+          setMsgAnomaly('Cette commande est sur le quai des livraisons')
           setSelectedOrder(myScan)
         }
       } else if (
@@ -178,7 +191,6 @@ console.log(allSlot)
       //no exist
       _searchWithRegex(searchOrder, orderByStatus, setFilteredOrder)
     }
-  
   }, [searchOrder])
 
   React.useEffect(() => {
@@ -190,22 +202,27 @@ console.log(allSlot)
     )
   }, [selectedStore])
 
-
-
-
+  React.useEffect(() => {
+    if (selectedOrder === '') {
+    }
+  }, [selectedOrder])
+  
  
 
   const handleScan = async () => {
     setIsAnomaly(false)
     if (navigator?.mediaDevices) {
+      console.log(navigator?.mediaDevices)
       setIsScan(true)
 
+      console.log(videoStream)
       try {
         const stream = await navigator?.mediaDevices?.getUserMedia({
           video: { facingMode: 'environment' },
         })
         videoStream = stream
-        videoRef.current.srcObject = stream
+        videoRef.current!.srcObject = stream
+        console.log(videoRef.current!.srcObject)
         await videoRef.current!.play() // Attendre la lecture vidéo
         requestAnimationFrame(scanQRCode)
         setIsScan(true)
@@ -217,7 +234,7 @@ console.log(allSlot)
   }
 
   const stopScan = () => {
-    videoStream?.getTracks()?.forEach((track: any) => track.stop())
+    videoStream?.getTracks().forEach((track) => track.stop())
     videoStream = null
     setIsScan(false)
   }
@@ -246,13 +263,12 @@ console.log(allSlot)
           if (code.data === '') {
             setIsAnomaly(false)
             setIsScan(false)
-            stopScan()
           } else {
-            const myScan = orderData['hydra:member']?.filter(
+            const myScan: any = orderData['hydra:member']?.filter(
               (order: any) =>
                 order?.barcode === code?.data || order?.externalOrderId === code?.data
             )[0]
-            
+
             if (myScan) {
               if (myScan?.status === 'picked_up') {
                 if (!myScan.shippedBy) {
@@ -261,18 +277,25 @@ console.log(allSlot)
                     'Cette commande n\'est assignée à aucun livreur mais son statuts est "En livraison".'
                   )
                   setSelectedOrder(myScan)
-                } else if (myScan.shippedBy.firstName === dataStore?.firstname) {
-                  setIsAnomaly(true)
-                  setMsgAnomaly(
-                    'Vous avez déjà prise en charge cette commande, vérifier la liste des commandes à livrer.'
-                  )
-                  setSelectedOrder(myScan)
-                } else {
+                } else if (myScan.shippedBy.firstName !== dataStore?.firstname) {
                   setIsAnomaly(true)
                   setMsgAnomaly(
                     'Cette commande est déjà prise en charge par ' +
                       myScan?.shippedBy.firstName
                   )
+                  setSelectedOrder(myScan)
+                } else if (
+                  myScan.bookingSlot?.slot?.temperatureZone?.locker &&
+                  myScan.bookingSlot?.slot?.temperatureZone?.locker['@id'] !== selectedStore
+                ) {
+                  setIsAnomaly(true)
+                  setMsgAnomaly(
+                    'Commande pour : ' +
+                      myScan?.bookingSlot?.slot?.temperatureZone?.locker?.location
+                  )
+                  setSelectedOrder(myScan)
+                } else {
+                  //OK
                   setSelectedOrder(myScan)
                 }
               } else if (myScan?.status === 'created') {
@@ -291,7 +314,8 @@ console.log(allSlot)
                   )
                   setSelectedOrder(myScan)
                 } else {
-                  //OK
+                  setIsAnomaly(true)
+                  setMsgAnomaly('Cette commande est sur le quai des livraisons')
                   setSelectedOrder(myScan)
                 }
               } else if (
@@ -322,7 +346,6 @@ console.log(allSlot)
     }
   }
 
-
   //////////////////////////
   // Component Props
   /////////////////////////
@@ -334,7 +357,7 @@ console.log(allSlot)
     selectedOrderCity,
     setSelectedOrderCity,
     allSlot,
-  
+    
   }
 
   const orderListProps = {
@@ -345,7 +368,6 @@ console.log(allSlot)
     orderByStatus,
     orderData,
     storeName,
-    trigger,
   }
 
   const scanPageProps = {
@@ -354,25 +376,22 @@ console.log(allSlot)
     messageApi,
     setSelectedOrder,
     newStatus,
-    setOrderReady,
     setOrderPickedUp,
-    setSearchOrder
-  }
+    setSearchOrder,
 
+  }
   console.log(selectedOrder)
 
   return (
     <>
       {!selectedOrder && !isAnomaly && (
         <>
-          {uniqueTab?.length > 1 && (
-            <div className='col-12 pb-0 text-center  text-light font-75'>
-              {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
-            </div>
-          )}
-          <div
-    
-            className={`${!isScan ? 'sticky-top pt-2' : 'd-none'} bg-darkGray`}
+        {uniqueTab?.length > 1 && (
+          <div className='col-12 pb-0 text-center text-light font-75 '>
+            {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
+          </div>
+        )}
+          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'} bg-darkGray`}
           >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
@@ -381,6 +400,7 @@ console.log(allSlot)
       <Container fluid className='cde App px-0'>
         {contextHolder}
         {(!isLogged || !userToken || !dataStore?.company_name) && <Navigate to='/connexion' />}
+
         {isError ? (
           <Container className='text-center mt-5'>
             <AlertIsError
@@ -444,24 +464,23 @@ console.log(allSlot)
                 </Container>
               </Container>
             ) : !selectedOrder ? (
-              <OrderList orderListProps={orderListProps} />
+                <OrderList orderListProps={orderListProps} />
             ) : (
-              <OrderDetail scanPageProps={scanPageProps} />
+              <DeliveryDetail scanPageProps={scanPageProps} />
             )}
           </>
         )}
       </Container>
-      {isScan && (
+      {/* {isScan && (
         <div className='video-container text-center'>
           <video ref={videoRef} />
         </div>
       )}
-
       {!selectedOrder && (
         <Button
           aria-label='Aria Scan'
           title='scan'
-          className={`fab rounded-circle ${isScan ? 'bg-yellow' : 'bg-green'}  border-0`}
+          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-green'} border-0`}
           onClick={() => {
             if (isScan) {
               stopScan()
@@ -474,13 +493,13 @@ console.log(allSlot)
         >
           <i
             className={`ri-${
-              isScan ? 'close-line' : 'qr-code-line'
-            }  align-bottom fs-2`}
+              isScan ? 'close-line' : 'qr-scan-2-line'
+            } text-light align-bottom fs-2`}
           ></i>
         </Button>
-      )}
+      )} */}
     </>
   )
 }
 
-export default Prepared
+export default InDelivery

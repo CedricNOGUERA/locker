@@ -7,7 +7,7 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
   const { selectedOrder, setSelectedOrder, searchOrder, setSearchOrder } = topSearchBarProps
 
   return (
-    <Container fluid className={`ps- sticky-top rounded-pill ${selectedOrder && "bg-secondary"}  mb-2`}>
+    <Container fluid className={`ps- sticky-top rounded-pill ${selectedOrder && "bg-gray"}  mb-2`}>
       <Row>
         {!selectedOrder && (
           <>
@@ -27,13 +27,13 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
                 />
                  {searchOrder !== '' ? (
                     <i
-                      className='ri-close-circle-fill text-warning delete-button fs-3'
+                      className='ri-close-circle-fill text-green delete-history-button fs-2'
                       onClick={() => {
                         setSearchOrder('')
                       }}
                     ></i>
                   ) : (
-                    <i className='ri-search-line fs-5 input-button  text-secondary'></i>
+                    <i className='ri-search-line fs-5 input-history-button  text-secondary'></i>
                   )}
               </div>
             </Col>
@@ -56,7 +56,7 @@ const TopSearchBar = ({ topSearchBarProps }: any) => {
             <Col xs={2} md={1} lg={1} className='m-auto text-light text-start  me-3 py-0'>
               <BadgedIcon
                 slot={selectedOrder?.bookingSlot}
-                borderColor='secondary'
+                borderColor='gray'
                 imgSize='30px'
               />
             </Col>

@@ -58,8 +58,8 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
     <>
       <UserQrcode show={show} handleClose={handleClose} />
       <Container
-        fluid={'lg'}
-        className='top-nav-design sticky-to pb-2 text-info shado opacity-75'
+        fluid
+        className='top-nav-design pb-2 text-green'
       >
         <Row className=' pe-0'>
           <Col xs={2} className='py-2 ff-agency m-auto text-center'>
@@ -69,7 +69,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
           </Col>
           <Col xs={2} className='py-2 m-auto  align-bottom  text-end'>
             <Button aria-label="Aria Menu" title='Menu' variant='' onClick={handleShowOffcanvas}>
-              <i className='ri-more-2-fill text-info fs-4'></i>
+              <i className='ri-more-2-fill text-green fs-4'></i>
             </Button>
           </Col>
         </Row>
@@ -99,7 +99,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               <Col className='m-auto user-name'>Identification</Col>
             </Row>
           </Container>
-          {/* <Container className='mb-2'>
+         <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
               to='/deposees'
@@ -114,7 +114,7 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </Link>
           </Container>
-          <Container className='mb-2'>
+          {/*  <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
               to='/dashboard'

@@ -15,7 +15,7 @@ const DetailHistory = ({ selectedOrder }: any) => {
   console.log(sortedHistory)
   return (
     <>
-      <div className='history-tl-container animate__animated animate__backInLeft pb-5'>
+      <div className='history-tl-container animate__animated animate__backInLeft pb-5 pe-0'>
         {isDetail ? (
           <Table striped className='mt-3'>
             <thead>
@@ -104,7 +104,7 @@ const DetailHistory = ({ selectedOrder }: any) => {
       </div>
       {!isDetail && (
         <Button
-          className='fab bg-info rounded-pill border-info text-light ms-3'
+          className='fab bg-green rounded-pill border-green text-light ms-3'
           onClick={() => setIsDetail(true)}
         >
           Voir Détail

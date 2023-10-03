@@ -2,7 +2,7 @@ import React from 'react'
 
 const BackButton = () => {
   return (
-    <i className='ri-arrow-left-line text-info fs-3 bg-secondary rounded-pill'></i>
+    <i className='ri-arrow-left-line text-light fs-3 bg-gray rounded-pill'></i>
   )
 }
 

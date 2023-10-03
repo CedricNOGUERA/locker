@@ -111,12 +111,13 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
         })
     }
   }
+  console.log(newStatus)
 
   return (
     <Container fluid className='order-list pb-5'>
       <div className='text-center'>
         <p className='col-12 mb-0 text-center font-75'>Détail de la commande à livrer</p>
-        <Container className='py-0 bg-secondary rounded-pill shadow my-auto '>
+        <Container className='py-0 bg-gray rounded-pill shadow my-auto '>
           <Row>
             <Col
               xs={2}
@@ -135,7 +136,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
             <Col xs={2} md={1} lg={1} className='m-auto text-light text-start ps- me-3 py-0'>
               <BadgedIcon
                 slot={selectedOrder?.bookingSlot}
-                borderColor='secondary'
+                borderColor='gray'
                 imgSize='28px'
               />
             </Col>
@@ -160,7 +161,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
         </Table>
         <Container className='text-end mt-4'>
           <Button
-            className='bg-info rounded-pill border-info text-light ms-3'
+            className='bg-green rounded-pill border-green text-light ms-3'
             type='submit'
             onClick={handleShow}
           >
@@ -246,18 +247,11 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                   )}
                 </div>
               </Container>
-              <Container className='text-center text-dark font-85'>
-                <small>Respectez le sens du qrcode lors du scan</small>
-              </Container>
               <Container className='text-center mt-4 px-0'>
                 <Alert variant='secondary' className='border-2 border-secondary'>
                   Saisie manuelle :
-                  <p className='text-info fw-bold m-0'>
-                    {newStatus === 'receive' && selectedOrder.multiOrderCode
-                      ? selectedOrder?.multiOrderCode
-                      : newStatus === 'receive' && !selectedOrder.multiOrderCode
-                      ? selectedOrder?.receiveCode
-                      : selectedOrder?.barcode}
+                  <p className='text-secondary fw-bold m-0'>
+                    {selectedOrder?.barcode}
                   </p>
                 </Alert>
               </Container>
@@ -277,7 +271,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
               <Button
                 size='lg'
                 type='submit'
-                className='bg-info rounded-pill border-info text-light ms-3 px-4 '
+                className='bg-green rounded-pill border-green text-light ms-3 px-4 '
                 onClick={() => {
                   _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
                   getallOrders(dataStore.token)
@@ -285,7 +279,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                   handleClose()
                 }}
               >
-                {isLoading ? <Spinner size='sm' as='span' /> : 'Déposer'}
+                {isLoading ? <Spinner size='sm' as='span' /> : newStatus === "operin" ? 'Déposer' : 'Retirer'}
               </Button>
             </Modal.Footer>
           </>

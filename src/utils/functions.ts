@@ -132,7 +132,7 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
   export const _getStatus = (status: any) => {
     if (status === 'created') {
-      return "Préparée"
+      return "Création"
     }else if (status === 'ready_for_delivery') {
       return "Prête à l'envoi"
     }else if (status === 'picked_up') {
@@ -165,9 +165,9 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
   export const _getStatusMsg = (status: any) => {
     if (status === 'created') {
-      return "Commande préparée"
+      return "Commande créée"
     } else if (status === 'ready_for_delivery') {
-      return "Commande mise à disposition du coursier"
+      return "Commande préparée et mise à disposition du coursier"
     }  else if (status === 'picked_up') {
       return "Commande en cours de livraison"
     }  else if (status === 'operin') {
@@ -340,4 +340,15 @@ export const _getOrdersByStatus = (token: any, status: any, setData: any) => {
 
       
     })
+}
+
+
+/////////////////////////////////
+// Localisation courte
+/////////////////////////////////
+
+export const _shortLocation = (location: any) => {
+const short =   location === '/api/lockers/1' ? 'Côté mer' : location === '/api/lockers/2' ? 'Côté mont.' : location === '/api/lockers/4' ? "Faa'a" : 'Arue'
+
+return short
 }
