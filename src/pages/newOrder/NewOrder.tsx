@@ -24,7 +24,7 @@ import userDataStore from '../../store/userDataStore'
 import Swal from 'sweetalert2'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
-import { _iconFilter, _imgFilter, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
+import { _iconFilter, _iconFilter3, _imgFilter, _imgFilter2, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
@@ -424,7 +424,6 @@ const NewOrder = () => {
       parseInt(qty) === 1
         ? {
             service: 'B2C',
-            ageRestriction: ageRestriction === true ? 18 : 0,
             externalOrderId: "" + entierAleatoire(100, 999) + "",
             barcode: chosenLocker[0]?.company?.cleveronCompanyId + '-' + randomCode,
             bookingSlot: bookingSlotIds[0],
@@ -457,8 +456,7 @@ const NewOrder = () => {
           }
         : Array.from({ length: parseInt(qty) }).map((_, indx) => ({
             service: 'B2C',
-            ageRestriction: ageRestriction === true ? 18 : 0,
-            externalOrderId: entierAleatoire(100, 999),
+            externalOrderId: `${entierAleatoire(100, 999)}`,
             barcode:
               chosenLocker[0]?.company?.cleveronCompanyId +
               '-' +
@@ -495,18 +493,17 @@ const NewOrder = () => {
             shippedBy: 'api/users/' + dataStore.id,
             totalSlot: parseInt(qty) / parseInt(qty),
             products: productOrder[indx],
-            // products: productDetail[indx],
           }))
 
-    // if (ageRestriction === true) {
-    //   if (parseInt(qty) === 1) {
-    //     dataOrder.ageRestriction = 18
-    //   } else {
-    //     Array.from({ length: parseInt(qty) }).map(
-    //       (_, indx) => (dataOrder[indx].ageRestriction = 18)
-    //     )
-    //   }
-    // }
+    if (ageRestriction === true) {
+      if (parseInt(qty) === 1) {
+        dataOrder.ageRestriction = 18
+      } else {
+        Array.from({ length: parseInt(qty) }).map(
+          (_, indx) => (dataOrder[indx].ageRestriction = 18)
+        )
+      }
+    }
 
     if (parseInt(qty) === 1) {
       let config = {
@@ -541,7 +538,7 @@ const NewOrder = () => {
           setTrigger2(false)
           setClientPhone('')
           setChoosedPhone('')
-          // setAgeRestriction(false)
+          setAgeRestriction(false)
           Swal.fire({
             position: 'top-end',
             toast: true,
@@ -549,7 +546,7 @@ const NewOrder = () => {
             title: 'Commande validée',
             text: chosenLocker[0]?.company?.cleveronCompanyId + '-' + randomCode,
             showConfirmButton: false,
-            timer: 7000,
+            timer: 3000,
             timerProgressBar: true,
           })
         })
@@ -610,7 +607,7 @@ const NewOrder = () => {
           setClientEmail('')
           setChoosedName('')
           setChoosedEmail('')
-          // setAgeRestriction(false)
+          setAgeRestriction(false)
           setTrigger(false)
           setChosenLocker([])
           Swal.fire({
@@ -704,7 +701,7 @@ const NewOrder = () => {
         null,
         slotSizes,
         parseInt(qty),
-        ageRestriction === true ? 18 : 0
+        ageRestriction === true && 18
       )
       setTrigger2(true)
     }
@@ -749,7 +746,7 @@ const NewOrder = () => {
           zone?.slot?.temperatureZone?.myKey,
           slotSizes,
           parseInt(qty),
-          ageRestriction === true ? 18 : 0
+          ageRestriction === true && 18
         )
       } catch (error) {
         console.error('Erreur lors du traitement des données JSON :', error)
@@ -889,7 +886,17 @@ const NewOrder = () => {
   const uniqueTempTab = (locker: any) => {
     const newTab = [
       ...new Set(
-        slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.keyTemp)
+        slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.myKey)
+        // slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.keyTemp)
+      ),
+    ]
+    return newTab
+  }
+  const uniqueTempTab2 = (locker: any) => {
+    const newTab = [
+      ...new Set(
+        slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.name)
+        // slotLocationTab(locker)?.map((lock: any) => lock?.slot?.temperatureZone?.keyTemp)
       ),
     ]
     return newTab
@@ -912,6 +919,8 @@ const NewOrder = () => {
     handleSecondStepClick,
     handleThirdStepClick,
   }
+
+  console.log(ageRestriction)
 
   return (
     <div>
@@ -1072,7 +1081,7 @@ const NewOrder = () => {
                           : 4
                       }
                     >
-                      {uniqueTempTab(locker)?.map((slots: any, indx: any) => (
+                      {uniqueTempTab2(locker)?.map((slots: any, indx: any) => (
                         <div
                           key={indx}
                           className='pb-1'
@@ -1080,10 +1089,10 @@ const NewOrder = () => {
                         >
                           <img
                             alt='Temp icon'
-                          //src={_iconFilter(slots)}
-                            src={
-                              'https://img.icons8.com/color/512/' + _imgFilter(slots) + '.png'
-                            }
+                            src={_iconFilter3(slots)}
+                            // src={
+                            //   'https://img.icons8.com/color/512/' + _imgFilter2(slots) + '.png'
+                            // }
                             style={{ width: '32px' }}
                           />
                           <span className='font-65 pt-2 ms-1 '>
@@ -1091,7 +1100,7 @@ const NewOrder = () => {
                           </span>
                           {slotLocationTab(locker)
                             ?.filter(
-                              (lock: any) => lock?.slot?.temperatureZone?.keyTemp === slots
+                              (lock: any) => lock?.slot?.temperatureZone?.name === slots
                             )
                             ?.map((temp: any) => (
                               <div key={Math.random()} className='badge-hoster px-0 ms-1 pt-1'>
@@ -1198,26 +1207,20 @@ const NewOrder = () => {
                                 key={index}
                                 value={JSON.stringify(lockers)}
                                 className={`text-light ${
-                                  lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                                  lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                  lockers?.slot?.temperatureZone?.name === 'Froid positif'
                                     ? 'bg-succes'
-                                    : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                      lockers?.slot?.temperatureZone?.myKey === 'LT'
-                                    ? 'bg-inf'
-                                    : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                        lockers?.slot?.temperatureZone?.myKey === 'HT') &&
-                                      'bg-warnin'
+                                    : lockers?.slot?.temperatureZone?.name === 'Froid négatif'
+                                    ? 'bg-info'
+                                    : lockers?.slot?.temperatureZone?.name === 'Ambiant' &&
+                                      'bg-warning'
                                 }`}
                                 disabled={lockers.available < 1 ? true : false}
                               >
-                                {lockers?.slot?.temperatureZone?.keyTemp === 'FRESH' ||
-                                lockers?.slot?.temperatureZone?.myKey === 'MT'
+                                {lockers?.slot?.temperatureZone?.name === 'Froid positif'
                                   ? '🍃 Zone Fraîche'
-                                  : lockers?.slot?.temperatureZone.keyTemp === 'FREEZE' ||
-                                    lockers?.slot?.temperatureZone?.myKey === 'LT'
+                                  : lockers?.slot?.temperatureZone?.name === 'Froid négatif'
                                   ? '❄ Zone Congelée'
-                                  : (lockers?.slot?.temperatureZone.keyTemp === 'NORMAL' ||
-                                      lockers?.slot?.temperatureZone?.myKey === 'HT') &&
+                                  : lockers?.slot?.temperatureZone?.name === 'Ambiant' &&
                                     '☀️ Zone Ambiante'}{' '}
                                 ({lockers?.slot.size}) - {lockers?.available}{' '}
                                 {lockers?.available > 1 ? 'casiers' : 'casier'}
@@ -1409,7 +1412,7 @@ const NewOrder = () => {
                         orderStore.keyTemp,
                         slotSizes,
                         parseInt(qty),
-                        ageRestriction === true ? 18 : 0
+                        ageRestriction === true && 18
                       )
                     }}
                     placeholder='Nom du client*'
@@ -1653,12 +1656,11 @@ const NewOrder = () => {
                   <b className='fs-2'>
                     Panier n° {indx + 1} {''} : {''}
                   </b>
-                  {tempZones[indx] === 'MT' || slot?.slot?.temperatureZone?.myKey === 'MT'
+                  {slot?.slot?.temperatureZone?.name === 'Froid positif'
                     ? '🍃 Zone Fraîche'
-                    : tempZones[indx] === 'LT' || slot?.slot?.temperatureZone?.myKey === 'LT'
+                    : slot?.slot?.temperatureZone?.name === 'Froid négatif'
                     ? '❄ Zone Congelée'
-                    : (tempZones[indx] === 'HT' ||
-                        slot?.slot?.temperatureZone?.myKey === 'CA') &&
+                    : slot?.slot?.temperatureZone?.name === 'Ambiant' &&
                       '☀️ Zone Ambiante'}{' '}
                   ({slotSizes[indx]})
                 </div>
@@ -1683,7 +1685,7 @@ const NewOrder = () => {
             ))}
           </div>
           <p>
-          {/* <img src={interrogation} alt="point d'interrogation" width={40} />{' '} */}
+            {/* <img src={interrogation} alt="point d'interrogation" width={40} />{' '} */}
             Voulez-vous valider cette commande ?
           </p>
           <div className='mt-3 text-end'>
@@ -1702,7 +1704,6 @@ const NewOrder = () => {
               variant='info'
               onClick={createNewOrder}
               className='text-light'
-
             >
               Valider
             </Button>

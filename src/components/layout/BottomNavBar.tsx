@@ -79,7 +79,14 @@ const BottomNavBar = ({
 
 
   return (
-    <Container fluid className={`bottom-navbar ${isScroll ?  'animate__animated animate__fadeOutDown' :  'animate__animated animate__fadeInUp'} py-1 shadow bg-secondary px-0 mt-auto`}>
+    <Container
+      fluid
+      className={`bottom-navbar ${
+        isScroll
+          ? 'animate__animated animate__fadeOutDown'
+          : 'animate__animated animate__fadeInUp'
+      } py-1 shadow bg-yello px-0 mt-auto`}
+    >
       <UserQrcode show={show} handleClose={handleClose} />
       <Nav className='justify-content-evenly border-0 rounded' activeKey='home'>
         <Nav.Item
@@ -89,15 +96,16 @@ const BottomNavBar = ({
           <Link
             to='/preparations'
             className={`nav-link  text-${
-              selectedItem === 'preparations' ? 'light' : 'info'
+              selectedItem === 'preparations' ? 'light' : 'green'
+              // selectedItem === 'preparations' ? 'info' : 'green'
             } py-1 pb-2 px-0 text-decoration-none`}
           >
             <i className='ri-checkbox-line fs-3'></i>
             {ready_for_delivery?.length > 0 && (
               <span
-                className={`badge rounded-pill bg-${
-                  selectedItem === 'preparations' ? 'warning' : 'info'
-                }`}
+                className={`badge border-1 border-yellow rounded-pill text-${
+                  selectedItem === 'preparations' ? 'green' : 'light'
+                } bg-${selectedItem === 'preparations' ? 'light' : 'green'}`}
               >
                 {ready_for_delivery?.length}
               </span>
@@ -108,16 +116,16 @@ const BottomNavBar = ({
         <Nav.Item className='nav-item text-center' onClick={() => handleSelect('progress')}>
           <Link
             className={`nav-link px-0 text-${
-              selectedItem === 'progress' ? 'light' : 'info'
+              selectedItem === 'progress' ? 'light' : 'green'
             } py-1 pb-2 text-decoration-none`}
             to='/livraisons'
           >
             <i className='ri-truck-line fs-3 '></i>
             {progress?.length > 0 && (
               <span
-                className={`badge rounded-pill bg-${
-                  selectedItem === 'progress' ? 'warning' : 'info'
-                }`}
+                className={`badge border-1 border-yellow rounded-pill text-${
+                  selectedItem === 'progress' ? 'green' : 'light'
+                }  bg-${selectedItem === 'progress' ? 'light' : 'green'}`}
               >
                 {progress?.length}
               </span>
@@ -149,15 +157,17 @@ const BottomNavBar = ({
         <Nav.Item className='nav-item text-center' onClick={() => handleSelect('retrieve')}>
           <Link
             className={`nav-link px-0  text-${
-              selectedItem === 'retrieve' ? 'light' : 'info'
+              selectedItem === 'retrieve' ? 'light' : 'green'
             } py-1 pb-2 text-decoration-none`}
             to='/retraits'
           >
             <i className='ri-inbox-unarchive-line fs-3 text-center'></i>
             {retrieve?.length > 0 && (
               <span
-                className={`badge rounded-pill bg-${
-                  selectedItem === 'retrieve' ? 'warning' : 'info'
+                className={`badge border-1 border-yellow rounded-pill text-${
+                  selectedItem === 'retrieve' ? 'green' : 'light'
+                } bg-${
+                  selectedItem === 'retrieve' ? 'light' : 'green'
                 }`}
               >
                 {retrieve?.length}
@@ -170,7 +180,7 @@ const BottomNavBar = ({
           <Link
             to='/historique'
             className={`nav-link px-0 text-${
-              selectedItem === 'history' ? 'light' : 'info'
+              selectedItem === 'history' ? 'light' : 'green'
             } py-1 pb-2 text-decoration-none`}
           >
             <i className='ri-history-line fs-3'></i>

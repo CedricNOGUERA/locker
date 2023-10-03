@@ -1,7 +1,6 @@
 import OrdersService from "../service/Orders/OrdersService";
 import freeze from '../styles/Fatcow-Farm-Fresh-Temperature-cold.32.png'
 import fresh from '../styles/Fatcow-Farm-Fresh-Temperature-normal.32.png'
-// import normal from '../styles/Fatcow-Farm-Fresh-Temperature-warm.32.png'
 import normal from '../styles/Fatcow-Farm-Fresh-Temperature-hot.32.png'
 
 export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) => {
@@ -133,7 +132,7 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
   export const _getStatus = (status: any) => {
     if (status === 'created') {
-      return "Préparée"
+      return "Création"
     }else if (status === 'ready_for_delivery') {
       return "Prête à l'envoi"
     }else if (status === 'picked_up') {
@@ -166,9 +165,9 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
 
   export const _getStatusMsg = (status: any) => {
     if (status === 'created') {
-      return "Commande préparée"
+      return "Commande créée"
     } else if (status === 'ready_for_delivery') {
-      return "Commande mise à disposition du coursier"
+      return "Commande préparée et mise à disposition du coursier"
     }  else if (status === 'picked_up') {
       return "Commande en cours de livraison"
     }  else if (status === 'operin') {
@@ -234,15 +233,32 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
    *******************************/
  export const _imgFilter = (data: any) => {
   const imge =
+    // data === 'LT'
     data === 'FRESH'
       ? 'organic-food'
-      : data === 'FREEZE'
-      ? 'winter'
+      // : data === 'FREEZE'
+      // ? 'winter'
       : data === 'NORMAL'
       ? 'dry'
       : 'nada'
   return imge
 }
+ /********************************
+   * filtre image en fonction de la zone de température
+   *******************************/
+ export const _imgFilter2 = (data: any) => {
+  const imge =
+    data === 'MT'
+    // data === 'FRESH'
+      ? 'organic-food'
+      : data === 'LT'
+      ? 'winter'
+      : data === 'HT'
+      ? 'dry'
+      : 'nada'
+  return imge
+}
+ 
 /********************************
    * filtre icon en fonction de la zone de température (keyTemp)
    *******************************/
@@ -253,6 +269,28 @@ export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) =
       : data === 'FREEZE'
       ? freeze
       : data === 'NORMAL'
+      ? normal
+      : 'nada'
+  return imge
+}
+ export const _iconFilter2 = (data: any) => {
+  const imge =
+    data === 'LT'
+      ? fresh
+      : data === 'LT'
+      ? freeze
+      : data === 'MT'
+      ? normal
+      : 'nada'
+  return imge
+}
+ export const _iconFilter3 = (data: any) => {
+  const imge =
+    data === 'Froid positif'
+      ? fresh
+      : data === 'Froid négatif'
+      ? freeze
+      : data === 'Ambiant'
       ? normal
       : 'nada'
   return imge
@@ -302,4 +340,15 @@ export const _getOrdersByStatus = (token: any, status: any, setData: any) => {
 
       
     })
+}
+
+
+/////////////////////////////////
+// Localisation courte
+/////////////////////////////////
+
+export const _shortLocation = (location: any) => {
+const short =   location === '/api/lockers/1' ? 'Côté mer' : location === '/api/lockers/2' ? 'Côté mont.' : location === '/api/lockers/4' ? "Faa'a" : 'Arue'
+
+return short
 }

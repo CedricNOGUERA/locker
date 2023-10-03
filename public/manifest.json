@@ -1,6 +1,6 @@
 {
-  "short_name": "Over Box",
-  "name": "Over Box",
+  "short_name": "Easy Box",
+  "name": "Easy Box",
   "lang": "fr",
   "icons": [
     {
@@ -29,6 +29,6 @@
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#000000",
-  "background_color": "#8b8c94"
+  "theme_color": "#ffd900",
+  "background_color": "#ffd900"
 }

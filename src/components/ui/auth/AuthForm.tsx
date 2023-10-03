@@ -51,7 +51,6 @@ const AuthForm= ({ formProps }: any) => {
           </InputGroup.Text>
           <Form.Control
             className='shadow border-0'
-            style={{ position: 'relative' }}
             type={!isView ? 'password' : 'text'}
             placeholder='Mot de passe'
             {...register('pass', { required: true })}
@@ -95,7 +94,7 @@ const AuthForm= ({ formProps }: any) => {
       <button
         type='submit'
         id=''
-        className='button-auth rounded  w-100 py-2 mt-4 text-light shadow'
+        className='button-auth rounded  w-100 py-2 mt-4 text-yellow shadow'
       >
         {isLoadingAuth ? <Spinner variant='light' size='sm' /> : <>Valider</>}
       </button>

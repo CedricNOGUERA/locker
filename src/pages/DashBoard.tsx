@@ -30,6 +30,18 @@ const DashBoard = () => {
     setSelectedOrderCity,
     allSlot,
     setSelectedItem,
+    selectedStore,
+    setOrderData,
+    selectedOrderCity,
+    setAllSlot,
+    totalPages,
+    setHistoryOrder,
+    historyOrder,
+    orderReady,
+    setOrderReady,
+    orderPickedUp,
+    setOrderPickedUp,
+    orderExpired,
   
     
   ] = useOutletContext<any>()
@@ -132,14 +144,14 @@ console.log(allSlot)
                        <b className='font-85'>
 
                         {
-                          orderData['hydra:member']?.filter(
+                          orderReady['hydra:member']?.filter(
                             (order: any) =>
                             order?.status === 'ready_for_delivery' &&
-                            order?.bookingSlot.slot?.temperatureZone.locker.location ===
-                            slot?.slot?.temperatureZone.locker.location &&
-                            order?.bookingSlot.slot?.temperatureZone.keyTemp ===
-                            slot?.slot?.temperatureZone?.keyTemp &&
-                            order?.bookingSlot.slot?.size === slot?.slot?.size
+                            order?.bookingSlot?.slot?.temperatureZone.locker.location ===
+                            slot?.slot?.temperatureZone?.locker.location &&
+                            order?.bookingSlot?.slot?.temperatureZone?.name ===
+                            slot?.slot?.temperatureZone?.name &&
+                            order?.bookingSlot?.slot?.size === slot?.slot?.size
                             )?.length
                           }
                           </b>
@@ -154,14 +166,14 @@ console.log(allSlot)
 
 
                         {
-                          orderData['hydra:member']?.filter(
+                          orderPickedUp['hydra:member']?.filter(
                             (order: any) =>
                             order?.status === 'picked_up' &&
-                            order?.bookingSlot.slot?.temperatureZone.locker.location ===
-                            slot?.slot?.temperatureZone.locker.location &&
-                              order?.bookingSlot.slot?.temperatureZone.keyTemp ===
-                                slot?.slot?.temperatureZone?.keyTemp &&
-                                order?.bookingSlot.slot?.size === slot?.slot?.size
+                            order?.bookingSlot?.slot?.temperatureZone.locker.location ===
+                            slot?.slot?.temperatureZone.locker?.location &&
+                              order?.bookingSlot?.slot?.temperatureZone?.name ===
+                                slot?.slot?.temperatureZone?.name &&
+                                order?.bookingSlot?.slot?.size === slot?.slot?.size
                           )?.length
                         }
                                 </b>
@@ -176,14 +188,14 @@ console.log(allSlot)
 
                         
                         {
-                          orderData['hydra:member']?.filter(
+                          orderExpired['hydra:member']?.filter(
                             (order: any) =>
                               order?.status === 'overtime' &&
-                              order?.bookingSlot.slot?.temperatureZone.locker.location ===
-                                slot?.slot?.temperatureZone.locker.location &&
-                              order?.bookingSlot.slot?.temperatureZone.keyTemp ===
-                                slot?.slot?.temperatureZone?.keyTemp &&
-                              order?.bookingSlot.slot?.size === slot?.slot?.size
+                              order?.bookingSlot?.slot?.temperatureZone?.locker?.location ===
+                                slot?.slot?.temperatureZone?.locker?.location &&
+                              order?.bookingSlot?.slot?.temperatureZone?.name ===
+                                slot?.slot?.temperatureZone?.name &&
+                              order?.bookingSlot?.slot?.size === slot?.slot?.size
                           )?.length
                         }
                         </b>

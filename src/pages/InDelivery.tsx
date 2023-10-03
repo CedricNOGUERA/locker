@@ -70,6 +70,7 @@ const InDelivery: React.FC = () => {
 
   let videoStream: MediaStream | null = null
 
+  const trigger = 'livraisons'
   const newStatus = 'operin'
 
 ///////////////////////////////////////////////////
@@ -115,7 +116,7 @@ const InDelivery: React.FC = () => {
         setIsError(true)
         setIsLoading(false)
       }
-      setIsLoading(false)
+      setIsLoading(true)
     }
   }, [orderData])
 
@@ -367,6 +368,7 @@ const InDelivery: React.FC = () => {
     orderByStatus,
     orderData,
     storeName,
+    trigger,
   }
 
   const scanPageProps = {
@@ -386,12 +388,11 @@ const InDelivery: React.FC = () => {
       {!selectedOrder && !isAnomaly && (
         <>
         {uniqueTab?.length > 1 && (
-          <div className='col-12 pb-0 text-center font-75 '>
+          <div className='col-12 pb-0 text-center text-light font-75 '>
             {storeName && storeName[0]?.slot?.temperatureZone?.locker?.location}
           </div>
         )}
-          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'}`}
-          style={{backgroundColor : '#fff'}}
+          <div className={`${!isScan ? 'sticky-top pt-2 ' : 'd-none'} bg-darkGray`}
           >
             <SearchBar searchBarProps={searchBarProps} />
           </div>
@@ -480,7 +481,7 @@ const InDelivery: React.FC = () => {
         <Button
           aria-label='Aria Scan'
           title='scan'
-          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-info'} border-0`}
+          className={`fab rounded-circle ${isScan ? 'bg-warning' : 'bg-green'} border-0`}
           onClick={() => {
             if (isScan) {
               stopScan()
