@@ -72,7 +72,7 @@ html{
   margin: auto;
   width: 160px;
   height: 160px;
-  background-image: url('../src/styles/logo512.png');
+  background-image: url('../src/styles/icon-easy-box-512.png');
   background-repeat: no-repeat;
   background-size: 160px;
 }
@@ -106,7 +106,8 @@ html{
 }
 
 .auth-cont-sup {
-  background-color: #dedede !important;
+  background-color: #555 !important;
+  /* background-color: #dedede !important; */
   height: 100vh;
 }
 
@@ -117,7 +118,7 @@ html{
 
 .auth-form {
     /* background-color: #FFE900 !important; */
-    background-color: #dedede !important;
+    background-color: #555 !important;
   padding-top: 10%;
   overflow-y: hidden;
   margin-bottom: 10%;
@@ -136,7 +137,7 @@ html{
   }
 
   .auth-cont-sup {
-    background-color: #8b8c94 !important;
+    background-color: #555 !important;
   }
 
   .teko {

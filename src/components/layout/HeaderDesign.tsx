@@ -114,6 +114,21 @@ const HeaderDesign: React.FC<headerProps> = ({ title }) => {
               </Row>
             </Link>
           </Container>
+         <Container className='mb-2'>
+            <Link
+              className='text-decoration-none text-light'
+              to='/nouvelle-commande'
+              onClick={handleCloseOffcanvas}
+            >
+              <Row className='menu-link'>
+                <Col xs={2}>
+                  {' '}
+                  <i className='ri-file-add-line fs-5'></i>
+                </Col>{' '}
+                <Col className='m-auto user-name'>Nvlle commande</Col>
+              </Row>
+            </Link>
+          </Container>
           {/*  <Container className='mb-2'>
             <Link
               className='text-decoration-none text-light'
