@@ -116,7 +116,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
   return (
     <Container fluid className='order-list pb-5'>
       <div className='text-center'>
-        <p className='col-12 mb-0 text-center font-75'>Détail de la commande à livrer</p>
+        <p className='col-12 mb-0 text-center font-75 text-light'>Détail de la commande à livrer</p>
         <Container className='py-0 bg-gray rounded-pill shadow my-auto '>
           <Row>
             <Col
