@@ -122,7 +122,6 @@ console.log(orderData)
           setIsLoading(true)
         }
 
-        console.log(response.data)
       })
       .catch((error: any) => {
         setIsLoading(false)
@@ -146,7 +145,6 @@ console.log(orderData)
     historyOrder,
   }
 
-  // console.log(historyOrder)
 
   return (
     <Container className='order-list'>

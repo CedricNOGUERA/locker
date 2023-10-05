@@ -41,13 +41,13 @@ const SearchBar = ({ searchBarProps }: any) => {
       .filter((lockerCity: any) => lockerCity?.location === place)
     return city && city[0]['@id']
   }
- console.log(uniqueTab)
+
 
   return (
     <Container className={`search-bar mb-2 text-center`}>
       <Container
         fluid
-        className={` text-green ps-2 rounded-pill  my-auto  ${uniqueTab?.length > 1 && "bg-yellow pe-4"}`} 
+        className={` text-green ps-1 rounded-pill  my-auto  ${uniqueTab?.length > 1 && "bg-yellow pe-4 py-1"}`} 
       >
         <Dropdown>
           <Container fluid className='px-0'>

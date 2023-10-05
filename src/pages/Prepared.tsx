@@ -101,7 +101,6 @@ const Prepared: React.FC = () => {
     setUniqueTab(deduplicate)
   }, [allSlot])
 
-console.log(allSlot)
   React.useEffect(() => {
     if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
       setIsLoading(false)
@@ -359,7 +358,6 @@ console.log(allSlot)
     setSearchOrder
   }
 
-  console.log(selectedOrder)
 
   return (
     <>

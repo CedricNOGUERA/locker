@@ -1,9 +1,9 @@
 import moment from 'moment'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { _getStatus, _shortLocation } from '../../utils/functions'
 import BadgedIcon from '../ui/BadgedIcon'
 import 'moment/locale/fr'
-import age18 from '../../styles/alcool.png'
+import age18 from '../../styles/alcool.webp'
 
 const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
   const formattedDate = (dateStr: any) => {

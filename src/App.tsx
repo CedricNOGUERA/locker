@@ -1,12 +1,12 @@
 import React from 'react'
-import { Navigate, Outlet, useNavigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import './App.css'
 import userDataStore from './store/userDataStore'
 import 'animate.css'
 import BottomNavBar from './components/layout/BottomNavBar'
 import OrdersService from './service/Orders/OrdersService'
 import Loading from './components/ui/Loading'
-import { Button, Container } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import BookingSlotservice from './service/BookingSlot/BookingSlotservice'
 
 function App() {
@@ -35,8 +35,7 @@ function App() {
   const [currentPage, setCurrentPage] = React.useState(1)
   const itemsPerPage: number = 30 // Nombre d'éléments par page
 
-  const [origin, setOrigin] = React.useState(window?.history?.state.key)
-  const navigate = useNavigate()
+
   const [isOnline, setIsOnline] = React.useState(window.navigator.onLine)
 
   const handleOnline = () => {
@@ -73,23 +72,30 @@ function App() {
   React.useEffect(() => {
     if (token && token?.length > 0) {
       getallOrders(token)
-      getOrdersByStatus(token, 'ready_for_delivery', setOrderReady)
-      getOrdersByStatus(token, 'picked_up', setOrderPickedUp)
-      getOrdersByStatus(token, 'overtime', setOrderExpired)
-      getOrdersByStatus(token, 'created', setOrderCreated)
+      if(orderReady !== null || orderReady?.length !== 0){
+        getOrdersByStatus(token, 'ready_for_delivery', setOrderReady)
+      }
+      
+      if(orderPickedUp !== null || orderPickedUp?.length !== 0){
+        getOrdersByStatus(token, 'picked_up', setOrderPickedUp)
+      }
+      if(orderPickedUp !== null || orderPickedUp?.length !== 0){
+        getOrdersByStatus(token, 'overtime', setOrderExpired)
+      }
+      // getOrdersByStatus(token, 'created', setOrderCreated)
       getBookingAllSlot(token)
     }
   }, [token])
 
-  React.useEffect(() => {
-    if (orderData['hydra:member']?.length > 29) {
-      getOrderByPages(token, 2, setOrderByPage)
-    }
-  }, [orderData])
+  // React.useEffect(() => {
+  //   if (orderData['hydra:member']?.length > 29) {
+  //     getOrderByPages(token, 2, setOrderByPage)
+  //   }
+  // }, [orderData])
 
-  React.useEffect(() => {
-    setAllOrder(orderData['hydra:member']?.concat(orderByPage))
-  }, [orderByPage])
+  // React.useEffect(() => {
+  //   setAllOrder(orderData['hydra:member']?.concat(orderByPage))
+  // }, [orderByPage])
 
   React.useEffect(() => {
     setSelectedOrderCity(
@@ -130,17 +136,28 @@ function App() {
     }
   }
 
-  const getallOrders = (token: any) => {
-    OrdersService.allOrders(token)
-      .then((response: any) => {
-        setIsLoading(false)
-        setOrderData(response.data)
-      })
-      .catch((error: any) => {
-        setIsLoading(false)
+  const getallOrders = async (token: any) => {
+    // OrdersService.allOrders(token)
+    //   .then((response: any) => {
+    //     setIsLoading(false)
+    //     setOrderData(response.data)
+    //   })
+    //   .catch((error: any) => {
+    //     setIsLoading(false)
+    //     expiredToken(error)
+    //     console.log(error)
+    //   })
+
+      try {
+        const response = await OrdersService.allOrders(token);
+        setIsLoading(false);
+        setOrderData(response.data);
+      } catch (error) {
+        console.error(error);
         expiredToken(error)
-        console.log(error)
-      })
+        setIsLoading(false);
+      }
+
   }
   const getOrdersByDate = (token: any, date: any) => {
     OrdersService.ordersByDate(token, date)
@@ -168,28 +185,47 @@ function App() {
       })
   }
 
-  const getOrdersByStatus = (token: any, status: any, setData: any) => {
-    OrdersService.ordersByStatus(token, status)
-      .then((response: any) => {
-        setIsLoading(false)
-        setData(response.data)
-      })
-      .catch((error: any) => {
-        console.log(error)
+  // const getOrdersByStatus = (token: any, status: any, setData: any) => {
+  //   OrdersService.ordersByStatus(token, status)
+  //     .then((response: any) => {
+  //       setIsLoading(false)
+  //       setData(response.data)
+  //     })
+  //     .catch((error: any) => {
+  //       console.log(error)
 
-        setIsLoading(false)
-      })
-  }
+  //       setIsLoading(false)
+  //     })
+  // }
+  const getOrdersByStatus = async (token: any, status: any, setData: any) => {
+    try {
+      const response = await OrdersService.ordersByStatus(token, status);
+      setIsLoading(false);
+      setData(response.data);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
 
-  const getBookingAllSlot = (token: any) => {
-    BookingSlotservice.allSlot(token)
-      .then((response: any) => {
-        setAllSlot(response.data)
-      })
-      .catch((error: any) => {
-        setIsLoading(false)
-        console.log(error)
-      })
+  const getBookingAllSlot = async (token: any) => {
+    // BookingSlotservice.allSlot(token)
+    //   .then((response: any) => {
+    //     setAllSlot(response.data)
+    //   })
+    //   .catch((error: any) => {
+    //     setIsLoading(false)
+    //     console.log(error)
+    //   })
+      try {
+        const response = await BookingSlotservice.allSlot(token);
+        setIsLoading(false);
+        setAllSlot(response.data);
+      } catch (error) {
+        console.error(error);
+        expiredToken(error)
+        setIsLoading(false);
+      }
   }
 
   const bottomProps = {

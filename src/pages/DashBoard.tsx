@@ -4,7 +4,7 @@ import userDataStore from '../store/userDataStore'
 import { useOutletContext, Link, Navigate } from 'react-router-dom'
 import DashBoardLoader from '../components/ui/loading/DashBoardLoader'
 import AlertIsError from '../components/ui/warning/AlertIsError'
-import images from '../styles/no-order-min.png'
+import images from '../styles/no-order.webp'
 import BadgedIcon from '../components/ui/BadgedIcon'
 import NoData from '../components/ui/warning/NoData'
 
