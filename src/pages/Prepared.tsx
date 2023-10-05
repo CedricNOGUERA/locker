@@ -358,7 +358,7 @@ const Prepared: React.FC = () => {
     setSearchOrder
   }
 
-
+console.log(selectedOrder)
   return (
     <>
       {!selectedOrder && !isAnomaly && (

@@ -72,11 +72,11 @@ function App() {
   React.useEffect(() => {
     if (token && token?.length > 0) {
       getallOrders(token)
-      if(orderReady !== null || orderReady?.length !== 0){
+      if(orderReady?.length === 0){
         getOrdersByStatus(token, 'ready_for_delivery', setOrderReady)
       }
       
-      if(orderPickedUp !== null || orderPickedUp?.length !== 0){
+      if(orderPickedUp?.length === 0){
         getOrdersByStatus(token, 'picked_up', setOrderPickedUp)
       }
       if(orderPickedUp !== null || orderPickedUp?.length !== 0){
