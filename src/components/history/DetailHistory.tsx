@@ -12,7 +12,6 @@ const DetailHistory = ({ selectedOrder }: any) => {
     const dateB: any = new Date(b.createdAt)
     return dateA - dateB
   })
-  console.log(sortedHistory)
   return (
     <>
       <div className='history-tl-container animate__animated animate__backInLeft pb-5 pe-0'>

@@ -102,16 +102,21 @@ const Prepared: React.FC = () => {
   }, [allSlot])
 
   React.useEffect(() => {
-    if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
+    if (orderByStatus) {
       setIsLoading(false)
     } else {
-      if (orderData && orderData['hydra:member']?.length < 0) {
+      if ( orderByStatus?.length < 0) {
         setIsError(true)
         setIsLoading(false)
+      }else{
+
+        setIsLoading(true)
       }
-      setIsLoading(true)
     }
-  }, [orderData])
+  }, [orderByStatus])
+
+
+  console.log(orderByStatus)
 
   React.useEffect(() => {
     const myScan = orderReady['hydra:member']?.filter(
@@ -189,10 +194,6 @@ const Prepared: React.FC = () => {
     )
   }, [selectedStore])
 
-
-
-
- 
 
   const handleScan = async () => {
     setIsAnomaly(false)
@@ -358,7 +359,6 @@ const Prepared: React.FC = () => {
     setSearchOrder
   }
 
-console.log(selectedOrder)
   return (
     <>
       {!selectedOrder && !isAnomaly && (

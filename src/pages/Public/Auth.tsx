@@ -112,7 +112,6 @@ const Auth = () => {
   //UseEffect
   ///////////////////
 
-console.log(myData.roles)
 
   React.useEffect(() => {
     const handleBeforeInstallPrompt: any = (event:any) => {
@@ -160,7 +159,6 @@ console.log(myData.roles)
       setIsNotEmail(false)
     }
   }, [myEmail])
-  console.log(myData)
   
    ////////////////////
   //events
@@ -176,7 +174,6 @@ console.log(myData.roles)
           cacheNames.forEach(cacheName => {
             caches.delete(cacheName);
           });
-          console.log('Le cache a été vidé avec succès.');
         });
       } else {
         console.log('Impossible de vider le cache. Votre navigateur ne prend pas en charge cette fonctionnalité.');

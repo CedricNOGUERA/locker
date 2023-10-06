@@ -52,13 +52,10 @@ const Delivered: React.FC = () => {
 
   const orderByStatus = orderCreated['hydra:member']?.filter(
     (order: any) =>
-      // order.status === 'created' &&
       order.bookingSlot.slot.temperatureZone.locker['@id'] === selectedStore
   )
-  // const orderByStatus = orderData["hydra:member"]?.filter((order: any) => order.status === "created" && order.bookingSlot.slot.temperatureZone.locker["@id"] === selectedStore );
 
   React.useEffect(() => {
-    // getOrderByStatus(dataStore.token, "created")
     // getOrderByPage(dataStore.token, 2)
   }, [])
   React.useEffect(() => {
@@ -86,16 +83,7 @@ const Delivered: React.FC = () => {
     )
   }, [selectedStore])
 
-  const getOrderByStatus = (token: any, status: any) => {
-    OrdersService.ordersByStatus(token, status)
-      .then((response: any) => {
-        setIsLoading(false)
-        setOrderData(response.data)
-      })
-      .catch((error: any) => {
-        setIsLoading(false)
-      })
-  }
+  
   const getOrderByPage = (token: any, page: any) => {
     OrdersService.ordersByPage(token, page)
       .then((response: any) => {

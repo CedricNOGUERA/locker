@@ -71,19 +71,18 @@ function App() {
 
   React.useEffect(() => {
     if (token && token?.length > 0) {
-      getallOrders(token)
-      if(orderReady?.length === 0){
+        getallOrders(token)
+        // if(orderReady?.length === 0){
         getOrdersByStatus(token, 'ready_for_delivery', setOrderReady)
-      }
-      
-      if(orderPickedUp?.length === 0){
+        // }
+        // if(orderPickedUp?.length === 0){
         getOrdersByStatus(token, 'picked_up', setOrderPickedUp)
-      }
-      if(orderPickedUp !== null || orderPickedUp?.length !== 0){
+        // }
+        // if(orderPickedUp !== null || orderPickedUp?.length !== 0){
         getOrdersByStatus(token, 'overtime', setOrderExpired)
-      }
-      // getOrdersByStatus(token, 'created', setOrderCreated)
-      getBookingAllSlot(token)
+        // }
+        getOrdersByStatus(token, 'created', setOrderCreated)
+        getBookingAllSlot(token)
     }
   }, [token])
 

@@ -64,11 +64,6 @@ const ToRetrieve: React.FC = () => {
       order.bookingSlot.slot.temperatureZone.locker['@id'] === selectedStore
   )
  
-  // const orderByStatus = orderData['hydra:member']?.filter(
-  //   (order: any) =>
-  //     order.status === 'overtime' &&
-  //     order.bookingSlot.slot.temperatureZone.locker['@id'] === selectedStore
-  // )
 
   //////////////////////////
   // UseEffect

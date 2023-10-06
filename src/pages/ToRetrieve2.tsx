@@ -109,16 +109,18 @@ const InDelivery: React.FC = () => {
   }, [allSlot])
   
   React.useEffect(() => {
-    if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
+    if (orderByStatus) {
       setIsLoading(false)
     } else {
-      if (orderData && orderData['hydra:member']?.length < 0) {
+      if ( orderByStatus?.length < 0) {
         setIsError(true)
         setIsLoading(false)
+      }else{
+
+        setIsLoading(true)
       }
-      setIsLoading(true)
     }
-  }, [orderData])
+  }, [orderByStatus])
 
   React.useEffect(() => {
     const myScan = orderPickedUp['hydra:member']?.filter(
