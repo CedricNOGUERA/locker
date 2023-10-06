@@ -93,7 +93,6 @@ const History = () => {
     }
   }, [orderData])
 
-console.log(orderData)
   React.useEffect(() => {
     _searchWithRegex(searchOrder, historyOrder, setFilteredOrder)
   }, [searchOrder])
@@ -104,7 +103,6 @@ console.log(orderData)
     }
   }, [currentPage])
 
-  // console.log(currentPage)
   // const totalPages = Math.ceil(orders && orders?.length / itemsPerPage);
 
   const handlePageChange = (newPage: number) => {
@@ -122,7 +120,6 @@ console.log(orderData)
           setIsLoading(true)
         }
 
-        console.log(response.data)
       })
       .catch((error: any) => {
         setIsLoading(false)
@@ -145,8 +142,7 @@ console.log(orderData)
     trigger,
     historyOrder,
   }
-
-  // console.log(historyOrder)
+console.log(selectedOrder)
 
   return (
     <Container className='order-list'>

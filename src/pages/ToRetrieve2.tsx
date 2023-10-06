@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Navigate, useOutletContext } from 'react-router-dom'
 import userDataStore from '../store/userDataStore'
 import { message } from 'antd'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { _getStatus, _searchWithRegex } from '../utils/functions'
 import SearchBar from '../components/ui/SearchBar'
 import AlertIsError from '../components/ui/warning/AlertIsError'
@@ -109,16 +109,18 @@ const InDelivery: React.FC = () => {
   }, [allSlot])
   
   React.useEffect(() => {
-    if (orderByStatus && orderData && orderData['hydra:member']?.length > 0) {
+    if (orderByStatus) {
       setIsLoading(false)
     } else {
-      if (orderData && orderData['hydra:member']?.length < 0) {
+      if ( orderByStatus?.length < 0) {
         setIsError(true)
         setIsLoading(false)
+      }else{
+
+        setIsLoading(true)
       }
-      setIsLoading(true)
     }
-  }, [orderData])
+  }, [orderByStatus])
 
   React.useEffect(() => {
     const myScan = orderPickedUp['hydra:member']?.filter(
@@ -380,7 +382,6 @@ const InDelivery: React.FC = () => {
     setSearchOrder,
 
   }
-  console.log(selectedOrder)
 
   return (
     <>

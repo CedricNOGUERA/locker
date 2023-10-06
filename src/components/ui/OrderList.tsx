@@ -1,6 +1,6 @@
 import { Container } from 'react-bootstrap'
 import ItemList from './ItemList'
-import images from '../../styles/no-order.png'
+import images from '../../styles/no-order.webp'
 import React from 'react'
 import NoData from './warning/NoData'
 

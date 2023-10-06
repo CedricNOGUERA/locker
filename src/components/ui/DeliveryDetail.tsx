@@ -111,12 +111,13 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
         })
     }
   }
-  console.log(newStatus)
 
   return (
     <Container fluid className='order-list pb-5'>
       <div className='text-center'>
-        <p className='col-12 mb-0 text-center font-75'>Détail de la commande à livrer</p>
+        <p className='col-12 mb-0 text-center font-75 text-light'>
+          Détail de la commande à livrer
+        </p>
         <Container className='py-0 bg-gray rounded-pill shadow my-auto '>
           <Row>
             <Col
@@ -142,7 +143,7 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
             </Col>
           </Row>
         </Container>
-        
+
         <Table striped className='mt-3 border-1'>
           <thead>
             <tr>
@@ -214,45 +215,23 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
             <Modal.Body>
               <Container className='text-center text-dange py-0  m-auto opacity-75'>
                 <p>
-                  {' '}
                   <img
                     alt='température de la commande'
-                    src={_iconFilter3(
-                      selectedOrder?.bookingSlot?.slot?.temperatureZone?.name
-                    )}
+                    src={_iconFilter3(selectedOrder?.bookingSlot?.slot?.temperatureZone?.name)}
                     style={{ width: '35px', height: `35px` }}
                   />
                   <b>Zone {selectedOrder?.bookingSlot?.slot?.temperatureZone?.name}</b>
-               </p>
+                </p>
               </Container>
-              <Container
-                className='bg-light p-2 border  animate__animated animate__fadeInDown'
-                onClick={() => {
-                  if (selectedOrder?.status === 'created') {
-                    changeStatus()
-                  } else {
-                    _getOrdersByStatus(dataStore.token, 'picked_up', setOrderPickedUp)
-                    getallOrders(dataStore.token)
-                    setSelectedOrder(null)
-                  }
-                }}
-              >
+              <Container className='bg-light p-2 border  animate__animated animate__fadeInDown'>
                 <div className='m-auto'>
-                  {newStatus === 'receive' && selectedOrder.multiOrderCode ? (
-                    <QrCode data={`${selectedOrder?.multiOrderCode}`} />
-                  ) : newStatus === 'receive' && !selectedOrder.multiOrderCode ? (
-                    <QrCode data={`${selectedOrder?.receiveCode}`} />
-                  ) : (
-                    <QrCode data={`${selectedOrder?.barcode}`} />
-                  )}
+                  <QrCode data={`${selectedOrder?.barcode}`} />
                 </div>
               </Container>
               <Container className='text-center mt-4 px-0'>
                 <Alert variant='secondary' className='border-2 border-secondary'>
                   Saisie manuelle :
-                  <p className='text-secondary fw-bold m-0'>
-                    {selectedOrder?.barcode}
-                  </p>
+                  <p className='text-secondary fw-bold m-0'>{selectedOrder?.barcode}</p>
                 </Alert>
               </Container>
             </Modal.Body>
@@ -279,7 +258,13 @@ const DeliveryDetail = ({ scanPageProps }: any) => {
                   handleClose()
                 }}
               >
-                {isLoading ? <Spinner size='sm' as='span' /> : newStatus === "operin" ? 'Déposer' : 'Retirer'}
+                {isLoading ? (
+                  <Spinner size='sm' as='span' />
+                ) : newStatus === 'operin' ? (
+                  'Déposer'
+                ) : (
+                  'Retirer'
+                )}
               </Button>
             </Modal.Footer>
           </>

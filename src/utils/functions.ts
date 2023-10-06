@@ -1,7 +1,7 @@
 import OrdersService from "../service/Orders/OrdersService";
-import freeze from '../styles/Fatcow-Farm-Fresh-Temperature-cold.32.png'
-import fresh from '../styles/Fatcow-Farm-Fresh-Temperature-normal.32.png'
-import normal from '../styles/Fatcow-Farm-Fresh-Temperature-hot.32.png'
+import freeze from '../styles/Fatcow-Farm-Fresh-Temperature-cold.32.webp'
+import fresh from '../styles/Fatcow-Farm-Fresh-Temperature-normal.32.webp'
+import normal from '../styles/Fatcow-Farm-Fresh-Temperature-hot.32.webp'
 
 export const _successNotif = (id: any, messageApi: any, setSelectedOrder: any) => {
     messageApi.open({
