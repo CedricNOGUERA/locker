@@ -22,7 +22,7 @@ const ItemList = ({ liv, setSelectedOrder, setSearchOrder, trigger }: any) => {
       >
         <Col xs={2} md={1} className='m-auto py-0 '>
           <span key={Math.random()}>
-            <BadgedIcon slot={liv?.bookingSlot} borderColor='darkGray' imgSize='30px' />
+            <BadgedIcon slot={liv?.bookingSlot} borderColor='darkGray' imgSize='32px' />
           </span>
         </Col>
         <Col className='text-yellow text-start align-bottom m-auto py-0 pe-0 ps-3 ps-md-4  my-0'>

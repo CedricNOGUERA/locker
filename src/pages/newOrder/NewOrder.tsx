@@ -17,14 +17,14 @@ import {
   Table,
 } from 'react-bootstrap'
 import Badge from 'react-bootstrap/Badge'
-import { Navigate, useNavigate, useOutletContext } from 'react-router-dom'
+import { Navigate, useOutletContext } from 'react-router-dom'
 import BookingSlotservice from '../../service/BookingSlot/BookingSlotservice'
 import newOrderDataStore from '../../store/newOrderDataStore'
 import userDataStore from '../../store/userDataStore'
 import Swal from 'sweetalert2'
 import bookingStore from '../../store/bookingStore'
 import logsStore from '../../store/logsStore'
-import { _iconFilter, _iconFilter3, _imgFilter, _imgFilter2, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
+import { _iconFilter3, _searchAnythingWithRegex, _strRandom } from '../../utils/functions'
 import axios from 'axios'
 import OrdersService from '../../service/Orders/OrdersService'
 import AlertIsError from '../../components/ui/warning/AlertIsError'
@@ -35,7 +35,6 @@ import DashBoardLoader from '../../components/ui/loading/DashBoardLoader'
 import ClientService from '../../service/Client/ClientService'
 import InfoTopBar from './InfoTopBar'
 import { BrowserMultiFormatReader } from '@zxing/library'
-import interrogation from '../../styles/interrogation.png'
 
 const NewOrder = () => {
   //////////////////////////
